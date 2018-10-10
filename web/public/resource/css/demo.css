@@ -1,0 +1,143 @@
+html,body,#doc{
+	margin: 0;
+	height: 100%;
+}
+#doc{
+	display: flex;
+}
+.nav-panel{
+	width: 240px;
+	border-right: 1px solid #eaecef;
+	display: flex;
+	flex-direction: column;
+}
+.logo{
+	padding-left: 20px;
+}
+.logo i{
+	font-size: 0.6em;
+	margin-left: 10px;
+	opacity: 0.8;
+}
+.nav{
+	flex: 1;
+	overflow-y: auto;
+	background: #fafafa;
+	border-top: 1px solid rgba(0,0,0,0.3);
+	font-size: 14px;
+}
+.nav a{
+	padding-left: 20px;
+	text-decoration: none;
+	line-height: 3em;
+	color: rgba(0,0,0,0.7);
+	display: block;
+	cursor: pointer;
+}
+.nav a:hover{
+	color: rgba(0,0,0,0.9);
+	text-decoration: underline;
+	background-color: #fff;
+}
+.nav a.active{
+	color: #008cff;
+}
+.main-panel{
+	flex: 1;
+}
+#app{
+	height: 100%;
+	position: relative;
+}
+#app iframe{
+	border: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.playground{
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+.layout-1-0 #app{
+	flex: 1;
+}
+.layout-1-0 #editor{
+	display: none;
+}
+.layout-3-1 #app{
+	flex: 3;
+}
+.layout-3-1 #editorBox{
+	flex: 1;
+}
+.layout-2-1 #app{
+	flex: 2;
+}
+.layout-2-1 #editorBox{
+	flex: 1;
+}
+.layout-1-1 #app{
+	flex: 1;
+}
+.layout-1-1 #editorBox{
+	flex: 1;
+}
+.layout-1-2 #app{
+	flex: 1;
+}
+.layout-1-2 #editorBox{
+	flex: 2;
+}
+.layout-1-3 #app{
+	flex: 1;
+}
+.layout-1-3 #editorBox{
+	flex: 3;
+}
+#editorBox{
+	display: flex;
+	flex-direction: column;
+}
+.editor-toolbar{
+	font-size: 12px;
+	line-height: 2em;
+	padding: 5px 20px;
+	border: solid #282828;
+	border-width: 1px 0;
+	background-color: #525252;
+	display: flex;
+	color: #fff;
+}
+.editor-toolbar label{
+	padding: 0 5px;
+	margin-right: 10px;
+}
+.toolbar-btn{
+	cursor: pointer;
+}
+.toolbar-btn:hover,
+.toolbar-btn.active{
+	background-color: #3c3c3c;
+	border-radius: 3px;
+}
+#editor{
+	position: relative;
+	flex: 1;
+}
+#editor iframe{
+	border: none;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}

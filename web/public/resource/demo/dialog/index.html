@@ -1,0 +1,39 @@
+<div class="btn-box">
+	<h1>快速提示</h1>
+	<button type="button" class="el-button el-button--primary" onclick="qtip1()">显示一个快速提示</button>
+	<button type="button" class="el-button el-button--primary" onclick="qtip2()">显示一个error类型的快速提示</button>
+	<button type="button" class="el-button el-button--primary" onclick="qtip3()">显示一个时间更短的快速提示</button>
+	<hr>
+	<h1>功能性弹窗</h1>
+	<button type="button" class="el-button el-button--primary" onclick="fun1()">alert</button>
+	<button type="button" class="el-button el-button--primary" onclick="fun2()">带回调的alert</button>
+	<button type="button" class="el-button el-button--primary" onclick="fun3()">confirm</button>
+	<button type="button" class="el-button el-button--primary" onclick="fun4()">prompt</button>
+	<hr>
+	<h1>Dialog示例</h1>
+	<button type="button" class="el-button el-button--primary" onclick="dia1()">普通窗口</button>
+	<button type="button" class="el-button el-button--primary" onclick="dia2()">带Vue实例的窗口</button>
+</div>
+
+<script type="text/html" id="tmpl">
+	<form id="testForm" @submit.prevent="submit">
+		<table>
+			<tr>
+				<td>电影名</td>
+				<td>
+					<input name="movieName" v-model="movie.name" />
+				</td>
+			</tr>
+			<tr>
+				<td>发行时间</td>
+				<td>
+					<select name="year" v-model="movie.year">
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+	</form>
+</script>

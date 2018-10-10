@@ -1,0 +1,7 @@
+.poster{
+	width: 100px;
+	height: 100px;
+	background-size: contain;
+	background-position:center;
+	background-repeat: no-repeat;
+}

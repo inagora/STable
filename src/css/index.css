@@ -1,0 +1,5 @@
+[class*=" el-icon-_fa"],
+[class^=el-icon-_fa] {
+	transform: scale(1.2);
+	font-family: FontAwesome !important;
+}
