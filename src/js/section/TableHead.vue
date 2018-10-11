@@ -35,6 +35,7 @@
 							@drop="$emit('st_drop',$event)"
 							@dragend="$emit('st_dragend')"
 							@dragleave="$emit('st_dragleave')"
+							@click="sort(col)"
 							:title="col.text">
 							<div class="st-table-th-text st-table-cell-nowrap" v-text="col.text||'&nbsp;'"></div>
 							<el-tooltip
@@ -44,7 +45,7 @@
 								popper-class="st-table-th-tip">
 								<el-button icon="el-icon-info" size="mini" type="text" class="st-table-th-tip-icon" title=""></el-button>
 							</el-tooltip>
-							<div v-if="col.sortable" class="fa fa-sort st-table-th-sort"></div>
+							<div v-if="col.sortable" class="st-table-th-sort" :class="[store.sortKey==col.dataIndex?(store.sortDirection=='asc'?'el-icon-caret-top':'el-icon-caret-bottom'):'el-icon-d-caret']"></div>
 						</div>
 					</th>
 				</template>
@@ -56,7 +57,8 @@
 export default {
 	props: ['locked', 'width', 'columns', 'checkedAll'],
 	inject: {
-		store: 'store'
+		store:'store', 
+		defaultSortDirection:'sortDirection'
 	},
 	data(){
 		return {chkAll: this.checkedAll};
@@ -69,6 +71,16 @@ export default {
 	methods: {
 		selectAll(){
 			this.store.$emit('selectall',!this.checkedAll);
+		},
+		sort(col){
+			if(col.sortable){
+				if(this.store.sortKey == col.dataIndex) {
+					this.store.sortDirection = this.store.sortDirection=='asc'?'desc':'asc';
+				} else {
+					this.store.sortKey = col.dataIndex;
+					this.store.sortDirection = this.defaultSortDirection;
+				}
+			}
 		}
 	}
 }

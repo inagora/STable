@@ -39,4 +39,7 @@ export default {
 		top: 0;
 		transform: translate(-50%, -50%);
 	}
+	.x-pb-in{
+		background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+	}
 </style>

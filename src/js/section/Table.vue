@@ -45,7 +45,7 @@
 				<span class="fa fa-angle-up"></span>
 			</div>
 		</div>
-		<x-loader :visible="loading"></x-loader>
+		<x-loader :visible="flymanVisible"></x-loader>
 	</div>	
 </template>
 <script>

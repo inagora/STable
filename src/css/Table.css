@@ -106,6 +106,10 @@
 .st-table-th:hover .st-table-th-sort{
 	opacity: 1;
 }
+.st-table-th-sort.el-icon-caret-top,
+.st-table-th-sort.el-icon-caret-bottom{
+	opacity: 0.8;
+}
 
 @keyframes anim_pulse {
   from {

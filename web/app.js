@@ -63,6 +63,17 @@ router.all('/ajaxList',koaBody({strict: false}), (ctx, next)=>{
 	if(params.etime) {
 		allMovies = allMovies.filter(item=>item.realTime&&item.realTime.replace(/[年月日]/g,'-')<=params.etime);
 	}
+	if(params.sort_key && params.sort_direction) {
+		let key = params.sort_key, dir=params.sort_direction;
+		allMovies.sort(function(a,b){
+			if(dir=='asc'){
+				return a[key] > b[key] ? 1: -1;
+			} else {
+				return a[key] < b[key] ? 1 : -1;
+			}
+		});
+	}
+	//allMovies.forEach(item=>{console.log(item.rating)})
 	let page_count = Math.ceil(allMovies.length/count);
 	
 	allMovies = allMovies.slice((page-1)*count, page*count);

@@ -1,10 +1,12 @@
 import {MessageBox} from 'element-ui';
 import {ajax} from '../ajax';
+import Progressbar from '../com/Progressbar';
 export default {
 	inject: ['pageMode','pageIndex', 'parallelCount'],
 	data(){
 		return {
-			loading: false,
+			isPageLoading: false,
+			flymanVisible: false,
 			recordList: this.records||[],
 			clean: true	//"干净"状态下的表格，不会提示下一页没有数据之类的提示
 		};
@@ -30,6 +32,12 @@ export default {
 		},
 		'store.page': function(){
 			this.load();
+		},
+		'store.sortKey': function(){
+			this.throttleLoad();
+		},
+		'store.sortDirection': function(){
+			this.throttleLoad();
 		},
 		'store.loadAction': function(val, oldVal){
 			if(val != oldVal){
@@ -73,10 +81,16 @@ export default {
 				this.setRecords(this.records);
 				return;
 			}
+			if(this.isPageLoading) return;
+			this.isPageLoading = true;
 			this.timer = setTimeout(()=>{
-				this.loading = true;
+				this.flymanVisible = true;
 			}, 500);
 			let params = Object.assign({}, this.params, this.store.searchParams);
+			if(this.store.sortKey) {
+				params.sort_key = this.store.sortKey;
+				params.sort_direction = this.store.sortDirection;
+			}
 			if(this.pageMode=='waterfall'){
 				let id = '';
 				let count = params.count;
@@ -102,12 +116,13 @@ export default {
 
 			this.lastRequestParams = params;
 			ajax({url:this.url, data: params, type:this.actionMethods.read}).then(res=>{
+				this.isPageLoading = false;
 				res = res[0];
 				if(this.timer){
 					clearTimeout(this.timer);
 					this.timer = null;
 				}
-				this.loading = false;
+				this.flymanVisible = false;
 				if(res.errno || res.code){
 					MessageBox.alert(res.errmsg||res.msg,'提示', {type: 'error'});
 				} else {
@@ -142,6 +157,15 @@ export default {
 				if(this.pageMode == 'waterfall')
 					this.store.loadAction = '';
 			});
+		},
+		throttleLoad(){
+			if(this.throttleTimer) {
+				clearTimeout(this.throttleTimer);
+				this.throttleTimer = null;
+			}
+			this.throttleTimer = setTimeout(()=>{
+				this.store.$emit('load', {reset: true});
+			}, 50);
 		},
 		refresh(pno){
 			if(typeof pno != 'undefined'){
@@ -199,19 +223,22 @@ export default {
 				let parallelCount = this.parallelCount;
 				let createJob = (pno)=>{
 					let params = Object.assign({}, this.params, this.store.searchParams);
+					if(this.store.sortKey) {
+						params.sort_key = this.store.sortKey;
+						params.sort_direction = this.store.sortDirection;
+					}
 					params.page = pno;
 					
 					let job = ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: 100});
 					job.then(res=>{
 						res = res[0];
-						list = list.concat(res.data&&res.data.list||[]);
+						list[params.page] = res.data&&res.data.list||[];
 						if(res.data && res.data.page_count)
 							page_count = res.data.page_count;
 						let jobIndex = jobList.indexOf(job);
 						jobList.splice(jobIndex, 1);
 						startJob();
-					}, function(rej){
-						console.log(rej[1], rej[2]);
+					}, function(){
 						jobList.splice(jobList.indexOf(job), 1);
 						jobList.push(createJob(pno));
 					});
@@ -227,7 +254,13 @@ export default {
 					}
 					
 					if(jobList.length<=0 && pnoIdx>=page_count) {
-						resolve(list);
+						let ret = [];
+						for(let i=1;i<=page_count;i++){
+							if(!list[i])
+								alert('页面 '+i+' 数据有问题');
+							ret = ret.concat(list[i]);
+						}
+						resolve(ret);
 						return;
 					}
 					
@@ -235,13 +268,17 @@ export default {
 				startJob();
 			});
 		},
-		//因为瀑布流模式下，每一页的id依赖上一个页面，所以没办法并行请求
+		//因为瀑布流模式下，每一页的id依赖上一个页面，所以没办法并行请求，也不知道总共有多少页
 		getAllOnWaterfall(){
 			return new Promise((resolve, reject)=>{
 				let list = [];
 				let pageIndex = this.pageIndex;
 				let startJob = (id)=>{
 					let params = Object.assign({}, this.params, this.store.searchParams);
+					if(this.store.sortKey) {
+						params.sort_key = this.store.sortKey;
+						params.sort_direction = this.store.sortDirection;
+					}
 					params[pageIndex] = id;
 					ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: 5000}).then(res=>{
 						res = res[0];

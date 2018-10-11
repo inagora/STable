@@ -148,6 +148,12 @@
 			if(typeof conf.page != 'undefined') {
 				conf.params.page = conf.page;
 			}
+			if(conf.sort_key)
+				conf.sortKey = conf.sort_key;
+			if(conf.sort_direction)
+				conf.sortDirection = conf.sort_direction;
+			if(!conf.sortDirection)
+				conf.sortDirection = 'asc';
 
 			conf.store = new Vue({
 				data: {
@@ -158,7 +164,9 @@
 					hasPrePage: false,
 					loadAction: '',
 					radioVal: '',
-					checkboxVal: []
+					checkboxVal: [],
+					sortKey: conf.sortKey||'',
+					sortDirection: conf.sortDirection
 				}
 			});
 			conf.store.searchParams = {};
@@ -179,7 +187,7 @@
 			});
 			delete conf.columns;
 			delete conf.params.page;
-			
+
 			return conf;
 		},
 		components: {

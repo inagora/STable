@@ -1,8 +1,8 @@
 <template>
 	<div v-if="visible" class="st-toolbar">
-		<el-button v-if="addUrl" type="primary" size="small" icon="el-icon-_fa fa fa-plus" @click="add">添加</el-button>
-		<el-button v-if="downloadable===true||downloadable=='single'" type="primary" size="small" icon="el-icon-_fa fa fa-download" @click="download">下载当前页</el-button>
-		<el-button v-if="downloadable===true||downloadable=='all'" type="primary" size="small" icon="el-icon-_fa fa fa-download" @click="downloadAll">下载所有页</el-button>
+		<el-button v-if="addUrl" type="primary" size="small" icon="el-icon-plus" @click="add">添加</el-button>
+		<el-button v-if="downloadable===true||downloadable=='single'" type="primary" size="small" icon="el-icon-download" @click="download">下载当前页</el-button>
+		<el-button v-if="downloadable===true||downloadable=='all'" type="primary" size="small" icon="el-icon-download" @click="downloadAll">下载所有页</el-button>
 		<el-button
 			v-for="(btn,idx) in toolbar"
 			:key="idx"

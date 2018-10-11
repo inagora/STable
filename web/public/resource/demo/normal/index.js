@@ -30,6 +30,7 @@ STable.init({
 		}
 	],
 	ignoreEmptySearchParam: true,
+	downloadable: true,
 	toolbar: [
 		{
 			text: '买票',
@@ -46,12 +47,15 @@ STable.init({
 			}
 		}
 	],
+	sortKey: 'id',
+	sortDirection: 'desc',
 	columns: [
 		{
 			header: 'id',
 			dataIndex:'id',
 			width: 100,
-			locked: true
+			locked: true,
+			sortable: true
 		},
 		{
 			header: '海报',
@@ -71,7 +75,8 @@ STable.init({
 			header: '评分',
 			dataIndex: 'rating',
 			width: 100,
-			fx: 'average'
+			fx: 'average',
+			sortable: true
 		},{
 			header: '影片类型',
 			dataIndex: 'movieType',
