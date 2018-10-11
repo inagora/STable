@@ -2,14 +2,17 @@ import Vue from 'vue';
 import XProgressbar from "./Progressbar.vue";
 
 const Progressbar = {
-	create(){
+	create(type=''){
+		let el = document.createElement('div');
+		document.body.appendChild(el);
 		let app = new Vue({
 			data: {
 				visible: false,
 				val: 0,
-				text: ''
+				text: '',
+				type
 			},
-			template: '<x-progressbar :visible="visible" :val="val" :text="text"></x-progressbar>',
+			template: '<x-progressbar :visible="visible" :val="val" :text="text" :type="type"></x-progressbar>',
 			components: {XProgressbar},
 			methods: {
 				update(value, text){
@@ -21,9 +24,15 @@ const Progressbar = {
 				},
 				hide(){
 					this.visible = false;
+				},
+				destroy(){
+					this.visible = false;
+					let el = this.$el;
+					this.$destroy();
+					el.remove();
 				}
 			}
-		}).$mount(document.body);
+		}).$mount(el);
 
 		return app;
 	}

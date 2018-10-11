@@ -216,11 +216,15 @@ export default {
 		
 		getAllOnNormal() {
 			return new Promise((resolve)=>{
+				let progressbar = Progressbar.create();
+				progressbar.show();
+				progressbar.update(0, '开始下载数据');
 				let list = [];
 				let jobList = [];
 				let page_count = this.store.page_count||1;
 				let pnoIdx = 0;
 				let parallelCount = this.parallelCount;
+				let loadedCount = 0;
 				let createJob = (pno)=>{
 					let params = Object.assign({}, this.params, this.store.searchParams);
 					if(this.store.sortKey) {
@@ -229,7 +233,7 @@ export default {
 					}
 					params.page = pno;
 					
-					let job = ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: 100});
+					let job = ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: 10000});
 					job.then(res=>{
 						res = res[0];
 						list[params.page] = res.data&&res.data.list||[];
@@ -238,6 +242,16 @@ export default {
 						let jobIndex = jobList.indexOf(job);
 						jobList.splice(jobIndex, 1);
 						startJob();
+
+						loadedCount++;
+						let per = loadedCount*100/page_count;
+						if(per>0 && per<1)
+							per = 1;
+						else if(per>99 && per<100)
+							per = 99;
+						else
+							per = Math.floor(per);
+						progressbar.update(per/100, `已下载${loadedCount}页，共${page_count}页`);
 					}, function(){
 						jobList.splice(jobList.indexOf(job), 1);
 						jobList.push(createJob(pno));
@@ -254,6 +268,7 @@ export default {
 					}
 					
 					if(jobList.length<=0 && pnoIdx>=page_count) {
+						progressbar.destroy();
 						let ret = [];
 						for(let i=1;i<=page_count;i++){
 							if(!list[i])
@@ -271,7 +286,11 @@ export default {
 		//因为瀑布流模式下，每一页的id依赖上一个页面，所以没办法并行请求，也不知道总共有多少页
 		getAllOnWaterfall(){
 			return new Promise((resolve, reject)=>{
+				let progressbar = Progressbar.create('infinite');
+				progressbar.show();
+				progressbar.update(0, '数据下载中，请稍候...');
 				let list = [];
+				let loadedCount = 0;
 				let pageIndex = this.pageIndex;
 				let startJob = (id)=>{
 					let params = Object.assign({}, this.params, this.store.searchParams);
@@ -280,7 +299,7 @@ export default {
 						params.sort_direction = this.store.sortDirection;
 					}
 					params[pageIndex] = id;
-					ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: 5000}).then(res=>{
+					ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: 10000}).then(res=>{
 						res = res[0];
 						if(res.errno){
 							MessageBox.alert(res.errmsg,'提示', {type: 'error'});
@@ -288,13 +307,17 @@ export default {
 						} else {
 							if(!res.data.list || res.data.list.length<=0) {
 								resolve(list);
+								progressbar.destroy();
 							} else {
 								list = list.concat(res.data.list);
 								if(res.data.list.length < params.count) {
 									resolve(list);
+									progressbar.destroy();
 								} else {
 									id = list[list.length-1][pageIndex];
 									startJob(id);
+									loadedCount++;
+									progressbar.update(0, `已下载 ${loadedCount} 页数据，请继续等待...`);
 								}
 							}
 						}
@@ -304,7 +327,7 @@ export default {
 							startJob(id);
 						}, 500);
 					});
-				}
+				};
 				startJob('');
 			});
 		},

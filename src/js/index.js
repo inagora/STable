@@ -2,7 +2,6 @@ import Vue from 'vue';
 import STable from 'js/STable.vue';
 import XForm from 'js/section/Form.vue';
 import XDialog from 'js/com/Dialog.vue';
-import XLoading from 'js/section/Table.loading.vue';
 import Dialog from 'js/com/Dialog';
 import SidePanel from 'js/com/SidePanel';
 import {
@@ -38,7 +37,6 @@ if(!window.Vue)
 Vue.component('x-dialog', XDialog);
 Vue.component('x-stable', STable);
 Vue.component('x-form', XForm);
-Vue.component('x-loading', XLoading);
 
 //添加全局变量
 window.SidePanel = SidePanel;

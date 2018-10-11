@@ -53,7 +53,7 @@
 	import {$fetch} from '../util';
 	import Drag from './Table.drag.mixin';
 	import Store from './Table.store.mixin';
-	import XLoader from './Table.loading.vue';
+	import XLoader from '../com/flyman.vue';
 	import TableHead from './TableHead.vue';
 	import TableBody from './TableBody.vue';
 	import XForm from './Form.vue';

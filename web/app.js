@@ -78,6 +78,13 @@ router.all('/ajaxList',koaBody({strict: false}), (ctx, next)=>{
 	
 	allMovies = allMovies.slice((page-1)*count, page*count);
 	return new Promise(r=>{
+		let t = Math.random();
+		if(t<0.2)
+			t = t*100000;
+		else if(t<0.5)
+			t = t*5000;
+		else
+			t=0;
 		setTimeout(()=>{
 			ctx.body={
 				errno: 0,
@@ -88,49 +95,77 @@ router.all('/ajaxList',koaBody({strict: false}), (ctx, next)=>{
 				}
 			};
 			r();
-		},Math.round(Math.random()*200));
+		},Math.round(t));
 		
 	});
 });
 
 router.all('/ajaxWaterfall',koaBody({strict: false}), (ctx, next)=>{
 	let params = Object.assign({},ctx.query, ctx.request.body);
-	let allGoods = require('./data.json');
+	let allMovies = require('./movies.json');
 	let count = parseInt(params.count||20, 10);
-	let goods_id = params.goods_id||'';
-	if(params.goods_name){
-		let name = params.goods_name.toLocaleLowerCase();
-		allGoods = allGoods.filter(item=>item.goods_name.toLocaleLowerCase().includes(name));
+	if(params.name){
+		let name = params.name.toLocaleLowerCase();
+		allMovies = allMovies.filter(item=>item.name.toLocaleLowerCase().includes(name));
 	}
-	let retList = [];
-	if(goods_id) {
-		let index = -1;
-		for(let i=0,len=allGoods.length;i<len;i++){
-			if(allGoods[i].goods_id == goods_id){
+	if(params.movieType){
+		let movieType = params.movieType.toLocaleLowerCase();
+		allMovies = allMovies.filter(item=>item.movieType.toLocaleLowerCase().includes(movieType));
+	}
+	if(params.stime) {
+		allMovies = allMovies.filter(item=>item.realTime&&item.realTime.replace(/[年月日]/g,'-')>=params.stime);
+	}
+	if(params.etime) {
+		allMovies = allMovies.filter(item=>item.realTime&&item.realTime.replace(/[年月日]/g,'-')<=params.etime);
+	}
+	if(params.sort_key && params.sort_direction) {
+		let key = params.sort_key, dir=params.sort_direction;
+		allMovies.sort(function(a,b){
+			if(dir=='asc'){
+				return a[key] > b[key] ? 1: -1;
+			} else {
+				return a[key] < b[key] ? 1 : -1;
+			}
+		});
+	}
+
+	let index = -1;
+	if(params.id) {
+		for(let i=0;i<allMovies.length;i++) {
+			if(allMovies[i].id == params.id){
 				index = i;
 				break;
 			}
 		}
-		if(index>=0) {
-			if(count>0)
-				retList = allGoods.slice(index+1, index+count+1);
-			else
-				retList = allGoods.slice(index+count, index);
-		}
-	} else {
-		retList = allGoods.slice(0, Math.abs(count));
 	}
-
+	if(index<0 && params.id!='') {
+		return {
+			errno: -1,
+			errmsg: 'id有问题'
+		};
+	}
+	if(count>0)
+		allMovies = allMovies.slice(index+1, index+count+1);
+	else
+		allMovies = allMovies.slice(index+count, index);
 	return new Promise(r=>{
+		let t = Math.random();
+		if(t<0.05)
+			t = t*10*5000+10000;	//一定超时
+		else if(t<0.2)
+			t = (t-0.1)*10*5000;		//时间在0s到5s返回结果
+		else
+			t = t*50;	//快速返回结果
 		setTimeout(()=>{
 			ctx.body={
 				errno: 0,
 				data: {
-					list: retList
+					list: allMovies
 				}
 			};
 			r();
-		},Math.round(Math.random()*10000));
+		},Math.round(t));
+		
 	});
 });
 
