@@ -4,3 +4,4 @@ node_modules/
 web/public/tmp/
 web/public/resource/module/STable/
 _book
+package-lock.json
