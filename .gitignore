@@ -1,7 +1,6 @@
 .DS_Store
 .vscode
 node_modules/
-dist
 web/public/tmp/
-web/public/resource/module/STable-v4.1/
+web/public/resource/module/STable/
 _book
