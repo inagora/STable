@@ -80,6 +80,7 @@
 	</el-form>
 </template>
 <script>
+	import {ajax} from '../ajax';
 	import XFile from './File.vue';
 	const py = require('../pinyin/web-pinyin');
 	export default {
@@ -241,7 +242,8 @@
 					if(['combobox','multiple'].includes(field.type) && field.asyncList) {
 						if(typeof field.asyncList == 'string') {
 							field.list = [];
-							$fetch(field.asyncList, null, actionMethods.read).then(res=>{
+							ajax({url: field.asyncList, type: actionMethods.read}).then(res=>{
+								res = res[0];
 								if(res.errno==0 || res.code==0) {
 									field.list = res.data.list;
 								} else {

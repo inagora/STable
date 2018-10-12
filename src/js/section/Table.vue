@@ -49,6 +49,7 @@
 	</div>	
 </template>
 <script>
+	import {ajax} from '../ajax';
 	import Drag from './Table.drag.mixin';
 	import Store from './Table.store.mixin';
 	import XLoader from '../com/flyman.vue';
@@ -243,7 +244,8 @@
 								let data = {};
 								data[this.idIndex] = id;
 								Object.assign(data, this.params);
-								$fetch(this.deleteUrl, data, this.actionMethods.destroy).then(res=>{
+								ajax({url:this.deleteUrl, data, type: this.actionMethods.destroy}).then(res=>{
+									res = res[0];
 									if(res.errno==0) {
 										this.$message({
 											message: '删除成功',
@@ -299,7 +301,8 @@
 										if(ret===false)
 											return;
 										data[self.idIndex] = record[self.idIndex];
-										$fetch(self.updateUrl, data, self.actionMethods.update).then(res=>{
+										ajax({ url:self.updateUrl, data, type: self.actionMethods.update}).then(res=>{
+											res = res[0];
 											if(res.errno==0){
 												this.$message({
 													message: '修改成功',
