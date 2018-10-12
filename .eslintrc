@@ -12,6 +12,7 @@
 		"no-console": ["error", { "allow": ["warn", "log"] }]
 	},
 	"globals": {
+		"Vue": false,
 		"window": false,
 		"document": false,
 		"setTimeout": false,

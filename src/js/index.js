@@ -1,37 +1,8 @@
-import Vue from 'vue';
 import STable from 'js/STable.vue';
 import XForm from 'js/section/Form.vue';
 import XDialog from 'js/com/Dialog.vue';
 import Dialog from 'js/com/Dialog';
 import SidePanel from 'js/com/SidePanel';
-import {
-	Button,
-	Tag,
-	Form,
-	FormItem,
-	Input,
-	DatePicker,
-	TimePicker,
-	Select,
-	Option,
-	Pagination,
-	Tooltip
-} from 'element-ui';
-
-Vue.use(Button);
-Vue.use(Tag);
-Vue.use(Form);
-Vue.use(FormItem);
-Vue.use(Input);
-Vue.use(DatePicker);
-Vue.use(TimePicker);
-Vue.use(Select);
-Vue.use(Option);
-Vue.use(Pagination);
-Vue.use(Tooltip);
-
-if(!window.Vue)
-	window.Vue = Vue;
 
 //注册全局组件
 Vue.component('x-dialog', XDialog);

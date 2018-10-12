@@ -80,10 +80,8 @@
 	</el-form>
 </template>
 <script>
-	import {Message} from 'element-ui';
 	import XFile from './File.vue';
 	const py = require('../pinyin/web-pinyin');
-	window.py = py;
 	export default {
 		props: {
 			fieldList:Array,
@@ -247,7 +245,7 @@
 								if(res.errno==0 || res.code==0) {
 									field.list = res.data.list;
 								} else {
-									Message.error(res.errmsg||res.msg);
+									this.$message.error(res.errmsg||res.msg);
 								}
 							});
 						} else {
@@ -261,7 +259,7 @@
 			submit(){
 				for(let field of this.fields){
 					if(field.type=='file' && field.loading) {
-						Message({
+						this.$message({
 							message: '文件上传中，请稍等...',
 							type: 'info'
 						});

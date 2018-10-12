@@ -13,7 +13,6 @@
 	</div>
 </template>
 <script>
-	import {Message, MessageBox} from 'element-ui';
 	import Dialog from '../com/Dialog.js';
 	import XForm from './Form.vue';
 	import {ajax} from '../ajax';
@@ -112,13 +111,13 @@
 							ajax(toolbar.addUrl, data, toolbar.actionMethods.create).then(res=>{
 								res = res[0];
 								if(res.errno==0){
-									Message({
+									this.$message({
 										message: '添加成功',
 										type: 'success'
 									});
 									this.close();
 								} else {
-									Message({
+									this.$message({
 										message: res.errmsg,
 										type: 'error'
 									});
@@ -180,7 +179,7 @@
 				ws_data = ws_data.concat(list);
 				
 				let wb = XLSX.utils.book_new();
-				MessageBox.prompt(null,'请确认表格文件的名称',{inputValue:this.title||'wandougongzhu'}).then(res=>{
+				this.$prompt(null,'请确认表格文件的名称',{inputValue:this.title||'wandougongzhu'}).then(res=>{
 					let name = res.value;
 					let ws = XLSX.utils.aoa_to_sheet(ws_data);
 					if(colsConf)

@@ -14,7 +14,7 @@ export default {
 		}
 	},
 	mounted(){
-		loadScript('//cdn.bootcss.com/echarts/4.1.0/echarts.common.min.js');
+		loadScript('//cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.common.min.js');
 
 		this.store.$on('chartshow', (evt)=>{
 			this.btn = evt.target;

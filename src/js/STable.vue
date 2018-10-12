@@ -219,10 +219,4 @@
 </script>
 <style>
 	@import url(../css/index.css);
-	.st-stable{
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		position: relative;
-	}
 </style>

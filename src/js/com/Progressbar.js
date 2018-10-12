@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import XProgressbar from "./Progressbar.vue";
 
 const Progressbar = {

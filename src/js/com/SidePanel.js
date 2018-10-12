@@ -1,5 +1,4 @@
 import SidePanel from './SidePanel.vue';
-import Vue from 'vue';
 let app = new Vue({
 	data:{
 		title: '',

@@ -1,4 +1,3 @@
-import {MessageBox} from 'element-ui';
 import {ajax} from '../ajax';
 import Progressbar from '../com/Progressbar';
 export default {
@@ -124,11 +123,11 @@ export default {
 				}
 				this.flymanVisible = false;
 				if(res.errno || res.code){
-					MessageBox.alert(res.errmsg||res.msg,'提示', {type: 'error'});
+					this.$alert(res.errmsg||res.msg,'提示', {type: 'error'});
 				} else {
 					if(this.pageMode=='waterfall'){
 						if(!this.clean && (!res.data.list || res.data.list.length<=0)) {
-							MessageBox.alert((params.count>0?'后面':'前面')+'已没有更多数据了','提示', {type: 'error'});
+							this.$alert((params.count>0?'后面':'前面')+'已没有更多数据了','提示', {type: 'error'});
 							if(params.count>0)
 								this.store.hasNextPage = false;
 							else
@@ -302,7 +301,7 @@ export default {
 					ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: 10000}).then(res=>{
 						res = res[0];
 						if(res.errno){
-							MessageBox.alert(res.errmsg,'提示', {type: 'error'});
+							this.$alert(res.errmsg,'提示', {type: 'error'});
 							reject(res);
 						} else {
 							if(!res.data.list || res.data.list.length<=0) {

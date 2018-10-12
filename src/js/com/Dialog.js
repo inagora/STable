@@ -1,5 +1,3 @@
-import Vue from 'vue';
-import { Message, MessageBox } from 'element-ui';
 import diaCom from './Dialog.vue';
 Vue.component('x-dialog', diaCom);
 function formatArgs(msg,title, options) {
@@ -30,13 +28,13 @@ let Dialog={
 			}
 		}
 		conf.message = msg;
-		Message(conf);
+		Vue.prototype.$message(conf);
 	},
 	alert(msg, title, options){
 		let conf = formatArgs(msg, title, options);
 		conf.options.callback = conf.options.fn||function(){};
 		
-		MessageBox.alert(conf.message, conf.title, conf.options);
+		Vue.prototype.$alert(conf.message, conf.title, conf.options);
 	},
 	confirm(msg, title, options){
 		let conf = formatArgs(msg, title, options);
@@ -45,11 +43,11 @@ let Dialog={
 				conf.options.fn(action=='confirm'?'yes':'no');
 			};
 		}
-		MessageBox.confirm(conf.message, conf.title, conf.options);
+		Vue.prototype.$confirm(conf.message, conf.title, conf.options);
 	},
 	prompt(msg, title, options){
 		let conf = formatArgs(msg, title, options);
-		let p = MessageBox.prompt(conf.message, conf.title, conf.options);
+		let p = Vue.prototype.$prompt(conf.message, conf.title, conf.options);
 		if(conf.options.fn){
 			p.then(({value})=>{
 				conf.options.fn(value);

@@ -1,4 +1,4 @@
-@import url(./font-awesome.css);
+@import url(./Table.css);
 .st-stable [class*=" fa-"],
 .st-stable [class^=fa-] {
 	font-size: inherit;
@@ -6,4 +6,10 @@
 }
 .el-button [class*=fa-]+span {
 	margin-left: 5px;
+}
+.st-stable{
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	position: relative;
 }

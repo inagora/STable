@@ -1,16 +1,9 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = function(options, args) {
 	let isProd = args && args.mode=='production' || false;
-	let plugins = [
-		new VueLoaderPlugin(),
-	];
-	if(isProd) {
-		plugins.push(new MiniCssExtractPlugin({
-			filename: 'STable.min.css'
-		}));
-	}
+
 	return {
 		entry: ['./src/js/index.js'],
 		output: {
@@ -46,22 +39,14 @@ module.exports = function(options, args) {
 				{
 					test: /\.css$/,
 					use: [
-						isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+						'style-loader',
 						'css-loader'
 					]
-				}, 
-				{
-					test: /\.(eot|ttf|woff|woff2)(\?.+)?$/,
-					use: [{
-						loader: 'url-loader',
-						options: {
-							limit: 10000,
-							name: './[name].[ext]?[hash]'
-						}
-					}]
 				}
 			]
 		},
-		plugins
+		plugins: [
+			new VueLoaderPlugin(),
+		]
 	};
 };

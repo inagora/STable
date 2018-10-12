@@ -9,7 +9,6 @@
 </template>
 <script>
 	import XForm from './Form.vue';
-import { parse } from 'semver';
 	export default {
 		components:{XForm},
 		inject: {

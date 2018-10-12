@@ -49,7 +49,6 @@
 	</div>	
 </template>
 <script>
-	import { MessageBox, Message } from 'element-ui';
 	import Drag from './Table.drag.mixin';
 	import Store from './Table.store.mixin';
 	import XLoader from '../com/flyman.vue';
@@ -237,7 +236,7 @@
 						icon: 'el-icon-close',
 						type: 'danger',
 						click: (record)=>{
-							MessageBox.confirm('您确定要删除此行数据？', '提示', {
+							this.$confirm('您确定要删除此行数据？', '提示', {
 								type: 'error'
 							}).then((res)=>{
 								let id = record[this.idIndex];
@@ -246,13 +245,13 @@
 								Object.assign(data, this.params);
 								$fetch(this.deleteUrl, data, this.actionMethods.destroy).then(res=>{
 									if(res.errno==0) {
-										Message({
+										this.$message({
 											message: '删除成功',
 											type: 'success'
 										});
 										this.load('cur');
 									} else {
-										Message.error('删除失败');
+										this.$message.error('删除失败');
 									}
 								});
 							}).catch(()=>{});
@@ -302,7 +301,7 @@
 										data[self.idIndex] = record[self.idIndex];
 										$fetch(self.updateUrl, data, self.actionMethods.update).then(res=>{
 											if(res.errno==0){
-												Message({
+												this.$message({
 													message: '修改成功',
 													type: 'success'
 												});
@@ -312,7 +311,7 @@
 												if(self.listeners.afteredit)
 													self.listeners.afteredit.call(self.$root, data);
 											} else {
-												Message({
+												this.$message({
 													message: res.errmsg,
 													type: 'error'
 												});
@@ -406,6 +405,3 @@
 		}
 	}
 </script>
-<style>
-	@import "../../css/Table.css"
-</style>
