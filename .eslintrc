@@ -13,6 +13,7 @@
 	},
 	"globals": {
 		"Vue": false,
+		"__dirname": false,
 		"window": false,
 		"document": false,
 		"setTimeout": false,
