@@ -50,7 +50,6 @@
 </template>
 <script>
 	import { MessageBox, Message } from 'element-ui';
-	import {$fetch} from '../util';
 	import Drag from './Table.drag.mixin';
 	import Store from './Table.store.mixin';
 	import XLoader from '../com/flyman.vue';
@@ -145,7 +144,7 @@
 			}
 			bodyBox.addEventListener('scroll', syncScroll, false);
 			this.formatColumns();
-			this.load();
+			//this.load();
 
 			let timer;
 			window.addEventListener('resize', function(){

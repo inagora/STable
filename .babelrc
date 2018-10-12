@@ -1,12 +1,11 @@
 {
   "presets": [
-  	["env", {
+  	["@babel/preset-env", {
       "targets": {
         "browsers": ["chrome >= 56", "safari >= 11"]
       }
     }]
   ],
-  "ast": false,
 	"comments": false,
 	"plugins": [
     [

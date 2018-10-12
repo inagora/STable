@@ -51,7 +51,7 @@ export default {
 	mounted(){
 		this.store.$on('load', (options)=>{
 
-			if(options.reset)
+			if(options && options.reset)
 				this.reset();
 			else
 				this.load();

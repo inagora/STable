@@ -1,54 +1,26 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
 module.exports = function(options, args) {
-	console.log(args.mode);
+	let isProd = args && args.mode=='production' || false;
+	let plugins = [
+		new VueLoaderPlugin(),
+	];
+	if(isProd) {
+		plugins.push(new MiniCssExtractPlugin({
+			filename: 'STable.min.css'
+		}));
+	}
 	return {
-		entry: './src/js/index.js',
+		entry: ['./src/js/index.js'],
 		output: {
-			path: args.mode=='development' ? path.resolve(__dirname, 'web/public/resource/module/STable'): path.resolve(__dirname, 'dist'),
+			path: path.resolve(__dirname, 'dist'),
 			filename: 'STable.min.js',
 			library: 'STable',
-			libraryTarget: 'window'
+			libraryTarget: 'window',
+			publicPath: '/res/'
 		},
-		module: {
-			rules: [{
-				test: /\.vue$/,
-				use: [{
-					loader: 'vue-loader'
-				}]
-			}, {
-				test: /\.js$/,
-				use: ['babel-loader'],
-				exclude: /node_modules/
-			}, {
-				test: /\.css$/,
-				use: [
-					MiniCssExtractPlugin.loader,
-					'css-loader',
-					'postcss-loader'
-				]
-			}, {
-				test: /\.scss$/,
-				use: [
-					MiniCssExtractPlugin.loader,//'vue-style-loader',
-					'css-loader',
-					'sass-loader'
-				]
-			}, 
-			{
-				test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
-				use: [{
-					loader: 'url-loader',
-					options: {
-						limit: 10000,
-						name: './[name].[ext]?[hash]'
-					}
-				}]
-			}
-		]
-		},
+		devtool: isProd? 'none':'inline-source-map',
 		resolve: {
 			modules: [
 				path.resolve(__dirname, 'src'),
@@ -60,12 +32,36 @@ module.exports = function(options, args) {
 			},
 			extensions: [".js", ".vue", ".json"]
 		},
-		plugins: [
-			new VueLoaderPlugin(),
-			new MiniCssExtractPlugin({
-				filename: 'STable.min.css'
-			})
-		],
-		devtool: args.mode == 'production' ? 'none' : 'eval-source-map'
+		module: {
+			rules: [
+				{
+					test: /\.vue$/,
+					use: 'vue-loader'
+				},
+				{
+					test: /\.js$/,
+					use: 'babel-loader',
+					exclude: /node_modules/
+				},
+				{
+					test: /\.css$/,
+					use: [
+						isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+						'css-loader'
+					]
+				}, 
+				{
+					test: /\.(eot|ttf|woff|woff2)(\?.+)?$/,
+					use: [{
+						loader: 'url-loader',
+						options: {
+							limit: 10000,
+							name: './[name].[ext]?[hash]'
+						}
+					}]
+				}
+			]
+		},
+		plugins
 	};
 };

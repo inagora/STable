@@ -40,7 +40,7 @@ STable.init({
 		},
 		{
 			text: '下架电影',
-			icon: 'el-icon-circle-close',
+			icon: 'close',
 			type: 'danger',
 			click(){
 				console.log(this.getSelectedRows())

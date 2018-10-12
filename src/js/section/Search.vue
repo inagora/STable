@@ -2,7 +2,7 @@
 	<div v-if="searchFilter" class="st-search">
 		<x-form ref="form" :inline="true" size="small" :field-list="searchFilter" :default-values="params" :action-methods="actionMethods" @submit="search">
 			<el-form-item>
-				<el-button type="primary" icon="el-icon-search" native-type="submit">查询</el-button>
+				<el-button type="primary" icon="fa fa-search" native-type="submit">查询</el-button>
 			</el-form-item>
 		</x-form>
 	</div>
@@ -22,20 +22,32 @@ import { parse } from 'semver';
 			store: 'store',
 			ignoreEmptySearchParam: 'ignoreEmptySearchParam'
 		},
+		mounted(){
+			setTimeout(()=>{
+				if(this.searchFilter) {
+					this.store.searchParams = this.getParams();
+				}
+				this.store.$emit('load');
+			}, 0);
+		},
 		methods: {
+			trimParam(data){
+				let params = {};
+				for(let key in data) {
+					if(typeof data[key]=='string') {
+						if(data[key])
+							params[key] = data[key];
+					} else if(typeof data[key] != 'undefined') {
+						params[key] = data[key];
+					}
+				}
+
+				return params;
+			},
 			search(evt){
 				let searchParams;
 				if(this.ignoreEmptySearchParam) {
-					let params = {};
-					for(let key in evt) {
-						if(typeof evt[key]=='string') {
-							if(evt[key])
-								params[key] = evt[key];
-						} else if(typeof evt[key] != 'undefined') {
-							params[key] = evt[key];
-						}
-					}
-					searchParams = params;
+					searchParams = this.trimParam(evt);
 					
 				} else 
 					searchParams = evt;
@@ -46,11 +58,14 @@ import { parse } from 'semver';
 					}
 				}
 				this.store.searchParams = searchParams;
-				console.log('search')
 				this.store.$emit('load', {reset: true});
 			},
 			getParams(){
-				return this.$refs.form.getFormData();
+				let data = this.$refs.form.getFormData();
+				if(this.ignoreEmptySearchParam) {
+					data = this.trimParam(data);
+				}
+				return data;
 			}
 		}
 	};

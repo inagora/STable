@@ -82,7 +82,6 @@
 <script>
 	import {Message} from 'element-ui';
 	import XFile from './File.vue';
-	import {$fetch} from '../util';
 	const py = require('../pinyin/web-pinyin');
 	window.py = py;
 	export default {

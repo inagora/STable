@@ -1,5 +1,9 @@
-[class*=" el-icon-_fa"],
-[class^=el-icon-_fa] {
-	transform: scale(1.2);
+@import url(./font-awesome.css);
+.st-stable [class*=" fa-"],
+.st-stable [class^=fa-] {
+	font-size: inherit;
 	font-family: FontAwesome !important;
+}
+.el-button [class*=fa-]+span {
+	margin-left: 5px;
 }

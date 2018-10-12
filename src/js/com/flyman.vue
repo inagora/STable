@@ -33,18 +33,16 @@ export default {
 			if(val)
 				this.isLoading = true;
 			else {
-				let el = this.$el.querySelector('.st-load-body');
-				let loader = this;
-				function anim(){
-					
-					el.removeEventListener('transitionend', anim, false);
-					loader.isLoading = false;
-					loader.$nextTick(function(){
-						el.classList.remove('st-load-body-out');
-					});
-				}
-				el.addEventListener('transitionend', anim, false);
-				el.classList.add('st-load-body-out');
+				setTimeout(()=>{
+					let el = this.$el.querySelector('.st-load-body');
+					el.classList.add('st-load-body-out');
+					setTimeout(()=>{
+						this.isLoading = false;
+						setTimeout(()=>{
+							el.classList.remove('st-load-body-out');
+						}, 0);
+					}, 200);
+				}, 0);
 			}
 		}
 	}
