@@ -1,17 +1,18 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 module.exports = function(options, args) {
 	let isProd = args && args.mode=='production' || false;
-
-	return {
+	let conf = {
 		entry: ['./src/js/index.js'],
 		output: {
 			path: path.resolve(__dirname, 'dist'),
 			filename: 'STable.min.js',
 			library: 'STable',
 			libraryTarget: 'window',
-			publicPath: '/res/'
+			publicPath: '/resource/module/STable/'
 		},
 		devtool: isProd? 'none':'inline-source-map',
 		resolve: {
@@ -39,7 +40,7 @@ module.exports = function(options, args) {
 				{
 					test: /\.css$/,
 					use: [
-						'style-loader',
+						MiniCssExtractPlugin.loader,
 						'css-loader'
 					]
 				}
@@ -47,6 +48,18 @@ module.exports = function(options, args) {
 		},
 		plugins: [
 			new VueLoaderPlugin(),
+			new MiniCssExtractPlugin({
+				filename: 'STable.min.css'
+			})
 		]
 	};
+	if(isProd) {
+		conf.optimization = {
+			minimizer: [
+				new OptimizeCSSAssetsPlugin({})
+			]
+		};
+		conf.plugins.push(new MinifyPlugin()); 
+	}
+	return conf;
 };

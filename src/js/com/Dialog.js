@@ -1,5 +1,3 @@
-import diaCom from './Dialog.vue';
-Vue.component('x-dialog', diaCom);
 function formatArgs(msg,title, options) {
 	let conf = {
 		message: msg||'',

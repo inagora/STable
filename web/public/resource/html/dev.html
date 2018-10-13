@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>STable Demo</title>
+	<style>
+	html,body,.doc,#wdStableContainer{
+		margin: 0;
+		padding: 0;
+		height: 100%;
+	}
+	.doc{
+		display: flex;
+	}
+	.title{
+		width: 100px;
+		background-color: #171F2C;
+		writing-mode: tb;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: #fff;
+		font-size: 48px;
+	}
+	#wdStableContainer{
+		flex: 1;
+	}
+	.tip{
+		color: rgba(0,0,0,0.1);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 56px;
+		width: 100%;
+		height: 100%;
+	}
+	.poster{
+		width: 100px;
+		height: 100px;
+		background-size: contain;
+		background-position:center;
+		background-repeat: no-repeat;
+	}
+	</style>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.4.8/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/resource/module/STable/STable.min.css">
+</head>
+<body>
+	<div class="doc">
+		<h1 class="title">STable DEV</h1>
+		<div id="wdStableContainer">
+			<div class="tip">STable Demo</div>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/combine/npm/vue@2.5.17/dist/vue.min.js,npm/element-ui@2.4.8/lib/index.js"></script>
+	<script src="/resource/module/STable/STable.min.js"></script>
+	<script>
+const type = ["剧情", "喜剧", "短片", "爱情", "纪录片", "动作", "惊悚", "恐怖", "动画", "犯罪", "冒险", "家庭", "悬疑", "奇幻", "科幻", "战争", "传记", "音乐", "历史", "歌舞", "西部", "运动", "古装", "武侠", "戏曲", "黑色电影", "儿童", "新闻", "真人秀", "舞台艺术", "成人", "脱口秀", "游戏秀", "情色", "文艺", "同性", "女性", "青春", "励志", "微电影", "灾难"];
+STable.init({
+	title: '一个标准的Demo',
+	tip: '<div style="color:red">🍭Demo中所有数据来时光网，如有侵权，会立即删除</div>',
+	url: '/ajaxList',
+	params: {
+		count: 30,
+		page: 5
+	},
+	rowNumberVisible: true,
+	searchFilter: [
+		{
+			label: '名字',
+			name: 'name'
+		},
+		{
+			name: 'movieType',
+			label: '影片类型',
+			list: type
+		},
+		{
+			label: '上映时间(起)',
+			name: 'stime',
+			type: 'date'
+		},
+		{
+			label: '上映时间(终)',
+			name: 'etime',
+			type: 'date'
+		}
+	],
+	ignoreEmptySearchParam: true,
+	downloadable: true,
+	toolbar: [
+		{
+			text: '买票',
+			click(){
+				console.log(this.getSelectedRows());
+			}
+		},
+		{
+			text: '下架电影',
+			icon: 'close',
+			type: 'danger',
+			click(){
+				console.log(this.getSelectedRows())
+			}
+		}
+	],
+	sortKey: 'id',
+	sortDirection: 'desc',
+	columns: [
+		{
+			header: 'id',
+			dataIndex:'id',
+			width: 100,
+			locked: true,
+			sortable: true
+		},
+		{
+			header: '海报',
+			dataIndex: 'img',
+			width: 120,
+			render(record){
+				let img = record.img;
+				return `<div class="poster" style="background-image:url(${img.replace(/_\d+X\d+(X2)?\.jpg/,'_640X360X2.jpg')})"></div>`;
+			}
+		},
+		{
+			header: '名字',
+			dataIndex: 'name',
+			width: 200,
+			cellWrap: true
+		},{
+			header: '评分',
+			dataIndex: 'rating',
+			width: 100,
+			fx: 'average',
+			sortable: true
+		},{
+			header: '影片类型',
+			dataIndex: 'movieType',
+			width: 150
+		},
+		{
+			header: '导演',
+			dataIndex: 'directors',
+			width: 150,
+			render(record){
+				return record.directors.join(' | ');
+			}
+		},{
+			header: '主演',
+			dataIndex: 'actors',
+			cellWrap: true,
+			width: 150,
+			render(record){
+				return record.actors.join(' | ');
+			}
+		},
+		{
+			header: '国家',
+			dataIndex: 'locationName',
+			width: 80
+		},{
+			header: '上映时间',
+			dataIndex: 'year',
+			width: 80
+		},{
+			header: '其它名字',
+			width: 500,
+			cellWrap: true,
+			dataIndex: 'titleOthersCn',
+			render(record){
+				return record.titleOthersCn.join(' | ');
+			}
+		}
+	],
+	selectMode: 'multiple',
+	listeners: {
+		cellclick(record, col) {
+			if(col.dataIndex=='img') {
+				let img = record.img;
+				Dialog.create({
+					width: '90%',
+					height: '90%',
+					autoShow: true,
+					html: `<a href="${img}" target="_blank"><div style="width:100%;height: 100%;background:url(${img}) no-repeat center;background-size:contain;"></div></a>`
+				});
+			}
+		}
+	},
+});
+	</script>
+</body>
+</html>

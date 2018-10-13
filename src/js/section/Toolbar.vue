@@ -68,7 +68,7 @@
 		},
 		mounted(){
 			if(this.downloadable){
-				loadScript('//cdn.bootcss.com/xlsx/0.12.12/xlsx.full.min.js');
+				loadScript('//cdn.jsdelivr.net/npm/xlsx@0.14.0/dist/xlsx.full.min.js');
 			}
 		},
 		methods: {

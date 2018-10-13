@@ -3,8 +3,9 @@
 <head>
 	<meta charset="utf-8">
 	<title>STable Demo</title>
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-ui@2.4.8/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/resource/css/demo.css">
-	<link rel="stylesheet" href="/resource/module/STable/STable.min.css">
 </head>
 <body>
 	<div id="doc">
@@ -17,7 +18,7 @@
 		<div class="main-panel">
 			<div class="playground" :class="['layout-'+conf.layout.split(':').join('-')]">
 				<div id="app">
-					<iframe data-src="/playground"></iframe>
+					<iframe data-src="/resource/html/playground.html"></iframe>
 				</div>
 				<div id="editorBox">
 					<div class="editor-toolbar">
@@ -35,9 +36,9 @@
 						<label class="toolbar-btn" @click="clearAll">🚽 清除所有demo修改</label>
 					</div>
 					<div id="editor">
-						<iframe v-show="activeEditor=='js'" id="jsEditor" src="/editor#type=js"></iframe>
-						<iframe v-show="activeEditor=='css'" id="cssEditor" src="/editor#type=css"></iframe>
-						<iframe v-show="activeEditor=='html'" id="htmlEditor" src="/editor#type=html"></iframe>
+						<iframe v-show="activeEditor=='js'" id="jsEditor" src="/resource/html/editor.html#type=js"></iframe>
+						<iframe v-show="activeEditor=='css'" id="cssEditor" src="/resource/html/editor.html#type=css"></iframe>
+						<iframe v-show="activeEditor=='html'" id="htmlEditor" src="/resource/html/editor.html#type=html"></iframe>
 					</div>
 				</div>
 			</div>
@@ -57,7 +58,8 @@
 		['SidePanel', 'SidePanel', 1],
 	];
 	</script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/zepto@1.2.0/dist/zepto.min.js"></script>
+	<script src="//cdn.jsdelivr.net/combine/npm/vue@2.5.17/dist/vue.min.js,npm/element-ui@2.4.8/lib/index.js"></script>
 	<script src="/resource/module/STable/STable.min.js"></script>
 	<script src="/resource/js/demo.js"></script>
 </body>

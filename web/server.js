@@ -7,7 +7,8 @@ const koaBody = require('koa-body');
 module.exports = function(middleware) {
 	const app = new Koa();
 	const router = new Router();
-	app.use(middleware);
+	if(middleware)
+		app.use(middleware);
 	app.use(serve(path.resolve(__dirname, 'public')));
 
 	router.get('/ajaxGetDemo/:demo',(ctx, next)=>{
