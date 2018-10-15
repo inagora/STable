@@ -19,6 +19,8 @@
     "babel-loader": "^8.0.4",
     "babel-minify-webpack-plugin": "^0.3.1",
     "css-loader": "^1.0.0",
+    "element-ui": "^2.4.8",
+    "font-awesome": "^4.7.0",
     "koa-webpack": "^5.1.0",
     "mini-css-extract-plugin": "^0.4.1",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
