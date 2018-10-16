@@ -1,7 +1,7 @@
 import {ajax} from '../ajax';
 import Progressbar from '../com/Progressbar';
 export default {
-	inject: ['pageMode','pageIndex', 'parallelCount'],
+	inject: ['pageMode','pageIndex', 'parallelCount', 'downloadTimeout'],
 	data(){
 		return {
 			isPageLoading: false,
@@ -232,7 +232,7 @@ export default {
 					}
 					params.page = pno;
 					
-					let job = ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: 10000});
+					let job = ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout});
 					job.then(res=>{
 						res = res[0];
 						list[params.page] = res.data&&res.data.list||[];
@@ -298,7 +298,7 @@ export default {
 						params.sort_direction = this.store.sortDirection;
 					}
 					params[pageIndex] = id;
-					ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: 10000}).then(res=>{
+					ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout}).then(res=>{
 						res = res[0];
 						if(res.errno){
 							this.$alert(res.errmsg,'提示', {type: 'error'});

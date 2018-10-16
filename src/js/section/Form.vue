@@ -106,32 +106,38 @@
 				formData[field.name] = typeof this.defaultValues[field.name]=='undefined' ? field.value : this.defaultValues[field.name];
 
 				if(field.type=='combobox'||field.type=="multiple") {
-					function joinText(arr){
-						return arr.map(item=>item[0]).join('');
+					if(field.asyncList) {
+						this.getAsyncList(field, this.actionMethods).then(()=>{
+							this.initSearch(field, idx);
+						});
+					} else {
+						this.initSearch(field, idx);
 					}
-					field.list.forEach(item=>{
-						let text = item.text.toLocaleLowerCase();
-						item._s = text
-							+ '_' + joinText(py(text, {style:py.STYLE_NORMAL}))
-							+ '_' + joinText(py(text, {style:py.STYLE_INITIALS}))
-							+ '_' + joinText(py(text, {style:py.STYLE_FIRST_LETTER}));
-					});
-					field._list = field.list;
-					field.filter = (q)=>{
-						this.filter(q, idx);
-					};
 				}
 			});
-			
-			this.$nextTick(()=>{
-				this.getAsyncList(this.actionMethods);
-			});
+		
 			return {
 				fields,
 				formData
 			}
 		},
 		methods: {
+			initSearch(field, idx) {
+				function joinText(arr){
+					return arr.map(item=>item[0]).join('');
+				}
+				field.list.forEach(item=>{
+					let text = item.text.toLocaleLowerCase();
+					item._s = text
+						+ '_' + joinText(py(text, {style:py.STYLE_NORMAL}))
+						+ '_' + joinText(py(text, {style:py.STYLE_INITIALS}))
+						+ '_' + joinText(py(text, {style:py.STYLE_FIRST_LETTER}));
+				});
+				field._list = field.list;
+				field.filter = (q)=>{
+					this.filter(q, idx);
+				};
+			},
 			filter(q, idx){
 				q = q.toLocaleLowerCase();
 				let field = this.fields[idx];
@@ -237,24 +243,24 @@
 
 				return fieldArr;
 			},
-			getAsyncList(actionMethods) {
-				this.fields.forEach(field=>{
-					if(['combobox','multiple'].includes(field.type) && field.asyncList) {
-						if(typeof field.asyncList == 'string') {
-							field.list = [];
-							ajax({url: field.asyncList, type: actionMethods.read}).then(res=>{
-								res = res[0];
-								if(res.errno==0 || res.code==0) {
-									field.list = res.data.list;
-								} else {
-									this.$message.error(res.errmsg||res.msg);
-								}
-							});
-						} else {
-							field.asyncList().then(list=>{
-								field.list = list;
-							});
-						}
+			getAsyncList(field, actionMethods) {
+				return new Promise(resolve=>{
+					if(typeof field.asyncList == 'string') {
+						field.list = [];
+						ajax({url: field.asyncList, type: actionMethods.read}).then(res=>{
+							res = res[0];
+							if(res.errno==0 || res.code==0) {
+								field.list = res.data.list;
+								resolve();
+							} else {
+								this.$message.error(res.errmsg||res.msg);
+							}
+						});
+					} else {
+						field.asyncList().then(list=>{
+							field.list = list;
+							resolve();
+						});
 					}
 				});
 			},

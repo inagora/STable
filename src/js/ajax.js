@@ -215,6 +215,9 @@ function ajax(options) {
 			for (let name in settings.xhrFields)
 				xhr[name] = settings.xhrFields[name];
 
+		if(window._csrf_key){
+			setHeader(window._csrf_key, window._csrf_token||'');
+		}
 		for (let name in headers)
 			nativeSetHeader.apply(xhr, headers[name]);
 

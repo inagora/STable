@@ -33,7 +33,8 @@
 				params: {
 					count: 20
 				},
-				parallelCount: 6
+				parallelCount: 6,
+				downloadTimeout: 10000
 			}, this.config);
 
 			let methods = conf.actionMethods||conf.requestMethod||'GET';

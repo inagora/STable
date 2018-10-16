@@ -140,6 +140,9 @@
 				}, false);
 				xhr.addEventListener("abort", function(){}, false);
 				xhr.open('POST', upConf.url);
+				if(window._csrf_key){
+					xhr.setRequestHeader(window._csrf_key, window._csrf_token||'');
+				}
 				xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 				xhr.send(formData);
 				upInfo.xhr = xhr;

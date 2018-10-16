@@ -20,7 +20,7 @@
 						<div v-else-if="col.type=='text'" class="st-table-cell" :class="{'st-table-cell-nowrap':!col.cellWrap}" v-text="record[col.dataIndex]||' '"></div>
 						<div v-else-if="col.type=='render'" class="st-table-cell" :class="{'st-table-cell-nowrap':!col.cellWrap}" v-html="record['_'+col.dataIndex+'_render_val']"></div>
 						<div v-else-if="col.type=='image'">
-							<img :src="record[col.dataIndex]" :style="col.imgStyle" />
+							<img v-if="record[col.dataIndex]" :src="record[col.dataIndex]" :style="col.imgStyle" />
 						</div>
 						<div v-else-if="col.type=='button'" class="st-table-btn-box">
 							<el-button

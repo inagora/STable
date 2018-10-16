@@ -1,16 +1,14 @@
 {
-  "private": true,
-  "name": "stable",
-  "version": "4.1.0",
+  "name": "STable",
+  "version": "5.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node web/app.js",
     "dev": "node dev-server.js",
-    "build": "webpack --mode=production --display=minimal; node postBuild.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode=production --display=minimal; node postBuild.js"
   },
-  "author": "",
+  "author": "poker",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.1.2",

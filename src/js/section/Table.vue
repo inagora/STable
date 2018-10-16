@@ -143,6 +143,14 @@
 				self.left = left;
 			}
 			bodyBox.addEventListener('scroll', syncScroll, false);
+			lockedBodyBox.addEventListener('mousewheel', function(e){
+				bodyBox.scrollTop += e.deltaY;
+				if(e.deltaX != 0) {
+					e.stopPropagation();
+					e.preventDefault();
+					bodyBox.scrollLeft += e.deltaX;
+				}
+			}, false);
 			this.formatColumns();
 			//this.load();
 
