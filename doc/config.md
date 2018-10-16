@@ -65,6 +65,12 @@ STable的使用，大部分时间都是在和各种配置参数打交道。
 * 参考：
 	* [download](/demo/download)
 
+#### downloadTimeout {#download-timeout}
+* 类型：Number
+* 默认值：10000
+* 详细：
+毫秒数。全量下载所有数据时，会分页面请求数据，可以用此参数指定每个页面请求的超时时间。如果超时，会中断请求，重新发起一个。有些请求耗时很长时，请指定一个比较大的时间。
+
 #### editConfig {#edit-config}
 * 类型：Array
 * 详细：

@@ -107,6 +107,7 @@
 
 				if(field.type=='combobox'||field.type=="multiple") {
 					if(field.asyncList) {
+						field._list = [];
 						this.getAsyncList(field, this.actionMethods).then(()=>{
 							this.initSearch(field, idx);
 						});
@@ -128,12 +129,15 @@
 				}
 				field.list.forEach(item=>{
 					let text = item.text.toLocaleLowerCase();
-					item._s = text
-						+ '_' + joinText(py(text, {style:py.STYLE_NORMAL}))
-						+ '_' + joinText(py(text, {style:py.STYLE_INITIALS}))
-						+ '_' + joinText(py(text, {style:py.STYLE_FIRST_LETTER}));
+					item._s = [
+						text,
+						joinText(py(text, {style:py.STYLE_FIRST_LETTER})),
+						joinText(py(text, {style:py.STYLE_INITIALS})),
+						joinText(py(text, {style:py.STYLE_NORMAL}))
+					];
 				});
 				field._list = field.list;
+
 				field.filter = (q)=>{
 					this.filter(q, idx);
 				};
@@ -141,8 +145,25 @@
 			filter(q, idx){
 				q = q.toLocaleLowerCase();
 				let field = this.fields[idx];
-				let list = field.list.filter(item=>{
-					return item._s.includes(q);
+				let matchedIndexes = [
+					[],[],[],[]
+				];
+				field.list.forEach((item, index)=>{
+					for(let i=0;i<4;i++) {
+						if(item._s[i].includes(q)) {
+							matchedIndexes[i].push(index);
+						}
+					}
+				});
+				let indexes = new Set();
+				for(let ml of matchedIndexes) {
+					for(let i of ml){
+						indexes.add(i);
+					}
+				}
+				let list = [];
+				indexes.forEach(i=>{
+					list.push(field.list[i]);
 				});
 				field._list = list;
 			},
