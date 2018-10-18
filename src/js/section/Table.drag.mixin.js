@@ -115,7 +115,8 @@ export default {
 				columns.forEach((col, idx)=>{
 					col._st_idx = idx;
 				});
-				
+
+				this.store.saveColumnsState();
 			}
 			
 			this.insertIndicator = false;

@@ -158,7 +158,7 @@
 		z-index: 99;
 	}
 	.dialog-doc{
-		z-index: 100;
+		z-index: 99;
 		position: fixed;
 		left: 50%;
 		top: 50%;
@@ -211,7 +211,7 @@
 		text-align: right;
 	}
 	.dialog-foot>button{
-		margin-left: 20px;
+		margin-left: 10px;
 	}
 
 	.dialog-dragging .dialog-body,

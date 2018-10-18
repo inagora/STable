@@ -10,6 +10,7 @@
 
 	export default {
 		inject: {
+			_key: '_key',
 			chart: {
 				default: false
 			},
@@ -26,6 +27,7 @@
 				let stable = this;
 				Dialog.create({
 					title: '列配置',
+					width: 500,
 					autoShow: true,
 					bodyCls: 'abc',
 					bodyStyle: {padding: 0},
@@ -34,20 +36,21 @@
 							hideTitle: true,
 							columns: [{
 								text: '列名',
-								dataIndex: 'text'
+								dataIndex: 'text',
+								cellWrap: true
 							},{
-								width: 100,
+								width: 60,
 								text: '锁定',
 								dataIndex: 'locked',
 								render(record, col, idx) {
-									return `<input type="checkbox" data-locked value="${idx}" ${record.locked?'checked':''} />`;
+									return `<label class="st-title-cog-label"><input type="checkbox" data-locked value="${idx}" ${record.locked?'checked':''} /></label>`;
 								}
 							},{
-								width: 100,
+								width: 60,
 								text: '显示',
 								dataIndex: 'visible',
 								render(record, col, idx) {
-									return `<input type="checkbox" data-visible value="${idx}" ${record.visible?'checked':''} />`;
+									return `<label class="st-title-cog-label"><input type="checkbox" data-visible value="${idx}" ${record.visible?'checked':''} /></label>`;
 								}
 							}],
 							records: this.store.columns.map(col=>{
@@ -71,6 +74,16 @@
 							});
 							this.close();
 							stable.store.columns = Array.from(columns);
+							
+							stable.store.saveColumnsState();
+						}
+					},{
+						text: '清除列设置',
+						type: 'danger',
+						click(){
+							if(confirm('您确定清除当前列设置，还原为默认状态？')) {
+								stable.store.resetColumnsState();
+							}
 						}
 					}, {
 						text: '取消',
@@ -103,5 +116,8 @@
 	.st-title-tool{
 		margin-right: 10px;
 		cursor: pointer;
+	}
+	.st-title-cog-label{
+		display: block;
 	}
 </style>

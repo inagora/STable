@@ -17,6 +17,7 @@
 	import XTable from 'js/section/Table.vue';
 	import XPagination from 'js/section/Pagination.vue';
 	import XChart from 'js/section/Chart.vue';
+	import {hashCode} from "./util.js";
 	let stableCount = 0;
 	export default {
 		props: ['config'],
@@ -69,6 +70,9 @@
 							}
 						}
 					});
+					if(item.type=='button' && typeof item.width=='undefined') {
+						item.width = item.buttons.length*100;
+					}
 				}
 				if (!item.dataIndex) {
 					item.dataIndex = "stable_column_"+idx;
@@ -103,12 +107,14 @@
 				item = Object.assign({
 					visible: true,
 					locked: false,
-					_st_idx: idx
+					_st_idx: idx,
+					_st_ori_idx: idx
 				},item);
 				if(!item.text)
 					item.text = '-';
 				if(item.fx)
 					item.fx = item.fx.toLowerCase();
+				
 				return item;
 			});
 
@@ -156,6 +162,35 @@
 			if(!conf.sortDirection)
 				conf.sortDirection = 'asc';
 
+			conf._key = hashCode(JSON.stringify(columns));
+
+			let localColumnSet;
+			try{
+				localColumnSet = window.localStorage.getItem(conf._key);
+				if(localColumnSet)
+					localColumnSet = JSON.parse(localColumnSet);
+			}catch(e){
+				localColumnSet = '';
+				alert('本地存储的列信息有问题');
+			}
+			if(localColumnSet) {
+				let _columns = [];
+				for(let col of localColumnSet) {
+					for(let colConf of columns){
+						if(colConf._st_ori_idx == col._st_ori_idx){
+							Object.assign(colConf, {
+								locked: col.locked,
+								visible: col.visible,
+								_st_idx: col._st_idx
+							});
+							_columns.push(colConf);
+							break;
+						}
+					}
+				}
+				columns = _columns;
+			}
+
 			conf.store = new Vue({
 				data: {
 					columns,
@@ -168,6 +203,35 @@
 					checkboxVal: [],
 					sortKey: conf.sortKey||'',
 					sortDirection: conf.sortDirection
+				},
+				methods: {
+					saveColumnsState(){
+						let colState = this.columns.map(col=>{
+							return {
+								text: col.text,
+								visible: col.visible,
+								locked: col.locked,
+								_st_idx: col._st_idx,
+								_st_ori_idx: col._st_ori_idx
+							};
+						});
+
+						try{
+							window.localStorage.setItem(conf._key, JSON.stringify(colState));
+						}catch(e){
+							console.log(e);
+							//
+						}
+					},
+					resetColumnsState(){
+						try{
+							window.localStorage.removeItem(conf._key);
+							location.reload();
+						}catch(e){
+							console.log(e);
+							//
+						}
+					}
 				}
 			});
 			conf.store.searchParams = {};

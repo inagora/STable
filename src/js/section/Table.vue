@@ -64,6 +64,7 @@
 	export default {
 		mixins: [Drag, Store],
 		inject: {
+			_key: '_key',
 			url: {
 				default: ''
 			},

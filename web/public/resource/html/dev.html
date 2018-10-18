@@ -60,6 +60,7 @@
 	<script>
 const type = ["剧情", "喜剧", "短片", "爱情", "纪录片", "动作", "惊悚", "恐怖", "动画", "犯罪", "冒险", "家庭", "悬疑", "奇幻", "科幻", "战争", "传记", "音乐", "历史", "歌舞", "西部", "运动", "古装", "武侠", "戏曲", "黑色电影", "儿童", "新闻", "真人秀", "舞台艺术", "成人", "脱口秀", "游戏秀", "情色", "文艺", "同性", "女性", "青春", "励志", "微电影", "灾难"];
 STable.init({
+	id: 'demo',
 	title: '一个标准的Demo',
 	tip: '<div style="color:red">🍭Demo中所有数据来时光网，如有侵权，会立即删除</div>',
 	url: '/ajaxList',
@@ -174,6 +175,18 @@ STable.init({
 			render(record){
 				return record.titleOthersCn.join(' | ');
 			}
+		},{
+			header: '操作',
+			buttons: [
+				{
+					text: '显示',
+					click(){}
+				},{
+					text: '隐藏',
+					icon: 'plus',
+					click(){}
+				}
+			]
 		}
 	],
 	selectMode: 'multiple',
