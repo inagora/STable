@@ -1,81 +1,100 @@
 <template>
 	<el-form v-bind="$attrs" :inline="inline" @submit.native.prevent="submit" :model="formData">
-		<el-form-item v-for="field in fields" :key="field.name" :label="field.label">
-			<el-input
-				v-if="field.type=='text'"
+		<template v-for="field in fields">
+			<input
+				v-if="field.type=='hidden'"
+				type="hidden"
+				:key="field.name"
 				v-model="formData[field.name]"
-				type="text"
-				:style="{width:field.width+'px'}"
-				:pattern="field.pattern"
-				:readonly="field.readonly"
-				:required="field.required"
-				:placeholder="field.placeholder"
-				:title="field.title"
-				:name="field.name"></el-input>
-			<el-input
-				v-else-if="field.type=='textarea'"
-				v-model="formData[field.name]"
-				type="textarea"
-				:style="{width:field.width+'px'}"
-				:pattern="field.pattern"
-				:readonly="field.readonly"
-				:required="field.required"
-				:placeholder="field.placeholder"
-				:title="field.title"
-				:name="field.name"></el-input>
-			<el-date-picker
-				v-else-if="field.type=='date'||field.type=='datetime'"
-				v-model="formData[field.name]"
-				:type="field.type"
-				:style="{width:field.width+'px'}"
-				:value-format="field.type=='date'?'yyyy-MM-dd':'yyyy-MM-dd HH:mm:ss'"
-				:readonly="field.readonly"
-				:required="field.required"
-				:placeholder="field.placeholder"
-				:title="field.title"
-				:name="field.name"></el-date-picker>
-			<el-time-picker
-				v-else-if="field.type=='time'"
-				v-model="formData[field.name]"
-				value-format="HH:mm:ss"
-				:style="{width:field.width+'px'}"
-				:readonly="field.readonly"
-				:required="field.required"
-				:placeholder="field.placeholder"
-				:title="field.title"
-				:name="field.name"></el-time-picker>
-			<el-select
-				v-else-if="field.type=='combobox'||field.type=='multiple'"
-				v-model="formData[field.name]"
-				filterable
-				clearable
-				:default-first-option="true"
-				:filter-method="field.filter"
-				:style="{width:field.width+'px'}"
-				:multiple="field.type=='multiple'"
-				:readonly="field.readonly"
-				:required="field.required"
-				:placeholder="field.placeholder"
-				:title="field.title"
-				:name="field.name">
-				<el-option
-					v-for="item in field._list"
-					:key="item.value"
-					:label="item.text"
-					:value="item.value">
-				</el-option>
-			</el-select>
-			<x-file
-				v-else-if="field.type=='file'"
-				:val.sync="formData[field.name]"
-				:field-conf="field"
-				:loading.sync="field.loading"
-				:required="field.required"
-				:placeholder="field.placeholder"
-				:title="field.title"
-				:name="field.name">
-			</x-file>
-		</el-form-item>
+				:name="field.name" />
+			<el-form-item v-else :key="field.name" :label="field.label">
+				<el-input
+					v-if="field.type=='text'"
+					v-model="formData[field.name]"
+					type="text"
+					:style="{width:field.width+'px'}"
+					:pattern="field.pattern"
+					:readonly="field.readonly"
+					:required="field.required"
+					:placeholder="field.placeholder"
+					:title="field.title"
+					:name="field.name"></el-input>
+				<el-input
+					v-else-if="field.type=='textarea'"
+					v-model="formData[field.name]"
+					type="textarea"
+					:style="{width:field.width+'px'}"
+					:pattern="field.pattern"
+					:readonly="field.readonly"
+					:required="field.required"
+					:placeholder="field.placeholder"
+					:title="field.title"
+					:name="field.name"></el-input>
+				<el-date-picker
+					v-else-if="field.type=='date'||field.type=='datetime'"
+					v-model="formData[field.name]"
+					:type="field.type"
+					:style="{width:field.width+'px'}"
+					:value-format="field.type=='date'?'yyyy-MM-dd':'yyyy-MM-dd HH:mm:ss'"
+					:readonly="field.readonly"
+					:required="field.required"
+					:placeholder="field.placeholder"
+					:title="field.title"
+					:name="field.name"></el-date-picker>
+				<el-time-picker
+					v-else-if="field.type=='time'"
+					v-model="formData[field.name]"
+					value-format="HH:mm:ss"
+					:style="{width:field.width+'px'}"
+					:readonly="field.readonly"
+					:required="field.required"
+					:placeholder="field.placeholder"
+					:title="field.title"
+					:name="field.name"></el-time-picker>
+				<el-select
+					v-else-if="field.type=='combobox'||field.type=='multiple'"
+					v-model="formData[field.name]"
+					filterable
+					clearable
+					:default-first-option="true"
+					:filter-method="field.filter"
+					:style="{width:field.width+'px'}"
+					:multiple="field.type=='multiple'"
+					:readonly="field.readonly"
+					:required="field.required"
+					:placeholder="field.placeholder"
+					:title="field.title"
+					:name="field.name">
+					<el-option
+						v-for="item in field._list"
+						:key="item.value"
+						:label="item.text"
+						:value="item.value">
+					</el-option>
+				</el-select>
+				<x-file
+					v-else-if="field.type=='file'"
+					:val.sync="formData[field.name]"
+					:field-conf="field"
+					:loading.sync="field.loading"
+					:required="field.required"
+					:placeholder="field.placeholder"
+					:title="field.title"
+					:name="field.name">
+				</x-file>
+				<el-row v-else-if="field.type=='button'">
+					<el-button
+						v-for="(btn,idx) in field.buttons"
+						:key="idx"
+						:icon="btn.icon"
+						:type="btn.type"
+						:form="btn.form"
+						:native-type="btn.nativeType"
+						@click="btnClick(btn, $event)"
+						size="small">{{btn.text}}</el-button>
+				</el-row>
+			</el-form-item>
+		</template>
 		<slot></slot>
 	</el-form>
 </template>
@@ -228,8 +247,13 @@
 							field.list = [];
 					}
 			
-					if(!field.type)
-						field.type = 'text';
+					if(!field.type){
+						if(field.buttons){
+							field.type = 'button';
+						} else {
+							field.type = 'text';
+						}
+					}
 					if(field.type=='number') {
 						if(!field.pattern)
 							field.pattern = '-?[\\d\\.]+';
@@ -300,6 +324,10 @@
 			},
 			getFormData(){
 				return this.formData;
+			},
+			btnClick(btn, evt){
+				if(btn.click)
+					btn.click.call(this, btn, evt);
 			}
 		}
 	}

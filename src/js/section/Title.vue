@@ -29,7 +29,6 @@
 					title: '列配置',
 					width: 500,
 					autoShow: true,
-					bodyCls: 'abc',
 					bodyStyle: {padding: 0},
 					data: {
 						stableConfig: {

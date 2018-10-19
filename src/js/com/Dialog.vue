@@ -88,7 +88,7 @@
 				document.documentElement.removeEventListener('mousemove', drag, false);
 				document.documentElement.removeEventListener('mouseup', stopDrag, false);
 			}
-			this.$el.querySelector('.dialog-head').addEventListener('mousedown', function(evt){
+			this.$el.querySelector('.dialog-title').addEventListener('mousedown', function(evt){
 				evt.preventDefault();
 				startX = evt.clientX-parseInt(doc.style.marginLeft||0, 10);
 				startY = evt.clientY-parseInt(doc.style.marginTop||0, 10);
@@ -179,7 +179,6 @@
 		align-items: center;
 		height: 36px;
 		font-size: 16px;
-		cursor: move;
 		-webkit-user-select: none;
 		user-select: none;
 	}
@@ -189,6 +188,11 @@
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+		align-self: stretch;
+		line-height: 36px;
+		cursor: move;
+		font-size: 12px;
+		opacity: 0.8;
 	}
 	.dialog-close{
 		margin: 0 10px;
