@@ -31,20 +31,21 @@
 					:title="field.title"
 					:name="field.name"></el-input>
 				<el-date-picker
-					v-else-if="['year', 'month', 'date', 'datetime'].includes(field.type)"
+					v-else-if="dateTypes.includes(field.type)"
 					v-model="formData[field.name]"
 					:type="field.type"
 					:style="{width:field.width+'px'}"
-					:value-format="field.type=='date'?'yyyy-MM-dd':'yyyy-MM-dd HH:mm:ss'"
+					:value-format="field.format||dateFormat[field.type]"
 					:readonly="field.readonly"
 					:required="field.required"
 					:placeholder="field.placeholder"
 					:title="field.title"
 					:name="field.name"></el-date-picker>
 				<el-time-picker
-					v-else-if="field.type=='time'"
+					v-else-if="timeTypes.includes(field.type)"
 					v-model="formData[field.name]"
-					value-format="HH:mm:ss"
+					:value-format="field.format||timeFormat[field.type]"
+					:format="field.format||timeFormat[field.type]"
 					:style="{width:field.width+'px'}"
 					:readonly="field.readonly"
 					:required="field.required"
@@ -138,7 +139,20 @@
 		
 			return {
 				fields,
-				formData
+				formData,
+				dateTypes: ['year', 'month', 'date', 'datetime'],
+				dateFormat: {
+					year: 'yyyy',
+					month: 'yyyy-MM',
+					date: 'yyyy-MM-dd',
+					datetime: 'yyyy-MM-dd HH:mm:ss'
+				},
+				timeTypes: ['time', 'minute', 'hour'],
+				timeFormat: {
+					time: 'HH:mm:ss',
+					minute: 'HH:mm',
+					hour: 'HH'
+				}
 			}
 		},
 		methods: {

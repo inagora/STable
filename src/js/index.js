@@ -15,7 +15,7 @@ window.SidePanel = SidePanel;
 window.Dialog = Dialog;
 window.Progressbar = Progressbar;
 
-export var version = '5.0.0-beta1';
+export var version = '1.0.2';
 export function init(config){
 	let el = config.el || config.container || '#wdStableContainer';
 	if(typeof el == 'string') {

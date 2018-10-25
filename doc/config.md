@@ -386,13 +386,21 @@ input输入验证失败时，比如正则验证失败、required为true但内容
 指定表单项的类型，现支持以下几种类型：
 	* text，显示为一个普通的文本输入框
 	* date，显示一个日期选择器
+	* year，显示一个年份选择器
+	* month，显示一个月选择器
 	* time，显示一个时间选择器
+	* minute，显示一个小时和分钟选择器
 	* datetime，显示一个日期+时间的选择器
 	* number，显示为一个数字输入框
 	* select，显示为一个普通的下拉选择
 	* combobox，显示为一个带搜索过滤功能的下拉选择
 	* multiple，显示为一个带搜索功滤、并且支持多选的下拉
 	* file，显示为一个文件上传组件
+
+#### format {#format}
+* 类型：String
+* 详细：
+对于日期和时间选择器，它们都有自己的格式。如果你对它默认的格式不满意，可以用format自己设置。格式请参考[element-ui日期格式](http://element.eleme.io/#/zh-CN/component/date-picker#ri-qi-ge-shi)
 
 #### value {#value}
 * 类型：string|Number|Date
