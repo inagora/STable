@@ -1,5 +1,5 @@
 <template>
-	<div v-if="searchFilter" class="st-search">
+	<div v-if="searchFilter" class="st-search" :class="{'st-search-label-invisible':!labelVisible}">
 		<x-form ref="form" :inline="true" size="small" :field-list="searchFilter" :default-values="params" :action-methods="actionMethods" @submit="search">
 			<el-form-item>
 				<el-button type="primary" icon="fa fa-search" native-type="submit">查询</el-button>
@@ -15,6 +15,7 @@
 			searchFilter: {
 				default: false
 			},
+			labelVisible: 'labelVisible',
 			listeners: 'listeners',
 			actionMethods: 'actionMethods',
 			params: 'params',
@@ -74,6 +75,9 @@
 	border-bottom: 1px solid #d0d0d0;
 	padding: 6px 0 0 8px;
 }
+.st-search-label-invisible .el-form-item__label{
+	display: none;
+}
 .st-search .el-form-item--small.el-form-item{
 	margin-bottom: 6px;
 }
@@ -82,5 +86,12 @@
 }
 .st-search .el-input el-input--small{
 	width: 120px;
+}
+
+.st-search .el-input__inner{
+	color: #333;
+}
+.st-search .el-select__tags-text{
+	color: #444;
 }
 </style>

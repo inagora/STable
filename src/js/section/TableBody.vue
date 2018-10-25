@@ -23,13 +23,15 @@
 							<img v-if="record[col.dataIndex]" :src="record[col.dataIndex]" :style="col.imgStyle" />
 						</div>
 						<div v-else-if="col.type=='button'" class="st-table-btn-box">
-							<el-button
-								v-for="(btn,idx) in col.buttons"
-								:key="idx"
-								:icon="btn.icon"
-								:type="btn.type||'primary'"
-								@click="btnClick(btn, record, $event)"
-								size="mini">{{btn.text}}</el-button>
+							<template v-for="(btn,idx) in col.buttons">
+								<el-button
+									v-if="record['_'+col.dataIndex+'_btns'][idx]"
+									:key="idx"
+									:icon="btn.icon"
+									:type="btn.type||'primary'"
+									@click="btnClick(btn, record, $event)"
+									size="mini">{{btn.text}}</el-button>
+							</template>
 						</div>
 						<div v-else-if="col.type=='tag'">
 							<el-tag v-for="tag in record[col.dataIndex]" :key="tag[0]" :type="tag[1]">{{tag[0]}}</el-tag>

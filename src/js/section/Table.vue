@@ -216,8 +216,13 @@
 						buttons: this.getOpBtns()
 					};
 					
-					btns.width = 100*btns.buttons.length;
 					columns.push(btns);
+				}
+
+				for(let col of columns) {
+					if(col.type=='button' && typeof col.width=='undefined'){
+						col.width = 100*col.buttons.length;
+					}
 				}
 				columns.push({
 					type: 'pad',

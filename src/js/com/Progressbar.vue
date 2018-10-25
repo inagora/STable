@@ -13,7 +13,9 @@ export default {
 	props: ['visible', 'val', 'text', 'type'],
 	data(){
 		return {
-			pbWidth: {}
+			pbWidth: {
+				width: 0
+			}
 		}
 	},
 	watch: {

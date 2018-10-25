@@ -3,6 +3,7 @@ import XForm from 'js/section/Form.vue';
 import XDialog from 'js/com/Dialog.vue';
 import Dialog from 'js/com/Dialog';
 import SidePanel from 'js/com/SidePanel';
+import Progressbar from 'js/com/Progressbar';
 
 //注册全局组件
 Vue.component('x-dialog', XDialog);
@@ -12,6 +13,7 @@ Vue.component('x-form', XForm);
 //添加全局变量
 window.SidePanel = SidePanel;
 window.Dialog = Dialog;
+window.Progressbar = Progressbar;
 
 export var version = '5.0.0-beta1';
 export function init(config){

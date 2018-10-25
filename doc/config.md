@@ -226,7 +226,7 @@ postData: {
 
 #### cellWrap {#cell-wrap}
 * 类型：Boolean
-* 默认：false
+* 默认：true
 * 详情
 如果cell中内容超出了cell的宽度，如何处理。为true，自动换行；为false，自动隐藏
 
@@ -446,3 +446,11 @@ input输入验证失败时，比如正则验证失败、required为true但内容
 * 默认值：'default'
 * 详细：
 对应bootstrap中对按钮类型的设定，它有 default / primary / success / warning / danger / info / text	。不同类型对应按钮的颜色不一样。
+
+#### visible
+* 类型：Boolean|<String,String>|Function
+* 默认值：true
+* 详细：
+是否显示此按钮。仅对行中显示button有效。
+	* 当visible为数组时，数组第一项为dataIndex，第二项为对比值，当某行中，dataIndex对应的数据和对比值一样时，才会显示此按钮。
+	* 当visible为函数时，函数的返回值为true时，显示此按钮；否则不显示

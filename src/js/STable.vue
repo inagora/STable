@@ -35,7 +35,8 @@
 					count: 20
 				},
 				parallelCount: 6,
-				downloadTimeout: 10000
+				downloadTimeout: 10000,
+				labelVisible: true
 			}, this.config);
 
 			let methods = conf.actionMethods||conf.requestMethod||'GET';
@@ -107,6 +108,7 @@
 				item = Object.assign({
 					visible: true,
 					locked: false,
+					cellWrap: true,
 					_st_idx: idx,
 					_st_ori_idx: idx
 				},item);
@@ -237,17 +239,17 @@
 			conf.store.searchParams = {};
 			conf.store.$on('cellclick', evt=>{
 				if(conf.listeners.cellclick){
-					conf.listeners.cellclick.call(this.$root, evt.record, evt.col, evt.evt);
+					conf.listeners.cellclick.call(this, evt.record, evt.col, evt.evt);
 				}
 			});
 			conf.store.$on('rowclick', evt=>{
 				if(conf.listeners.rowclick) {
-					conf.listeners.rowclick.call(this.$root, evt.record, evt.evt);
+					conf.listeners.rowclick.call(this, evt.record, evt.evt);
 				}
 			});
 			conf.store.$on('refresh', records=>{
 				if(conf.listeners.refresh) {
-					conf.listeners.refresh.call(this.$root, records);
+					conf.listeners.refresh.call(this, records);
 				}
 			});
 			delete conf.columns;

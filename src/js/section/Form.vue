@@ -31,7 +31,7 @@
 					:title="field.title"
 					:name="field.name"></el-input>
 				<el-date-picker
-					v-else-if="field.type=='date'||field.type=='datetime'"
+					v-else-if="['year', 'month', 'date', 'datetime'].includes(field.type)"
 					v-model="formData[field.name]"
 					:type="field.type"
 					:style="{width:field.width+'px'}"

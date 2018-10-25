@@ -174,6 +174,8 @@ export default {
 				} else {
 					this.load();
 				}
+			} else {
+				this.load();
 			}
 		},
 		setRecords(records) {
@@ -182,6 +184,19 @@ export default {
 				this.columns.forEach(col=>{
 					if(col.type=='render' && col.render) {
 						record['_'+col.dataIndex+'_render_val'] = col.render(record, col, idx);
+					} else if (col.type=='button') {
+						record['_'+col.dataIndex+'_btns'] = [];
+						(col.buttons||[]).forEach(btn=>{
+							let visible = true;
+							if(btn.visible) {
+								if(Array.isArray(btn.visible)) {
+									visible = record[btn.visible[0]]==btn.visible[1];
+								} else if(typeof btn.visible=='function') {
+									visible = btn.visible(record);
+								}
+							}
+							record['_'+col.dataIndex+'_btns'].push(visible);
+						}); 
 					}
 				});
 			});
