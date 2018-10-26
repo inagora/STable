@@ -1,0 +1,1 @@
+window.pinyin = require("../../node_modules/pinyin/lib/web-pinyin.js");

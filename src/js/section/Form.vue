@@ -102,7 +102,7 @@
 <script>
 	import {ajax} from '../ajax';
 	import XFile from './File.vue';
-	const py = require('../pinyin/web-pinyin');
+	import {loadJs} from '../util';
 	export default {
 		props: {
 			fieldList:Array,
@@ -160,20 +160,23 @@
 				function joinText(arr){
 					return arr.map(item=>item[0]).join('');
 				}
-				field.list.forEach(item=>{
-					let text = item.text.toLocaleLowerCase();
-					item._s = [
-						text,
-						joinText(py(text, {style:py.STYLE_FIRST_LETTER})),
-						joinText(py(text, {style:py.STYLE_INITIALS})),
-						joinText(py(text, {style:py.STYLE_NORMAL}))
-					];
-				});
-				field._list = field.list;
+				loadJs('//cdn.jsdelivr.net/gh/inagora/STable/dist/pinyin.min.js').then(()=>{
+					let py = window.pinyin;
+					field.list.forEach(item=>{
+						let text = item.text.toLocaleLowerCase();
+						item._s = [
+							text,
+							joinText(py(text, {style:py.STYLE_FIRST_LETTER})),
+							joinText(py(text, {style:py.STYLE_INITIALS})),
+							joinText(py(text, {style:py.STYLE_NORMAL}))
+						];
+					});
+					field._list = field.list;
 
-				field.filter = (q)=>{
-					this.filter(q, idx);
-				};
+					field.filter = (q)=>{
+						this.filter(q, idx);
+					};
+				});
 			},
 			filter(q, idx){
 				q = q.toLocaleLowerCase();

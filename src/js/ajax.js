@@ -217,6 +217,8 @@ function ajax(options) {
 
 		if(window._csrf_key){
 			setHeader(window._csrf_key, window._csrf_token||'');
+		} else if(window._token) {
+			setHeader('X-CSRF-TOKEN', window._token);
 		}
 		for (let name in headers)
 			nativeSetHeader.apply(xhr, headers[name]);

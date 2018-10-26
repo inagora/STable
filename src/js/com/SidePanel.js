@@ -7,14 +7,14 @@ let app = new Vue({
 		isPage: false
 	},
 	components: {SidePanel},
-	template: `
-		<side-panel
-			:visible="visible"
-			:title="title"
-			:html="html"
-			:is-page="isPage"
-			@close="visible=false">
-		</side-panel>`,
+	template: 
+		'<side-panel'
+			+ ' :visible="visible"'
+			+ ' :title="title"'
+			+ ' :html="html"'
+			+ ' :is-page="isPage"'
+			+ ' @close="visible=false">'
+		+ '</side-panel>',
 	methods: {
 		init(){
 			if(this.inited) return;
