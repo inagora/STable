@@ -90,7 +90,7 @@ let Dialog={
 		});
 		config.template = `<x-dialog ref="dialog">${dialogConfig.html||''}</x-dialog>`;
 		let dia = new Vue(config).$mount(el);
-		if(window.$ && (window.$==window.jQuery||window.$==window.zepto))
+		if(window.$ && (window.$==window.jQuery||window.$==window.Zepto))
 			dia.element = window.$(dia.$el);
 		return dia;
 	}
