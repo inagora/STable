@@ -3,11 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<title>STable Demo</title>
-	<!--
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-ui@2.4.8/lib/theme-chalk/index.css">
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-	-->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/inagora/STable@v1.0-rc1/dist/STable.full.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/codemirror@5.41.0/lib/codemirror.css,npm/codemirror@5.41.0/theme/monokai.css">
+	<link rel="stylesheet" href="/resource/module/STable/STable.full.min.css">
 	<link rel="stylesheet" href="/resource/css/demo.css">
 </head>
 <body>
@@ -20,9 +17,7 @@
 		</div>
 		<div class="main-panel">
 			<div class="playground" :class="['layout-'+conf.layout.split(':').join('-')]">
-				<div id="app">
-					<iframe data-src="/resource/html/playground.html"></iframe>
-				</div>
+				<div id="wdStableContainer"></div>
 				<div id="editorBox">
 					<div class="editor-toolbar">
 						<label>
@@ -39,9 +34,12 @@
 						<label class="toolbar-btn" @click="clearAll">🚽 清除所有demo修改</label>
 					</div>
 					<div id="editor">
-						<iframe v-show="activeEditor=='js'" id="jsEditor" src="/resource/html/editor.html#type=js"></iframe>
-						<iframe v-show="activeEditor=='css'" id="cssEditor" src="/resource/html/editor.html#type=css"></iframe>
-						<iframe v-show="activeEditor=='html'" id="htmlEditor" src="/resource/html/editor.html#type=html"></iframe>
+						<div class="editor-holder" v-show="activeEditor=='js'" id="jsEditor">
+						</div>
+						<div class="editor-holder" v-show="activeEditor=='css'" id="cssEditor">
+						</div>
+						<div class="editor-holder" v-show="activeEditor=='html'" id="htmlEditor">
+						</div>
 					</div>
 				</div>
 			</div>
@@ -61,12 +59,8 @@
 		['SidePanel', 'SidePanel', 1],
 	];
 	</script>
-	<!--
-	<script src="//cdn.jsdelivr.net/npm/zepto@1.2.0/dist/zepto.min.js"></script>
-	<script src="//cdn.jsdelivr.net/combine/npm/vue@2.5.17/dist/vue.min.js,npm/element-ui@2.4.8/lib/index.js"></script>
-	<script src="/resource/module/STable/STable.min.js"></script>
-	-->
-	<script src="https://cdn.jsdelivr.net/gh/inagora/STable@v1.0-rc1/dist/STable.full.min.js"></script>
-	<script src="/resource/js/demo.js"></script>
+	<script src="https://cdn.jsdelivr.net/combine/npm/codemirror@5.41.0/lib/codemirror.js,npm/codemirror@5.41.0/mode/javascript/javascript.js,npm/codemirror@5.41.0/mode/css/css.js,npm/codemirror@5.41.0/mode/xml/xml.js"></script>
+	<script src="/resource/module/STable/STable.full.min.js"></script>
+	<script src="/resource/js/demo2.js"></script>
 </body>
 </html>

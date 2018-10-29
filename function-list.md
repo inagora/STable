@@ -48,5 +48,3 @@
 	* Dialog	✅
 	* toast	✅
 	* SidePanel	✅
-
-	URLSearchParams	49	10.1

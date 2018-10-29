@@ -16,7 +16,7 @@ window.addEventListener('message',evt=>{
 			
 		let script = document.createElement('script');
 		script.type = 'text/javascript';
-		script.text = evt.data.js;
+		script.text = '(function(){'+evt.data.js+'})()';
 		document.body.appendChild(script);
 	}
 }, false);

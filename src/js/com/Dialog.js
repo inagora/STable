@@ -89,7 +89,9 @@ let Dialog={
 			}
 		});
 		config.template = `<x-dialog ref="dialog">${dialogConfig.html||''}</x-dialog>`;
-		return new Vue(config).$mount(el);
+		let dia = new Vue(config).$mount(el);
+		dia.element = dia.$el;
+		return dia;
 	}
 };
 

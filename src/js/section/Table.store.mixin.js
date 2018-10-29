@@ -289,6 +289,13 @@ export default {
 								alert('页面 '+i+' 数据有问题');
 							ret = ret.concat(list[i]);
 						}
+						ret.forEach((record, idx)=>{
+							this.columns.forEach(col=>{
+								if(col.type=='render' && col.render) {
+									record['_'+col.dataIndex+'_render_val'] = col.render(record, col, idx);
+								}
+							});
+						});
 						resolve(ret);
 						return;
 					}
@@ -320,11 +327,25 @@ export default {
 							reject(res);
 						} else {
 							if(!res.data.list || res.data.list.length<=0) {
+								list.forEach((record, idx)=>{
+									this.columns.forEach(col=>{
+										if(col.type=='render' && col.render) {
+											record['_'+col.dataIndex+'_render_val'] = col.render(record, col, idx);
+										}
+									});
+								});
 								resolve(list);
 								progressbar.destroy();
 							} else {
 								list = list.concat(res.data.list);
 								if(res.data.list.length < params.count) {
+									list.forEach((record, idx)=>{
+										this.columns.forEach(col=>{
+											if(col.type=='render' && col.render) {
+												record['_'+col.dataIndex+'_render_val'] = col.render(record, col, idx);
+											}
+										});
+									});
 									resolve(list);
 									progressbar.destroy();
 								} else {
@@ -335,8 +356,8 @@ export default {
 								}
 							}
 						}
-					}, rej=>{
-						console.log(rej[1], rej[2]);
+					}, ()=>{
+						//console.log(rej[1], rej[2]);
 						setTimeout(()=>{
 							startJob(id);
 						}, 500);
