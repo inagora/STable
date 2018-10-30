@@ -21,7 +21,7 @@ module.exports = function(options, args) {
 			{
 				'STable': './src/js/STable.js',
 				'STable.full': './src/js/STable.full.js',
-				'pinyin': './src/js/pinyin.js'
+				//'pinyin': './src/js/pinyin.js'
 			}
 			:
 			['./src/js/index.js'],
