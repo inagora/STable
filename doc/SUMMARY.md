@@ -5,6 +5,7 @@
 	* [关于STable](README.md)
 	* [请求与返回的数据格式](request.md)
 	* [列设置](column_set.md)
+	* [开发与编译](compile.md)
 	* [examples](http://localhost:3000/demo)
 * 组件
 	* [Dialog窗口](dialog.md)
