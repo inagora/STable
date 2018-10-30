@@ -126,8 +126,8 @@
 				formData[field.name] = typeof this.defaultValues[field.name]=='undefined' ? field.value : this.defaultValues[field.name];
 
 				if(field.type=='combobox'||field.type=="multiple") {
+					field._list = [];
 					if(field.asyncList) {
-						field._list = [];
 						this.getAsyncList(field, this.actionMethods).then(()=>{
 							this.initSearch(field, idx);
 						});
