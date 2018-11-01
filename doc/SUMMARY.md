@@ -6,7 +6,7 @@
 	* [请求与返回的数据格式](request.md)
 	* [列设置](column_set.md)
 	* [开发与编译](compile.md)
-	* [examples](http://localhost:3000/demo)
+	* [examples](https://doc.wfxteam.com/resource/html/demo.html)
 * 组件
 	* [Dialog窗口](dialog.md)
 	* [SidePanel侧边窗口](sidePanel.md)

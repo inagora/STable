@@ -1,8 +1,10 @@
 # STable
-STable是inagora公司内部后台使用的一个web ui工具，用来解决表格的展示，以及表格基础上的数据处理、下载等。在几年的使用和功能迭代后，沉淀为现在的UI风格和功能。先看一下demo
+> STable是inagora公司内部后台使用的一个web ui工具，用来解决表格的展示，以及表格基础上的数据处理、下载等。STable是`Search Table`的缩写，故名思义就是一个带搜索功能的表格，因为它最原始的功能只有表格显示和搜索结果。然后在几年的使用和功能迭代后，沉淀为现在的UI风格和功能。
+
+先看一个它的UI效果：
 ![STable](img/stable.jpg)
 
-从UI上，它包括标题、工具栏、搜索区、表格区、分页几个模块。为了方便开发，还提供了Dialog、SidePanel、Progressbar等组件。详细功能如下：
+从UI上看，它包括标题、工具栏、搜索区、表格区、分页几个模块。为了方便开发，还提供了Dialog、SidePanel、Progressbar等组件。详细功能包括：
 * table
 	* 选中行高亮
 	* 锁定列

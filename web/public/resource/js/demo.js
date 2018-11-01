@@ -45,7 +45,7 @@ new Vue({
 			this.conf.curDemo = this.navList[0][1];
 		}
 
-		this.showDemo(['', 'normal']);
+		this.showDemo(['', this.conf.curDemo]);
 	},
 	watch: {
 		conf: {
@@ -141,11 +141,12 @@ new Vue({
 		run() {
 			let source = {};
 			['js', 'css', 'html'].forEach(type => {
-				source[type] = this.editor[type].cm ? this.editor[type].cm.getValue() : demos[this.conf.curDemo][type];
+				source[type] = this.editor[type] ? this.editor[type].getValue() : demos[this.conf.curDemo][type];
 			});
 			storage.setItem(DEMO_PREFIX + this.conf.curDemo, JSON.stringify(source));
+			console.log(source)
 			demos[this.conf.curDemo] = source;
-			this.playground.location.reload();
+			this.loadDemo();
 		},
 		clear() {
 			if (confirm('确认要清除对这个demo的修改，加载原始的demo')) {

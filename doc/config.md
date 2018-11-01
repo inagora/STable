@@ -81,6 +81,7 @@ STable的使用，大部分时间都是在和各种配置参数打交道。
 
 #### el<sup style="color:green;font-size:0.6em">mod</sup> {#el}
 * 类型：String|Dom
+* 默认值：'#wdStableContainer'
 * 详细：
 el指定STable在页面中的dom容器，它可以是css选择器，也可是一个dom。
 > STable4、5中，因为与页面框架的配合，STable初始化时大部分情况下不需要指定这个参数。
