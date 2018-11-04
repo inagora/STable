@@ -24,6 +24,7 @@
 				@st_dragleave="dragleave"></table-head>
 			<div class="st-table-body-box">
 				<table-body :t-width="width" :columns="columns" :record-list="recordList" :locked="false" :hl-row-num="hlRowNum" :focus-row-num="focusRowNum" :have-fx="haveFx" :fx-result="fxResult" @hl="hl" @focus="focus"></table-body>
+				<div v-if="recordList.length<=0" class="st-table-empty"></div>
 			</div>
 			<div v-show="haveLockedColumn" class="st-table-locked-body-box" :style="{width:lockedWidth+'px'}">
 				<table-body
@@ -387,6 +388,14 @@
 							let w = this.columns[idx].flex*leftWidth/totalFlex;
 							if( w < MIN_COLUMN_WIDTH){
 								w = MIN_COLUMN_WIDTH;
+							}
+							if(typeof this.columns[idx].minWidth != 'undefined') {
+								if(w < this.columns[idx].minWidth)
+									w = this.columns[idx].minWidth;
+							}
+							if(typeof this.columns[idx].maxWidth != 'undefined') {
+								if(w > this.columns[idx].maxWidth)
+									w = this.columns[idx].maxWidth;
 							}
 							this.columns[idx]._width = Math.floor(w);
 							countWidth += this.columns[idx]._width;

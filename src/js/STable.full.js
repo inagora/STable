@@ -9,6 +9,7 @@ import {
 	TimePicker,
 	Select,
 	Option,
+	Cascader,
 	Pagination,
 	Tooltip,
 	MessageBox,
@@ -23,6 +24,7 @@ Vue.use(DatePicker);
 Vue.use(TimePicker);
 Vue.use(Select);
 Vue.use(Option);
+Vue.use(Cascader);
 Vue.use(Pagination);
 Vue.use(Tooltip);
 Vue.prototype.$msgbox = MessageBox;

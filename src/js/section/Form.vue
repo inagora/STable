@@ -73,6 +73,20 @@
 						:value="item.value">
 					</el-option>
 				</el-select>
+				<el-cascader
+					v-else-if="field.type=='cascade'"
+					v-model="formData[field.name]"
+					:options="field.options"
+					filterable
+					clearable
+					:style="{width:field.width+'px'}"
+					:readonly="field.readonly"
+					:required="field.required"
+					:placeholder="field.placeholder"
+					:title="field.title"
+					:name="field.name"
+					@change="handleChange">
+				</el-cascader>
 				<x-file
 					v-else-if="field.type=='file'"
 					:val.sync="formData[field.name]"
@@ -134,6 +148,22 @@
 					} else {
 						this.initSearch(field, idx);
 					}
+				} else if (field.type=='cascade') {
+					let format = function(list) {
+						let options = [];
+						list.forEach(item=>{
+							let data = {
+								value: item[0],
+								label: item[1]
+							};
+							if(item[2] && Array.isArray(item[2])) {
+								data.children = format(item[2]);
+							}
+							options.push(data);
+						});
+						return options;
+					};
+					field.options = format(field.listData);
 				}
 			});
 		
@@ -160,7 +190,7 @@
 				function joinText(arr){
 					return arr.map(item=>item[0]).join('');
 				}
-				loadJs('//cdn.jsdelivr.net/gh/inagora/STable/dist/pinyin.min.js').then(()=>{
+				loadJs('https://cdn.jsdelivr.net/gh/inagora/STable/dist/pinyin.min.js').then(()=>{
 					let py = window.pinyin;
 					field.list.forEach(item=>{
 						let text = item.text.toLocaleLowerCase();

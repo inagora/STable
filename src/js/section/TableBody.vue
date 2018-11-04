@@ -39,7 +39,7 @@
 					</td>
 				</template>
 			</tr>
-			<tr v-if="haveFx" class="st-table-body-tr">
+			<tr v-if="haveFx && recordList && recordList.length>0" class="st-table-body-tr">
 				<template v-for="(col, colIdx) of columns">
 					<td v-if="!locked || col.locked" :key="colIdx" class="st-table-td" :class="[col.cls||'',col.type=='rownumber'?'st-table-td-rownumber':'']" :style="col.style">
 						<template v-if="col.type=='pad'"></template>

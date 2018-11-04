@@ -119,7 +119,7 @@
 				
 				return item;
 			});
-
+			
 			if(stableCount==0 && window.location.search.includes('stable=on')) {
 				let searchParams = new URLSearchParams(window.location.search);
 				let sp = {};
@@ -270,6 +270,7 @@
 			if(this.config.listeners && this.config.listeners.ready){
 				this.config.listeners.ready.call(this.$root);
 			}
+			stableCount++;
 		},
 		methods: {
 			refresh(pno) {

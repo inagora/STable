@@ -155,6 +155,17 @@
 	overflow-y: scroll;
 	overflow-x: auto;
 }
+.st-table-empty{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 128px;
+	height: 128px;
+	opacity: 0.4;
+	background: url(https://cdn.jsdelivr.net/gh/inagora/STable/web/public/resource/img/empty.jpg);
+	background-size: contain;
+}
 .st-table-body{
 	table-layout: fixed;
 	border-collapse: collapse;
