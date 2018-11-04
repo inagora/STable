@@ -4,7 +4,7 @@ STable.init({
 	pageIndex: 'id',
 	title: '一个标准的Demo',
 	tip: '<div style="color:red">🍭Demo中所有数据来时光网，如有侵权，会立即删除</div>',
-	url: '/ajaxWaterfall',
+	url: '/demo/ajaxWaterfall',
 	params: {
 		count: 30
 	},

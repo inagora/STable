@@ -2,7 +2,7 @@ const type = ["剧情", "喜剧", "短片", "爱情", "纪录片", "动作", "�
 STable.init({
 	title: '一个标准的Demo',
 	tip: '<div style="color:red">🍭Demo中所有数据来时光网，如有侵权，会立即删除</div>',
-	url: '/ajaxList',
+	url: '/demo/ajaxList',
 	params: {
 		count: 30,
 		page: 5

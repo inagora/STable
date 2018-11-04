@@ -1,4 +1,4 @@
 STable.init({
-	url: '/ajaxList',
+	url: '/demo/ajaxList',
 	columns: ['img', 'name']
 });
