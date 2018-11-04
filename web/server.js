@@ -11,7 +11,7 @@ module.exports = function(middleware) {
 		app.use(middleware);
 	app.use(serve(path.resolve(__dirname, 'public')));
 
-	router.get('/ajaxGetDemo/:demo',(ctx, next)=>{
+	router.get('/demo/ajaxGetDemo/:demo',(ctx, next)=>{
 		let content = {};
 		['js', 'css', 'html'].forEach(type=>{
 			let file = path.resolve(__dirname, 'public/resource/demo/',ctx.params.demo, 'index.'+type);
@@ -23,7 +23,7 @@ module.exports = function(middleware) {
 		});
 		return ctx.body=content;
 	});
-	router.all('/ajaxList',koaBody({strict: false}), (ctx, next)=>{
+	router.all('/demo/ajaxList',koaBody({strict: false}), (ctx, next)=>{
 		let params = Object.assign({},ctx.query, ctx.request.body);
 		let allMovies = require('./movies.json');
 		let page = parseInt(params.page||1, 10);
@@ -79,7 +79,7 @@ module.exports = function(middleware) {
 		});
 	});
 
-	router.all('/ajaxWaterfall',koaBody({strict: false}), (ctx, next)=>{
+	router.all('/demo/ajaxWaterfall',koaBody({strict: false}), (ctx, next)=>{
 		let params = Object.assign({},ctx.query, ctx.request.body);
 		let allMovies = require('./movies.json');
 		let count = parseInt(params.count||20, 10);
@@ -151,7 +151,7 @@ module.exports = function(middleware) {
 	//const loc = ["美国", "中国", "日本", "法国", "英国", "中国香港", "意大利", "德国", "韩国", "加拿大", "西班牙", "中国台湾", "印度", "西德", "澳大利亚", "苏联", "比利时", "瑞士", "瑞典", "阿根廷", "俄罗斯", "墨西哥", "波兰", "丹麦", "荷兰", "巴西", "奥地利", "泰国"];
 	//const type = ["剧情", "喜剧", "短片", "爱情", "纪录片", "动作", "惊悚", "恐怖", "动画", "犯罪", "冒险", "家庭", "悬疑", "奇幻", "科幻", "战争", "传记", "音乐", "历史", "歌舞", "西部", "运动", "古装", "武侠", "戏曲", "黑色电影", "儿童", "新闻", "真人秀", "舞台艺术", "成人", "脱口秀", "游戏秀", "情色", "文艺", "同性", "女性", "青春", "励志", "微电影", "灾难"];
 	
-	router.post('/ajaxUpload',koaBody({ multipart: true }), (ctx)=>{
+	router.post('/demo/ajaxUpload',koaBody({ multipart: true }), (ctx)=>{
 		const file = ctx.request.files.file;
 		const reader = fs.createReadStream(file.path);
 		const stream = fs.createWriteStream(path.join(__dirname, 'public/tmp/', file.name));
