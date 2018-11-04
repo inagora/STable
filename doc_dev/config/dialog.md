@@ -1,7 +1,7 @@
-# Dialog窗口使用文档
+# Dialog窗口
 作为常用的一个组件，Dialog的实用方式还是很简单的。有常用Dialog.create方式，生成一个完成的dialog实例；也可以使用快捷的功能函数alert\confirm\prompt；也有快速的提示qtip。
 
-#### Dialog.qtip(msg[, type[, config]])
+## Dialog.qtip(msg[, type[, config]])
 在页面顶部显示一个快速的tip，类似于toast。
 ![qtip](img/qtip.png)
 qtip有多态形式
@@ -10,7 +10,7 @@ Dialog.qtip(msg[, type[, config]]);
 Dialog.qtip(msg[, config]);
 Dialog.qtip(config);
 ```
-[查看demo](http://localhost:3000/demo?demo=dialog)
+[查看demo](/html/demo?demo=dialog)
 
 _参数_：
 * msg
@@ -26,7 +26,7 @@ _参数_：
 		* type, String，会重写type参数
 		* duration，Number，显示时间，毫秒。默认为3000。
 
-#### Dialog.alert(msg[, title[, config]])
+## Dialog.alert(msg[, title[, config]])
 显示一个带消息的警告框。
 
 使用方法：
@@ -58,7 +58,7 @@ _参数_：
 		* title, String，会重写type参数
 		* fn，Function，关闭对话框时触发的函数
 
-#### Dialog.confirm(msg[, title[, config]])
+## Dialog.confirm(msg[, title[, config]])
 显示一个带有指定消息和 OK 及取消按钮的对话框。
 
 使用方法：
@@ -90,7 +90,7 @@ _参数_：
 		* fn，Function，关闭对话框或者点击按钮时触发的函数，参数有：
 			* ret，String，为'yes'时表明点击了“确定”按钮；为“no”时表明点击了“取消”或“关闭”按钮
 
-#### Dialog.prompt(msg[, title[, config]])
+## Dialog.prompt(msg[, title[, config]])
 显示可提示用户进行输入的对话框。
 
 使用方法：
@@ -117,7 +117,7 @@ _参数_：
 		* fn，Function，关闭对话框或者点击按钮时触发的函数，参数有：
 			* ret，String，用户输入的内容
 
-#### Dialog.create(config)
+## Dialog.create(config)
 标准的窗口组件，通过config参数来配置不同的窗口。config的参数有：
 `注意，上面的qtip和对话框都不是真正的窗口组件，只是挂在Dialog下的快捷使用入口`
 
@@ -179,63 +179,8 @@ _参数_：
 	* 参考：
 		* [按钮配置](config.md#button-config)
 
-# Dialog的实例方法
+## Dialog的实例方法
 通过Dialog.create方法创建的Dialog实例，有一些方法，控制窗口的行为。
 * show()，使窗口显示出来
 * hide()，隐藏窗口，并且不销毁dom
 * close()，隐藏窗口，然后根据closeAction决定是否要销毁窗口dom
-
-# Dialog与Vue的配合使用
-使用Dialog时，经常涉及到对窗口中的内容做一些处理，获取表单的内容等。为了方便处理，dialog支持做为一个vue实例使用。config参数中，除了上面说明的参数外，还支持vue的所有配置参数，它些配置参数，用于对窗口内的html生成一个vue实例。
-```html
-<script type="text/html" id="tmpl">
-	<form id="testForm" @submit.prevent="submit">
-		<table>
-			<tr>
-				<td>电影名</td>
-				<td>
-					<input name="movieName" v-model="movie.name" />
-				</td>
-			</tr>
-			<tr>
-				<td>发行时间</td>
-				<td>
-					<select name="year" v-model="movie.year">
-						<option value="2017">2017</option>
-						<option value="2018">2018</option>
-						<option value="2019">2019</option>
-					</select>
-				</td>
-			</tr>
-		</table>
-	</form>
-</script>
-```
-```javascript
-let dia = Dialog.create({
-	title: '一个带vue的示例',
-	width: '60%',
-	height: '60%',
-	buttons:[{
-		text: '提交',
-		nativeType: 'submit',
-		form: 'testForm'
-	}],
-	html: document.getElementById('tmpl').innerHTML,
-	//以下为vue的配置
-	data: {
-		movie: {
-			name: '豌豆公主第一季',
-			year: '2018'
-		}
-	},
-	methods: {
-		submit(){
-			Dialog.alert('结果是：'+JSON.stringify(this.movie));
-		}
-	}
-});
-```
-上面例子中，dialog内是一个vue实例，它展示了一个demo，当点击提交按钮时，直接通过this.movie拿到form表单的数据，可以进行处理了。
-
-> 注意，这里有一个小技巧，我们给提交按钮指了一个form属性和一个nativeType为'submit'的属性。这就让它成了表单testForm的提交按钮，点击它直接触发表单testForm的submit事件。

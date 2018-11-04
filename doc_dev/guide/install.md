@@ -1,5 +1,5 @@
 # 安装
----
+## 快速使用
 最简单的引入方式，直接引用cdn上两个编译好的文件就行了。
 ```html
 <!DOCTYPE html>
@@ -25,10 +25,13 @@
 </html>
 ```
 `STable.full.min.css`和`STable.full.min.js`是包含了依赖的STable文件，直接引用它们就可以用了。
-> 注意：STable的容器元素el，它的高宽需要确定。也就是说，容器高宽不能依赖STable的内容撑开，因为STable会根据容器的高宽，计算每个组件的尺寸。
 
-#### 使用非依赖版本
-如果页面上因为其它需要已经引用了Vue、element-ui等依赖，就可以不用全量版本的文件，使用非依赖版本，它的体积会小很多。
+::: tip
+ 注意：STable的容器元素el，它的高宽需要确定。也就是说，容器高宽不能依赖STable的内容撑开，因为STable会根据容器的高宽，计算每个组件的尺寸。
+:::
+
+## 使用非依赖版本
+如果页面上已经引用了Vue、element-ui等依赖，就可以不用全量版本的文件，使用非依赖版本，它的体积会小很多。
 
 文件名 | 大小 | gzip
 ------------ | ------------- | -------------
@@ -40,7 +43,7 @@
 ```html
 <!-- 引入依赖css文件 -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-ui@2.4.9/lib/theme-chalk/index.css"/>
-<!-- 引入依赖STable css文件 -->
+<!-- 引入STable css文件 -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/inagora/STable@v1.0.5.4/dist/STable.min.css"/>
 <!-- 引用依赖js文件 -->
 <script src="//cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js"></script>
