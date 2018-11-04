@@ -66,7 +66,7 @@ new Vue({
 			let p;
 			if (!this.conf.demoVer[demo]) {
 				p = new Promise(resolve => {
-					fetch('/ajaxGetDemo/' + demo)
+					fetch('/demo/ajaxGetDemo/' + demo)
 						.then(res => {
 							return res.json();
 						}).then(res=>{
