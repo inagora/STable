@@ -31,7 +31,6 @@
     "vue": "^2.5.17",
     "vue-loader": "^15.4.2",
     "vue-template-compiler": "^2.5.17",
-    "vuepress": "^0.14.4",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2"
   },
@@ -40,6 +39,7 @@
     "koa-body": "^4.0.4",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
-    "koa-views": "^6.1.4"
+    "koa-views": "^6.1.4",
+    "vuepress": "^0.14.4"
   }
 }
