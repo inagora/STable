@@ -41,7 +41,8 @@ module.exports = {
 				'button',
 				'method',
 				'dialog',
-				'side_panel'
+				'side_panel',
+				'progressbar'
 			]
 		}
 	}
