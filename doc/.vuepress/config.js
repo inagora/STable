@@ -1,6 +1,8 @@
+const path = require('path');
 module.exports = {
 	title: 'STable',
 	description: '一个用于表格展示和数据处理的组件',
+	dest: path.resolve(__dirname, '../../web/public/doc'),
 	markdown: {
 		lineNumber: true
 	},
@@ -29,6 +31,7 @@ module.exports = {
 				'column_width',
 				'search_params',
 				'dialog_vue',
+				'progressbar',
 				'fq'
 			],
 			'/config/': [

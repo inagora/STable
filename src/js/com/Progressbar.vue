@@ -32,6 +32,12 @@ export default {
 				this.pbWidth = {width: v*100+'%'};
 			}
 		}
+	},
+	mounted() {
+		if(this.visible) {
+			this.$el.querySelector('.x-pb-in-text').style.width = 
+						this.$el.querySelector('.x-pb').getBoundingClientRect().width+'px';
+		}
 	}
 }
 </script>

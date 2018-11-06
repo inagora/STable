@@ -44,47 +44,45 @@ html,body,#doc{
 }
 .main-panel{
 	flex: 1;
-}
-#wdStableContainer{
-	position: relative;
-}
-
-.playground{
-	height: 100%;
 	display: flex;
 	flex-direction: column;
 }
-.layout-1-0 #wdStableContainer{
+#wdStableContainer{
+	position: relative;
+	height: 100%;
+}
+
+.layout-1-0 .playground{
 	flex: 1;
 }
 .layout-1-0 #editor{
 	display: none;
 }
-.layout-3-1 #wdStableContainer{
+.layout-3-1 .playground{
 	flex: 3;
 }
 .layout-3-1 #editorBox{
 	flex: 1;
 }
-.layout-2-1 #wdStableContainer{
+.layout-2-1 .playground{
 	flex: 2;
 }
 .layout-2-1 #editorBox{
 	flex: 1;
 }
-.layout-1-1 #wdStableContainer{
+.layout-1-1 .playground{
 	flex: 1;
 }
 .layout-1-1 #editorBox{
 	flex: 1;
 }
-.layout-1-2 #wdStableContainer{
+.layout-1-2 .playground{
 	flex: 1;
 }
 .layout-1-2 #editorBox{
 	flex: 2;
 }
-.layout-1-3 #wdStableContainer{
+.layout-1-3 .playground{
 	flex: 1;
 }
 .layout-1-3 #editorBox{
@@ -127,14 +125,4 @@ html,body,#doc{
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
-}
-#editor iframe{
-	border: none;
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
 }

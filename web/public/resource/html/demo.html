@@ -15,31 +15,31 @@
 				<a v-for="item of navList" :href="'?demo='+item[1]" v-text="item[0]" :class="{'active':item[1]==conf.curDemo}"></a>
 			</nav>
 		</div>
-		<div class="main-panel">
-			<div class="playground" :class="['layout-'+conf.layout.split(':').join('-')]">
+		<div class="main-panel" :class="['layout-'+conf.layout.split(':').join('-')]">
+			<div class="playground">
 				<div id="wdStableContainer"></div>
-				<div id="editorBox">
-					<div class="editor-toolbar">
-						<label>
-							<span>编辑器布局</span>
-							<select v-model="conf.layout">
-								<option v-for="item of layoutList" :value="item" v-text="item"></option>
-							</select>
-						</label>
-						<label class="toolbar-btn" @click="run">▶ Run</label>
-						<label class="toolbar-btn" @click="activeEditor='js'" :class="{'active':activeEditor=='js'}">📝 Js</label>
-						<label class="toolbar-btn" @click="activeEditor='css'" :class="{'active':activeEditor=='css'}">📝 Css</label>
-						<label class="toolbar-btn" @click="activeEditor='html'" :class="{'active':activeEditor=='html'}">📝 Html</label>
-						<label class="toolbar-btn" @click="clear">🚽 清除当前demo修改</label>
-						<label class="toolbar-btn" @click="clearAll">🚽 清除所有demo修改</label>
+			</div>
+			<div id="editorBox">
+				<div class="editor-toolbar">
+					<label>
+						<span>编辑器布局</span>
+						<select v-model="conf.layout">
+							<option v-for="item of layoutList" :value="item" v-text="item"></option>
+						</select>
+					</label>
+					<label class="toolbar-btn" @click="run">▶ Run</label>
+					<label class="toolbar-btn" @click="activeEditor='js'" :class="{'active':activeEditor=='js'}">📝 Js</label>
+					<label class="toolbar-btn" @click="activeEditor='css'" :class="{'active':activeEditor=='css'}">📝 Css</label>
+					<label class="toolbar-btn" @click="activeEditor='html'" :class="{'active':activeEditor=='html'}">📝 Html</label>
+					<label class="toolbar-btn" @click="clear">🚽 清除当前demo修改</label>
+					<label class="toolbar-btn" @click="clearAll">🚽 清除所有demo修改</label>
+				</div>
+				<div id="editor">
+					<div class="editor-holder" v-show="activeEditor=='js'" id="jsEditor">
 					</div>
-					<div id="editor">
-						<div class="editor-holder" v-show="activeEditor=='js'" id="jsEditor">
-						</div>
-						<div class="editor-holder" v-show="activeEditor=='css'" id="cssEditor">
-						</div>
-						<div class="editor-holder" v-show="activeEditor=='html'" id="htmlEditor">
-						</div>
+					<div class="editor-holder" v-show="activeEditor=='css'" id="cssEditor">
+					</div>
+					<div class="editor-holder" v-show="activeEditor=='html'" id="htmlEditor">
 					</div>
 				</div>
 			</div>
@@ -57,6 +57,7 @@
 		['计算', 'fx', 1],
 		['Dialog', 'dialog', 1],
 		['SidePanel', 'SidePanel', 1],
+		['Progressbar', 'progressbar', 1],
 	];
 	</script>
 	<script src="https://cdn.jsdelivr.net/combine/npm/codemirror@5.41.0/lib/codemirror.js,npm/codemirror@5.41.0/mode/javascript/javascript.js,npm/codemirror@5.41.0/mode/css/css.js,npm/codemirror@5.41.0/mode/xml/xml.js"></script>
@@ -169,11 +170,11 @@ new Vue({
 				document.head.appendChild(style);
 				let html = document.createElement('div');
 				html.innerHTML = res.html;
-				document.body.appendChild(html);
+				document.querySelector('.playground').appendChild(html);
 				
 				let script = document.createElement('script');
 				script.type = 'text/javascript';
-				script.text = '(function(){'+res.js+'})()';
+				script.text = res.js;
 				document.body.appendChild(script);
 				
 			});
