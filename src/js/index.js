@@ -14,8 +14,9 @@ Vue.component('x-form', XForm);
 window.SidePanel = SidePanel;
 window.Dialog = Dialog;
 window.Progressbar = Progressbar;
-
-export var version = '1.0.2';
+console.log('%c👨‍💻STable',"color:#205424;font-size:24px");
+console.log('%c文档地址：https://stable.wfxteam.com/',"color:#191919;font-size:14px");
+export var version = '1.0.7';
 export function init(config){
 	let el = config.el || config.container || '#wdStableContainer';
 	if(typeof el == 'string') {

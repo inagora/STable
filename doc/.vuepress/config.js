@@ -1,6 +1,6 @@
 module.exports = {
 	title: 'STable',
-	description: '一个用于方便展示和处理数据的组件',
+	description: '一个用于表格展示和数据处理的组件',
 	markdown: {
 		lineNumber: true
 	},
@@ -8,14 +8,14 @@ module.exports = {
 		nav: [
 			{
 				text: '指南',
-				link: '/guide/'
+				link: '/guide/install'
 			},
 			{
 				text: '配置',
 				link: '/config/'
 			},{
-				text: 'Demo',
-				link: '/html/demo.html'
+				text: 'Examples',
+				link: '/resource/html/demo.html'
 			},{
 				text: 'Github',
 				link: 'https://github.com/inagora/STable'
@@ -28,7 +28,8 @@ module.exports = {
 				'request',
 				'column_width',
 				'search_params',
-				'dialog_vue'
+				'dialog_vue',
+				'fq'
 			],
 			'/config/': [
 				'',

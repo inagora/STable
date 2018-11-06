@@ -76,7 +76,7 @@ STable的使用，大部分时间都是在和各种配置参数打交道。
 添加或编辑行数据record时，弹窗中表单项的详细设置。
 * 参考：
 	* [crud操作](/demo/edit)
-	* [表单项配置](form_config.md)
+	* [表单项配置](/config/form.md)
 
 ## el
 * 类型：String|Dom
@@ -160,7 +160,7 @@ postData: {
 * 详细：
 搜索区域的配置。因为搜索区域本质上是一个form表单，搜索的配置是表单每一顶的配置
 * 参考
-	* [表单配置](form_config.md)
+	* [表单配置](/config/form.md)
 
 ## selectMode
 * 类型：string
@@ -192,7 +192,7 @@ postData: {
 * 详细：
 表格顶部的工具栏，它的每一项就是一个按钮配置。
 * 参考：
-	* [按钮配置](button_config.md)
+	* [按钮配置](/config/button.md)
 
 ## updateUrl
 * 类型：String
