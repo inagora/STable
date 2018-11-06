@@ -8,12 +8,12 @@
 	<meta charset="utf-8">
 	<title>demo</title>
 	<!-- 引入全量css文件 -->
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/inagora/STable@v1.0.5.4/dist/STable.full.min.css"/>
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/inagora/STable@v1.0.8/dist/STable.full.min.css"/>
 </head>
 <body>
 	<div id="app"></div>
 	<!-- 引用全量js文件 -->
-	<script src="//cdn.jsdelivr.net/gh/inagora/STable@v1.0.5.4/dist/STable.full.min.js"></script>
+	<script src="//cdn.jsdelivr.net/gh/inagora/STable@v1.0.8/dist/STable.full.min.js"></script>
 	<script>
 		//初始化STable
 		STable.init({
@@ -35,19 +35,19 @@
 
 文件名 | 大小 | gzip
 ------------ | ------------- | -------------
-[STable.full.min.js](https://cdn.jsdelivr.net/gh/inagora/STable@v1.0.5.4/dist/STable.full.min.js) | 436K | 119K
-[STable.full.min.css](https://cdn.jsdelivr.net/gh/inagora/STable@v1.0.5.4/dist/STable.full.min.css) | 114K | 27.4K
-[STable.min.js](https://cdn.jsdelivr.net/gh/inagora/STable@v1.0.5.4/dist/STable.min.js) | 61K | 18.4K
-[STable.min.css](https://cdn.jsdelivr.net/gh/inagora/STable@v1.0.5.4/dist/STable.min.css) | 13K | 3.7K
+[STable.full.min.js](https://cdn.jsdelivr.net/gh/inagora/STable@v1.0.8/dist/STable.full.min.js) | 436K | 119K
+[STable.full.min.css](https://cdn.jsdelivr.net/gh/inagora/STable@v1.0.8/dist/STable.full.min.css) | 114K | 27.4K
+[STable.min.js](https://cdn.jsdelivr.net/gh/inagora/STable@v1.0.8/dist/STable.min.js) | 61K | 18.4K
+[STable.min.css](https://cdn.jsdelivr.net/gh/inagora/STable@v1.0.8/dist/STable.min.css) | 13K | 3.7K
 
 ```html
 <!-- 引入依赖css文件 -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-ui@2.4.9/lib/theme-chalk/index.css"/>
 <!-- 引入STable css文件 -->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/inagora/STable@v1.0.5.4/dist/STable.min.css"/>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/inagora/STable@v1.0.8/dist/STable.min.css"/>
 <!-- 引用依赖js文件 -->
 <script src="//cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/element-ui@2.4.9/lib/index.js"></script>
 <!-- 引用STable js文件 -->
-<script src="//cdn.jsdelivr.net/gh/inagora/STable@v1.0.5.4/dist/STable.min.js"></script>
+<script src="//cdn.jsdelivr.net/gh/inagora/STable@v1.0.8/dist/STable.min.js"></script>
 ```
