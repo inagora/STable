@@ -17,7 +17,7 @@ module.exports = {
 				link: '/config/'
 			},{
 				text: 'Examples',
-				link: '/resource/html/demo.html'
+				link: 'https://stable.wfxteam.com/resource/html/demo.html'
 			},{
 				text: 'Github',
 				link: 'https://github.com/inagora/STable'
