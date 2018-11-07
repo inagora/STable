@@ -17,7 +17,7 @@
 								<input type="checkbox" :value="idx" v-model="store.checkboxVal" />
 						</label>
 						<div v-else-if="col.type=='rownumber'" class="st-table-cell" v-text="idx+1"></div>
-						<div v-else-if="col.type=='text'" class="st-table-cell" :class="{'st-table-cell-nowrap':!col.cellWrap}" v-text="record[col.dataIndex]||' '"></div>
+						<div v-else-if="col.type=='text'" class="st-table-cell" :class="{'st-table-cell-nowrap':!col.cellWrap}" v-text="record[col.dataIndex]"></div>
 						<div v-else-if="col.type=='render'" class="st-table-cell" :class="{'st-table-cell-nowrap':!col.cellWrap}" v-html="record['_'+col.dataIndex+'_render_val']"></div>
 						<div v-else-if="col.type=='image'">
 							<img v-if="record[col.dataIndex]" :src="record[col.dataIndex]" :style="col.imgStyle" />

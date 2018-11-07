@@ -65,6 +65,26 @@ function dia1(){
 		}]
 	});
 }
+function diaVue1() {
+	Dialog.create({
+		title: 'dialog中使用Vue - 1',
+		html: document.getElementById('tmpl-1').innerHTML,
+		//以下为vue的配置
+		data: {
+			list: [
+				{name:'音乐脚步', poster: 'https://img5.mtime.cn/mt/2017/08/31/102049.88433138_640X360X2.jpg'},
+				{name: '幸福路上', poster:'https://img5.mtime.cn/mt/2017/11/19/161729.30043136_640X360X2.jpg'}
+			]
+		},
+		methods: {
+			showPoster(movie){
+				Dialog.create({
+					html: `<img src="${movie.poster}">`
+				});
+			}
+		}
+	});
+}
 function dia2(){
 	Dialog.create({
 		title: '一个带vue的示例',

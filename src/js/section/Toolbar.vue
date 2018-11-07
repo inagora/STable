@@ -61,7 +61,7 @@
 						}
 					}
 					if(!btn.type)
-						btn.type = 'primary';
+						btn.type = 'default';
 					return btn;
 				})
 			}
@@ -104,8 +104,8 @@
 					methods: {
 						create(data){
 							let ret = true;
-							if(toolbar.listeners.beforeedit)
-								ret = toolbar.listeners.beforeedit.call(toolbar.$root, data);
+							if(toolbar.listeners.beforeadd)
+								ret = toolbar.listeners.beforeadd.call(toolbar.$root, data, this);
 							if(ret===false)
 								return;
 							ajax({url: toolbar.addUrl, data, type:toolbar.actionMethods.create}).then(res=>{

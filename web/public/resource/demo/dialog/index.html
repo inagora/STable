@@ -12,10 +12,19 @@
 	<hr>
 	<h1>Dialog示例</h1>
 	<button type="button" class="el-button el-button--primary" onclick="dia1()">普通窗口</button>
-	<button type="button" class="el-button el-button--primary" onclick="dia2()">带Vue实例的窗口</button>
+	<button type="button" class="el-button el-button--primary" onclick="diaVue1()">Dialog中使用Vue - 1</button>
 </div>
 
-<script type="text/html" id="tmpl">
+<script type="text/html" id="tmpl-1">
+	<table>
+		<tr v-for="item of list">
+			<td v-text="item.name"></td>
+			<td><button @click="showPoster(item)">查看海报</button></td>
+		</tr>
+	</table>
+</script>
+
+<script type="text/html" id="tmpl-9">
 	<form id="testForm" @submit.prevent="submit">
 		<table>
 			<tr>

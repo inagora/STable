@@ -122,7 +122,9 @@ export default {
 					this.timer = null;
 				}
 				this.flymanVisible = false;
-				if(res.errno || res.code){
+				
+				this.listeners.dataload && this.listeners.dataload(res);
+				if(res.errno){
 					this.$alert(res.errmsg||res.msg,'提示', {type: 'error'});
 				} else {
 					if(this.pageMode=='waterfall'){

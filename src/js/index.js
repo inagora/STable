@@ -14,7 +14,7 @@ Vue.component('x-form', XForm);
 window.SidePanel = SidePanel;
 window.Dialog = Dialog;
 window.Progressbar = Progressbar;
-console.log('%c👨‍💻STable',"color:#205424;font-size:24px");
+console.log('%c👨‍💻STable',"color:#205424;font-size:18px");
 console.log('%c文档地址：https://stable.wfxteam.com/',"color:#191919;font-size:14px");
 export var version = '1.0.7';
 export function init(config){
