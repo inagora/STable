@@ -1,4 +1,4 @@
-# 进度条
+# Progressbar进度条
 ## Progressbar.create([options])
 创建一个进度条。比如：
 ```javascript

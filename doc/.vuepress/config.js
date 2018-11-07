@@ -36,10 +36,10 @@ module.exports = {
 			],
 			'/config/': [
 				'',
+				'method',
 				'column',
 				'form',
 				'button',
-				'method',
 				'dialog',
 				'side_panel',
 				'progressbar'

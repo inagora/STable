@@ -116,6 +116,8 @@
 										type: 'success'
 									});
 									this.close();
+									if(toolbar.listeners.add)
+										ret = toolbar.listeners.add.call(toolbar.$root, res, data);
 								} else {
 									this.$message({
 										message: res.errmsg,

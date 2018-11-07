@@ -1,4 +1,4 @@
-# 列配置
+# columns列配置
 
 ## buttons
 * 类型：Array

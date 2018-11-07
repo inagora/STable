@@ -38,6 +38,9 @@ export function init(config){
 			},
 			getSelectedRows(){
 				return this.$refs.stable.getSelectRows();
+			},
+			layout(){
+				this.$refs.stable.layout();
 			}
 		}
 	}).$mount(el);

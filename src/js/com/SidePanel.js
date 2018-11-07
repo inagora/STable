@@ -13,7 +13,7 @@ let app = new Vue({
 			+ ' :title="title"'
 			+ ' :html="html"'
 			+ ' :is-page="isPage"'
-			+ ' @close="visible=false">'
+			+ ' @close="hide">'
 		+ '</side-panel>',
 	methods: {
 		init(){
@@ -23,48 +23,62 @@ let app = new Vue({
 			this.$mount(el);
 			this.inited = true;
 		},
-		showPage(url, options) {
+		showPage(url, title, options) {
 			this.init();
-			if(typeof options=='string') {
-				if(arguments.length>=3){
-					options = Object.assign(arguments[2]||{},{title:options});
-				}else {
-					options = {title: options};
-				}
+			if(typeof title=='string') {
+				options = Object.assign(options||{}, {title});
+			} else {
+				options = title;
 			}
 			if(!options)
 				options = {};
+			this._options = options;
 			this.html = url;
 			this.visible = true;
 			this.isPage = true;
 			this.title = options.title||'';
+			if(this._options.listeners && this._options.listeners.show) {
+				this._options.listeners.show.call(this);
+			}
 		},
-		show(content, options){
+		show(content, title, options){
 			this.init();
-			if(typeof options=='string') {
-				if(arguments.length>=3){
-					options = Object.assign(arguments[2]||{},{title:options});
-				}else {
-					options = {title: options};
-				}
+			if(typeof title=='string') {
+				options = Object.assign(options||{}, {title});
+			} else {
+				options = title;
 			}
 			if(!options)
 				options = {};
 			if(/^https?:\/\//.test(content)){
 				this.showPage(content, options);
 			} else {
+				this._options = options;
 				this.html = content;
 				this.visible = true;
 				this.isPage = false;
 				this.title = options.title||'';
+				if(this._options.listeners && this._options.listeners.show) {
+					this._options.listeners.show.call(this);
+				}
 			}
 		},
 		hide() {
+			if(this._options.listeners && this._options.listeners.beforehide) {
+				let ret = this._options.listeners.beforehide.call(this);
+				console.log(ret);
+				if(ret===false)
+					return;
+			}
+
 			this.visible = false;
 			if(this.isPage) {
 				this.html = "about:blank";
 			} else {
 				this.html = '';
+			}
+			if(this._options.listeners && this._options.listeners.hide) {
+				this._options.listeners.hide.call(this);
 			}
 		}
 	}

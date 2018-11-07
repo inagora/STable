@@ -1,4 +1,4 @@
-# 按钮配置
+# button按钮配置
 在toolbar和column配置时，都要用到按钮的配置。它有以下几个配置项：
 
 ## click

@@ -281,6 +281,9 @@
 			},
 			getSelectRows(){
 				return this.$refs.table.getSelectRows();
+			},
+			layout(){
+				this.$refs.table.layout();
 			}
 		}
 	}
