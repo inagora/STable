@@ -51,7 +51,5 @@ Dialog.create({
 ::: tip
 注意，这里有一个小技巧，我们给提交按钮指了一个form属性和一个nativeType为'submit'的属性。这就让它成了表单testForm的提交按钮，点击它直接触发表单testForm的submit事件。
 :::
-
-## 搭配 element-ui
 ## 搭配 STable
 ## 不使用Vue，纯手工
