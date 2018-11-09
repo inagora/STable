@@ -4,7 +4,7 @@
 		<div class="dialog-doc" :style="{width:conf.width, height:conf.height}">
 			<div class="dialog-head">
 				<div class="dialog-title" v-text="conf.title"></div>
-				<div @click="close" class="dialog-close">❎</div>
+				<div @click="close" v-if="closable" class="dialog-close">❎</div>
 			</div>
 			<div class="dialog-body" :class="[conf.bodyCls]" :style="conf.bodyStyle">
 				<slot></slot>
