@@ -16,6 +16,7 @@
 					:pattern="field.pattern"
 					:readonly="field.readonly"
 					:required="field.required"
+					:disabled="field.disabled"
 					:placeholder="field.placeholder"
 					:title="field.title"
 					:name="field.name"></el-input>
@@ -26,6 +27,7 @@
 					:style="{width:field.width+'px'}"
 					:pattern="field.pattern"
 					:readonly="field.readonly"
+					:disabled="field.disabled"
 					:required="field.required"
 					:placeholder="field.placeholder"
 					:title="field.title"
@@ -37,6 +39,7 @@
 					:style="{width:field.width+'px'}"
 					:value-format="field.format||dateFormat[field.type]"
 					:readonly="field.readonly"
+					:disabled="field.disabled"
 					:required="field.required"
 					:placeholder="field.placeholder"
 					:title="field.title"
@@ -48,6 +51,7 @@
 					:format="field.format||timeFormat[field.type]"
 					:style="{width:field.width+'px'}"
 					:readonly="field.readonly"
+					:disabled="field.disabled"
 					:required="field.required"
 					:placeholder="field.placeholder"
 					:title="field.title"
@@ -62,6 +66,7 @@
 					:style="{width:field.width+'px'}"
 					:multiple="field.type=='multiple'"
 					:readonly="field.readonly"
+					:disabled="field.disabled"
 					:required="field.required"
 					:placeholder="field.placeholder"
 					:title="field.title"
@@ -81,6 +86,7 @@
 					clearable
 					:style="{width:field.width+'px'}"
 					:readonly="field.readonly"
+					:disabled="field.disabled"
 					:required="field.required"
 					:placeholder="field.placeholder"
 					:title="field.title"
@@ -357,17 +363,22 @@
 				});
 			},
 			submit(){
+				let data = {};
 				for(let field of this.fields){
 					if(field.type=='file' && field.loading) {
 						this.$message({
 							message: '文件上传中，请稍等...',
 							type: 'info'
 						});
-						break;
+						return;
+					}
+					if(!field.disabled) {
+						data[field.name] = this.formData[field.name];
 					}
 				}
-				
-				this.$emit('submit', this.formData);
+				console.log(this.fields)
+				console.log(data);
+				this.$emit('submit', data);
 			},
 			getFormData(){
 				return this.formData;

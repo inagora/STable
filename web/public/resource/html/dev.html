@@ -78,7 +78,8 @@ STable.init({
 		{
 			name: 'movieType',
 			label: '影片类型',
-			list: type
+			list: type,
+			disabled: true
 		},
 		{
 			label: '上映时间(起)',
@@ -94,6 +95,7 @@ STable.init({
 			type: 'cascade',
 			label: '分类',
 			listData: catData,
+			name: 'cat',
 			width: 300
 		}
 	],
