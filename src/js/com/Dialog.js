@@ -64,6 +64,7 @@ let Dialog={
 			'bodyCls',
 			'bodyStyle',
 			'autoShow',
+			'autoOpen',
 			'closable',
 			'closeAction',
 			'listeners',
