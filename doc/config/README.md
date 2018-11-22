@@ -64,6 +64,11 @@ STable的使用，大部分时间都是在和各种配置参数打交道。
 * 参考：
 	* [download](/demo/download)
 
+## downloadAllFromJustOnePage
+* 类型：Boolean
+* 默认值：false
+* 详细：全量下载表格时，会分页把所有数据请求下来。不过有时候分页请求数据反而没有一次性把所有数据导出来快。为了解决这个问题，可以使用这个变量。把它设置为true，全量导出时，只发出一页的请求，并且参数 count 值为 "max"，以标识这次请求希望能把符合要求的所有数据一次数请求到。
+
 ## downloadTimeout
 * 类型：Number
 * 默认值：10000
