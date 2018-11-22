@@ -1,7 +1,7 @@
 import {ajax} from '../ajax';
 import Progressbar from '../com/Progressbar';
 export default {
-	inject: ['pageMode','pageIndex', 'parallelCount', 'downloadTimeout'],
+	inject: ['pageMode','pageIndex', 'parallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage'],
 	data(){
 		return {
 			isPageLoading: false,
@@ -238,6 +238,9 @@ export default {
 				let list = [];
 				let jobList = [];
 				let page_count = this.store.page_count||1;
+				if(this.downloadAllFromJustOnePage) {
+					page_count = 1;
+				}
 				let pnoIdx = 0;
 				let parallelCount = this.parallelCount;
 				let loadedCount = 0;
@@ -248,7 +251,9 @@ export default {
 						params.sort_direction = this.store.sortDirection;
 					}
 					params.page = pno;
-					
+					if(this.downloadAllFromJustOnePage) {
+						params.count = 'max';
+					}
 					let job = ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout});
 					job.then(res=>{
 						res = res[0];
@@ -322,6 +327,9 @@ export default {
 						params.sort_direction = this.store.sortDirection;
 					}
 					params[pageIndex] = id;
+					if(this.downloadAllFromJustOnePage) {
+						params.count = 'max';
+					}
 					ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout}).then(res=>{
 						res = res[0];
 						if(res.errno){
@@ -340,7 +348,7 @@ export default {
 								progressbar.destroy();
 							} else {
 								list = list.concat(res.data.list);
-								if(res.data.list.length < params.count) {
+								if(res.data.list.length < params.count || this.downloadAllFromJustOnePage) {
 									list.forEach((record, idx)=>{
 										this.columns.forEach(col=>{
 											if(col.type=='render' && col.render) {

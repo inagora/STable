@@ -36,6 +36,7 @@
 				},
 				parallelCount: 6,
 				downloadTimeout: 10000,
+				downloadAllFromJustOnePage: false,
 				labelVisible: true
 			}, this.config);
 
