@@ -50,7 +50,7 @@ var param = function(obj, traditional){
 		if (isFunction(value)) value = value();
 		if (value == null) value = "";
 		//this.push(decodeURIComponent(key) + '=' + decodeURIComponent(value));
-		this.push(escape(key) + '=' + escape(value));
+		this.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
 	};
 	serialize(params, obj, traditional);
 	return params.join('&').replace(/%20/g, '+');
@@ -77,6 +77,7 @@ function serialize(params, obj, scope){
 function serializeData(options) {
 	if (options.processData && options.data && $type(options.data) != "string")
 		options.data = param(options.data);
+	console.log(options.data)
 	if (options.data && (!options.type || options.type.toUpperCase() == 'GET'))
 		options.url = appendQuery(options.url, options.data), options.data = undefined;
 }
