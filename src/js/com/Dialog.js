@@ -87,6 +87,14 @@ let Dialog={
 			},
 			show(){
 				this.$refs.dialog.show();
+			},
+			//向前兼容的方法
+			open(){
+				this.show();
+			},
+			//向前兼容的方法
+			hide(){
+				this.close();
 			}
 		});
 		config.template = `<x-dialog ref="dialog">${dialogConfig.html||''}</x-dialog>`;
