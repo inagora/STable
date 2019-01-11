@@ -73,12 +73,14 @@
 
 .st-table-cell{
 	padding: 7px 10px 6px;
+	word-break: break-all;
 }
 .st-table-th .st-table-cell{
 	display: flex;
 	align-items: center;
   justify-content: flex-start;
-  background-image: linear-gradient(to bottom, #fdfdfd, #f8f8f8);
+	background-image: linear-gradient(to bottom, #fdfdfd, #f8f8f8);
+	word-break: normal;
 }
 .st-table-th-rownumber .st-table-cell{
 	padding-left: 0;
