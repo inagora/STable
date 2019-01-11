@@ -52,6 +52,13 @@
 			};
 			conf.actionMethods = Object.assign({}, actionMethods, methods);
 
+			if(conf.groupBy){
+				if(!Array.isArray(conf.groupBy))
+					conf.groupBy = [conf.groupBy];
+			} else {
+				conf.groupBy = [];
+			}
+
 			let columns = conf.columns.map((item,idx)=>{
 				if(typeof item == 'string') {
 					item = {

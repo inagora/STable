@@ -1,7 +1,7 @@
 import {ajax} from '../ajax';
 import Progressbar from '../com/Progressbar';
 export default {
-	inject: ['pageMode','pageIndex', 'parallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage'],
+	inject: ['pageMode','pageIndex', 'parallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy'],
 	data(){
 		return {
 			isPageLoading: false,
@@ -182,6 +182,7 @@ export default {
 		},
 		setRecords(records) {
 			this.store.$emit('refresh', records);
+			if()
 			records.forEach((record, idx)=>{
 				this.columns.forEach(col=>{
 					if(col.type=='render' && col.render) {
