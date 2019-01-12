@@ -174,10 +174,10 @@ export default {
 				if(pno != this.store.page){
 					this.store.page = pno;
 				} else {
-					this.load();
+					this.load('cur');
 				}
 			} else {
-				this.load();
+				this.load('cur');
 			}
 		},
 		setRecords(records) {
