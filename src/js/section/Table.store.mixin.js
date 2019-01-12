@@ -174,15 +174,19 @@ export default {
 				if(pno != this.store.page){
 					this.store.page = pno;
 				} else {
-					this.load();
+					this.load('cur');
 				}
 			} else {
-				this.load();
+				this.load('cur');
 			}
 		},
 		setRecords(records) {
 			this.store.$emit('refresh', records);
-			if()
+			if(this.groupBy && this.groupBy.length>0) {
+				for(let dataIndex of groupBy) {
+					//
+				}
+			}
 			records.forEach((record, idx)=>{
 				this.columns.forEach(col=>{
 					if(col.type=='render' && col.render) {

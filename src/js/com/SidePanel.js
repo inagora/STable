@@ -66,7 +66,6 @@ let app = new Vue({
 		hide() {
 			if(this._options.listeners && this._options.listeners.beforehide) {
 				let ret = this._options.listeners.beforehide.call(this);
-				console.log(ret);
 				if(ret===false)
 					return;
 			}
