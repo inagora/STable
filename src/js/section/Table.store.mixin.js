@@ -1,7 +1,7 @@
 import {ajax} from '../ajax';
 import Progressbar from '../com/Progressbar';
 export default {
-	inject: ['pageMode','pageIndex', 'parallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy'],
+	inject: ['pageMode','pageIndex', 'parallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt'],
 	data(){
 		return {
 			isPageLoading: false,
@@ -181,12 +181,61 @@ export default {
 			}
 		},
 		setRecords(records) {
-			this.store.$emit('refresh', records);
+			records.forEach((r,idx)=>{
+				//每一行的辅助数据
+				r._wd_aux = {
+					//这一行有哪些列会开起跨行，跨多少行
+					merges: {},
+					//哪些列需要渲染dom。有跨行时，可能不需要渲染td
+					ignoreRenders: [],
+					//这一行的行号是多少
+					rownumber: idx+1
+				};
+			});
 			if(this.groupBy && this.groupBy.length>0) {
-				for(let dataIndex of groupBy) {
-					//
+				let recordGroup = [records];
+				for(let dataIndex of this.groupBy) {
+					for(let groupIdx=recordGroup.length-1;groupIdx>=0;groupIdx--){
+						let group = recordGroup[groupIdx],
+							sortRet = {},
+							valueList = [];
+						
+						for(let rec of group) {
+							let v = rec[dataIndex];
+							if(typeof v == 'undefined')
+								v = '';
+							if(!sortRet[v]) {
+								valueList.push(v);
+								sortRet[v] = [rec];
+							} else {
+								sortRet[v].push(rec);
+							}
+						}
+						let ret = [];
+						for(let v of valueList) {
+							sortRet[v][0]._wd_aux.merges[dataIndex] = sortRet[v].length;
+							for(let i=1,len=sortRet[v].length;i<len;i++){
+								sortRet[v][i]._wd_aux.ignoreRenders.push(dataIndex)
+							}
+							ret.push(sortRet[v]);
+						}
+						
+						ret.unshift(1);
+						ret.unshift(groupIdx);
+						Array.prototype.splice.apply(recordGroup, ret);
+					}
 				}
+
+				records = [];
+				recordGroup.forEach(group=>{
+					records = records.concat(group);
+				});
+
+				this.store.$emit('refresh', records);
+			} else {
+				this.store.$emit('refresh', records);
 			}
+
 			records.forEach((record, idx)=>{
 				this.columns.forEach(col=>{
 					if(col.type=='render' && col.render) {

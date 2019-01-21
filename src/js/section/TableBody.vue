@@ -8,7 +8,14 @@
 		<tbody>
 			<tr v-for="(record,idx) of recordList" :key="idx" @mouseenter="$emit('hl', idx)" @click="$emit('focus',idx);store.$emit('rowclick',{record, evt:$event})" class="st-table-body-tr" :class="{'st-table-body-tr-hl': idx==hlRowNum, 'st-table-body-tr-focus':idx==focusRowNum}">
 				<template v-for="(col, colIdx) of columns">
-					<td v-if="!locked || col.locked" :key="colIdx" class="st-table-td" :class="[col.cls||'',col.type=='rownumber'?'st-table-td-rownumber':'']" :style="col.style" @click="store.$emit('cellclick', {record, col, evt:$event})">
+					<td
+						v-if="(!locked || col.locked) && !record._wd_aux.ignoreRenders.includes(col.dataIndex)"
+						:key="colIdx"
+						class="st-table-td"
+						:class="[col.cls||'',col.type=='rownumber'?'st-table-td-rownumber':'']"
+						:style="col.style"
+						:rowspan="(record._wd_aux.merges[col.dataIndex])||''"
+						@click="store.$emit('cellclick', {record, col, evt:$event})">
 						<template v-if="col.type=='pad'"></template>
 						<label v-else-if="col.type=='radio'" class="st-table-label-cell">
 								<input type="radio" :value="idx" v-model="store.radioVal" />
@@ -16,12 +23,31 @@
 						<label v-else-if="col.type=='checkbox'" class="st-table-label-cell">
 								<input type="checkbox" :value="idx" v-model="store.checkboxVal" />
 						</label>
-						<div v-else-if="col.type=='rownumber'" class="st-table-cell" v-text="idx+1"></div>
-						<div v-else-if="col.type=='text'" class="st-table-cell" :class="{'st-table-cell-nowrap':!col.cellWrap}" v-text="record[col.dataIndex]"></div>
+						<div v-else-if="col.type=='rownumber'" class="st-table-cell" v-text="record._wd_aux.rownumber"></div>
+						<template v-else-if="col.type=='text'">
+							<template v-if="sublistAt.includes(col.dataIndex)">
+								<div
+									v-for="(_text,_textIdx) of record[col.dataIndex]"
+									:key="_textIdx"
+									class="st-table-cell"
+									:class="{'st-table-cell-nowrap':!col.cellWrap}"
+									v-text="_text"></div>
+							</template>
+							<div v-else class="st-table-cell" :class="{'st-table-cell-nowrap':!col.cellWrap}" d2 v-text="record[col.dataIndex]"></div>
+						</template>
 						<div v-else-if="col.type=='render'" class="st-table-cell" :class="{'st-table-cell-nowrap':!col.cellWrap}" v-html="record['_'+col.dataIndex+'_render_val']"></div>
-						<div v-else-if="col.type=='image'">
-							<img v-if="record[col.dataIndex]" :src="record[col.dataIndex]" :style="col.imgStyle" />
-						</div>
+						<template v-else-if="col.type=='image'">
+							<template v-if="sublistAt.includes(col.dataIndex)">
+								<div
+									v-for="(_src,_srcIdx) of record[col.dataIndex]"
+									:key="_srcIdx">
+									<img :src="_src" :style="col.imgStyle" />
+								</div>
+							</template>
+							<div v-else>
+								<img :src="record[col.dataIndex]" :style="col.imgStyle" />
+							</div>
+						</template>
 						<div v-else-if="col.type=='button'" class="st-table-btn-box">
 							<template v-for="(btn,idx) in col.buttons">
 								<el-button
@@ -53,7 +79,7 @@
 </template>
 <script>
 export default {
-	inject: ['store'],
+	inject: ['store', 'groupBy','sublistAt'],
 	props: ['columns', 'recordList', 'locked', 'tWidth', 'hlRowNum', 'focusRowNum', 'checkedAll', 'haveFx', 'fxResult'],
 	mounted(){
 		this.store.$on('selectall', (selectall)=>{
@@ -64,6 +90,7 @@ export default {
 				this.store.radioVal = '';
 			}
 		});
+		console.log(this.sublistAt)
 	},
 	watch: {
 		'store.checkboxVal': function(){

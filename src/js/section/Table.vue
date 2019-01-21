@@ -185,6 +185,7 @@
 				
 				if(this.selectMode=='single') {
 					columns.unshift({
+						dataIndex:'_wd_aux_radio',
 						text: '⚪',
 						type: 'radio',
 						width: 40,
@@ -193,6 +194,7 @@
 					});
 				} else if(this.selectMode=='multiple'){
 					columns.unshift({
+						dataIndex:'_wd_aux_checkbox',
 						text: '☑',
 						type: 'checkbox',
 						width: 40,
@@ -202,6 +204,7 @@
 				}
 				if(this.rowNumberVisible) {
 					columns.unshift({
+						dataIndex:'_wd_aux_rownumber',
 						text: '#',
 						type: 'rownumber',
 						locked: true,
@@ -211,6 +214,7 @@
 				}
 				if(this.deleteUrl || this.updateUrl) {
 					let btns = {
+						dataIndex:'_wd_aux_op',
 						type: 'button',
 						text: '操作',
 						_width: 0,
@@ -226,6 +230,7 @@
 					}
 				}
 				columns.push({
+					dataIndex:'_wd_aux_pad',
 					type: 'pad',
 					width: 0,
 					_width: 0,

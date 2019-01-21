@@ -92,6 +92,9 @@
 	padding-right: 0;
 	text-align: center;
 }
+.st-table-td .st-table-cell:not(:last-of-type){
+	border-bottom: 1px solid #e8eaec;
+}
 .st-table-label-cell{
 	height: 33px;
 	display: flex;

@@ -58,6 +58,12 @@
 			} else {
 				conf.groupBy = [];
 			}
+			if(conf.sublistAt){
+				if(!Array.isArray(conf.sublistAt))
+					conf.sublistAt = [conf.sublistAt];
+			} else {
+				conf.sublistAt = [];
+			}
 
 			let columns = conf.columns.map((item,idx)=>{
 				if(typeof item == 'string') {

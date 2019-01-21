@@ -56,6 +56,13 @@ module.exports = function(middleware) {
 		let page_count = Math.ceil(allMovies.length/count);
 		
 		allMovies = allMovies.slice((page-1)*count, page*count);
+
+		if(params.sublist_demo) {
+			allMovies.forEach(item=>{
+				if(!Array.isArray(item.movieType))
+					item.movieType = (item.movieType||'').split('|');
+			});
+		}
 		return new Promise(r=>{
 			let t = Math.random();
 			if(t<0.2)
