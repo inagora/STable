@@ -18,6 +18,19 @@
 	list即我们需要的列表内容。
 	* function，如果asyncList为一个函数，那这个函数的返回值是一个promise，它resolve的值即为list数组。
 
+## autoSelect
+* 类型：Boolean
+* 默认值：false
+* 详细：
+下拉框是否默认选中第一项
+
+## clearable
+* 类型：Boolean
+* 默认值：true
+* 详细：
+下拉框是否可以清除
+
+
 ## hidden
 * 类型：boolean
 * 默认值：false

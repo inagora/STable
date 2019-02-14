@@ -60,7 +60,7 @@
 					v-else-if="field.type=='combobox'||field.type=='multiple'"
 					v-model="formData[field.name]"
 					filterable
-					clearable
+					:clearable="field.clearable"
 					:default-first-option="true"
 					:filter-method="field.filter"
 					:style="{width:field.width+'px'}"
@@ -292,6 +292,12 @@
 						}
 						if(!field.type)
 							field.type = 'combobox';
+						if(field.autoSelect && field.list.length>0) {
+							field.value = field.list[0].value;
+						}
+						if(typeof field.clearable =='undefined'){
+							field.clearable = true;
+						}
 					}
 
 					if(!field.type && field.asyncList){
