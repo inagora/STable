@@ -34,7 +34,13 @@ module.exports = function(middleware) {
 		}
 		if(params.movieType){
 			let movieType = params.movieType.toLocaleLowerCase();
-			allMovies = allMovies.filter(item=>item.movieType.toLocaleLowerCase().includes(movieType));
+			allMovies = allMovies.filter(item=>{
+				let mt = item.movieType;
+				if(Array.isArray(mt)){
+					mt = mt.join('|');
+				}
+				return mt.toLocaleLowerCase().includes(movieType);
+			});
 		}
 		if(params.stime) {
 			allMovies = allMovies.filter(item=>item.realTime&&item.realTime.replace(/[年月日]/g,'-')>=params.stime);
