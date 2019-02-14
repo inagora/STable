@@ -296,7 +296,16 @@ export default {
 					page_count = 1;
 				}
 				let pnoIdx = 0;
+				/**
+				 * 为了防止批量下载拖库，把数据库下垮，根据下载速度，动态调整最大并行下载数。
+				 * 设最近10个请求的平均时间为AQT
+				 * 如果AQT<=1s，最大并行数为oriParallelCount;
+				 * 否则，dt = AQT-1s，最大并行数 oriParallelCount*( 1 - dt/10s )
+				 * 最小并行数为1。
+				 * 这样，随着平均请求时间最多，最大并行数减少，以达到控制请求数目的
+				 */
 				let parallelCount = this.parallelCount;
+				let oriParallelCount = parallelCount;
 				let loadedCount = 0;
 				let createJob = (pno)=>{
 					let params = Object.assign({}, this.params, this.store.searchParams);
