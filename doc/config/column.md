@@ -76,6 +76,12 @@
 	* 'image'，显示为图片
 	* 'tag', 带颜色的文字
 
+## visible
+* 类型：Boolean
+* 默认值：true
+* 详细：
+此项决定列默认是不是显示出来
+
 ## width
 * 类型：Number
 * 详细：
