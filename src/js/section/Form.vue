@@ -56,6 +56,18 @@
 					:placeholder="field.placeholder"
 					:title="field.title"
 					:name="field.name"></el-time-picker>
+				<div v-else-if="field.type=='radio'" class="st-radio-box">
+					<label class="st-radio-item" v-for="(item, radioIdx) of field.list" :key="radioIdx">
+						<input type="radio" :value="item.value" v-model="formData[field.name]">
+						<span v-text="item.text"></span>
+					</label>
+				</div>
+				<div v-else-if="field.type=='checkbox'" class="st-radio-box">
+					<label class="st-radio-item" v-for="(item, radioIdx) of field.list" :key="radioIdx">
+						<input type="checkbox" :value="item.value" v-model="formData[field.name]">
+						<span v-text="item.text"></span>
+					</label>
+				</div>
 				<el-select
 					v-else-if="field.type=='combobox'||field.type=='multiple'"
 					v-model="formData[field.name]"
@@ -382,8 +394,6 @@
 						data[field.name] = this.formData[field.name];
 					}
 				}
-				console.log(this.fields)
-				console.log(data);
 				this.$emit('submit', data);
 			},
 			getFormData(){
@@ -396,3 +406,17 @@
 		}
 	}
 </script>
+<style>
+.st-radio-box{
+	display: flex;
+	flex-wrap: wrap;
+}
+.st-radio-item{
+	margin-right: 10px;
+	color: #606266;
+	cursor: pointer;
+}
+.st-radio-item:hover{
+	color: #191919;
+}
+</style>

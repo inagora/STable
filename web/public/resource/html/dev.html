@@ -74,6 +74,20 @@ STable.init({
 		autoSelect: true,
 		clearable: false
 	}],
+	updateUrl: '/',
+	editConf: [{
+		type: 'radio',
+		label: '测试radio',
+		name: 'type1',
+		value: '喜剧',
+		list: type
+	}, {
+		type: 'checkbox',
+		label: '测试checkbox',
+		name: 'type_list',
+		value: ['喜剧','悬疑'],
+		list: type
+	}],
 	rowNumberVisible: true,
 	sublistAt: 'movieType',
 	columns: [

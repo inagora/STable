@@ -108,7 +108,14 @@
 								ret = toolbar.listeners.beforeadd.call(toolbar.$root, data, this);
 							if(ret===false)
 								return;
-							ajax({url: toolbar.addUrl, data, type:toolbar.actionMethods.create}).then(res=>{
+							let addUrl = toolbar.addUrl;
+							if(ret) {
+								if(ret.url)
+									addUrl = ret.url;
+								if(ret.data)
+									data = ret.data;
+							}
+							ajax({url: addUrl, data, type:toolbar.actionMethods.create}).then(res=>{
 								res = res[0];
 								if(res.errno==0){
 									this.$message({
