@@ -6,7 +6,7 @@ export default {
 		return {
 			isPageLoading: false,
 			flymanVisible: false,
-			recordList: this.records||[],
+			recordList: [],
 			clean: true	//"干净"状态下的表格，不会提示下一页没有数据之类的提示
 		};
 	},
