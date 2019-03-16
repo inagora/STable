@@ -65,12 +65,20 @@
 				conf.sublistAt = [];
 			}
 
+			let additionalColumnConfig = conf.additionalColumnConfig||false;
 			let columns = conf.columns.map((item,idx)=>{
 				if(typeof item == 'string') {
 					item = {
 						text: item,
 						dataIndex: item
 					};
+				}
+				if(additionalColumnConfig) {
+					if(Array.isArray(additionalColumnConfig)) {
+						Object.assign(item, additionalColumnConfig[idx]);
+					} else if(item.dataIndex && additionalColumnConfig[item.dataIndex]) {
+						Object.assign(item, additionalColumnConfig[item.dataIndex]);
+					}
 				}
 				if (item.header) {
 					item.text = item.header;
