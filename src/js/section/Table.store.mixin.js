@@ -253,6 +253,10 @@ export default {
 							}
 							record['_'+col.dataIndex+'_btns'].push(visible);
 						}); 
+					} else if (col.options) {
+						//todo，这里直接影响了原因数据，是一种不友好的做法，新版中请解决这个问题
+						record['_ori_'+col.dataIndex] = record[col.dataIndex];
+						record[col.dataIndex] = col.options[record[col.dataIndex]+''];
 					}
 				});
 			});

@@ -77,7 +77,6 @@ function serialize(params, obj, scope){
 function serializeData(options) {
 	if (options.processData && options.data && $type(options.data) != "string")
 		options.data = param(options.data);
-	console.log(options.data)
 	if (options.data && (!options.type || options.type.toUpperCase() == 'GET'))
 		options.url = appendQuery(options.url, options.data), options.data = undefined;
 }

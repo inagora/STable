@@ -90,7 +90,6 @@ export default {
 				this.store.radioVal = '';
 			}
 		});
-		console.log(this.sublistAt)
 	},
 	watch: {
 		'store.checkboxVal': function(){

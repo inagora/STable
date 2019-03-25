@@ -83,6 +83,10 @@
 				if (item.header) {
 					item.text = item.header;
 				}
+				//防止有options字段，又没有配置可选值
+				if (item.options && Object.keys(item.options).length<=0){
+					item.options = false;
+				}
 				if (item.buttons) {
 					if(!item.type)
 						item.type = 'button';
