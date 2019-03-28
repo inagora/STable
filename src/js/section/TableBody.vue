@@ -15,7 +15,7 @@
 						:class="[col.cls||'',col.type=='rownumber'?'st-table-td-rownumber':'']"
 						:style="col.style"
 						:rowspan="(record._wd_aux.merges[col.dataIndex])||''"
-						@click="store.$emit('cellclick', {record, col, evt:$event})">
+						@click="col.click&&col.click(record,col, $event);store.$emit('cellclick', {record, col, evt:$event})">
 						<template v-if="col.type=='pad'"></template>
 						<label v-else-if="col.type=='radio'" class="st-table-label-cell">
 								<input type="radio" :value="idx" v-model="store.radioVal" />

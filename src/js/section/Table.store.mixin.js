@@ -114,7 +114,13 @@ export default {
 				params.page = this.store.page;
 
 			this.lastRequestParams = params;
-			ajax({url:this.url, data: params, type:this.actionMethods.read}).then(res=>{
+			let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read};
+			if(this.listeners.beforedatarequest){
+				let ret = this.listeners.beforedatarequest(ajaxOptions);
+				if(ret && ret.url)
+					ajaxOptions = ret;
+			}
+			ajax(ajaxOptions).then(res=>{
 				this.isPageLoading = false;
 				res = res[0];
 				if(this.timer){
@@ -312,7 +318,13 @@ export default {
 					if(this.downloadAllFromJustOnePage) {
 						params.count = 'max';
 					}
-					let job = ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout});
+					let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
+					if(this.listeners.beforedatarequest){
+						let ret = this.listeners.beforedatarequest(ajaxOptions);
+						if(ret && ret.url)
+							ajaxOptions = ret;
+					}
+					let job = ajax(ajaxOptions);
 					job.then(res=>{
 						res = res[0];
 						list[params.page] = res.data&&res.data.list||[];
@@ -388,7 +400,13 @@ export default {
 					if(this.downloadAllFromJustOnePage) {
 						params.count = 'max';
 					}
-					ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout}).then(res=>{
+					let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
+					if(this.listeners.beforedatarequest){
+						let ret = this.listeners.beforedatarequest(ajaxOptions);
+						if(ret && ret.url)
+							ajaxOptions = ret;
+					}
+					ajax(ajaxOptions).then(res=>{
 						res = res[0];
 						if(res.errno){
 							this.$alert(res.errmsg,'提示', {type: 'error'});
