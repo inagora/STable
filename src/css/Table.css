@@ -103,6 +103,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin-bottom: 0;
 }
 .st-table-td-rownumber{
 	background: linear-gradient(to right,#fdfdfd, #f7f7f7);

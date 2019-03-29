@@ -65,6 +65,7 @@
 				conf.sublistAt = [];
 			}
 
+			let additionalColumnConfig = conf.additionalColumnConfig||false;
 			let columns = conf.columns.map((item,idx)=>{
 				if(typeof item == 'string') {
 					item = {
@@ -72,8 +73,19 @@
 						dataIndex: item
 					};
 				}
+				if(additionalColumnConfig) {
+					if(Array.isArray(additionalColumnConfig)) {
+						Object.assign(item, additionalColumnConfig[idx]);
+					} else if(item.dataIndex && additionalColumnConfig[item.dataIndex]) {
+						Object.assign(item, additionalColumnConfig[item.dataIndex]);
+					}
+				}
 				if (item.header) {
 					item.text = item.header;
+				}
+				//防止有options字段，又没有配置可选值
+				if (item.options && Object.keys(item.options).length<=0){
+					item.options = false;
 				}
 				if (item.buttons) {
 					if(!item.type)

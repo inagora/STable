@@ -317,11 +317,19 @@
 									edit(data){
 										let ret = true;
 										if(self.listeners.beforeedit)
-											ret = self.listeners.beforeedit.call(self.$root, data);
+											ret = self.listeners.beforeedit.call(self.$root, data, record);
 										if(ret===false)
 											return;
+										let updateUrl = self.updateUrl;
+										if(ret) {
+											if(ret.url)
+												updateUrl = ret.url;
+											if(ret.data)
+												data = ret.data;
+										}
 										data[self.idIndex] = record[self.idIndex];
-										ajax({ url:self.updateUrl, data, type: self.actionMethods.update}).then(res=>{
+										
+										ajax({ url: updateUrl, data, type: self.actionMethods.update}).then(res=>{
 											res = res[0];
 											if(res.errno==0){
 												this.$message({

@@ -29,6 +29,7 @@ STable的使用，大部分时间都是在和各种配置参数打交道。
 	* [crud操作](/demo/edit)
 	* [请求方法 actionMethods](#action-methods)
 
+
 ## batDeleteUrl
 * 类型：String
 * 详细：

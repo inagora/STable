@@ -58,6 +58,8 @@
 	<script src="https://cdn.jsdelivr.net/combine/npm/vue@2.5.17/dist/vue.min.js,npm/element-ui@2.4.8/lib/index.js"></script>
 	<script src="/resource/module/STable/STable.min.js"></script>
 	<script>
+		
+		const type = ["剧情", "喜剧", "短片", "爱情", "纪录片", "动作", "惊悚", "恐怖", "动画", "犯罪", "冒险", "家庭", "悬疑", "奇幻", "科幻", "战争", "传记", "音乐", "历史", "歌舞", "西部", "运动", "古装", "武侠", "戏曲", "黑色电影", "儿童", "新闻", "真人秀", "舞台艺术", "成人", "脱口秀", "游戏秀", "情色", "文艺", "同性", "女性", "青春", "励志", "微电影", "灾难"];
 STable.init({
 	title: 'groupBy',
 	url: '/demo/ajaxList?sublist_demo=1',
@@ -65,6 +67,27 @@ STable.init({
 		count: 40,
 		page: 5
 	},
+	searchFilter:[{
+		label:'类型',
+		name:'movieType',
+		list: type,
+		autoSelect: true,
+		clearable: false
+	}],
+	updateUrl: '/',
+	editConf: [{
+		type: 'radio',
+		label: '测试radio',
+		name: 'type1',
+		value: '喜剧',
+		list: type
+	}, {
+		type: 'checkbox',
+		label: '测试checkbox',
+		name: 'type_list',
+		value: ['喜剧','悬疑'],
+		list: type
+	}],
 	rowNumberVisible: true,
 	sublistAt: 'movieType',
 	columns: [

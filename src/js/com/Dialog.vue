@@ -1,15 +1,15 @@
 <template>
-	<div v-show="visible" class="dialog">
-		<div v-if="conf.modal" class="dialog-mask"></div>
-		<div class="dialog-doc" :style="{width:conf.width, height:conf.height}">
-			<div class="dialog-head">
-				<div class="dialog-title" v-text="conf.title"></div>
-				<div @click="close" v-if="conf.closable" class="dialog-close">❎</div>
+	<div v-show="visible" class="st-dialog">
+		<div v-if="conf.modal" class="st-dialog-mask"></div>
+		<div class="st-dialog-doc" :style="{width:conf.width, height:conf.height}">
+			<div class="st-dialog-head">
+				<div class="st-dialog-title" v-text="conf.title"></div>
+				<div @click="close" v-if="conf.closable" class="st-dialog-close">❎</div>
 			</div>
-			<div class="dialog-body" :class="[conf.bodyCls]" :style="conf.bodyStyle">
+			<div class="st-dialog-body" :class="[conf.bodyCls]" :style="conf.bodyStyle">
 				<slot></slot>
 			</div>
-			<div v-if="conf.buttons && conf.buttons.length>0" class="dialog-foot">
+			<div v-if="conf.buttons && conf.buttons.length>0" class="st-dialog-foot">
 				<el-button
 					v-for="(btn,idx) in conf.buttons"
 					:key="idx"
@@ -78,17 +78,17 @@
 			this.trigger('ready');
 			
 			let startX, startY;
-			let doc = this.$el.querySelector('.dialog-doc');
+			let doc = this.$el.querySelector('.st-dialog-doc');
 			function drag(evt){
 				doc.style.marginLeft = evt.clientX-startX+'px';
 				doc.style.marginTop = evt.clientY-startY+'px';
 			}
 			function stopDrag() {
-				doc.classList.remove('dialog-dragging');
+				doc.classList.remove('st-dialog-dragging');
 				document.documentElement.removeEventListener('mousemove', drag, false);
 				document.documentElement.removeEventListener('mouseup', stopDrag, false);
 			}
-			this.$el.querySelector('.dialog-title').addEventListener('mousedown', function(evt){
+			this.$el.querySelector('.st-dialog-title').addEventListener('mousedown', function(evt){
 				evt.preventDefault();
 				startX = evt.clientX-parseInt(doc.style.marginLeft||0, 10);
 				startY = evt.clientY-parseInt(doc.style.marginTop||0, 10);
@@ -96,7 +96,7 @@
 				document.documentElement.removeEventListener('mouseup', stopDrag, false);
 				document.documentElement.addEventListener('mousemove', drag, false);
 				document.documentElement.addEventListener('mouseup', stopDrag, false);
-				doc.classList.add('dialog-dragging');
+				doc.classList.add('st-dialog-dragging');
 			},false);
 		},
 		methods: {
@@ -146,7 +146,7 @@
 	}
 </script>
 <style scoped>
-	.dialog-mask{
+	.st-dialog-mask{
 		position: fixed;
 		left: 0;
 		top: 0;
@@ -157,7 +157,7 @@
 		backdrop-filter: blur(5px);
 		z-index: 99;
 	}
-	.dialog-doc{
+	.st-dialog-doc{
 		z-index: 99;
 		position: fixed;
 		left: 50%;
@@ -173,7 +173,7 @@
 		display: flex;
 		flex-direction: column;
 	}
-	.dialog-head{
+	.st-dialog-head{
 		border-bottom: 1px solid #e8eaec;
 		display: flex;
 		align-items: center;
@@ -182,7 +182,7 @@
 		-webkit-user-select: none;
 		user-select: none;
 	}
-	.dialog-title{
+	.st-dialog-title{
 		margin-left: 10px;
 		flex: 1;
 		overflow: hidden;
@@ -194,32 +194,32 @@
 		font-size: 12px;
 		opacity: 0.8;
 	}
-	.dialog-close{
+	.st-dialog-close{
 		margin: 0 10px;
 		cursor: pointer;
 		opacity: 0.8;
 	}
-	.dialog-close:hover{
+	.st-dialog-close:hover{
 		opacity: 1;
 	}
-	.dialog-body{
+	.st-dialog-body{
 		flex: 1;
 		padding: 10px;
 		overflow: auto;
 		background-color: #fff;
 	}
-	.dialog-foot{
+	.st-dialog-foot{
 		border-top: 1px solid #e8eaec;
 		background-color: #fafafa;
 		padding: 7px 20px 8px;
 		text-align: right;
 	}
-	.dialog-foot>button{
+	.st-dialog-foot>button{
 		margin-left: 10px;
 	}
 
-	.dialog-dragging .dialog-body,
-	.dialog-dragging .dialog-foot{
+	.st-dialog-dragging .st-dialog-body,
+	.st-dialog-dragging .st-dialog-foot{
 		display: none;
 	}
 </style>

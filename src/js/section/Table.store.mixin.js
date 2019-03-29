@@ -6,7 +6,7 @@ export default {
 		return {
 			isPageLoading: false,
 			flymanVisible: false,
-			recordList: this.records||[],
+			recordList: [],
 			clean: true	//"干净"状态下的表格，不会提示下一页没有数据之类的提示
 		};
 	},
@@ -114,7 +114,13 @@ export default {
 				params.page = this.store.page;
 
 			this.lastRequestParams = params;
-			ajax({url:this.url, data: params, type:this.actionMethods.read}).then(res=>{
+			let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read};
+			if(this.listeners.beforedatarequest){
+				let ret = this.listeners.beforedatarequest(ajaxOptions);
+				if(ret && ret.url)
+					ajaxOptions = ret;
+			}
+			ajax(ajaxOptions).then(res=>{
 				this.isPageLoading = false;
 				res = res[0];
 				if(this.timer){
@@ -253,6 +259,10 @@ export default {
 							}
 							record['_'+col.dataIndex+'_btns'].push(visible);
 						}); 
+					} else if (col.options) {
+						//todo，这里直接影响了原因数据，是一种不友好的做法，新版中请解决这个问题
+						record['_ori_'+col.dataIndex] = record[col.dataIndex];
+						record[col.dataIndex] = col.options[record[col.dataIndex]+''];
 					}
 				});
 			});
@@ -317,7 +327,13 @@ export default {
 					if(this.downloadAllFromJustOnePage) {
 						params.count = 'max';
 					}
-					let job = ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout});
+					let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
+					if(this.listeners.beforedatarequest){
+						let ret = this.listeners.beforedatarequest(ajaxOptions);
+						if(ret && ret.url)
+							ajaxOptions = ret;
+					}
+					let job = ajax(ajaxOptions);
 					job.then(res=>{
 						res = res[0];
 						list[params.page] = res.data&&res.data.list||[];
@@ -393,7 +409,13 @@ export default {
 					if(this.downloadAllFromJustOnePage) {
 						params.count = 'max';
 					}
-					ajax({url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout}).then(res=>{
+					let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
+					if(this.listeners.beforedatarequest){
+						let ret = this.listeners.beforedatarequest(ajaxOptions);
+						if(ret && ret.url)
+							ajaxOptions = ret;
+					}
+					ajax(ajaxOptions).then(res=>{
 						res = res[0];
 						if(res.errno){
 							this.$alert(res.errmsg,'提示', {type: 'error'});
