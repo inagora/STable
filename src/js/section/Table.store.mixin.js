@@ -308,14 +308,15 @@ export default {
 				let pnoIdx = 0;
 				/**
 				 * 为了防止批量下载拖库，把数据库下垮，根据下载速度，动态调整最大并行下载数。
-				 * 设最近10个请求的平均时间为AQT
-				 * 如果AQT<=1s，最大并行数为oriParallelCount;
-				 * 否则，dt = AQT-1s，最大并行数 oriParallelCount*( 1 - dt/10s )
+				 * 设最近10个请求的平均时间为ALT(average load time)
+				 * 如果ALT<=1s，最大并行数为oriParallelCount;
+				 * 否则，dt = ALT-1s，最大并行数 oriParallelCount*( 1 - dt/10s )
 				 * 最小并行数为1。
-				 * 这样，随着平均请求时间最多，最大并行数减少，以达到控制请求数目的
+				 * 这样，随着平均请求时间增多，最大并行数减少，以达到控制请求数目的
 				 */
 				let parallelCount = this.parallelCount;
 				let oriParallelCount = parallelCount;
+				let loadTime = [];
 				let loadedCount = 0;
 				let createJob = (pno)=>{
 					let params = Object.assign({}, this.params, this.store.searchParams);
@@ -333,8 +334,11 @@ export default {
 						if(ret && ret.url)
 							ajaxOptions = ret;
 					}
+
+					let startTime = new Date();
 					let job = ajax(ajaxOptions);
 					job.then(res=>{
+						loadTime.push(new Date() - startTime);
 						res = res[0];
 						list[params.page] = res.data&&res.data.list||[];
 						if(res.data && res.data.page_count)
@@ -353,12 +357,33 @@ export default {
 							per = Math.floor(per);
 						progressbar.update(per/100, `已下载${loadedCount}页，共${page_count}页`);
 					}, function(){
+						loadTime.push(new Date() - startTime);
 						jobList.splice(jobList.indexOf(job), 1);
 						jobList.push(createJob(pno));
 					});
 					return job;
 				};
 				let startJob = ()=>{
+					//根据ALT计算最大并行数
+					let lastLoadTime = loadTime.slice(-10);
+					if(lastLoadTime.length<=0) {
+						parallelCount = oriParallelCount;
+					} else {
+						let totalTime = 0;
+						lastLoadTime.forEach(t=> totalTime+=t);
+						let ALT = totalTime/lastLoadTime.length;
+						let count = oriParallelCount*( 1 - (ALT-1000)/10000 );
+						count = Math.round(count);
+						if(count<1)
+							parallelCount = count;
+						else if(count>oriParallelCount)
+							parallelCount = oriParallelCount;
+						else
+							parallelCount = count;
+					}
+					console.log('parallelCount: '+parallelCount);
+
+
 					if(jobList.length>=parallelCount)
 						return;
 					if(pnoIdx < page_count) {
