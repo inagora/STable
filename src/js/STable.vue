@@ -171,6 +171,20 @@
 			if(conf.updateUrl) {
 				conf.editConf = conf.editConfig||conf.editConf||conf.metaEditConf;
 			}
+			if(conf.deleteUrl || conf.updateUrl) {
+				columns.push({
+					dataIndex:'_wd_aux_op',
+					type: 'button',
+					text: '操作',
+					_width: 0,
+					visible: true,
+					locked: false,
+					cellWrap: true,
+					_st_idx: columns.length,
+					_st_ori_idx: columns.length,
+					buttons: []
+				});
+			}
 			let selectMode = conf.selectMode.trim().toLowerCase();
 			if(['radio', 'single'].includes(selectMode)){
 				conf.selectMode = 'single';

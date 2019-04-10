@@ -213,15 +213,8 @@
 					});
 				}
 				if(this.deleteUrl || this.updateUrl) {
-					let btns = {
-						dataIndex:'_wd_aux_op',
-						type: 'button',
-						text: '操作',
-						_width: 0,
-						buttons: this.getOpBtns()
-					};
-					
-					columns.push(btns);
+					let cm = columns.filter(item=>item.dataIndex=='_wd_aux_op')[0];
+					cm.buttons = this.getOpBtns();
 				}
 
 				for(let col of columns) {

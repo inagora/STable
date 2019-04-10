@@ -1,5 +1,5 @@
 <template>
-	<el-form v-bind="$attrs" :inline="inline" @submit.native.prevent="submit" :model="formData">
+	<el-form v-bind="$attrs" :inline="inline" @submit.native.prevent="submit" :rules="rules" :model="formData">
 		<template v-for="field in fields">
 			<input
 				v-if="field.type=='hidden'"
@@ -7,7 +7,7 @@
 				:key="field.name"
 				v-model="formData[field.name]"
 				:name="field.name" />
-			<el-form-item v-else :key="field.name" :label="field.label">
+			<el-form-item v-else :key="field.name" :label="field.label" :prop="field.name">
 				<el-input
 					v-if="field.type=='text'"
 					v-model="formData[field.name]"
@@ -159,6 +159,9 @@
 		data(){
 			let fields = this.formatField(this.fieldList);
 			let formData = {};
+			let rules = {};
+			let dateTypes = ['year', 'month', 'date', 'datetime'];
+			let selectTypes = ['combobox', 'multiple', 'cascade'];
 			fields.forEach((field, idx)=>{
 				formData[field.name] = typeof this.defaultValues[field.name]=='undefined' ? field.value : this.defaultValues[field.name];
 
@@ -188,12 +191,28 @@
 					};
 					field.options = format(field.listData);
 				}
+
+				if(field.required) {
+					let message = '必须输入';
+					if(dateTypes.includes(field.type) || selectTypes.includes(field.type)) {
+						message = '请选择'+field.label;
+					} else {
+						message = '请输入'+field.label;
+					}
+					rules[field.name] = [{
+						required: true,
+						message,
+						trigger: 'change'
+					}];
+				}
+
 			});
 		
 			return {
 				fields,
 				formData,
-				dateTypes: ['year', 'month', 'date', 'datetime'],
+				dateTypes,
+				rules,
 				dateFormat: {
 					year: 'yyyy',
 					month: 'yyyy-MM',
