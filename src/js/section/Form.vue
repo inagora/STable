@@ -19,7 +19,8 @@
 					:disabled="field.disabled"
 					:placeholder="field.placeholder"
 					:title="field.title"
-					:name="field.name"></el-input>
+					:name="field.name"
+					@change="handleChange($event, field)"></el-input>
 				<el-input
 					v-else-if="field.type=='textarea'"
 					v-model="formData[field.name]"
@@ -31,7 +32,8 @@
 					:required="field.required"
 					:placeholder="field.placeholder"
 					:title="field.title"
-					:name="field.name"></el-input>
+					:name="field.name"
+					@change="handleChange($event, field)"></el-input>
 				<el-date-picker
 					v-else-if="dateTypes.includes(field.type)"
 					v-model="formData[field.name]"
@@ -43,7 +45,8 @@
 					:required="field.required"
 					:placeholder="field.placeholder"
 					:title="field.title"
-					:name="field.name"></el-date-picker>
+					:name="field.name"
+					@change="handleChange($event, field)"></el-date-picker>
 				<el-time-picker
 					v-else-if="timeTypes.includes(field.type)"
 					v-model="formData[field.name]"
@@ -55,16 +58,17 @@
 					:required="field.required"
 					:placeholder="field.placeholder"
 					:title="field.title"
-					:name="field.name"></el-time-picker>
+					:name="field.name"
+					@change="handleChange($event, field)"></el-time-picker>
 				<div v-else-if="field.type=='radio'" class="st-radio-box">
 					<label class="st-radio-item" v-for="(item, radioIdx) of field.list" :key="radioIdx">
-						<input type="radio" :value="item.value" v-model="formData[field.name]">
+						<input type="radio" :value="item.value" v-model="formData[field.name]" @change="handleChange($event, field, item, radioIdx)">
 						<span v-text="item.text"></span>
 					</label>
 				</div>
 				<div v-else-if="field.type=='checkbox'" class="st-radio-box">
 					<label class="st-radio-item" v-for="(item, radioIdx) of field.list" :key="radioIdx">
-						<input type="checkbox" :value="item.value" v-model="formData[field.name]">
+						<input type="checkbox" :value="item.value" v-model="formData[field.name]" @change="handleChange($event, field, item, radioIdx)">
 						<span v-text="item.text"></span>
 					</label>
 				</div>
@@ -82,7 +86,8 @@
 					:required="field.required"
 					:placeholder="field.placeholder"
 					:title="field.title"
-					:name="field.name">
+					:name="field.name"
+					@change="handleChange($event, field)">
 					<el-option
 						v-for="item in field._list"
 						:key="item.value"
@@ -103,7 +108,7 @@
 					:placeholder="field.placeholder"
 					:title="field.title"
 					:name="field.name"
-					@change="handleChange">
+					@change="handleChange($event, field)">
 				</el-cascader>
 				<x-file
 					v-else-if="field.type=='file'"
@@ -395,6 +400,11 @@
 					}
 				}
 				this.$emit('submit', data);
+			},
+			handleChange(val, field, item, idx){
+				if(field.listeners && field.listeners.change) {
+					field.listeners.change.call(this, val, item, idx);
+				}
 			},
 			getFormData(){
 				return this.formData;
