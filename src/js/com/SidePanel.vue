@@ -109,7 +109,7 @@ export default {
 	text-align: center;
 }
 .x-sp-head .el-button{
-	transform: rotateY(180deg);
+	transform: rotate(180deg);
 }
 
 .x-sp-body{

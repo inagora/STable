@@ -138,10 +138,22 @@
 			},
 			download(){
 				let list = this.store.getCurrentPage();
+				if(this.listeners.beforeexport){
+					let ret = this.listeners.beforeexport(list);
+					if(Array.isArray(ret)){
+						list = ret;
+					}
+				}
 				this.export(list);
 			},
 			downloadAll(){
 				this.store.getAllPages().then(list=>{
+					if(this.listeners.beforeexport){
+						let ret = this.listeners.beforeexport(list);
+						if(Array.isArray(ret)){
+							list = ret;
+						}
+					}
 					this.export(list);
 				});
 			},
