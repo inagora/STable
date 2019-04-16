@@ -113,4 +113,8 @@ export default {
 .st-table-btn-box button{
 	margin-bottom: 8px;
 }
+.st-table-btn-box>.el-button{
+	margin-left: 0;
+	margin-right: 10px;
+}
 </style>

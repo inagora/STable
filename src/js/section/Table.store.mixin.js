@@ -301,6 +301,7 @@ export default {
 				progressbar.update(0, '开始下载数据');
 				let list = [];
 				let jobList = [];
+				let retryList = [];
 				let page_count = this.store.page_count||1;
 				if(this.downloadAllFromJustOnePage) {
 					page_count = 1;
@@ -359,7 +360,9 @@ export default {
 					}, function(){
 						loadTime.push(new Date() - startTime);
 						jobList.splice(jobList.indexOf(job), 1);
-						jobList.push(createJob(pno));
+						//jobList.push(createJob(pno));
+						retryList.push(pno);
+						startJob();
 					});
 					return job;
 				};
@@ -386,13 +389,17 @@ export default {
 
 					if(jobList.length>=parallelCount)
 						return;
-					if(pnoIdx < page_count) {
+					if(retryList.length>0) {
+						let pno = retryList.shift();
+						jobList.push(createJob(pno));
+						startJob();
+					}else if(pnoIdx < page_count) {
 						pnoIdx++;
 						jobList.push(createJob(pnoIdx));
 						startJob();
 					}
 					
-					if(jobList.length<=0 && pnoIdx>=page_count) {
+					if(retryList.length<=0 && jobList.length<=0 && pnoIdx>=page_count) {
 						progressbar.destroy();
 						let ret = [];
 						for(let i=1;i<=page_count;i++){
