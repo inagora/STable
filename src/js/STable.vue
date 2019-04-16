@@ -182,6 +182,7 @@
 					cellWrap: true,
 					_st_idx: columns.length,
 					_st_ori_idx: columns.length,
+					dynamicParallelCount: false,
 					buttons: []
 				});
 			}

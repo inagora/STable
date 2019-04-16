@@ -1,7 +1,7 @@
 import {ajax} from '../ajax';
 import Progressbar from '../com/Progressbar';
 export default {
-	inject: ['pageMode','pageIndex', 'parallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt'],
+	inject: ['pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt'],
 	data(){
 		return {
 			isPageLoading: false,
@@ -317,6 +317,7 @@ export default {
 				 */
 				let parallelCount = this.parallelCount;
 				let oriParallelCount = parallelCount;
+				let dynamicParallelCount = this.dynamicParallelCount;
 				let loadTime = [];
 				let loadedCount = 0;
 				let createJob = (pno)=>{
@@ -368,22 +369,25 @@ export default {
 				};
 				let startJob = ()=>{
 					//根据ALT计算最大并行数
-					let lastLoadTime = loadTime.slice(-10);
-					if(lastLoadTime.length<=0) {
-						parallelCount = oriParallelCount;
-					} else {
-						let totalTime = 0;
-						lastLoadTime.forEach(t=> totalTime+=t);
-						let ALT = totalTime/lastLoadTime.length;
-						let count = oriParallelCount*( 1 - (ALT-1000)/10000 );
-						count = Math.round(count);
-						if(count<1)
-							parallelCount = count;
-						else if(count>oriParallelCount)
+					if(dynamicParallelCount){
+						let lastLoadTime = loadTime.slice(-10);
+						if(lastLoadTime.length<=0) {
 							parallelCount = oriParallelCount;
-						else
-							parallelCount = count;
+						} else {
+							let totalTime = 0;
+							lastLoadTime.forEach(t=> totalTime+=t);
+							let ALT = totalTime/lastLoadTime.length;
+							let count = oriParallelCount*( 1 - (ALT-1000)/10000 );
+							count = Math.round(count);
+							if(count<1)
+								parallelCount = count;
+							else if(count>oriParallelCount)
+								parallelCount = oriParallelCount;
+							else
+								parallelCount = count;
+						}
 					}
+
 					console.log('parallelCount: '+parallelCount);
 
 
