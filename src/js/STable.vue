@@ -1,5 +1,5 @@
 <template>
-	<div class="st-stable">
+	<div class="st-stable" :class="[config.layout=='expand'?'st-expand-stable':'st-fixed-stable']">
 		<x-title></x-title>
 		<x-tip></x-tip>
 		<x-toolbar></x-toolbar>
@@ -37,7 +37,8 @@
 				parallelCount: 6,
 				downloadTimeout: 10000,
 				downloadAllFromJustOnePage: false,
-				labelVisible: true
+				labelVisible: true,
+				layout: 'fixed'
 			}, this.config);
 
 			let methods = conf.actionMethods||conf.requestMethod||'GET';

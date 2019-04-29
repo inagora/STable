@@ -1,14 +1,21 @@
 .st-table{
-	flex: 1;
-	position: relative;
 	color: #191919;
+	min-height: 200px;
 }
-.st-table-doc{
+.st-fixed-stable .st-table{
+	position: relative;
+	flex: 1;
+}
+.st-table-doc{}
+.st-fixed-stable .st-table-doc{
 	position: absolute;
 	left: 0;
 	top: 0;
 	bottom: 0;
 	right: 0;
+}
+.st-expand-stable .st-table-doc{
+	position: relative;
 }
 .st-table-cell-nowrap{
 	overflow: hidden;
@@ -27,6 +34,13 @@
 	position: relative;
 }
 .st-table-head-box{
+	overflow: hidden;
+	height: 36px;
+	width: 100%;
+	border-bottom: 1px solid #d0d0d0;
+	border-right: 1px solid #d0d0d0;
+}
+.st-fixed-stable .st-table-head-box{
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -156,24 +170,34 @@
 }
 
 .st-table-body-box{
+	width: 100%;
+	overflow-x: auto;
+}
+.st-fixed-stable .st-table-body-box{
 	position: absolute;
 	left: 0;
 	top: 36px;
 	bottom: 0;
-	width: 100%;
 	overflow-y: scroll;
-	overflow-x: auto;
+}
+.st-expand-stable .st-table-body-box{
+	overflow-y: hidden;
 }
 .st-table-empty{
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
 	width: 128px;
 	height: 128px;
 	opacity: 0.4;
 	background: url(https://cdn.jsdelivr.net/gh/inagora/STable/web/public/resource/img/empty.jpg);
 	background-size: contain;
+}
+.st-fixed-stable .st-table-empty{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+.st-expand-stable .st-table-empty{
+	margin: 30px auto;
 }
 .st-table-body{
 	table-layout: fixed;
@@ -206,12 +230,15 @@
 
 .st-table-head,
 .st-table-body{
-	position: absolute;
-	left: 0;
-	top: 0;
 
 	table-layout: fixed;
 	border-collapse: collapse;
+}
+.st-fixed-stable .st-table-head,
+.st-fixed-stable .st-table-body{
+	position: absolute;
+	left: 0;
+	top: 0;
 }
 .st-table-locked-head{
 	position: absolute;

@@ -359,7 +359,6 @@
 			 */
 			layout(){
 				if(!this.$el) return;
-
 				const MIN_COLUMN_WIDTH = 100;
 				let mainTable = this.$el.querySelector('.st-table-body-box');
 				let stTable = this.$el;
@@ -424,6 +423,7 @@
 					this.lockedWidth = lockedWidth;
 
 					this.$el.querySelector('.st-table-head-box').style.width = mainTable.clientWidth+'px';
+					this.$el.querySelector('.st-table-body-box').style.width = mainTable.clientWidth+'px';
 					this.$el.querySelector('.st-table-locked-body-box').style.height = 
 						this.$el.querySelector('.st-table-body-box').clientHeight+'px';
 				}, 0);

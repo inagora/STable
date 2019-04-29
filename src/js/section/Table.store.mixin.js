@@ -1,7 +1,7 @@
 import {ajax} from '../ajax';
 import Progressbar from '../com/Progressbar';
 export default {
-	inject: ['pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt'],
+	inject: ['pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt','layout'],
 	data(){
 		return {
 			isPageLoading: false,
@@ -292,6 +292,15 @@ export default {
 			}
 			this.recordList = records;
 			this.store.$emit('selectall', false);
+			// if(this.layout =='expand') {
+			// 	this.$nextTick(()=>{
+			// 		let tb = document.querySelector('.st-table-body-box .st-table-free-body');
+			// 		if(tb){
+			// 			let rect = tb.getBoundingClientRect();
+			// 			this.$el.style.height = rect.height+36+'px';
+			// 		}
+			// 	});
+			// }
 		},
 		
 		getAllOnNormal() {

@@ -24,8 +24,11 @@
 		color: #fff;
 		font-size: 48px;
 	}
-	#wdStableContainer{
+	#main{
 		flex: 1;
+	}
+	#wdStableContainer{
+		
 	}
 	.tip{
 		color: rgba(0,0,0,0.1);
@@ -44,27 +47,27 @@
 		background-repeat: no-repeat;
 	}
 	</style>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.4.8/lib/theme-chalk/index.css">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="/resource/module/STable/STable.min.css">
+	<link rel="stylesheet" href="/resource/module/STable/STable.full.min.css">
 </head>
 <body>
 	<div class="doc">
 		<h1 class="title">STable DEV</h1>
-		<div id="wdStableContainer">
-			<div class="tip">STable Demo</div>
+		<div id="main">
+			<div id="wdStableContainer">
+				<div class="tip">STable Demo</div>
+			</div>
 		</div>
 	</div>
-	<script src="https://cdn.jsdelivr.net/combine/npm/vue@2.5.17/dist/vue.min.js,npm/element-ui@2.4.8/lib/index.js"></script>
-	<script src="/resource/module/STable/STable.min.js"></script>
+	<script src="/resource/module/STable/STable.full.min.js"></script>
 	<script>
 		
 		const type = ["剧情", "喜剧", "短片", "爱情", "纪录片", "动作", "惊悚", "恐怖", "动画", "犯罪", "冒险", "家庭", "悬疑", "奇幻", "科幻", "战争", "传记", "音乐", "历史", "歌舞", "西部", "运动", "古装", "武侠", "戏曲", "黑色电影", "儿童", "新闻", "真人秀", "舞台艺术", "成人", "脱口秀", "游戏秀", "情色", "文艺", "同性", "女性", "青春", "励志", "微电影", "灾难"];
 STable.init({
 	title: 'groupBy',
 	url: '/demo/ajaxList?sublist_demo=1',
+	layout: 'expand',
 	params: {
-		count: 40,
+		count: 10,
 		page: 5
 	},
 	searchFilter:[{
@@ -105,29 +108,29 @@ STable.init({
 		{
 			header: '名字',
 			dataIndex: 'name',
-			width: 200,
+			width: 400,
 			cellWrap: true
 		},{
 			header: '评分',
 			dataIndex: 'rating',
-			width: 100,
+			width: 300,
 			fx: 'average',
 			sortable: true
 		},
 		{
 			header: '国家',
 			dataIndex: 'locationName',
-			width: 80
+			width: 180
 		},
 		{
 			header: '上映时间',
 			dataIndex: 'year',
-			width: 80
+			width: 180
 		},
 		{
 			header: '影片类型',
 			dataIndex: 'movieType',
-			width: 150
+			width: 250
 		}
 	]
 });

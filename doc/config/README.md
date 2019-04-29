@@ -29,7 +29,6 @@ STable的使用，大部分时间都是在和各种配置参数打交道。
 	* [crud操作](/demo/edit)
 	* [请求方法 actionMethods](#action-methods)
 
-
 ## batDeleteUrl
 * 类型：String
 * 详细：
@@ -112,6 +111,14 @@ crud操作中，修改或者删除行时，由此参数来唯一标识行数据�
 搜索过滤项的名字标签是否显示。当搜索项太多时，把此参数设为false，可以让搜索区显得更为紧凑。
 * 参考：
 	* [搜索](/demo/search)
+
+## layout
+* 类型：String
+* 默认："fixed"
+* 详细：
+stable所在区域的布局，有下面两个值：
+	* fixed，固定高度模式。STable所在区域高度固定。会根据总体高度、工具栏、搜索区和分页区，决定表格区的高度
+	* expand，伸缩模式。STable高度不固定，根据表格区行数不同，自动调整STable的高度，以使垂直方向上没有滚动条。
 
 ## sublistAt
 * 类型：Array|String
