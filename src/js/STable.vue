@@ -310,7 +310,7 @@
 		},
 		mounted(){
 			if(this.config.listeners && this.config.listeners.ready){
-				this.config.listeners.ready.call(this.$root);
+				this.config.listeners.ready.call(this);
 			}
 			stableCount++;
 		},
@@ -324,8 +324,14 @@
 			getSelectRows(){
 				return this.$refs.table.getSelectRows();
 			},
+			getSelectedRows(){
+				return this.getSelectRows();
+			},
 			layout(){
 				this.$refs.table.layout();
+			},
+			setRecords(list){
+				this.$refs.table.setRecords(list);
 			}
 		}
 	}

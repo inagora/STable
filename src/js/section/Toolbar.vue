@@ -105,7 +105,7 @@
 						create(data){
 							let ret = true;
 							if(toolbar.listeners.beforeadd)
-								ret = toolbar.listeners.beforeadd.call(toolbar.$root, data, this);
+								ret = toolbar.listeners.beforeadd.call(toolbar.$parent, data, this);
 							if(ret===false)
 								return;
 							let addUrl = toolbar.addUrl;
@@ -124,7 +124,7 @@
 									});
 									this.close();
 									if(toolbar.listeners.add)
-										ret = toolbar.listeners.add.call(toolbar.$root, res, data);
+										ret = toolbar.listeners.add.call(toolbar.$parent, res, data);
 								} else {
 									this.$message({
 										message: res.errmsg,
@@ -213,7 +213,7 @@
 			},
 			btnClick(btn, evt){
 				if(btn.click)
-					btn.click.call(this.$root, btn, evt);
+					btn.click.call(this.$parent, btn, evt);
 			}
 		}
 	}

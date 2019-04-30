@@ -53,7 +53,7 @@
 					searchParams = evt;
 				
 				if(this.listeners.search) {
-					if(this.listeners.search.call(this.$root, searchParams)===false) {
+					if(this.listeners.search.call(this.$parent, searchParams)===false) {
 						return;
 					}
 				}

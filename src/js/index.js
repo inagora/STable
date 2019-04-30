@@ -41,6 +41,9 @@ export function init(config){
 			},
 			layout(){
 				this.$refs.stable.layout();
+			},
+			setRecords(list){
+				this.$refs.stable.setRecords(list);
 			}
 		}
 	}).$mount(el);

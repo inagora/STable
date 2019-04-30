@@ -310,7 +310,7 @@
 									edit(data){
 										let ret = true;
 										if(self.listeners.beforeedit)
-											ret = self.listeners.beforeedit.call(self.$root, data, record);
+											ret = self.listeners.beforeedit.call(self.$parent, data, record);
 										if(ret===false)
 											return;
 										let updateUrl = self.updateUrl;
@@ -333,7 +333,7 @@
 												self.load('cur');
 												
 												if(self.listeners.afteredit)
-													self.listeners.afteredit.call(self.$root, data);
+													self.listeners.afteredit.call(self.$parent, data);
 											} else {
 												this.$message({
 													message: res.errmsg,

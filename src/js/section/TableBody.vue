@@ -100,7 +100,7 @@ export default {
 	methods: {
 		btnClick(btn, record, evt){
 			if(btn.click) {
-				btn.click.call(this.$root, record, btn, evt);
+				btn.click.call(this.$parent.$parent, record, btn, evt);
 			}
 		}
 	}
