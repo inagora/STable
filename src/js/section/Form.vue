@@ -1,5 +1,5 @@
 <template>
-	<el-form v-bind="$attrs" :inline="inline" @submit.native.prevent="submit" :rules="rules" :model="formData">
+	<el-form v-bind="$attrs" :inline="inline" @submit.native.prevent="submit" :rules="rules" :model="formData" ref="form">
 		<template v-for="field in fields">
 			<input
 				v-if="field.type=='hidden'"
@@ -419,6 +419,9 @@
 					}
 				}
 				this.$emit('submit', data);
+			},
+			reset(){
+				this.$refs.form.resetFields();
 			},
 			handleChange(val, field, item, idx){
 				if(field.listeners && field.listeners.change) {

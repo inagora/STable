@@ -38,7 +38,8 @@
 				downloadTimeout: 10000,
 				downloadAllFromJustOnePage: false,
 				labelVisible: true,
-				layout: 'fixed'
+				layout: 'fixed',
+				searchResetable: false
 			}, this.config);
 
 			let methods = conf.actionMethods||conf.requestMethod||'GET';

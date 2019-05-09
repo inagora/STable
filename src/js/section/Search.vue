@@ -3,6 +3,7 @@
 		<x-form ref="form" :inline="true" size="small" :field-list="searchFilter" :default-values="params" :action-methods="actionMethods" @submit="search">
 			<el-form-item>
 				<el-button type="primary" icon="fa fa-search" native-type="submit">查询</el-button>
+				<el-button v-if="searchResetable" @click="reset">重置</el-button>
 			</el-form-item>
 		</x-form>
 	</div>
@@ -15,6 +16,7 @@
 			searchFilter: {
 				default: false
 			},
+			searchResetable: 'searchResetable',
 			labelVisible: 'labelVisible',
 			listeners: 'listeners',
 			actionMethods: 'actionMethods',
@@ -29,6 +31,8 @@
 				}
 				this.store.$emit('load');
 			}, 0);
+
+			console.log('seset', this.searchResetable)
 		},
 		methods: {
 			trimParam(data){
@@ -66,6 +70,10 @@
 					data = this.trimParam(data);
 				}
 				return data;
+			},
+			reset(){
+				this.$refs.form.reset();
+				this.search();
 			}
 		}
 	};
