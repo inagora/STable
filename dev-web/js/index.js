@@ -1,0 +1,3 @@
+STable.init({
+	el: '#box'
+});

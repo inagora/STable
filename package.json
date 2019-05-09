@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "webpack-dev-server --mode=development --usehmr --config=./build/webpack.config.js",
     "dev": "webpack --mode=development --config=./build/webpack.config.js",
     "prod": "webpack --mode=production --no-progress --hide-modules --config=./build/webpack.config.js"
   },
@@ -22,9 +23,6 @@
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.2",
-    "webpack-dev-middleware": "^3.6.2"
-  },
-  "dependencies": {
-    "express": "^4.16.4"
+    "webpack-dev-server": "^3.3.1"
   }
 }

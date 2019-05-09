@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -15,19 +16,47 @@ fs.writeFileSync(
 	'utf8'
 );
 module.exports = function(env, argv) {
-	let mode = argv.mode=='development' ? 'development' : 'production';
+	let mode = (argv&&argv.mode)||process.env.NODE_ENV;
+	mode = mode=='development' ? 'development' : 'production';
+	console.log(mode);
 	let isDev = mode=='development';
 	let output = {
 		path: path.resolve(__dirname, '../dist'),
 		filename: 'STable.min.js',
 		library: 'STable',
-		libraryTarget: 'window'
+		libraryTarget: 'window',
+		publicPath: '/'
 	};
+
+	let plugins = [
+		new VueLoaderPlugin(),
+		new MiniCssExtractPlugin({
+			filename: 'STable.min.css'
+		})
+	];
+
+	//热替换
+	let devServer = {};
+	if(argv.usehmr) {
+		let dServer = require('./devServer');
+		Object.assign(devServer, {
+			hot: true,
+			hotOnly:true,
+			open: true,
+			contentBase: path.resolve(__dirname, '../dev-web'),
+			before: function(app, server) {
+				dServer(app, server);
+			}
+		});
+
+		plugins.push(new webpack.HotModuleReplacementPlugin());
+	}
 
 	let config = {
 		entry: {
 			STable: './dev-src/index'
 		},
+		devServer,
 		mode,
 		output,
 		devtool: isDev? "eval-source-map":'none',
@@ -58,12 +87,7 @@ module.exports = function(env, argv) {
 				}
 			]
 		},
-		plugins: [
-			new VueLoaderPlugin(),
-			new MiniCssExtractPlugin({
-				filename: 'STable.min.css'
-			})
-		]
+		plugins
 	};
 	//生产模式下，
 	if(!isDev) {
