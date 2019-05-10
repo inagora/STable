@@ -99,7 +99,8 @@
 			selectMode: {
 				default: 'none'
 			},
-			listeners: 'listeners'
+			listeners: 'listeners',
+			tableLayout: 'layout'
 		},
 		data(){
 			return {
@@ -422,8 +423,11 @@
 					this.width = countWidth;
 					this.lockedWidth = lockedWidth;
 
-					this.$el.querySelector('.st-table-head-box').style.width = mainTable.clientWidth+'px';
-					this.$el.querySelector('.st-table-body-box').style.width = mainTable.clientWidth+'px';
+					if(this.tableLayout != 'expand'){
+						//??这一个强制设置宽度有啥用意呀
+						this.$el.querySelector('.st-table-head-box').style.width = mainTable.clientWidth+'px';
+					}
+					
 					this.$el.querySelector('.st-table-locked-body-box').style.height = 
 						this.$el.querySelector('.st-table-body-box').clientHeight+'px';
 				}, 0);
