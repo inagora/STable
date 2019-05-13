@@ -23,6 +23,10 @@ export function init(config, Vue) {
 	if(!Vue){
 		Vue = window.Vue;
 	}
+	if(!Vue || !Vue.version || !Vue.version<'2') {
+		console.error('请检查Vue是否安装');
+		return null;
+	}
 	let app = new Vue({
 		data: {
 			config

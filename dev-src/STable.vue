@@ -1,22 +1,304 @@
 <template>
-	<div class="stable">
-		<ts></ts>
-		<div v-text="f"></div>
+	<div class="st-stable" :class="[config.layout=='expand'?'st-expand-stable':'st-fixed-stable']">
 	</div>
 </template>
 <script>
-import Ts from "./ts.vue";
+/**
+ * STable.vue对外提供唯一的组件
+ */
 export default {
-	components:{Ts},
-	data(){
-		return {
-			f:Math.random()
+	props: ['config'],
+	provide() {
+		let conf = Object.assign({
+			/**
+			 * @param {String} title 标题，显示在顶部。并且用做导出excel的默认文件名
+			 */
+			title: '',
+			/**
+			 * @param {Boolean} rowNumberVisible 是否显示行号
+			 */
+			rowNumberVisible: false,
+			/**
+			 * @param {String} selectMode 选择模式，单选(none)/多选(multiple)/不显示(none)
+			 */
+			selectMode: 'none',
+			/**
+			 * @param {String} pageMode 分页模式。普通模式(normal)把所有数据分成等分的多少页，按页号取每页数据；瀑布流模式(waterfall)，根据当前页的第一项，向前取一页；或最后一项，向后取一页
+			 */
+			pageMode: 'normal', //normal、waterfall
+			/**
+			 * @param {String} pageIndex 如果分页模式是瀑布模式(waterfall)，需要指定由哪个数据字段决定分页，默认是id
+			 */
+			pageIndex: 'id',
+			/**
+			 * @param {Object} listeners STable组件支持的事件
+			 */
+			listeners: {},
+			/**
+			 * @param {Boolean} ignoreEmptySearchParam 忽略搜索条件中的空字符串
+			 */
+			ignoreEmptySearchParam: true,
+			/**
+			 * @param {Object} params 额外的搜索条件，每次请求页数据时，都会带上
+			 */
+			params: {
+				count: 20
+			},
+			/**
+			 * @param {Number} parallelCount 全量下载表格时，并行请求数
+			 */
+			parallelCount: 6,
+			/**
+			 * 全量下载表格时，根据下载速度，动态调整最大并行数
+			 */
+			dynamicParallelCount: false,
+			/**
+			 * @param {Number} downloadTimeout 全量下载表格时，每页的下载时间
+			 */
+			downloadTimeout: 10000,
+			/**
+			 * @param {Boolean} downloadAllFromJustOnePage 全量下载表格时，所有数据从一页一次性下载
+			 */
+			downloadAllFromJustOnePage: false,
+			/**
+			 * @param {Boolean} labelVisible 搜索区每个输入框是不是要显示名字
+			 */
+			labelVisible: true,
+			/**
+			 * @param {String} layoutMode 布局模式，固定高度(fixed)/高度自动伸缩(expand)
+			 */
+			layoutMode: 'fixed',
+			/**
+			 * @param {Boolean} searchResetable 搜索区是否显示“重置”按钮
+			 */
+			searchResetable: false
+		}, this.config);
+
+		/**
+		 * @param {Object} actionMethods STable在不同时机发请求时所用的方法
+		 */
+		let methods = conf.actionMethods||conf.requestMethod||'GET';
+		if(typeof methods=='string'){
+			methods = {read: methods};
+		}
+		let actionMethods = {
+			create: 'POST',
+			read: 'GET',
+			update: 'POST',
+			destroy: 'POST'
+		};
+		conf.actionMethods = Object.assign(actionMethods, methods);
+
+		/**
+		 * @param {String|String[]} groupBy 行数据分组
+		 */
+		if(conf.groupBy){
+			if(!Array.isArray(conf.groupBy))
+				conf.groupBy = [conf.groupBy];
+		} else {
+			conf.groupBy = [];
+		}
+		/**
+		 * @param {String|String[]} sublistAt 行内容分多子表
+		 */
+		if(conf.sublistAt){
+			if(!Array.isArray(conf.sublistAt))
+				conf.sublistAt = [conf.sublistAt];
+		} else {
+			conf.sublistAt = [];
+		}
+
+		/**
+		 * @param {Object} additionalColumnConfig 额外的列配置
+		 */
+		/**
+		 * @param {Object} acc additionalColumnConfig的别名
+		 */
+		let additionalColumnConfig = conf.additionalColumnConfig||conf.acc||false;
+
+		/**
+		 * @param {Object} columns 列配置
+		 */
+		let columns = conf.columns.map((item,idx)=>{
+			/**
+			 * @param {String} column.text 列头文本
+			 */
+			/**
+			 * @param {String} column.dataIndex 列的数据id
+			 */
+			if(typeof item == 'string') {
+				item = {
+					text: item,
+					dataIndex: item
+				};
+			}
+			if(additionalColumnConfig) {
+				if(Array.isArray(additionalColumnConfig)) {
+					Object.assign(item, additionalColumnConfig[idx]);
+				} else if(item.dataIndex && additionalColumnConfig[item.dataIndex]) {
+					Object.assign(item, additionalColumnConfig[item.dataIndex]);
+				}
+			}
+			if (item.header) {
+				item.text = item.header;
+			}
+
+			/**
+			 * @param {String[]|Object} column.options 此列显示的时候，不显示行数据dataIndex指定的值，也是从options找到对应的映射显示
+			 */
+			//防止有options字段，又没有配置可选值
+			if (item.options && Object.keys(item.options).length<=0){
+				item.options = false;
+			}
+			
+			/**
+			 * @param {Button[]} column.buttons 每一行显示的按钮
+			 */
+			/**
+			 * @param {Number|String} column.width 列宽 
+			 */
+
+			/**
+			 * @param {String} button.iconCls 按钮上显示的icon
+			 */
+			if (item.buttons) {
+				if(!item.type)
+					item.type = 'button';
+				item.buttons.forEach(btn=>{
+					if(btn.icon) {
+						btn.iconCls = btn.icon;
+					}
+				});
+				if(item.type=='button' && typeof item.width=='undefined') {
+					item.width = item.buttons.length*100;
+				}
+			}
+			if (!item.dataIndex) {
+				item.dataIndex = "stable_column_"+idx;
+			}
+
+			/**
+			 * @param {Function} column.render 列内容的渲染函数
+			 */
+			if (item.render) {
+				item.type = 'render';
+			}
+
+			/**
+			 * @param {String} column.type 列内容的类型
+			 */
+			if (!item.type) {
+				item.type = 'text';
+			}
+
+			/**
+			 * @param {Number} column.flex 使用权重而不是绝对值决定列宽
+			 */
+			if(typeof item.width=='undefined' && typeof item.flex=='undefined') {
+				item.flex = 1;
+			}
+
+			let _type = typeof item.width;
+			if(_type != 'undefined') {
+				if(_type=='string') {
+					//可能是百分比，否则全转化为整数
+					if(!/^[\d\.]+%$/.test(item.width)) {
+						item.width = parseInt(item.width, 10);
+					}
+				}
+			} else if(typeof item.flex != 'undefined') {
+				item.flex = parseFloat(item.flex);
+			} else {
+				item.flex = 1;
+			}
+
+			/**
+			 * @param {Boolean} column.visible 此列是否可见
+			 * @param {Boolean} column.locked 此列是否锁定
+			 * @param {Boolean} column.cellWrap 此列是否自动换行
+			 */
+			item = Object.assign({
+				visible: true,
+				locked: false,
+				cellWrap: true,
+				_st_idx: idx,
+				_st_ori_idx: idx
+			},item);
+			if(!item.text)
+				item.text = '-';
+			
+			/**
+			 * @param {String} column.fx 此列的计算函数名
+			 */
+			if(item.fx)
+				item.fx = item.fx.toLowerCase();
+			
+			return item;
+		});
+
+		if(stableCount==0 && window.location.search.includes('stable=on')) {
+			let searchParams = new URLSearchParams(window.location.search);
+			if(searchParams.get('stable') == 'on'){
+				let sp = {};
+				for(let key of searchParams.keys()) {
+					let val = searchParams.getAll(key);
+					if(val.length>1)
+						sp[key] = val;
+					else
+						sp[key] = val[0];
+				}
+				delete sp.stable;
+
+				//兼容之前版使用的postParam 和 postData
+				Object.assign(conf.params, conf.postParam, conf.postData, sp);
+			}
+		}
+
+		/**
+		 * @param {String} updateUrl 更新时的地址
+		 */
+		if(conf.editUrl) {
+			conf.updateUrl = conf.editUrl;
+		}
+		/**
+		 * @param {Object[]} updateConfig 更新时的表单配置
+		 */
+		if(conf.updateUrl) {
+			conf.updateConfig = conf.updateConfig||conf.editConfig||conf.editConf||conf.metaEditConf;
+		}
+		/**
+		 * @param {String} addUrl 添加行时的提交的url
+		 * @param {Object[]} addConfig 添加行的表单配置
+		 */
+		if(conf.addUrl) {
+			conf.addConfig = conf.addConfig|| conf.addConf || conf.updateConfig;
+		}
+
+		if(conf.deleteUrl || conf.updateUrl) {
+			columns.push({
+				dataIndex:'_wd_aux_op',
+				type: 'button',
+				text: '操作',
+				_width: 0,
+				visible: true,
+				locked: false,
+				cellWrap: true,
+				_st_idx: columns.length,
+				_st_ori_idx: columns.length,
+				buttons: []
+			});
+		}
+
+		let selectMode = conf.selectMode.trim().toLowerCase();
+		if(['radio', 'single'].includes(selectMode)){
+			conf.selectMode = 'single';
+		} else if(['checkbox', 'mul', 'multi', 'multiple'].includes(selectMode)){
+			conf.selectMode = 'multiple';
+		} else {
+			conf.selectMode = 'none';
 		}
 	}
 }
 </script>
 <style>
-.stable{
-	font-size: 12px;
-}
 </style>
