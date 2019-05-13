@@ -18,7 +18,6 @@ fs.writeFileSync(
 module.exports = function(env, argv) {
 	let mode = (argv&&argv.mode)||process.env.NODE_ENV;
 	mode = mode=='development' ? 'development' : 'production';
-	console.log(mode);
 	let isDev = mode=='development';
 	let output = {
 		path: path.resolve(__dirname, '../dist'),
@@ -83,6 +82,14 @@ module.exports = function(env, argv) {
 					use: [
 						isDev ? 'vue-style-loader': MiniCssExtractPlugin.loader,
 						'css-loader'
+					]
+				},
+				{
+					test: /\.scss$/,
+					use: [
+						isDev ? 'vue-style-loader': MiniCssExtractPlugin.loader,
+						'css-loader',
+						'sass-loader'
 					]
 				}
 			]

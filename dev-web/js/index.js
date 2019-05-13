@@ -1,3 +1,6 @@
 STable.init({
-	el: '#box'
+	el: '#box',
+	columns: [{
+		text: 'hoho'
+	}]
 });

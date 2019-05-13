@@ -6,6 +6,8 @@
 /**
  * STable.vue对外提供唯一的组件
  */
+import {hashCode} from "./util.js";
+let stableCount = 0;
 export default {
 	props: ['config'],
 	provide() {
@@ -297,8 +299,143 @@ export default {
 		} else {
 			conf.selectMode = 'none';
 		}
+
+		if(typeof conf.page != 'undefined') {
+			conf.params.page = conf.page;
+		}
+
+		if(conf.sort_key)
+			conf.sortKey = conf.sort_key;
+		if(conf.sort_direction)
+			conf.sortDirection = conf.sort_direction;
+		if(!conf.sortDirection)
+			conf.sortDirection = 'asc';
+
+		conf._key = hashCode(JSON.stringify(columns));
+		let localColumnSet;
+		try{
+			localColumnSet = window.localStorage.getItem(conf._key);
+			if(localColumnSet)
+				localColumnSet = JSON.parse(localColumnSet);
+		}catch(e){
+			localColumnSet = '';
+			alert('本地存储的列信息有问题');
+		}
+		if(localColumnSet) {
+			let _columns = [];
+			for(let col of localColumnSet) {
+				for(let colConf of columns){
+					if(colConf._st_ori_idx == col._st_ori_idx){
+						Object.assign(colConf, {
+							locked: col.locked,
+							visible: col.visible,
+							_st_idx: col._st_idx
+						});
+						_columns.push(colConf);
+						break;
+					}
+				}
+			}
+			columns = _columns;
+		}
+
+		conf.store = new Vue({
+			data: {
+				columns,
+				page: conf.params.page || 1,
+				page_count: 1,
+				hasNextPage: true,
+				hasPrePage: false,
+				loadAction: '',
+				radioVal: '',
+				checkboxVal: [],
+				sortKey: conf.sortKey||'',
+				sortDirection: conf.sortDirection
+			},
+			methods: {
+				saveColumnsState(){
+					let colState = this.columns.map(col=>{
+						return {
+							text: col.text,
+							visible: col.visible,
+							locked: col.locked,
+							_st_idx: col._st_idx,
+							_st_ori_idx: col._st_ori_idx
+						};
+					});
+
+					try{
+						window.localStorage.setItem(conf._key, JSON.stringify(colState));
+					}catch(e){
+						console.error(e);
+					}
+				},
+				resetColumnsState(){
+					try{
+						window.localStorage.removeItem(conf._key);
+						location.reload();
+					}catch(e){
+						console.error(e);
+					}
+				}
+			}
+		});
+		conf.store.searchParams = {};
+		delete conf.columns;
+		delete conf.params.page;
+
+		return conf;
+	},
+	mounted(){
+		if(this.config.listeners && this.config.listeners.ready){
+			this.config.listeners.ready.call(this);
+		}
+		stableCount++;
+	},
+	methods: {
+		/**
+		 * @member {Function} refresh 刷新表格
+		 */
+		refresh(pno) {
+			return this.$refs.table.refresh(pno);
+		},
+		/**
+		 * @member {Function} getSearchParam 获得当前搜索表单项内容
+		 */
+		getSearchParam(){
+			return this.$refs.search.getParams();
+		},
+		getSelectRows(){
+			return this.$refs.table.getSelectRows();
+		},
+		/**
+		 * @member {Function} getSelectedRows 获得当前所有选中行的数据
+		 */
+		getSelectedRows(){
+			return this.getSelectRows();
+		},
+		/**
+		 * @member {Function} layout 重新布局表格
+		 */
+		layout(){
+			this.$refs.table.layout();
+		},
+		/**
+		 * @member {Function} setRecords 设置表格数据
+		 */
+		setRecords(list){
+			this.$refs.table.setRecords(list);
+		}
 	}
 }
 </script>
-<style>
+<style lang="scss">
+.st-stable{
+	&,
+	*,
+	::before,
+	::after{
+		box-sizing: border-box;
+	}
+}
 </style>
