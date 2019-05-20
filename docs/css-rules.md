@@ -1,4 +1,4 @@
-* 尽量不使有嵌套规则，由前面的规则对后面的名称做限定
+* 尽量不要“使用嵌套规则，由前面的规则对后面的名称做限定”
 	比如 
 	.st-table .head{
 		color: #191919;
@@ -13,7 +13,7 @@
 	.st-table-head{
 		color: #191919;
 	}
-	如果有好多样式，前缀都一样，可以使用scss来书写，如：
+	如果有好多样式，前缀都一样，可以使用scss来书写，以便编码时简化，如：
 	.st-table{
 		&{
 			background: #fff;
@@ -44,3 +44,4 @@
 	.st-table .st-divider{
 		width: 1px;
 	}
+* scoped css，对它的使用没有要求

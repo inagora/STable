@@ -5,38 +5,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Document</title>
-	<style>
-	html,body{
-		height: 100%;
-		margin: 0;
-	}
-	body{
-		display: flex;
-		flex-direction: column;
-	}
-	.header{
-		height: 64px;
-		border-bottom: 1px solid #eee;
-	}
-	.body{
-		flex: 1;
-		display: flex;
-	}
-	.nav{
-		width: 200px;
-		border-right: 1px solid #eee;
-	}
-	#box{
-		flex: 1;
-	}
-	</style>
 </head>
 <body>
-	<div class="header">header</div>
-	<div class="body">
-		<div class="nav">nav</div>
-		<div id="box"></div>
-	</div>
+	<div id="box"></div>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
 	<script src="/STable.min.js"></script>
 	<script>
@@ -45,6 +16,7 @@
 		title: '测试用例',
 		titleVisible: true,
 		url: '/ajaxList',
+		layoutMode: 'expand',
 		columns: [
 			{
 				header: 'id',

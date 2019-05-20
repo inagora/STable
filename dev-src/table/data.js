@@ -1,34 +1,14 @@
 import {ajax} from '../ajax';
-import Progressbar from '../com/Progressbar';
 export default {
-	inject: ['pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt','layout'],
-	data(){
+	inject: ['store', 'records', 'params', 'url', 'actionMethods', 'listeners', 'pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt'],
+	data() {
 		return {
-			isPageLoading: false,
 			flymanVisible: false,
 			recordList: [],
 			clean: true	//"干净"状态下的表格，不会提示下一页没有数据之类的提示
-		};
+		}
 	},
 	watch: {
-		recordList: function(){
-			this.$nextTick(()=>{
-				setTimeout(()=>{
-					let freeRows = this.$el.querySelectorAll('.st-table-free-body .st-table-body-tr');
-					let lockedRows = this.$el.querySelectorAll('.st-table-locked-body .st-table-body-tr');
-					if(!freeRows || freeRows.length<=0)
-						return;
-					for(let i=0,len=freeRows.length;i<len;i++) {
-						lockedRows[i].style.height = freeRows[i].offsetHeight+'px';
-					}
-
-					let bodyBox = this.$el.querySelector('.st-table-body-box');
-					let lockedBodyBox = this.$el.querySelector('.st-table-locked-body-box');
-					lockedBodyBox.style.height = bodyBox.clientHeight+'px';
-					lockedBodyBox.scrollTop = bodyBox.scrollTop = 0;
-				}, 0);
-			});
-		},
 		'store.page': function(){
 			this.load();
 		},
@@ -64,6 +44,10 @@ export default {
 			else
 				return this.getAllOnNormal();
 		};
+		setTimeout(()=>{
+			console.log('table start')
+			this.load();
+		}, 0);
 	},
 	methods: {
 		reset(){
@@ -76,7 +60,7 @@ export default {
 				this.store.page = 1;
 		},
 		load(actionType){
-			if(this.static){
+			if(this.records){
 				this.setRecords(this.records);
 				return;
 			}
@@ -129,7 +113,7 @@ export default {
 				}
 				this.flymanVisible = false;
 				
-				this.listeners.dataload{
+				if(this.listeners.dataload) {
 					let ret = this.listeners.dataload(res);
 					if(ret)
 						res = ret;
@@ -236,6 +220,7 @@ export default {
 					}
 				}
 
+				//???这一步是不是多余的
 				records = [];
 				recordGroup.forEach(group=>{
 					records = records.concat(group);
@@ -249,8 +234,10 @@ export default {
 			records.forEach((record, idx)=>{
 				this.columns.forEach(col=>{
 					if(col.type=='render' && col.render) {
+						//???统一私有变量的命名，比如以_st_开判断
 						record['_'+col.dataIndex+'_render_val'] = col.render(record, col, idx);
 					} else if (col.type=='button') {
+						//???统一私有变量的命名，比如以_st_开判断
 						record['_'+col.dataIndex+'_btns'] = [];
 						(col.buttons||[]).forEach(btn=>{
 							let visible = true;
@@ -264,7 +251,7 @@ export default {
 							record['_'+col.dataIndex+'_btns'].push(visible);
 						}); 
 					} else if (col.options) {
-						//todo，这里直接影响了原因数据，是一种不友好的做法，新版中请解决这个问题
+						//??? todo，这里直接影响了原因数据，是一种不友好的做法，新版中请解决这个问题
 						record['_ori_'+col.dataIndex] = record[col.dataIndex];
 						record[col.dataIndex] = col.options[record[col.dataIndex]+''];
 					}
@@ -294,6 +281,7 @@ export default {
 				});
 				this.fxResult = fxResult;
 			}
+			console.log(records)
 			this.recordList = records;
 			this.store.$emit('selectall', false);
 		},
@@ -458,7 +446,7 @@ export default {
 					ajax(ajaxOptions).then(res=>{
 						res = res[0];
 						if(res.errno){
-							this.$alert(res.errmsg,'提示', {type: 'error'});
+							alert(res.errmsg,'提示', {type: 'error'});
 							reject(res);
 						} else {
 							if(!res.data.list || res.data.list.length<=0) {

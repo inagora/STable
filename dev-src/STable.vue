@@ -1,11 +1,20 @@
 <template>
-	<div class="st-stable" :class="[config.layout=='expand'?'st-expand-stable':'st-fixed-stable']">
+	<div class="st-stable" :class="[config.layoutMode=='expand'?'st-expand-stable':'st-fixed-stable']">
+		<div class="st-stable-doc">
+			<component v-for="com of comOrder" :key="com.name" :is="com.com" :ref="com.name"></component>
+		</div>
 	</div>
 </template>
 <script>
 /**
  * STable.vue对外提供唯一的组件
  */
+import XTitle from './Title.vue';
+import XTip from './Tip.vue';
+import XToolbar from './Toolbar.vue';
+import XSearch from './Search.vue';
+import XTable from './table/index.vue';
+import XPagination from './Pagination.vue';
 import {hashCode} from "./util.js";
 let stableCount = 0;
 export default {
@@ -16,6 +25,10 @@ export default {
 			 * @param {String} title 标题，显示在顶部。并且用做导出excel的默认文件名
 			 */
 			title: '',
+			/**
+			 * @param {Boolean} titleVisible 标题栏是否显示
+			 */
+			titleVisible: false,
 			/**
 			 * @param {Boolean} rowNumberVisible 是否显示行号
 			 */
@@ -73,9 +86,17 @@ export default {
 			/**
 			 * @param {Boolean} searchResetable 搜索区是否显示“重置”按钮
 			 */
-			searchResetable: false
+			searchResetable: false,
+			/**
+			 * @param {Object[]} records 静态化数据，设置了它后，就不会动态加载数据了
+			 */
+			records: false
 		}, this.config);
-
+		if(conf.layoutMode != 'expand')
+			conf.layoutMode == 'fixed';
+		if(typeof conf.hideTitle != 'undefined') {
+			conf.titleVisible = !conf.hideTitle;
+		}
 		/**
 		 * @param {Object} actionMethods STable在不同时机发请求时所用的方法
 		 */
@@ -216,13 +237,15 @@ export default {
 
 			/**
 			 * @param {Boolean} column.visible 此列是否可见
-			 * @param {Boolean} column.locked 此列是否锁定
+			 * @param {Boolean|String} column.locked 此列是否锁定。可以取值true\false\'left'\'right'；为true时与'left'等效
 			 * @param {Boolean} column.cellWrap 此列是否自动换行
+			 * @param {Boolean} column.resizable 此列是不是可以缩放大小
 			 */
 			item = Object.assign({
 				visible: true,
 				locked: false,
 				cellWrap: true,
+				resizable: true,
 				_st_idx: idx,
 				_st_ori_idx: idx
 			},item);
@@ -283,7 +306,7 @@ export default {
 				text: '操作',
 				_width: 0,
 				visible: true,
-				locked: false,
+				locked: 'right',
 				cellWrap: true,
 				_st_idx: columns.length,
 				_st_ori_idx: columns.length,
@@ -386,7 +409,28 @@ export default {
 
 		return conf;
 	},
+	data(){
+		/**
+		 * @param {String[]} componentOrder 组件的展示顺序
+		 */
+		let coms = {
+			title: XTitle,
+			tip: XTip,
+			toolbar: XToolbar,
+			search: XSearch,
+			table: XTable,
+			pagination: XPagination
+		};
+		let order = ['title', 'tip', 'toolbar', 'search', 'table', 'pagination'];
+		if(this.config.componentOrder) {
+			order = this.config.componentOrder;
+		}
+		return {
+			comOrder: order.map(name=>({name, com:coms[name]}))
+		}
+	},
 	mounted(){
+		console.log('stable mounted');
 		if(this.config.listeners && this.config.listeners.ready){
 			this.config.listeners.ready.call(this);
 		}
@@ -430,6 +474,7 @@ export default {
 }
 </script>
 <style lang="scss">
+@import url(./iconfont/iconfont.css);
 .st-stable{
 	&,
 	*,
@@ -437,5 +482,19 @@ export default {
 	::after{
 		box-sizing: border-box;
 	}
+}
+.st-fixed-stable{
+	position: relative;
+	height: 100%;
+}
+.st-fixed-stable .st-stable-doc{
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+
+	display: flex;
+	flex-direction: column;
 }
 </style>

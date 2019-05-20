@@ -37,7 +37,7 @@ module.exports = function(env, argv) {
 	//热替换
 	let devServer = {};
 	if(argv.usehmr) {
-		let dServer = require('./devServer');
+		let dServer = require('../dev-web/devServer');
 		Object.assign(devServer, {
 			hot: true,
 			hotOnly:true,
