@@ -97,10 +97,21 @@ export default {
 
 	&-left{
 		border-right: 1px solid #e8eaec;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		overflow: hidden;
 	}
 	&-right{
 		border-left: 1px solid #e8eaec;
+		position: absolute;
+		top: 0;
+		right: 0;
+		z-index: 1;
+		overflow: hidden;
 	}
+	
 	&-free{
 		flex: 1;
 		overflow-x: auto;
@@ -112,22 +123,6 @@ export default {
 	&-tr:nth-of-type(2n) {
 		background-color: #fafafa;
 	}
-	&-td{
-	}
-}
-.st-fixed-stable .st-table-body-left{
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 1;
-	overflow: hidden;
-}
-.st-fixed-stable .st-table-body-right{
-	position: absolute;
-	top: 0;
-	right: 0;
-	z-index: 1;
-	overflow: hidden;
 }
 .st-fixed-stable .st-table-body-free{
 	overflow-y: scroll;

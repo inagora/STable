@@ -246,7 +246,6 @@ export default {
 				locked: false,
 				cellWrap: true,
 				resizable: true,
-				_st_idx: idx,
 				_st_ori_idx: idx
 			},item);
 			if(!item.text)
@@ -308,7 +307,6 @@ export default {
 				visible: true,
 				locked: 'right',
 				cellWrap: true,
-				_st_idx: columns.length,
 				_st_ori_idx: columns.length,
 				buttons: []
 			});

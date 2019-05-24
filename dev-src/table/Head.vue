@@ -5,7 +5,8 @@
 		:class="{
 			'st-table-head-left':locked=='left',
 			'st-table-head-right':locked=='right',
-			'st-table-head-free': !locked
+			'st-table-head-free': !locked,
+			'st-table-head-safari-patch': locked&&isSafari
 		}">
 		<table
 			class="st-table-head"
@@ -17,7 +18,9 @@
 						:key="colIdx"
 						class="st-table-head-th"
 						:class="[col.cls]"
-						:style="[col.style, {width: col._width+'px'}]">
+						:style="[col.style, {width: col._width+'px'}]"
+						@mousemove="$emit('drag', {column:col, evt:$event})"
+						@mouseup="$emit('drop', {column:col, evt:$event})">
 						<div v-if="col.type=='radio'" class="st-table-cell">
 							<div class="st-table-head-text">&nbsp;</div>
 						</div>
@@ -25,14 +28,23 @@
 							<input type="checkbox" v-model="chkAll" />
 						</label>
 						<div
-							v-else-if="col.type!='pad'"
-							class="st-table-cell"
-							:class="{'st-table-head-sortable': col.sortable}"
-							:title="col.text">
-							<div class="st-table-head-text st-table-cell-wrap" v-text="col.text||'&nbsp;'"></div>
-							<div v-if="col.sortable" class="st-table-head-sort-icon st-iconfont" :class="[store.sortKey==col.dataIndex?(store.sortDirection=='asc'?'st-icon-sort-ascending':'st-icon-sort-descending'):'st-icon-swap']"></div>
+							v-else-if="col.type=='rownumber'"
+							class="st-table-cell">
+							<div class="st-table-head-text st-table-cell-wrap" v-text="col.text"></div>
 						</div>
-						<div class="st-table-head-resize st-iconfont st-icon-caret-down"></div>
+						<template v-else-if="col.type!='pad'">
+							<div
+								class="st-table-cell"
+								:class="{'st-table-head-sortable': col.sortable}"
+								:title="col.text"
+								@mousedown="$emit('dragprepare', col)">
+								<div class="st-table-head-text st-table-cell-wrap" v-text="col.text||'&nbsp;'"></div>
+								<div v-if="col.sortable" class="st-table-head-sort-icon st-iconfont" :class="[store.sortKey==col.dataIndex?(store.sortDirection=='asc'?'st-icon-sort-ascending':'st-icon-sort-descending'):'st-icon-swap']"></div>
+							</div>
+							<div
+								class="st-iconfont st-icon-caret-down st-table-head-menu-btn"
+								@click="showMenu"></div>
+						</template>
 					</th>
 				</tr>
 			</thead>
@@ -41,6 +53,8 @@
 </template>
 
 <script>
+import {isSafari} from '../util';
+import XMenu from './Menu';
 /**
  * @param {String} column.desc 列头的描述
  */
@@ -48,7 +62,35 @@ export default {
 	props: ['locked', 'columns', 'tableWidth', 'recordsHeight'],
 	inject: ['store'],
 	data(){
-		return {}
+		return {
+			isSafari
+		}
+	},
+	mounted(){
+		if(isSafari){
+			setTimeout(()=>{
+				this.$el.style.display = 'block';
+			}, 0);
+		}
+	},
+	destroyed(){
+		if(this.menu) {
+			this.menu.$destroy();
+			this.menu = null;
+		}
+	},
+	methods: {
+		showMenu(){
+			if(!this.menu){
+				let el = document.createElement('div');
+				document.body.appendChild(el);
+				this.menu = new Vue({
+					el,
+					template: '<x-menu></x-menu>',
+					components: {XMenu}
+				});
+			}
+		}
 	}
 }
 </script>
@@ -74,6 +116,10 @@ export default {
 	top: 0;
 	z-index: 2;
 }
+
+.st-table-head-safari-patch{
+	display: none;
+}
 .st-table-head{
 	table-layout: fixed;
 	border-collapse: collapse;
@@ -84,10 +130,17 @@ export default {
 		border-right: 1px solid #d0d0d0;
 		color: #191919;
 		font-size: 14px;
+		font-weight: 400;
 		text-align: left;
 		user-select: none;
 		-webkit-user-select: none;
 		position: relative;
+	}
+	&-right{
+		border-left: 1px solid #d0d0d0;
+	}
+	&-right &-th:last-of-type{
+		border-right: none;
 	}
 	&-sortable{
 		cursor: pointer;
@@ -103,19 +156,27 @@ export default {
 		}
 	}
 
-	&-resize{
+	&-menu-btn{
 		opacity: 0;
 		position: absolute;
 		top: 0;
 		right: 0;
-		width: 24px;
+		width: 20px;
+		height: 100%;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background: #fff;
+		border-left: 1px solid #d0d0d0;
+		cursor: pointer;
+	}
+	& &-menu-btn{
 		font-size: 14px;
 		font-weight: 400;
-		padding-top: 7px;
-		text-align: center;
 	}
-	&-resize:hover{
-		opacity: 1;
+	&-th:hover &-menu-btn{
+		opacity: 0.6;
 	}
 
 	.st-table-cell{
@@ -124,6 +185,11 @@ export default {
 		justify-content: flex-start;
 		background-image: linear-gradient(180deg,#fdfdfd,#f8f8f8);
 		word-break: normal;
+	}
+
+	&-th:hover .st-table-cell{
+		background-image: none;
+		background-color: #f0f0f0;
 	}
 }
 </style>

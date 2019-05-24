@@ -33,4 +33,4 @@ export function hashCode(str) {
 	return ret.toString(16);
 }
 
-//export let isSafari = window.navigator.vendor.toLowerCase().includes('apple computer');
+export let isSafari = window.navigator.vendor.toLowerCase().includes('apple computer');

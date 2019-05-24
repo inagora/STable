@@ -1,18 +1,32 @@
 <template>
-	<div class="st-table">
+	<div
+		class="st-table"
+		:class="{
+			'st-table-left-shadow': leftShadow,
+			'st-table-right-shadow': rightShadow
+		}">
 		<div class="st-table-head-area">
 			<x-head
 				locked="left"
 				:columns="leftColumns"
-				:table-width="totalLeftWidth"></x-head>
+				:table-width="totalLeftWidth"
+				@dragprepare="prepareDrag"
+				@drag="drag"
+				@drop="drop"></x-head>
 			<x-head
 				:locked="false"
 				:columns="freeColumns"
-				:table-width="totalFreeWidth"></x-head>
+				:table-width="totalFreeWidth"
+				@dragprepare="prepareDrag"
+				@drag="drag"
+				@drop="drop"></x-head>
 			<x-head
 				locked="right"
 				:columns="rightColumns"
-				:table-width="totalRightWidth"></x-head>
+				:table-width="totalRightWidth"
+				@dragprepare="prepareDrag"
+				@drag="drag"
+				@drop="drop"></x-head>
 		</div>
 		<div class="st-table-body-area">
 			<x-body
@@ -42,15 +56,18 @@ import XHead from './Head.vue';
 import XBody from './Body.vue';
 import {ajax} from '../ajax';
 import data from './data.js';
+import drag from './drag.js';
 import ResizeObserver from '../util/ResizeObserver';
 export default {
-	mixins: [data],
+	mixins: [data, drag],
 	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode'],
 	components: {XHead, XBody},
 	data() {
 		return {
 			hlRowNum: -1,
 			focusRowNum: -1,
+			leftShadow: false,
+			rightShadow: false,
 			leftColumns: [{text:'',_width:0}],
 			freeColumns: [{text:'',_width:0}],
 			rightColumns: [{text:'',_width:0}],
@@ -81,12 +98,15 @@ export default {
 					}
 					this.recordsHeight = hs;
 				}
+
+				this.$el.querySelector('.st-table-body-free').dispatchEvent(new Event('scroll'))
 			}, 0);
 		},
 	},
 	mounted(){
 		this.columns = [];
 		this.formatColumns();
+		let freeBox = this.$el.querySelector('.st-table-body-free');
 		if(this.layoutMode=='fixed'){
 			let resizeObserver = new ResizeObserver(entries => {
 				this.calcLayout();
@@ -95,7 +115,6 @@ export default {
 			resizeObserver.observe(this.$el.querySelector('.st-table-body-free .st-table-body'));
 			this.resizeObserver = resizeObserver;
 
-			let freeBox = this.$el.querySelector('.st-table-body-free');
 			let headBox = this.$el.querySelector('.st-table-head-free');
 			let leftBox = this.$el.querySelector('.st-table-body-left');
 			let rightBox = this.$el.querySelector('.st-table-body-right');
@@ -118,6 +137,16 @@ export default {
 			this.$el.querySelector('.st-table-body-left').addEventListener('mousewheel', scroll, false);
 			this.$el.querySelector('.st-table-body-right').addEventListener('mousewheel', scroll, false);
 		}
+
+		let self = this;
+		function shadowDetect(){
+			let scrollLeft = freeBox.scrollLeft,
+				clientWidth = freeBox.clientWidth,
+				scrollWidth = freeBox.scrollWidth;
+			self.leftShadow = scrollLeft>0;
+			self.rightShadow = (scrollLeft+clientWidth)<scrollWidth;
+		}
+		freeBox.addEventListener('scroll', shadowDetect, false);
 	},
 	beforeDestroy(){
 		if(this.layoutMode=='fixed'){
@@ -214,16 +243,17 @@ export default {
 
 			this.columns = leftColumns.concat(freeColumns, rightColumns);
 
-			for(let col of this.columns) {
+			let haveFx = false;
+			for(let i=0;i<this.columns.length;i++){
+				let col = this.columns[i];
+				col._st_idx = i;
+
 				if(col.type=='button' && typeof col.width=='undefined'){
 					col.width = 100*col.buttons.length;
 				}
-			}
-			let haveFx = false;
-			for(let column of this.columns) {
-				if(column.fx) {
+
+				if(col.fx) {
 					haveFx = true;
-					break;
 				}
 			}
 			this.haveFx = haveFx;
@@ -436,7 +466,12 @@ export default {
 	border-bottom: 1px solid #d0d0d0;
 
 	&-head-area{
+		position: relative;
 		border-bottom: 1px solid #d0d0d0;
+	}
+
+	&-body-area{
+		position: relative;
 	}
 
 	&-cell{
@@ -467,11 +502,80 @@ export default {
 }
 .st-fixed-stable .st-table-head-area{
 	overflow-y: scroll;
-	position: relative;
 }
 .st-fixed-stable .st-table-body-area{
 	flex: 1;
-	position: relative;
 	overflow: hidden;
+}
+
+.st-table-left-shadow .st-table-head-left{
+	box-shadow: 5px 3px 6px -3px rgba(0,0,0,0.15);
+}
+.st-table-left-shadow .st-table-body-left{
+	box-shadow: 5px -6px 6px -4px rgba(0,0,0,0.15);
+}
+.st-table-right-shadow .st-table-head-right{
+	box-shadow: -5px 3px 6px -3px rgba(0,0,0,0.15);
+}
+.st-table-right-shadow .st-table-body-right{
+	box-shadow: -5px -6px 6px -4px rgba(0,0,0,0.15);
+}
+
+
+
+.st-table-head-drag-fly{
+	position: absolute;
+	left: -1000px;
+	top: -1000px;
+	max-width: 200px;
+	padding: 7px 10px 6px;
+	margin-left: 10px;
+	margin-top: 20px;
+	background-image: linear-gradient(180deg, #fdfdfd, #f8f8f8);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	border: 1px solid #d0d0d0;
+	color: #191919;
+	font-size: 14px;
+	z-index: 100;
+}
+@keyframes st_anim_pulse {
+  from {
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+
+  50% {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+
+  to {
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+}
+.st-table-head-indicator{
+	pointer-events: none;
+	position: absolute;
+	top: -1000px;
+	left: -1000px;
+	height: 64px;
+	width: 10px;
+	margin-left: -5px;
+	margin-top: -14px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 10px;
+	color: green;
+	animation-name: st_anim_pulse;
+	animation-duration: 1s;
+	animation-fill-mode: both;
+	animation-iteration-count: infinite;
+	z-index: 99;
+}
+.st-table-head-indicator-bottom{
+	transform: rotate(180deg);
 }
 </style>
