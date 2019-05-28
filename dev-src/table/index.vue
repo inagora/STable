@@ -12,21 +12,27 @@
 				:table-width="totalLeftWidth"
 				@dragprepare="prepareDrag"
 				@drag="drag"
-				@drop="drop"></x-head>
+				@drop="drop"
+				@resizestart="startResize"
+				@menushow="showMenu"></x-head>
 			<x-head
 				:locked="false"
 				:columns="freeColumns"
 				:table-width="totalFreeWidth"
 				@dragprepare="prepareDrag"
 				@drag="drag"
-				@drop="drop"></x-head>
+				@drop="drop"
+				@resizestart="startResize"
+				@menushow="showMenu"></x-head>
 			<x-head
 				locked="right"
 				:columns="rightColumns"
 				:table-width="totalRightWidth"
 				@dragprepare="prepareDrag"
 				@drag="drag"
-				@drop="drop"></x-head>
+				@drop="drop"
+				@resizestart="startResize"
+				@menushow="showMenu"></x-head>
 		</div>
 		<div class="st-table-body-area">
 			<x-body
@@ -48,20 +54,33 @@
 				:records-height="recordsHeight"
 				:table-width="totalRightWidth"></x-body>
 		</div>
+		<x-menu v-if="menuVisible"></x-menu>
+
+		<div
+			v-if="resizing"
+			class="st-table-resize st-table-resize-start"
+			:style="{left: startResizePos+'px'}"></div>
+		<div
+			v-if="resizing"
+			class="st-table-resize st-table-resize-end"
+			:style="{left: endResizePos+'px'}"></div>
 	</div>
 </template>
 
 <script>
 import XHead from './Head.vue';
 import XBody from './Body.vue';
+import XMenu from './Menu';
 import {ajax} from '../ajax';
 import data from './data.js';
-import drag from './drag.js';
+import drag from './drag.mixin.js';
+import resize from './resize.mixin.js';
+import menu from './menu.mixin.js';
 import ResizeObserver from '../util/ResizeObserver';
 export default {
-	mixins: [data, drag],
+	mixins: [data, drag, resize, menu],
 	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode'],
-	components: {XHead, XBody},
+	components: {XHead, XBody, XMenu},
 	data() {
 		return {
 			hlRowNum: -1,
@@ -192,7 +211,7 @@ export default {
 					locked: true
 				});
 			} else if(this.selectMode=='multiple'){
-				leftLockedColumns.unshift({
+				leftColumns.unshift({
 					dataIndex:'_st_aux_checkbox',
 					text: '☑',
 					type: 'checkbox',
@@ -202,7 +221,7 @@ export default {
 				});
 			}
 			if(this.rowNumberVisible) {
-				leftLockedColumns.unshift({
+				leftColumns.unshift({
 					dataIndex:'_st_aux_rownumber',
 					text: '#',
 					type: 'rownumber',
@@ -389,6 +408,7 @@ export default {
 				//补白，先不算入宽度
 				if(item.type=='pad')
 					return;
+				console.log(item.width)
 				if(typeof item.width != 'undefined') {
 					if(typeof item.width=='string' && /^([\d\.]+)%$/.test(item.width)) {
 						let w = Math.floor(boxWidth*parseFloat(RegExp.$1)/100);
@@ -446,7 +466,10 @@ export default {
 				totalFreeWidth = 0,
 				totalRightWidth = 0;
 			this.leftColumns.forEach(c=>totalLeftWidth+=c._width);
-			this.freeColumns.forEach(c=>totalFreeWidth+=c._width);
+			this.freeColumns.forEach(c=>{
+				if(c.type != 'pad')
+					totalFreeWidth+=c._width
+			});
 			this.rightColumns.forEach(c=>totalRightWidth+=c._width);
 			
 			this.freeColumns[0]._width = totalLeftWidth;
@@ -464,6 +487,7 @@ export default {
 <style lang="scss">
 .st-table{
 	border-bottom: 1px solid #d0d0d0;
+	position: relative;
 
 	&-head-area{
 		position: relative;
@@ -483,6 +507,16 @@ export default {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+
+	&-resize{
+		position: absolute;
+		width: 1px;
+		background: #949494;
+		top: 0;
+		bottom: 0;
+		overflow: hidden;
+		z-index: 100;
 	}
 }
 .st-expand-stable{

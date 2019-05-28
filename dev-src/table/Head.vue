@@ -18,9 +18,7 @@
 						:key="colIdx"
 						class="st-table-head-th"
 						:class="[col.cls]"
-						:style="[col.style, {width: col._width+'px'}]"
-						@mousemove="$emit('drag', {column:col, evt:$event})"
-						@mouseup="$emit('drop', {column:col, evt:$event})">
+						:style="[col.style, {width: col._width+'px'}]">
 						<div v-if="col.type=='radio'" class="st-table-cell">
 							<div class="st-table-head-text">&nbsp;</div>
 						</div>
@@ -37,13 +35,18 @@
 								class="st-table-cell"
 								:class="{'st-table-head-sortable': col.sortable}"
 								:title="col.text"
-								@mousedown="$emit('dragprepare', col)">
+								@mousedown="$emit('dragprepare', col)"
+								@mousemove="$emit('drag', {column:col, evt:$event})"
+								@mouseup="$emit('drop', {column:col, evt:$event})">
 								<div class="st-table-head-text st-table-cell-wrap" v-text="col.text||'&nbsp;'"></div>
 								<div v-if="col.sortable" class="st-table-head-sort-icon st-iconfont" :class="[store.sortKey==col.dataIndex?(store.sortDirection=='asc'?'st-icon-sort-ascending':'st-icon-sort-descending'):'st-icon-swap']"></div>
 							</div>
 							<div
 								class="st-iconfont st-icon-caret-down st-table-head-menu-btn"
-								@click="showMenu"></div>
+								@click="$emit('menushow', {column:col, evt:$event})"></div>
+							<div
+								class="st-table-head-resizer"
+								@mousedown="$emit('resizestart', {column:col, evt:$event})"></div>
 						</template>
 					</th>
 				</tr>
@@ -54,7 +57,6 @@
 
 <script>
 import {isSafari} from '../util';
-import XMenu from './Menu';
 /**
  * @param {String} column.desc 列头的描述
  */
@@ -71,25 +73,6 @@ export default {
 			setTimeout(()=>{
 				this.$el.style.display = 'block';
 			}, 0);
-		}
-	},
-	destroyed(){
-		if(this.menu) {
-			this.menu.$destroy();
-			this.menu = null;
-		}
-	},
-	methods: {
-		showMenu(){
-			if(!this.menu){
-				let el = document.createElement('div');
-				document.body.appendChild(el);
-				this.menu = new Vue({
-					el,
-					template: '<x-menu></x-menu>',
-					components: {XMenu}
-				});
-			}
 		}
 	}
 }
@@ -190,6 +173,19 @@ export default {
 	&-th:hover .st-table-cell{
 		background-image: none;
 		background-color: #f0f0f0;
+	}
+
+	&-resizer{
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 3px;
+		height: 100%;
+		overflow: hidden;
+		z-index: 2;
+		background-color: #fff;
+		opacity: 0;
+		cursor: ew-resize;
 	}
 }
 </style>

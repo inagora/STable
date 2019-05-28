@@ -9,6 +9,7 @@
  */
 let docEl = document.documentElement;
 export default {
+	inject: ['store'],
 	mounted(){
 		this.dragger = {
 			startIdx: -1,
@@ -122,7 +123,24 @@ export default {
 			let {column, evt} = data;
 			let {valid, pos, rect, startIdx, targetIdx} = this.dropValidCheck(column, evt);
 			if(valid) {
-				console.log(valid);
+				//store.column的修改，会引起formatColumn()
+				let startColumn = this.columns[startIdx];
+				startColumn.locked = column.locked;
+				this.store.columns.sort((c0, c1)=>c0._st_idx-c1._st_idx);
+				let cs = [];
+				for(let c of this.store.columns) {
+					if(c._st_idx == startIdx) continue;
+					if(c._st_idx == targetIdx) {
+						if(pos == 'before')
+							cs.push(startColumn);
+						cs.push(c);
+						if(pos == 'after')
+							cs.push(startColumn);
+					} else {
+						cs.push(c);
+					}
+				}
+				this.store.columns = cs;
 			}
 		},
 		clearDrag(){
