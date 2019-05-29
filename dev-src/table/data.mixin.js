@@ -45,7 +45,6 @@ export default {
 				return this.getAllOnNormal();
 		};
 		setTimeout(()=>{
-			console.log('table start')
 			this.load();
 		}, 0);
 	},
@@ -281,7 +280,7 @@ export default {
 				});
 				this.fxResult = fxResult;
 			}
-			console.log(records)
+			
 			this.recordList = records;
 			this.store.$emit('selectall', false);
 		},
@@ -480,7 +479,7 @@ export default {
 							}
 						}
 					}, ()=>{
-						//console.log(rej[1], rej[2]);
+						
 						setTimeout(()=>{
 							startJob(id);
 						}, 500);

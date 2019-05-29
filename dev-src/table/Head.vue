@@ -17,7 +17,7 @@
 						v-for="(col, colIdx) of columns"
 						:key="colIdx"
 						class="st-table-head-th"
-						:class="[col.cls]"
+						:class="[col.cls, {'st-table-head-th-hover':col._hl}]"
 						:style="[col.style, {width: col._width+'px'}]">
 						<div v-if="col.type=='radio'" class="st-table-cell">
 							<div class="st-table-head-text">&nbsp;</div>
@@ -158,6 +158,7 @@ export default {
 		font-size: 14px;
 		font-weight: 400;
 	}
+	&-th-hover &-menu-btn,
 	&-th:hover &-menu-btn{
 		opacity: 0.6;
 	}
@@ -170,6 +171,7 @@ export default {
 		word-break: normal;
 	}
 
+	&-th-hover .st-table-cell,
 	&-th:hover .st-table-cell{
 		background-image: none;
 		background-color: #f0f0f0;

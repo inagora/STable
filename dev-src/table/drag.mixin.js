@@ -81,6 +81,8 @@ export default {
 				this.dragger.indicator.style.cssText = `left:-1000px;top:-1000px`;
 		},
 		dropValidCheck(column, evt){
+			if(this.dragger.startIdx < 0 || !this.dragger.fly)
+				return {valid: false};
 			let startIdx = this.dragger.startIdx;
 			let targetIdx = column._st_idx;
 			let rect = column.rect;

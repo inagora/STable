@@ -246,8 +246,15 @@ export default {
 				locked: false,
 				cellWrap: true,
 				resizable: true,
-				_st_ori_idx: idx
+				_st_ori_idx: idx,
+				_hl: false
 			},item);
+			if(item.locked){
+				if(item.locked != 'right')
+					item.locked = 'left';
+			} else {
+				item.locked = false;
+			}
 			if(!item.text)
 				item.text = '-';
 			

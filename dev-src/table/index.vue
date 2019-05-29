@@ -54,7 +54,7 @@
 				:records-height="recordsHeight"
 				:table-width="totalRightWidth"></x-body>
 		</div>
-		<x-menu v-if="menuVisible"></x-menu>
+		<x-menu @updatecolumn="formatColumns" ref="menu" :columns="store.columns"></x-menu>
 
 		<div
 			v-if="resizing"
@@ -72,13 +72,12 @@ import XHead from './Head.vue';
 import XBody from './Body.vue';
 import XMenu from './Menu';
 import {ajax} from '../ajax';
-import data from './data.js';
+import data from './data.mixin.js';
 import drag from './drag.mixin.js';
 import resize from './resize.mixin.js';
-import menu from './menu.mixin.js';
 import ResizeObserver from '../util/ResizeObserver';
 export default {
-	mixins: [data, drag, resize, menu],
+	mixins: [data, drag, resize],
 	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode'],
 	components: {XHead, XBody, XMenu},
 	data() {
@@ -408,7 +407,7 @@ export default {
 				//补白，先不算入宽度
 				if(item.type=='pad')
 					return;
-				console.log(item.width)
+				
 				if(typeof item.width != 'undefined') {
 					if(typeof item.width=='string' && /^([\d\.]+)%$/.test(item.width)) {
 						let w = Math.floor(boxWidth*parseFloat(RegExp.$1)/100);
@@ -480,6 +479,9 @@ export default {
 			this.totalFreeWidth = totalFreeWidth;
 			this.totalRightWidth = totalRightWidth;
 		},
+		showMenu(data){
+			this.$refs.menu.show(data);
+		}
 	}
 }
 </script>
