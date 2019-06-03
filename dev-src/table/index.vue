@@ -99,26 +99,8 @@ export default {
 		'store.columns': function() {
 			this.formatColumns();
 		},
-		recordList: function(list){
-			this.recordsHeight = list.map(()=>'auto');
-			setTimeout(()=>{
-				let leftTrs = this.$el.querySelectorAll('.st-table-body-left>table>tbody>tr');
-				let freeTrs = this.$el.querySelectorAll('.st-table-body-free>table>tbody>tr');
-				let rightTrs = this.$el.querySelectorAll('.st-table-body-right>table>tbody>tr');
-				if(leftTrs.length>0 || rightTrs.length>0) {
-					let hs = [];
-					for(let i=0,len=freeTrs.length;i<len;i++) {
-						let leftH = leftTrs[i]&&leftTrs[i].getBoundingClientRect().height||0;
-						let rightH = rightTrs[i]&&rightTrs[i].getBoundingClientRect().height||0;
-						let freeH = freeTrs[i] && freeTrs[i].getBoundingClientRect().height||0;
-						let max = Math.max(leftH, freeH, rightH);
-						hs.push(max+'px');
-					}
-					this.recordsHeight = hs;
-				}
-
-				this.$el.querySelector('.st-table-body-free').dispatchEvent(new Event('scroll'))
-			}, 0);
+		recordList: function(){
+			this.syncHeight();
 		},
 	},
 	mounted(){
@@ -127,10 +109,12 @@ export default {
 		let freeBox = this.$el.querySelector('.st-table-body-free');
 		if(this.layoutMode=='fixed'){
 			let resizeObserver = new ResizeObserver(entries => {
+				console.log('ffff')
 				this.calcLayout();
 			});
-			resizeObserver.observe(this.$el.querySelector('.st-table-body-free'));
+			resizeObserver.observe(this.$el.querySelector('.st-table-body-left .st-table-body'));
 			resizeObserver.observe(this.$el.querySelector('.st-table-body-free .st-table-body'));
+			resizeObserver.observe(this.$el.querySelector('.st-table-body-right .st-table-body'));
 			this.resizeObserver = resizeObserver;
 
 			let headBox = this.$el.querySelector('.st-table-head-free');
@@ -181,6 +165,7 @@ export default {
 			leftTable.style.height = bodyHeight+'px';
 			rightTable.style.height = bodyHeight+'px';
 			rightTable.style.right = this.$el.querySelector('.st-table-body-area').clientWidth - freeTable.clientWidth + 'px';
+			this.syncHeight();
 		},
 		formatColumns(){
 			let columns,
@@ -478,6 +463,27 @@ export default {
 			this.totalLeftWidth = totalLeftWidth;
 			this.totalFreeWidth = totalFreeWidth;
 			this.totalRightWidth = totalRightWidth;
+		},
+		syncHeight(){
+			this.recordsHeight = this.recordList.map(()=>'auto');
+			setTimeout(()=>{
+				let leftTrs = this.$el.querySelectorAll('.st-table-body-left>table>tbody>tr');
+				let freeTrs = this.$el.querySelectorAll('.st-table-body-free>table>tbody>tr');
+				let rightTrs = this.$el.querySelectorAll('.st-table-body-right>table>tbody>tr');
+				if(leftTrs.length>0 || rightTrs.length>0) {
+					let hs = [];
+					for(let i=0,len=freeTrs.length;i<len;i++) {
+						let leftH = leftTrs[i]&&leftTrs[i].getBoundingClientRect().height||0;
+						let rightH = rightTrs[i]&&rightTrs[i].getBoundingClientRect().height||0;
+						let freeH = freeTrs[i] && freeTrs[i].getBoundingClientRect().height||0;
+						let max = Math.max(leftH, freeH, rightH);
+						hs.push(max+'px');
+					}
+					this.recordsHeight = hs;
+				}
+
+				this.$el.querySelector('.st-table-body-free').dispatchEvent(new Event('scroll'))
+			}, 0);
 		},
 		showMenu(data){
 			this.$refs.menu.show(data);

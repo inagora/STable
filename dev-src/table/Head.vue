@@ -30,7 +30,10 @@
 							class="st-table-cell">
 							<div class="st-table-head-text st-table-cell-wrap" v-text="col.text"></div>
 						</div>
-						<template v-else-if="col.type!='pad'">
+						<template v-else-if="col.type=='pad'">
+							<div v-if="col._width>0" class="st-table-cell">&nbsp;</div>
+						</template>
+						<template v-else>
 							<div
 								class="st-table-cell"
 								:class="{'st-table-head-sortable': col.sortable}"
@@ -113,10 +116,11 @@ export default {
 		border-right: 1px solid #d0d0d0;
 		color: #191919;
 		font-size: 14px;
+		line-height: 21px;
 		font-weight: 400;
 		text-align: left;
-		user-select: none;
 		-webkit-user-select: none;
+		user-select: none;
 		position: relative;
 	}
 	&-right{

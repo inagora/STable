@@ -14,6 +14,7 @@ export default {
 	methods: {
 		startResize(data){
 			this.clearResize();
+			data.evt.preventDefault();
 			let rect = data.evt.target.closest('.st-table-head-th').getBoundingClientRect();
 			let boxRect = this.$el.querySelector('.st-table-head-area').getBoundingClientRect();
 			this.resizing = true;

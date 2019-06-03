@@ -188,6 +188,8 @@ export default {
 			this.columns[idx].visible = !this.columns[idx].visible;
 			this.list[idx].visible = this.columns[idx].visible;
 			this.$emit('updatecolumn');
+
+			//todo bug自由区没有列时，列头就不显示了，
 		},
 		lock(val){
 			this.columns[this.curIdx].locked = val;

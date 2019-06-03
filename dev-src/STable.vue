@@ -187,11 +187,11 @@ export default {
 			if (item.buttons) {
 				if(!item.type)
 					item.type = 'button';
-				item.buttons.forEach(btn=>{
-					if(btn.icon) {
-						btn.iconCls = btn.icon;
-					}
-				});
+				// item.buttons.forEach(btn=>{
+				// 	if(btn.icon) {
+				// 		btn.iconCls = btn.icon;
+				// 	}
+				// });
 				if(item.type=='button' && typeof item.width=='undefined') {
 					item.width = item.buttons.length*100;
 				}

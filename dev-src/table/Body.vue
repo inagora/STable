@@ -68,6 +68,7 @@
 							</div>
 						</template>
 						<div v-else-if="col.type=='button'" class="st-table-btn-box">
+							<x-button v-for="btn of col.buttons" :key="btn" :icon="btn.icon">{{btn.text}}</x-button>
 						</div>
 					</td>
 				</tr>
@@ -77,9 +78,11 @@
 </template>
 
 <script>
+import XButton from '../com/Button.vue';
 export default {
 	inject: ['store', 'groupBy','sublistAt', 'layoutMode'],
 	props: ['locked', 'columns', 'recordList', 'tableWidth', 'recordsHeight'],
+	components: {XButton},
 	data(){
 		return {
 			tableStyle: {}
