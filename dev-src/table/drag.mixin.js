@@ -158,19 +158,5 @@ export default {
 			docEl.removeEventListener('drag', this.dragger.moveFly, false);
 			docEl.removeEventListener('mouseup', this.dragger.clearDrag, false);
 		}
-	},
-	provide(){
-		let self = this;
-		let dragger = {
-			startIdx: -1
-		};
-
-		function clearDrag(){
-			
-		}
-
-	
-		dragger.clearDrag = clearDrag;
-		return {dragger};
 	}
 }
