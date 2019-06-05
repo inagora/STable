@@ -43,11 +43,15 @@ export default {
 				}
 			));
 		}
-
+		let size = 'md';
+		if(this.size=='large')
+			size = 'lg';
+		else if(this.size=='small')
+			size = 'sm';
 		return createElement(
 			this.nativeType,
 			{
-				'class': ['st-btn', 'st-btn-'+this.type, 'st-btn-'+this.size]
+				'class': ['st-btn', 'st-btn-'+this.type, 'st-btn-'+size]
 			},
 			children
 		);
@@ -59,6 +63,7 @@ export default {
 .st-btn{
 	display: inline-block;
 	font-weight: 400;
+	line-height: 1.499;
 	color: #212529;
 	text-align: center;
 	vertical-align: middle;
@@ -66,60 +71,72 @@ export default {
 	user-select: none;
 	background-color: transparent;
 	border: 1px solid transparent;
-	padding: .375rem .75rem;
-	font-size: 1rem;
-	line-height: 1.5;
-	border-radius: .25rem;
+	padding: 0 15px;
+	font-size: 14px;
+	height: 32px;
+	border-radius: 4px;
 	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 	margin: 0;
 	font-family: inherit;
 	cursor: pointer;
+	outline: none;
 	
 	&:disabled{
 		cursor: not-allowed;
 		opacity: 0.65;
 	}
 
-	&-large{
-		padding: .5rem 1rem;
-		font-size: 1.25rem;
-		line-height: 1.5;
-		border-radius: .3rem;
+	&-icon{
+		line-height: 1;
+		display: inline-block;
+		vertical-align: middle;
 	}
-	&-small{
-		padding: .25rem .5rem;
-		font-size: .875rem;
-		line-height: 1.5;
-		border-radius: .2rem;
+	&-text{
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	&-lg{
+		padding: 0 15px;
+		font-size: 16px;
+		border-radius: 4px;
+		height: 40px;
+	}
+	&-sm{
+		padding: 0 7px;
+		font-size: 12px;
+		border-radius: 4px;
+		height: 24px;
 	}
 	
 	&-default {
 		background-color: #fff;
-		border-color: #ccc;
+		border-color: #d9d9d9;
 	}
 	&-default:hover {
-		background-color: #e6e6e6;
-		border-color: #adadad;
+		color: #409eff;
+		border-color: #c6e2ff;
+		background-color: #ecf5ff;
 	}
 	&-primary{
 		color: #fff;
-		background-color: #007bff;
-		border-color: #007bff;
+		background-color: #409eff;
+		border-color: #409eff;
 	}
 	&-primary:hover {
 		color: #fff;
-		background-color: #0069d9;
-		border-color: #0062cc;
+		background: #66b1ff;
+		border-color: #66b1ff;
 	}
 	&-success {
 		color: #fff;
-		background-color: #28a745;
-		border-color: #28a745;
+		background-color: #67c23a;
+		border-color: #67c23a;
 	}
 	&-success:hover {
 		color: #fff;
-		background-color: #218838;
-		border-color: #1e7e34;
+		background: #85ce61;
+		border-color: #85ce61;
 	}
 	&-danger {
 		color: #fff;
@@ -132,12 +149,12 @@ export default {
 		border-color: #bd2130;
 	}
 	&-warning {
-		color: #212529;
+		color: #fff;
 		background-color: #ffc107;
 		border-color: #ffc107;
 	}
 	&-warning:hover {
-		color: #212529;
+		color: #fff;
 		background-color: #e0a800;
 		border-color: #d39e00;
 	}
@@ -158,6 +175,8 @@ export default {
 	}
 	&-link:hover {
 		color: #0056b3;
+	}
+	&-link:hover &-text{
 		text-decoration: underline;
 	}
 

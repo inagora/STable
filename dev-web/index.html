@@ -125,9 +125,28 @@
 			// 	dataIndex: 'titleOthersCn'
 			// }
 		],
+		toolbar: [
+			{text:'abc'},
+			{text:'测试', size:'large'},
+			{text:'测试', size:'large', icon:'st-iconfont st-icon-lock'},
+			{text:'测试', type: 'primary', size:'large'},
+			{text:'测试', type: 'primary', size:'large', icon:'st-iconfont st-icon-lock'},
+			{text:'测试', type: 'success', size:'small'},
+			{text:'测试', type: 'success', size:'small', icon:'st-iconfont st-icon-lock'},
+			{text:'测试', type: 'danger'},
+			{text:'测试', type: 'danger', icon:'st-iconfont st-icon-lock'},
+			{text:'测试', type: 'info'},
+			{text:'测试', type: 'info', icon:'st-iconfont st-icon-lock'},
+			{text:'测试', type: 'warning'},
+			{text:'测试', type: 'warning', icon:'st-iconfont st-icon-lock'},
+			{text:'测试', type: 'link'}
+		],
+		addUrl: '/',
+		batDeleteUrl: '/',
+		downloadable: true,
 		
 		componentOrder: [
-			'title', 'table','toolbar', 'search'
+			'title','toolbar', 'table', 'search'
 		]
 	});
 	</script>
