@@ -35,10 +35,12 @@ export default {
 	inputMsg: '入力してください',
 	numberMsg: '番号を入力してください',
 
+	//upload
 	upload: 'アップロード',
 	uploadProgress: 'アップロードの進行状況',
 	uploadDone: 'アップロード完了',
 	uploadFail: 'アップロードに失敗しました',
+	uploadingMsg: 'アップロードしています、お待ちください...',
 
 	//pagination
 	nextPage: '次のページ',
@@ -66,5 +68,7 @@ export default {
 	saveColumnSetting: '列設定を保存',
 	clearColumnSettingTips: '現在の設定をクリアしてデフォルト状態に戻しますか？',
 	clearColumnSetting: '列設定をクリア',
-	columnStorageError: 'これは列の設定を保存する際のエラーです'
+	columnStorageError: 'これは列の設定を保存する際のエラーです',
+
+	emptyMsg: 'フォームが空です'
 };

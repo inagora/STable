@@ -68,5 +68,7 @@ export default {
 	saveColumnSetting: 'save column\'s setting',
 	clearColumnSettingTips: 'Are you sure to clear the column settings and revert to the default state?',
 	clearColumnSetting: 'clear column setting',
-	columnStorageError: 'there is an error in storing column settings'
+	columnStorageError: 'there is an error in storing column settings',
+
+	emptyMsg: 'the table is empty~~'
 };

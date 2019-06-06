@@ -68,5 +68,7 @@ export default {
 	saveColumnSetting: '保存列配置',
 	clearColumnSettingTips: '您确定清除当前列设置，还原为默认状态？',
 	clearColumnSetting: '清除列设置',
-	columnStorageError: '本地存储的列信息有问题'
+	columnStorageError: '本地存储的列信息有问题',
+
+	emptyMsg: '表格是空的~~~'
 };

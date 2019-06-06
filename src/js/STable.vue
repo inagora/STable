@@ -260,6 +260,7 @@
 					columns,
 					page: conf.params.page || 1,
 					page_count: 1,
+					total: 0,
 					hasNextPage: true,
 					hasPrePage: false,
 					loadAction: '',

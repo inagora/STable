@@ -159,6 +159,7 @@ export default {
 					}else{
 						this.setRecords(res.data.list);
 						this.store.page_count = res.data.page_count||this.store.page;
+						this.store.total = res.data.total||0;
 					}
 				}
 
