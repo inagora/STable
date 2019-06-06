@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node web/app.js",
     "dev": "node dev-server.js",
-    "build": "webpack --mode=production --display=minimal"
+    "build": "webpack --mode=production --display=minimal --config=webpack-lang.config.js;webpack --mode=production --display=minimal"
   },
   "author": "poker",
   "license": "ISC",

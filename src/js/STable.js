@@ -1,5 +1,7 @@
-import {version, init} from './index.js';
+import {version, init, lang, locale} from './index.js';
 window.STable = {
+	lang,
+	locale,
 	version,
 	init
 };

@@ -37,8 +37,10 @@ require('../css/font-awesome.css');
 
 if(!window.Vue)
 	window.Vue = Vue;
-let {version, init} = require('./index.js');
+let {version, init, lang, locale} = require('./index.js');
 window.STable = {
+	lang,
+	locale,
 	version,
 	init
 };

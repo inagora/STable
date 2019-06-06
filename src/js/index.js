@@ -14,8 +14,7 @@ Vue.component('x-form', XForm);
 window.SidePanel = SidePanel;
 window.Dialog = Dialog;
 window.Progressbar = Progressbar;
-console.log('%c👨‍💻STable',"color:#205424;font-size:18px");
-console.log('%c文档地址：https://stable.wfxteam.com/',"color:#191919;font-size:14px");
+console.log('%c👨‍💻STable Docs：https://stable.wfxteam.com/',"color:#191919;font-size:14px");
 export var version = '1.0.7';
 export function init(config){
 	let el = config.el || config.container || '#wdStableContainer';
@@ -48,4 +47,18 @@ export function init(config){
 		}
 	}).$mount(el);
 	return app;
+};
+
+export function locale(lang, langConf){
+	if(typeof lang == 'string') {
+		if(langConf){
+			this.lang[lang] = langConf;
+		} else if(this.lang[lang]){
+			this.defaultLang = this.lang[lang].default || this.lang[lang];
+		}
+	} else {
+		this.defaultLang = langConf;
+	}
 }
+
+export var lang = {};

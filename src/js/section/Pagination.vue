@@ -1,8 +1,8 @@
 <template>
 	<div v-if="pageMode=='waterfall' || store.page_count>1" class="st-pagination">
 		<div v-if="pageMode=='waterfall'" class="st-pagination-waterfall">
-			<el-button size="small" icon="el-icon-arrow-left" :disabled="!store.hasPrePage" @click="load('loadPrePage')">上一页</el-button>
-			<el-button size="small" :disabled="!store.hasNextPage" @click="load('loadNextPage')">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+			<el-button size="small" icon="el-icon-arrow-left" :disabled="!store.hasPrePage" @click="load('loadPrePage')">{{locale.previousPage}}</el-button>
+			<el-button size="small" :disabled="!store.hasNextPage" @click="load('loadNextPage')">{{locale.nextPage}}<i class="el-icon-arrow-right el-icon--right"></i></el-button>
 		</div>
 		<el-pagination
 			v-else
@@ -14,7 +14,7 @@
 </template>
 <script>
 	export default {
-		inject: ['store', 'pageMode'],
+		inject: ['store', 'pageMode', 'locale'],
 		methods:{
 			load(action){
 				this.store.loadAction = action;

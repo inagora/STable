@@ -140,6 +140,7 @@
 	import {ajax} from '../ajax';
 	import XFile from './File.vue';
 	import {loadJs} from '../util';
+	import defaultLocale from '../../lang/en.js';
 	export default {
 		props: {
 			fieldList:Array,
@@ -153,6 +154,11 @@
 			},
 			inline: {
 				default: false
+			}
+		},
+		inject: {
+			locale: {
+				default: defaultLocale
 			}
 		},
 		components: {XFile},
@@ -193,11 +199,11 @@
 				}
 
 				if(field.required) {
-					let message = '必须输入';
+					let message = this.locale.requiredMsg;
 					if(dateTypes.includes(field.type) || selectTypes.includes(field.type)) {
-						message = '请选择'+field.label;
+						message = this.locale.chooseMsg+field.label;
 					} else {
-						message = '请输入'+field.label;
+						message = this.locale.inputMsg+field.label;
 					}
 					rules[field.name] = [{
 						required: true,
@@ -353,7 +359,7 @@
 						if(!field.pattern)
 							field.pattern = '-?[\\d\\.]+';
 						if(!field.title) {
-							field.title = '请输入一个数字';
+							field.title = this.locale.numberMsg;
 						}
 						field.type = 'text';
 					}
@@ -409,7 +415,7 @@
 				for(let field of this.fields){
 					if(field.type=='file' && field.loading) {
 						this.$message({
-							message: '文件上传中，请稍等...',
+							message: this.locale.uploadingMsg,
 							type: 'info'
 						});
 						return;

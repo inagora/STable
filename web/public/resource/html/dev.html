@@ -59,8 +59,9 @@
 		</div>
 	</div>
 	<script src="/resource/module/STable/STable.full.min.js"></script>
+	<script src="/resource/module/STable/lang/ja.js"></script>
 	<script>
-		
+		STable.locale('ja');
 		const type = ["剧情", "喜剧", "短片", "爱情", "纪录片", "动作", "惊悚", "恐怖", "动画", "犯罪", "冒险", "家庭", "悬疑", "奇幻", "科幻", "战争", "传记", "音乐", "历史", "歌舞", "西部", "运动", "古装", "武侠", "戏曲", "黑色电影", "儿童", "新闻", "真人秀", "舞台艺术", "成人", "脱口秀", "游戏秀", "情色", "文艺", "同性", "女性", "青春", "励志", "微电影", "灾难"];
 STable.init({
 	title: 'groupBy',
@@ -69,6 +70,12 @@ STable.init({
 	params: {
 		count: 10,
 		page: 5
+	},
+	listeners: {
+		beforemounted(conf){
+			console.log(this);
+			console.log(conf)
+		}
 	},
 	searchFilter:[{
 		label:'类型',
@@ -79,6 +86,7 @@ STable.init({
 	}],
 	searchResetable: true,
 	updateUrl: '/',
+	addUrl: '/',
 	editConf: [{
 		type: 'radio',
 		label: '测试radio',
@@ -98,6 +106,7 @@ STable.init({
 	}],
 	rowNumberVisible: true,
 	sublistAt: 'movieType',
+	downloadable: true,
 	columns: [
 		{
 			header: 'id',

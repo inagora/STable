@@ -1,7 +1,8 @@
 import {ajax} from '../ajax';
 import Progressbar from '../com/Progressbar';
+import {tmpl} from '../util';
 export default {
-	inject: ['pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt','layout'],
+	inject: ['pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt','layout', 'locale'],
 	data(){
 		return {
 			isPageLoading: false,
@@ -131,11 +132,11 @@ export default {
 				
 				this.listeners.dataload && this.listeners.dataload(res);
 				if(res.errno){
-					this.$alert(res.errmsg||res.msg,'提示', {type: 'error'});
+					this.$alert(res.errmsg||res.msg, this.locale.tips, {type: 'error'});
 				} else {
 					if(this.pageMode=='waterfall'){
 						if(!this.clean && (!res.data.list || res.data.list.length<=0)) {
-							this.$alert((params.count>0?'后面':'前面')+'已没有更多数据了','提示', {type: 'error'});
+							this.$alert(params.count>0?this.locale.noMoreBehind:this.locale.noMoreFront, this.locale.tips, {type: 'error'});
 							if(params.count>0)
 								this.store.hasNextPage = false;
 							else
@@ -279,11 +280,11 @@ export default {
 								total += item[di];
 						});
 						if(column.fx=='sum')
-							fxResult[di] = '和：'+total;
+							fxResult[di] = this.locale.total+': '+total;
 						else if(records.length>0)
-							fxResult[di] = '平均：'+total/records.length;
+							fxResult[di] = this.locale.average+': '+total/records.length;
 						else
-							fxResult[di] = '平均：0';
+							fxResult[di] = this.locale.average+': 0';
 					} else {
 						fxResult[di] = '';
 					}
@@ -307,7 +308,7 @@ export default {
 			return new Promise((resolve)=>{
 				let progressbar = Progressbar.create();
 				progressbar.show();
-				progressbar.update(0, '开始下载数据');
+				progressbar.update(0, this.locale.downloadMsg.start);
 				let list = [];
 				let jobList = [];
 				let retryList = [];
@@ -366,7 +367,7 @@ export default {
 							per = 99;
 						else
 							per = Math.floor(per);
-						progressbar.update(per/100, `已下载${loadedCount}页，共${page_count}页`);
+						progressbar.update(per/100, tmpl(this.locale.downloadMsg.update,{loadedCount, totalCount:page_count}));
 					}, function(){
 						loadTime.push(new Date() - startTime);
 						jobList.splice(jobList.indexOf(job), 1);
@@ -417,7 +418,7 @@ export default {
 						let ret = [];
 						for(let i=1;i<=page_count;i++){
 							if(!list[i])
-								alert('页面 '+i+' 数据有问题');
+								alert(tmpl(this.locale.pageErrorMsg, {pageNo:i}));
 							ret = ret.concat(list[i]);
 						}
 						ret.forEach((record, idx)=>{
@@ -440,7 +441,7 @@ export default {
 			return new Promise((resolve, reject)=>{
 				let progressbar = Progressbar.create('infinite');
 				progressbar.show();
-				progressbar.update(0, '数据下载中，请稍候...');
+				progressbar.update(0, this.locale.downloadMsg.loading);
 				let list = [];
 				let loadedCount = 0;
 				let pageIndex = this.pageIndex;
@@ -463,7 +464,7 @@ export default {
 					ajax(ajaxOptions).then(res=>{
 						res = res[0];
 						if(res.errno){
-							this.$alert(res.errmsg,'提示', {type: 'error'});
+							this.$alert(res.errmsg, this.locale.tips, {type: 'error'});
 							reject(res);
 						} else {
 							if(!res.data.list || res.data.list.length<=0) {
@@ -492,7 +493,7 @@ export default {
 									id = list[list.length-1][pageIndex];
 									startJob(id);
 									loadedCount++;
-									progressbar.update(0, `已下载 ${loadedCount} 页数据，请继续等待...`);
+									progressbar.update(0, tmpl(this.locale.waterfallUpdate,{loadedCount}));
 								}
 							}
 						}

@@ -1,8 +1,8 @@
 <template>
 	<div v-if="visible" class="st-toolbar">
-		<el-button v-if="addUrl" type="primary" size="small" icon="fa fa-plus" @click="add">添加</el-button>
-		<el-button v-if="downloadable===true||downloadable=='single'" type="primary" size="small" icon="fa fa-download" @click="download">下载当前页</el-button>
-		<el-button v-if="downloadable===true||downloadable=='all'" type="primary" size="small" icon="fa fa-download" @click="downloadAll">下载所有页</el-button>
+		<el-button v-if="addUrl" type="primary" size="small" icon="fa fa-plus" @click="add">{{locale.add}}</el-button>
+		<el-button v-if="downloadable===true||downloadable=='single'" type="primary" size="small" icon="fa fa-download" @click="download">{{locale.toolbar.exportBtnText}}</el-button>
+		<el-button v-if="downloadable===true||downloadable=='all'" type="primary" size="small" icon="fa fa-download" @click="downloadAll">{{locale.toolbar.exportAllBtnText}}</el-button>
 		<el-button
 			v-for="(btn,idx) in toolbar"
 			:key="idx"
@@ -50,6 +50,7 @@
 			listeners: {
 				default: {}
 			},
+			locale: 'locale'
 		},
 		data(){
 			return {
@@ -75,18 +76,21 @@
 			add(){
 				let toolbar = this;
 				Dialog.create({
-					title: '添加',
+					title: this.locale.add,
 					width: 600,
 					height: '62%',
 					html,
+					provide: {
+						locale: this.locale
+					},
 					buttons: [
 						{
-							text: '添加',
+							text: this.locale.add,
 							nativeType: 'submit',
 							form: 'st_add_form',
 							type: 'success'
 						},{
-							text: '取消',
+							text: this.locale.cancel,
 							click(){
 								this.close();
 							}
@@ -119,7 +123,7 @@
 								res = res[0];
 								if(res.errno==0){
 									this.$message({
-										message: '添加成功',
+										message: toolbar.locale.toolbar.addSuccessMsg,
 										type: 'success'
 									});
 									this.close();
@@ -200,7 +204,7 @@
 				ws_data = ws_data.concat(list);
 				
 				let wb = XLSX.utils.book_new();
-				this.$prompt(null,'请确认表格文件的名称',{inputValue:this.title||'wandougongzhu'}).then(res=>{
+				this.$prompt(null, this.locale.toolbar.confirmFileName,{inputValue:this.title||'wandougongzhu'}).then(res=>{
 					let name = res.value;
 					let ws = XLSX.utils.aoa_to_sheet(ws_data);
 					if(colsConf)

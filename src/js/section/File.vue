@@ -9,10 +9,10 @@
 			<span @click="remove(idx)" class="fa fa-remove st-up-del-btn"></span>
 			<div v-if="info.status=='progress'" class="st-up-progress">
 				<div class="st-up-progress-bg" :style="{width:info.percent+'%'}"></div>
-				<div class="st-up-progress-txt">上传进度：{{info.percent}}%</div>
+				<div class="st-up-progress-txt">{{locale.uploadProgress}}：{{info.percent}}%</div>
 			</div>
-			<div v-else-if="info.status=='load'" class="st-up-progress st-up-progress-loaded"><span class="fa fa-check"></span> 上传完成</div>
-			<div v-else-if="info.status=='error'" class="st-up-progress st-up-progress-error"><span class="fa fa-remove"></span> 上传失败</div>
+			<div v-else-if="info.status=='load'" class="st-up-progress st-up-progress-loaded"><span class="fa fa-check"></span> {{locale.uploadDone}}</div>
+			<div v-else-if="info.status=='error'" class="st-up-progress st-up-progress-error"><span class="fa fa-remove"></span> {{locale.uploadFail}}</div>
 		</div>
 		<label v-if="files.length<=0 || fieldConf.uploadConfig.multiple" class="st-up-item">
 			<span class="fa fa-upload st-up-icon"></span>
@@ -21,8 +21,14 @@
 	</div>
 </template>
 <script>
+	import defaultLocale from '../../lang/en.js';
 	export default {
 		props: ['fieldConf','val','loading'],
+		inject: {
+			locale: {
+				default: defaultLocale
+			}
+		},
 		data(){
 			let uploadConfig = this.fieldConf.uploadConfig||{};
 			let isImage = uploadConfig.isImage||false;
