@@ -114,7 +114,12 @@
 				width: 100,
 				buttons: [{
 					text: 'fff',
-
+					click(r,b,e){
+						console.log(this);
+						console.log(r);
+						console.log(b);
+						console.log(e);
+					},
 					icon: 'st-iconfont st-icon-eye',
 				}]
 			}

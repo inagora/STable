@@ -251,8 +251,14 @@ export default {
 				let col = this.columns[i];
 				col._st_idx = i;
 
-				if(col.type=='button' && typeof col.width=='undefined'){
-					col.width = 100*col.buttons.length;
+				if(col.type=='button'){
+					(col.buttons||[]).forEach(btn=>{
+						btn.size = btn.size||'small';
+						if(!btn.type)
+							btn.type = 'primary';
+					});
+					if(typeof col.width=='undefined')
+						col.width = 100*col.buttons.length;
 				}
 
 				if(col.fx) {

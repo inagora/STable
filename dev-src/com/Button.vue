@@ -48,10 +48,14 @@ export default {
 			size = 'lg';
 		else if(this.size=='small')
 			size = 'sm';
+		let self = this;
 		return createElement(
 			this.nativeType,
 			{
-				'class': ['st-btn', 'st-btn-'+this.type, 'st-btn-'+size]
+				'class': ['st-btn', 'st-btn-'+this.type, 'st-btn-'+size],
+				on: {
+					click(evt){self.$emit('click', evt)},
+				},
 			},
 			children
 		);
