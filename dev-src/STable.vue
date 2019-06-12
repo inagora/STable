@@ -13,6 +13,7 @@ import XTitle from './Title.vue';
 import XTip from './Tip.vue';
 import XToolbar from './Toolbar.vue';
 import XSearch from './Search.vue';
+import XForm from './Form.vue';
 import XTable from './table/index.vue';
 import XPagination from './Pagination.vue';
 import {hashCode} from "./util.js";
@@ -423,10 +424,11 @@ export default {
 			tip: XTip,
 			toolbar: XToolbar,
 			search: XSearch,
-			table: XTable,
+      table: XTable,
+      form: XForm,
 			pagination: XPagination
 		};
-		let order = ['title', 'tip', 'toolbar', 'search', 'table', 'pagination'];
+		let order = ['title', 'tip', 'toolbar', 'search', 'table', 'pagination','form'];
 		if(this.config.componentOrder) {
 			order = this.config.componentOrder;
 		}
