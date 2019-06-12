@@ -16,7 +16,7 @@ export default {
 		exportBtnText: 'このページをダウンロード',
 		exportAllBtnText: '全ページをダウンロード',
 		confirmFileName: 'ファイル名を確認してください',
-		addSuccessMsg: '成功を追加'
+		addSuccessMsg: '追加しました'
 	},
 
 	deleteMsg: {
@@ -40,25 +40,25 @@ export default {
 	uploadProgress: 'アップロードの進行状況',
 	uploadDone: 'アップロード完了',
 	uploadFail: 'アップロードに失敗しました',
-	uploadingMsg: 'アップロードしています、お待ちください...',
+	uploadingMsg: 'アップロードしています、しばらくお待ちください...',
 
 	//pagination
 	nextPage: '次のページ',
 	previousPage: '前のページ',
 
 	//store
-	noMoreBehind: '後ろにこれ以上データはありません',
-	noMoreFront: '前にこれ以上データがない',
+	noMoreBehind: 'これ以上データはありません',
+	noMoreFront: 'これ以上データはありません',
 	total: '合計',
 	sum: '和',
 	average: '平均',
 	downloadMsg: {
 		start: 'ダウンロードを開始',
-		update: '${loadedCount}ページのダウンロード、合計${totalCount}ページ',
-		waterfallUpdate: '${loadedCount}ページをダウンロードしています。',
-		loading: 'ダウンロードして、しばらくお待ちください...'
+		update: '${loadedCount}ページがダウンロードされました、合計${totalCount}ページ',
+		waterfallUpdate: '${loadedCount}ページ目をダウンロードしています、しばらくお待ちください...',
+		loading: 'データダウンロード中、しばらくお待ちください...'
 	},
-	pageErrorMsg: '${pageNo}ページにエラーがあります',
+	pageErrorMsg: '${pageNo}ページ目にエラーがあります',
 
 	//title
 	columnSetting: '列設定',
@@ -68,7 +68,7 @@ export default {
 	saveColumnSetting: '列設定を保存',
 	clearColumnSettingTips: '現在の設定をクリアしてデフォルト状態に戻しますか？',
 	clearColumnSetting: '列設定をクリア',
-	columnStorageError: 'これは列の設定を保存する際のエラーです',
+	columnStorageError: 'ローカルに保存された列情報に問題があります',
 
 	emptyMsg: 'フォームが空です'
 };
