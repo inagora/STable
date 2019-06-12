@@ -321,6 +321,9 @@
 			if(conf.listeners.beforemounted) {
 				conf.listeners.beforemounted.call(this, conf);
 			}
+			if(window.STable && window.STable.processConfig){
+				config = window.STable.processConfig(config);
+			}
 
 			return conf;
 		},
