@@ -41,23 +41,17 @@
 				labelVisible: true,
 				layout: 'fixed',
 				searchResetable: false
-			}, this.config);
+			}, window&&window.STable && window.STable.default||{}, this.config);
 
 			//国际化
 			if(!conf.locale) {
-				if(window.STable && window.STable.defaultLang)
-					conf.locale = window.STable.defaultLang;
-				else
-					conf.locale = defaultLang;
+				conf.locale = defaultLang;
 			}else if(typeof conf.locale == 'string') {
 				if(window.STable && Window.STable.lang[conf.locale]) {
 					conf.locale = Window.STable.lang[conf.locale];
 					conf.locale = conf.locale.default||conf.locale;
 				} else {
-					if(window.STable && window.STable.defaultLang)
-						conf.locale = window.STable.defaultLang;
-					else
-						conf.locale = defaultLang;
+					conf.locale = defaultLang;
 				}
 			}
 
