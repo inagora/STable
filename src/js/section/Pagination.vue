@@ -21,7 +21,6 @@
 	export default {
 		inject: ['store', 'pageMode', 'pagebar', 'params', 'locale'],
 		data(){
-			console.log(this.pagebar)
 			return {
 				msg: ''
 			}
