@@ -1,7 +1,7 @@
 function formatArgs(msg,title, options) {
 	let conf = {
 		message: msg||'',
-		title: '提示',
+		title: '',
 		options: {}
 	};
 	if(title) {

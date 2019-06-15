@@ -100,7 +100,8 @@
 				default: 'none'
 			},
 			listeners: 'listeners',
-			tableLayout: 'layout'
+			tableLayout: 'layout',
+			locale: 'locale'
 		},
 		data(){
 			return {
@@ -247,11 +248,11 @@
 				let buttons = [];
 				if(this.deleteUrl) {
 					buttons.push({
-						text: '删除',
+						text: this.locale.delete,
 						icon: 'el-icon-close',
 						type: 'danger',
 						click: (record)=>{
-							this.$confirm('您确定要删除此行数据？', '提示', {
+							this.$confirm(this.locale.deleteMsg.confirmTip, this.locale.tips, {
 								type: 'error'
 							}).then((res)=>{
 								let id = record[this.idIndex];
@@ -262,12 +263,12 @@
 									res = res[0];
 									if(res.errno==0) {
 										this.$message({
-											message: '删除成功',
+											message: this.locale.deleteMsg.success,
 											type: 'success'
 										});
 										this.load('cur');
 									} else {
-										this.$message.error('删除失败');
+										this.$message.error(this.locale.deleteMsg.fail);
 									}
 								});
 							}).catch(()=>{});
@@ -276,23 +277,26 @@
 				}
 				if(this.updateUrl) {
 					buttons.push({
-						text: '编辑',
+						text: this.locale.edit,
 						icon: 'el-icon-edit-outline',
 						click:(record)=> {
 							self = this;
 							Dialog.create({
-								title: '编辑',
+								title: this.locale.edit,
 								width: 600,
 								height: '62%',
 								html,
+								provide: {
+									locale: self.locale
+								},
 								buttons: [
 									{
-										text: '确认修改',
+										text: this.locale.editMsg.confirmBtn,
 										nativeType: 'submit',
 										form: 'st_edit_form',
 										type: 'success'
 									},{
-										text: '取消',
+										text: this.locale.cancel,
 										click(){
 											this.close();
 										}
@@ -327,7 +331,7 @@
 											res = res[0];
 											if(res.errno==0){
 												this.$message({
-													message: '修改成功',
+													message: self.locale.editMsg.success,
 													type: 'success'
 												});
 												this.close();
