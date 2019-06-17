@@ -1,5 +1,8 @@
 import STable from './STable.vue';
 
+var ss = require('./com/qtip.js');
+window.ss = ss;
+
 //注册全局组件
 Vue.component('x-stable', STable);
 

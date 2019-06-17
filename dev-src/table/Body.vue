@@ -72,7 +72,7 @@
 								<img :src="record[col.dataIndex]" :style="col.imgStyle" />
 							</div>
 						</template>
-						<div v-else-if="col.type=='button'" class="st-table-btn-box">
+						<div v-else-if="col.type=='button'" class="st-table-btn-box st-table-cell">
 							<x-button
 								v-for="btn of col.buttons"
 								:key="btn"
@@ -155,6 +155,13 @@ export default {
 	& &-tr-focus{
 		background-color: #ffefbb;
 	}
+}
+.st-table-btn-box.st-table-cell{
+	padding-bottom: 0;
+}
+.st-table-btn-box .st-btn{
+	margin-right: 10px;
+	margin-bottom: 7px;
 }
 .st-fixed-stable .st-table-body-free{
 	overflow-y: scroll;
