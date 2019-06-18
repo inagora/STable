@@ -16,15 +16,21 @@
                       :inputValue="configTips"></x-cascader>
       </span>
     </div>
+    <!-- input组件 -->
+    <div>
+      <span class="benchmark">input输入框:</span>
+      <x-input placeholder="这是一个input组件" type="text" v-model="inputData" :clearable="true"></x-input>
+    </div>
   </div>
 </template>
 
 <script>
 import XTree from './form/tree.vue';
 import XCascader from "./form/cascader.vue";
+import XInput from "./form/input.vue";
 
 export default {
-	components: {XTree,XCascader},
+	components: {XTree,XCascader,XInput},
 	data(){
     return {
       value: [],
@@ -102,6 +108,7 @@ export default {
       ],
       commonLength: 0,
       SaveCascadeIndexCodes: [],
+      inputData: 'Hello World'
     }
   },
   mounted() {
