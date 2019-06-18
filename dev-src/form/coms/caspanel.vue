@@ -3,13 +3,13 @@
   <div class="st-table-cascader-panel"
     :style="indent">
     <template>
-      <input v-if="label == 'root'" 
+      <!-- <input v-if="label == 'root'" 
         class="st-table-cascader-input" 
         :value="checkedValue" 
         readonly 
         type="text" 
-        @click.stop="toggleChildren"/>
-      <div v-else class="st-table-cascader-panel-item">
+        @click.stop="toggleChildren"/> v-else-->
+      <div class="st-table-cascader-panel-item">
         <div :class="{'active': showChildren}"
           @click="toggleChildren(label)">
           {{label}}

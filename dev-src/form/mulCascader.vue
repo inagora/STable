@@ -1,6 +1,6 @@
 <template lang='html'>
   <div class='multil-cascader'>
-    <div class="multi-cascader-popover st-iconfont" :class="showChildren ? 'st-icon-caret-down':'st-icon-caret-up' " @click="toggleShowChildren">
+    <div class="multi-cascader-popover st-iconfont" @click="toggleShowChildren">
       <input class="slect-panel" v-if="activeItem[0] && activeItem[0].level === 0"  v-model="inputValue" readonly/>
       <muContent
           :height="height"
@@ -8,8 +8,7 @@
           :option="options"
           @handleOutPut="whenOutPut"
           :selectedValues="selectedValues"
-          :outputType="outputType"
-          :disabledPair="disabledPair">
+          :outputType="outputType">
       </muContent>
     </div>
   </div>
@@ -41,18 +40,10 @@ export default {
         return "";
       }
     },
-    // 输出值的类型
     outputType: {
       type: String,
       default() {
         return "value";
-      }
-    },
-    // 互斥对儿
-    disabledPair: {
-      type: Object,
-      default() {
-        return {};
       }
     }
   },
@@ -66,7 +57,6 @@ export default {
       optionDicts: [],
       inputArrow: "el-icon-arrow-down",
       popoverWidth: "",
-      // 展开之后的数组， 将每一个children 展开
       flatOptions: []
     };
   },
@@ -87,12 +77,6 @@ export default {
     toggleShowChildren() {
       this.showChildren= !this.showChildren;
     },
-    // whenPopoverHide() {
-    //   this.inputArrow = "el-icon-arrow-down";
-    // },
-    // whenPopoverShow() {
-    //   this.inputArrow = "el-icon-arrow-up";
-    // },
     // 初始化数据 对于每一项 options 添加相关字段并且获取到当前被点击到的元素
     initData() {
       this.setLevel();
@@ -113,16 +97,17 @@ export default {
         } else {
           if (checked && item[this.outputType])
             checkedValues.push(item[this.outputType]);
+            
         }
       };
       this.activeItem = this.options;
       this.options.forEach(child => {
         getChecked(child);
-        // 设置当前item 的 childrenValues, 包含当前item 下的所有值的 value
         child.childrenValues = [...childrenValues];
         childrenValues = [];
       });
       this.selectedValues = checkedValues;
+      
       this.whenOutPut(this.selectedValues);
     },
     getTypeOptions(values, outputType) {

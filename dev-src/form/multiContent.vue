@@ -1,19 +1,19 @@
 <template lang="html">
-    <div class="popver-content">
-        <div class="multiCascader-multil-content" :style="contentStyle">
-            <ul class="multiCascader-multi-menu">
-                <li v-for="(item, index) of option"
+    <div class="st-multicas-wrap">
+        <div class="st-multicas-wrap-con" :style="contentStyle">
+            <ul class="st-multicas-wrap-menu">
+              <!-- , { 'item-disabled': item.disabled ,'item-checked': item.checked } -->
+                <li v-for="(item, index) in option"
                     :key="index"
                     style="border:1px solid transparent;"
-                    :class="[ 'multiCascader-menu-item', { 'item-disabled': item.disabled }]"
+                    :class="[ 'st-multicas-wrap-menu-item']"
                     @click="showNextLevel(item)">
-                    <template v-if="item.multiple != false">
-                      <lable for="item.label">{{item.label}}</lable>
-                      <!-- v-model="item.checked" -->
-                      <input name="multi" type="checkbox" :checked="item.checked"  :disabled="item.disabled"  @change="checkChange(item)"></input>
-                    </template>
-                    <span v-else>{{ item.label }}</span>
-                    <i class="el-icon-arrow-right" v-show="item.children && item.children.length > 0"></i>
+                    <span v-if="item.multiple">
+                      <input :id="`${item.value}-${index}`" type="checkbox" v-model="item.checked" :disabled="item.disabled" @change="checkChange(item)"></input>
+                      <lable :for="`${item.value}-${index}`">{{item.label}}</lable>
+                    </span>
+                    <span v-else @click="checkChange(item)">{{item.label}}</span>
+                    <i class="st-iconfont st-icon-caret-down item-more" v-show="item.children && item.children.length > 0"></i>
                 </li>
             </ul>
         </div>
@@ -25,15 +25,13 @@
             v-if="(activeItem && activeItem.children) && (activeItem.children.length > 0)"
             :selectedValues="selectedValues"
             @handleOutPut="whenOutPut"
-            :disabledPair="disabledPair"
             :option="activeItem.children" >
         </muContent>
     </div>
 </template>
 
 <script>
-const vm = this;
-import Vue from "vue";
+
 export default {
   name: "muContent",
   props: {
@@ -58,13 +56,6 @@ export default {
     height: {
       type: String,
       default: ""
-    },
-    // 禁用字段
-    disabledPair: {
-      type: Object,
-      default() {
-        return {};
-      }
     }
   },
   data() {
@@ -75,8 +66,6 @@ export default {
         width: "",
         height: ""
       },
-      checkArr: [],
-      checkDisabled: false
     };
   },
   created() {
@@ -97,7 +86,7 @@ export default {
     },
     // 获取到选中的值
     checkChange(item) {
-      console.log('checkChange')
+      console.log(this.selectedValues)
       const getCheckedItems = item => {
         const { value, checked, level } = item;
         if (checked && level) {
@@ -114,14 +103,34 @@ export default {
         const itemChild = item.children;
         if (itemChild) {
           itemChild.forEach(child => (child.checked = checked));
+        } else if(!itemChild && !item.multiple) {
+          //单选逻辑
+          this.selectedValues = [];
+          this.selectedValues.push(item.value);
+
+          if (this.selectedValues.length == 1) {
+            let selectedOne = this.selectedValues[0]
+            this.singleSelected(this.option, selectedOne)
+          }
         }
       };
 
       this.recursiveFn(item, getCheckedItems);
-      this.disabeldAction(item);
       this.activeItem = item;
       this.$emit("handleSelect", this.option);
       this.$emit("handleOutPut", this.selectedValues);
+    },
+    singleSelected(datas, selectedOne) {
+      for (var i in datas) {
+        if (datas[i].multiple == false) {
+          datas[i].checked = false;
+          for (let d = 0; d < selectedOne.length; d++) {
+            if (datas[i].value == selectedOne[d]) {
+              datas[i].checked = true;
+            }
+          }
+        }
+      }
     },
     // 当二级菜单改变的时候
     whenSelected(val) {
@@ -130,10 +139,9 @@ export default {
         allChildCancelChecked = val.every(child => child.checked === false);
       }
       this.activeItem.checked = !allChildCancelChecked;
-      this.disabeldAction(this.activeItem);
       this.$emit("handleSelect", this.option);
     },
-    // 递归函数
+    // 递归
     recursiveFn(curItem, cb) {
       cb(curItem);
       const children = curItem.children;
@@ -143,147 +151,13 @@ export default {
         });
       }
     },
-    // 设置 disabled 值 values: 互斥的另一方数组， curItem 当前选中的值
-    setDisabled(exceptValues, curItem, values) {
-      const {
-        checked: curChecked,
-        childrenValues,
-        value: curValue,
-        siblingValues
-      } = curItem;
-      this.checkArr = [];
-      if (values.includes("all")) {
-        if (siblingValues) {
-          this.checkArr = new Array(
-            siblingValues.length - exceptValues.length
-          ).fill(true);
-        }
-      } else {
-        this.checkArr = new Array(values.length).fill(true);
-      }
-      const getCheckArr = item => {
-        const { value, checked } = item;
-        if (!exceptValues.includes(value)) return;
-        this.checkArr.push(checked);
-        this.checkArr.shift();
-      };
-      const resetDistable = child => {
-        if (!values.includes(child.value)) return;
-        child.disabled = this.checkArr.some(val => val === true);
-      };
-      this.option.forEach(opt => {
-        this.recursiveFn(opt, getCheckArr);
-      });
-      this.option.forEach(opt => {
-        this.recursiveFn(opt, resetDistable);
-      });
-    },
-    // disabled action
-    // 根据选中的值进行设置是否可选
-    disabeldAction(item) {
-      const { thatPair, thisPair } = this.disabledPair;
-      if (!thatPair || !thisPair) {
-        return;
-      }
-      const pairs = [...thatPair, ...thisPair];
-      const { value: itemVal } = item;
-      const belongPair = pairs.includes(itemVal) || pairs.includes("all");
-      let distableValues = [];
-      let ableValues = [];
-      if (!belongPair) return;
-      if (
-        thisPair.includes(item.value) ||
-        (thisPair.includes("all") && !thatPair.includes(item.value))
-      ) {
-        this.setDisabled(thisPair, item, thatPair);
-        return;
-      }
-      if (
-        thatPair.includes(item.value) ||
-        (thatPair.includes("all") && !thisPair.includes(item.value))
-      ) {
-        this.setDisabled(thatPair, item, thisPair);
-      }
-      this.$emit("handleSelect", this.option);
-      this.disabeldAction(this.activeItem);
-    },
-    // 设置 disabled 值 values: 互斥的另一方数组， curItem 当前选中的值
-    setDisabled(exceptValues, curItem, values) {
-      const {
-        checked: curChecked,
-        childrenValues,
-        value: curValue,
-        siblingValues
-      } = curItem;
-      this.checkArr = [];
-      if (values.includes("all")) {
-        if (siblingValues) {
-          this.checkArr = new Array(
-            siblingValues.length - exceptValues.length
-          ).fill(true);
-        }
-      } else {
-        this.checkArr = new Array(values.length).fill(true);
-      }
-      const toDisabled = item => {
-        const { value, checked } = item;
-        if (
-          values.includes(value) ||
-          (values.includes("all") && !exceptValues.includes(value))
-        ) {
-          if (siblingValues && siblingValues.includes(value)) {
-            this.checkArr.push(checked);
-            this.checkArr.shift();
-          }
-        }
-        const itemChild = item.children;
-        if (itemChild && itemChild.length > 0) {
-          itemChild.forEach(child => {
-            toDisabled(child);
-          });
-        }
-      };
-      this.option.forEach(child => {
-        toDisabled(child);
-      });
-      this.option.forEach(child => {
-        if (
-          exceptValues.includes(child.value) ||
-          (exceptValues.includes("all") && !values.includes(child.value))
-        ) {
-          child.disabled = this.checkArr.some(val => val === true);
-        }
-      });
-    },
-    // disabled action
-    // 根据选中的值进行设置是否可选
-    disabeldAction(item) {
-      const { thatPair, thisPair } = this.disabledPair;
-      if (!thatPair || !thisPair) {
-        return;
-      }
-      const pairs = [...thatPair, ...thisPair];
-      if (pairs.includes(item.value) || pairs.includes("all")) {
-        if (
-          thisPair.includes(item.value) ||
-          (thisPair.includes("all") && !thatPair.includes(item.value))
-        ) {
-          this.setDisabled(thatPair, item, thisPair);
-          return;
-        }
-        if (
-          thatPair.includes(item.value) ||
-          (thatPair.includes("all") && !thisPair.includes(item.value))
-        ) {
-          this.setDisabled(thisPair, item, thatPair);
-        }
-      }
-    },
-    //点击每一个列表的操作并且给下一个列表赋值
     showNextLevel(item) {
-      //先清空，后赋值，否则会导致多级列表同时存在
       this.activeItem = "";
+      if (!item.multiple) {
+        this.selectedValues = [];
+      }
       if (item.disabled) return;
+      
       setTimeout(() => {
         this.activeItem = item;
       }, 10);
@@ -292,34 +166,55 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-.popver-content {
+.st-multicas-wrap {
   display: flex;
   justify-content: space-between;
-}
-.multiCascader-multil-content {
-  display: inline-block;
-  max-height: 250px;
-  overflow-y: auto;
-  // border-right: 1px solid red;
-}
-.multiCascader-menu-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  list-style-type: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  cursor: pointer;
-  outline: none;
-  padding: 8px 20px;
-  font-size: 14px;
-  &:hover {
-    background-color: rgba(125, 139, 169, 0.1);
+
+  &-con {
+    display: inline-block;
+    max-height: 250px;
+    overflow-y: auto;
+    // border-right: 1px solid red;
   }
+
+  &-menu-item {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    outline: none;
+    padding: 8px 20px;
+    font-size: 14px;
+    &:hover {
+      background-color: rgba(125, 139, 169, 0.1);
+    }
+  }
+
+  &-menu-item input.item-input {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: inherit;
+    padding: 8px 20px;
+    display: inline-block;
+  }
+
 }
+
 .item-disabled {
   color: #c0c4cc;
   cursor: not-allowed;
+}
+.item-checked {
+  background-color: rgba(125, 139, 169, 0.1);
+}
+.item-more {
+  opacity: 0.8;
+  transform: rotate(-90deg);
 }
 </style>
