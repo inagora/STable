@@ -18,6 +18,7 @@
 	import XPagination from 'js/section/Pagination.vue';
 	import XChart from 'js/section/Chart.vue';
 	import {hashCode} from "./util.js";
+	import defaultLang from '../lang/zh.js';
 	let stableCount = 0;
 	export default {
 		props: ['config'],
@@ -40,7 +41,19 @@
 				labelVisible: true,
 				layout: 'fixed',
 				searchResetable: false
-			}, this.config);
+			}, window&&window.STable && window.STable.default||{}, this.config);
+
+			//国际化
+			if(!conf.locale) {
+				conf.locale = defaultLang;
+			}else if(typeof conf.locale == 'string') {
+				if(window.STable && Window.STable.lang[conf.locale]) {
+					conf.locale = Window.STable.lang[conf.locale];
+					conf.locale = conf.locale.default||conf.locale;
+				} else {
+					conf.locale = defaultLang;
+				}
+			}
 
 			let methods = conf.actionMethods||conf.requestMethod||'GET';
 			if(typeof methods=='string'){
@@ -177,7 +190,7 @@
 				columns.push({
 					dataIndex:'_wd_aux_op',
 					type: 'button',
-					text: '操作',
+					text: conf.locale.operation,
 					_width: 0,
 					visible: true,
 					locked: false,
@@ -216,7 +229,7 @@
 					localColumnSet = JSON.parse(localColumnSet);
 			}catch(e){
 				localColumnSet = '';
-				alert('本地存储的列信息有问题');
+				alert(conf.locale.columnStorageError);
 			}
 			if(localColumnSet) {
 				let _columns = [];
@@ -241,6 +254,7 @@
 					columns,
 					page: conf.params.page || 1,
 					page_count: 1,
+					total: 0,
 					hasNextPage: true,
 					hasPrePage: false,
 					loadAction: '',
@@ -297,6 +311,13 @@
 			});
 			delete conf.columns;
 			delete conf.params.page;
+
+			if(conf.listeners.beforemounted) {
+				conf.listeners.beforemounted.call(this, conf);
+			}
+			if(window.STable && window.STable.processConfig){
+				conf = window.STable.processConfig(conf);
+			}
 
 			return conf;
 		},

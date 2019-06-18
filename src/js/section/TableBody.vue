@@ -69,7 +69,7 @@
 				<template v-for="(col, colIdx) of columns">
 					<td v-if="!locked || col.locked" :key="colIdx" class="st-table-td" :class="[col.cls||'',col.type=='rownumber'?'st-table-td-rownumber':'']" :style="col.style">
 						<template v-if="col.type=='pad'"></template>
-						<div v-else-if="col.type=='rownumber'" class="st-table-cell">计算</div>
+						<div v-else-if="col.type=='rownumber'" class="st-table-cell">{{locale.compute}}</div>
 						<div v-else class="st-table-cell" :class="{'st-table-cell-nowrap':!col.cellWrap}" v-text="fxResult[col.dataIndex]||' '"></div>
 					</td>
 				</template>
@@ -79,7 +79,7 @@
 </template>
 <script>
 export default {
-	inject: ['store', 'groupBy','sublistAt'],
+	inject: ['store', 'groupBy','sublistAt', 'locale'],
 	props: ['columns', 'recordList', 'locked', 'tWidth', 'hlRowNum', 'focusRowNum', 'checkedAll', 'haveFx', 'fxResult'],
 	mounted(){
 		this.store.$on('selectall', (selectall)=>{

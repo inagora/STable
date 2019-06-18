@@ -2,6 +2,7 @@
 	<div
 		v-show="columns.length>0"
 		class="st-table-body-box"
+		@mousedown="blur"
 		:class="{
 			'st-table-body-left':locked=='left',
 			'st-table-body-right':locked=='right',
@@ -21,8 +22,13 @@
 					v-for="(record, idx) of recordList"
 					:key="idx"
 					class="st-table-body-tr"
-					:style="{height:recordsHeight[idx]}"
-				>
+					@mouseenter="store.hlRowNum=idx"
+					@mousedown="store.focusRowNum=idx"
+					:class="{
+						'st-table-body-tr-hl': idx==store.hlRowNum,
+						'st-table-body-tr-focus':idx==store.focusRowNum
+					}"
+					:style="{height:recordsHeight[idx]}">
 					<td
 						v-for="(col, colIdx) of columns"
 						:key="colIdx"
@@ -34,8 +40,7 @@
 								'st-table-td-rownumber':col.type=='rownumber'
 							}
 						]"
-						:style="col.style"
-					>
+						:style="col.style">
 						<label v-if="col.type=='radio'" class="st-table-label-cell st-table-cell">
 							<input type="radio" :value="idx" v-model="store.radioVal" />
 						</label>
@@ -67,8 +72,14 @@
 								<img :src="record[col.dataIndex]" :style="col.imgStyle" />
 							</div>
 						</template>
-						<div v-else-if="col.type=='button'" class="st-table-btn-box">
-							<x-button v-for="btn of col.buttons" :key="btn" :icon="btn.icon">{{btn.text}}</x-button>
+						<div v-else-if="col.type=='button'" class="st-table-btn-box st-table-cell">
+							<x-button
+								v-for="(btn, btnIdx) of col.buttons"
+								:key="btnIdx"
+								:type="btn.type"
+								:size="btn.size"
+								:icon="btn.icon"
+								@click="btnClick(btn, record, $event)">{{btn.text}}</x-button>
 						</div>
 					</td>
 				</tr>
@@ -86,6 +97,18 @@ export default {
 	data(){
 		return {
 			tableStyle: {}
+		}
+	},
+	methods: {
+		btnClick(btn, record, evt){
+			if(btn.click) {
+				btn.click.call(this.$parent.$parent, record, btn, evt);
+			}
+		},
+		blur(evt){
+			if(evt.target.classList.contains('st-table-body-box')){
+				this.store.focusRowNum = -1;
+			}
 		}
 	}
 }
@@ -126,6 +149,19 @@ export default {
 	&-tr:nth-of-type(2n) {
 		background-color: #fafafa;
 	}
+	& &-tr-hl{
+		background-color: #f5f5f5;
+	}
+	& &-tr-focus{
+		background-color: #ffefbb;
+	}
+}
+.st-table-btn-box.st-table-cell{
+	padding-bottom: 0;
+}
+.st-table-btn-box .st-btn{
+	margin-right: 10px;
+	margin-bottom: 7px;
 }
 .st-fixed-stable .st-table-body-free{
 	overflow-y: scroll;

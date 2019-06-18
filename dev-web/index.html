@@ -37,7 +37,7 @@
 		<div class="nav">nav</div>
 		<div id="box"></div>
 	</div>
-	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
 	<script src="/STable.min.js"></script>
 	<script>
 	STable.init({
@@ -114,7 +114,12 @@
 				width: 100,
 				buttons: [{
 					text: 'fff',
-
+					click(r,b,e){
+						console.log(this);
+						console.log(r);
+						console.log(b);
+						console.log(e);
+					},
 					icon: 'st-iconfont st-icon-eye',
 				}]
 			}
@@ -131,8 +136,16 @@
 			{text:'测试', size:'large', icon:'st-iconfont st-icon-lock'},
 			{text:'测试', type: 'primary', size:'large'},
 			{text:'测试', type: 'primary', size:'large', icon:'st-iconfont st-icon-lock'},
+			{text:'测试', type: 'primary',},
+			{text:'测试', type: 'primary', icon:'st-iconfont st-icon-lock'},
 			{text:'测试', type: 'success', size:'small'},
 			{text:'测试', type: 'success', size:'small', icon:'st-iconfont st-icon-lock'},
+			{text:'测试', type: 'primary', size:'large'},
+			{text:'测试', type: 'primary', size:'large', icon:'st-iconfont st-icon-eye'},
+			{text:'测试', type: 'primary',},
+			{text:'测试', type: 'primary', icon:'st-iconfont st-icon-eye'},
+			{text:'测试', type: 'success', size:'small'},
+			{text:'测试', type: 'success', size:'small', icon:'st-iconfont st-icon-eye'},
 			{text:'测试', type: 'danger'},
 			{text:'测试', type: 'danger', icon:'st-iconfont st-icon-lock'},
 			{text:'测试', type: 'info'},

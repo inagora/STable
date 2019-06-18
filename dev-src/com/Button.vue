@@ -48,10 +48,14 @@ export default {
 			size = 'lg';
 		else if(this.size=='small')
 			size = 'sm';
+		let self = this;
 		return createElement(
 			this.nativeType,
 			{
-				'class': ['st-btn', 'st-btn-'+this.type, 'st-btn-'+size]
+				'class': ['st-btn', 'st-btn-'+this.type, 'st-btn-'+size],
+				on: {
+					click(evt){self.$emit('click', evt)},
+				},
 			},
 			children
 		);
@@ -87,7 +91,6 @@ export default {
 	}
 
 	&-icon{
-		line-height: 1;
 		display: inline-block;
 		vertical-align: middle;
 	}
@@ -107,6 +110,9 @@ export default {
 		font-size: 12px;
 		border-radius: 4px;
 		height: 24px;
+	}
+	&-sm &-icon{
+		font-size: 14px;
 	}
 	
 	&-default {
@@ -180,8 +186,12 @@ export default {
 		text-decoration: underline;
 	}
 
-	& > &-icon + &-text{
+	&-icon + &-text{
 		margin-left: 8px;
+	}
+
+	&-sm > &-icon + &-text{
+		margin-left: 4px;
 	}
 
 }

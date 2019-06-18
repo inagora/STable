@@ -379,7 +379,10 @@ export default {
 				radioVal: '',
 				checkboxVal: [],
 				sortKey: conf.sortKey||'',
-				sortDirection: conf.sortDirection
+				sortDirection: conf.sortDirection,
+
+				hlRowNum: -1,
+				focusRowNum: -1
 			},
 			methods: {
 				saveColumnsState(){

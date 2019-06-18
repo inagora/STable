@@ -2,8 +2,8 @@
 	<div v-if="searchFilter" class="st-search" :class="{'st-search-label-invisible':!labelVisible}">
 		<x-form ref="form" :inline="true" size="small" :field-list="searchFilter" :default-values="params" :action-methods="actionMethods" @submit="search">
 			<el-form-item>
-				<el-button type="primary" icon="fa fa-search" native-type="submit">查询</el-button>
-				<el-button v-if="searchResetable" @click="reset">重置</el-button>
+				<el-button type="primary" icon="fa fa-search" native-type="submit">{{locale.search}}</el-button>
+				<el-button v-if="searchResetable" @click="reset">{{locale.reset}}</el-button>
 			</el-form-item>
 		</x-form>
 	</div>
@@ -22,7 +22,8 @@
 			actionMethods: 'actionMethods',
 			params: 'params',
 			store: 'store',
-			ignoreEmptySearchParam: 'ignoreEmptySearchParam'
+			ignoreEmptySearchParam: 'ignoreEmptySearchParam',
+			locale: 'locale'
 		},
 		mounted(){
 			setTimeout(()=>{
@@ -31,8 +32,6 @@
 				}
 				this.store.$emit('load');
 			}, 0);
-
-			console.log('seset', this.searchResetable)
 		},
 		methods: {
 			trimParam(data){

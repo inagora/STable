@@ -2,7 +2,7 @@
 	<div v-if="!hideTitle" class="st-title">
 		<div class="st-title-text" v-text="title"></div>
 		<div v-if="chart" @click="store.$emit('chartshow',$event)" class="st-title-tool st-title-">📊</div>
-		<div @click="showConfig" title="配置" class="st-title-tool">⚙</div>
+		<div @click="showConfig" :title="locale.setting" class="st-title-tool">⚙</div>
 	</div>
 </template>
 <script>
@@ -20,13 +20,14 @@
 			hideTitle: {
 				default: false
 			},
-			store: 'store'
+			store: 'store',
+			locale: 'locale'
 		},
 		methods: {
 			showConfig() {
 				let stable = this;
 				Dialog.create({
-					title: '列配置',
+					title: this.locale.columnSetting,
 					width: 500,
 					autoShow: true,
 					bodyStyle: {padding: 0},
@@ -34,19 +35,19 @@
 						stableConfig: {
 							hideTitle: true,
 							columns: [{
-								text: '列名',
+								text: this.locale.columnName,
 								dataIndex: 'text',
 								cellWrap: true
 							},{
 								width: 60,
-								text: '锁定',
+								text: this.locale.lock,
 								dataIndex: 'locked',
 								render(record, col, idx) {
 									return `<label class="st-title-cog-label"><input type="checkbox" data-locked value="${idx}" ${record.locked?'checked':''} /></label>`;
 								}
 							},{
 								width: 60,
-								text: '显示',
+								text: this.locale.visible,
 								dataIndex: 'visible',
 								render(record, col, idx) {
 									return `<label class="st-title-cog-label"><input type="checkbox" data-visible value="${idx}" ${record.visible?'checked':''} /></label>`;
@@ -59,7 +60,7 @@
 					},
 					html: '<x-stable :config="stableConfig"></x-stable>',
 					buttons: [{
-						text: '保存列配置',
+						text: this.locale.saveColumnSetting,
 						type: 'success',
 						click(){
 							let lockedChecks = this.$el.querySelectorAll('[data-locked]');
@@ -77,15 +78,15 @@
 							stable.store.saveColumnsState();
 						}
 					},{
-						text: '清除列设置',
+						text: this.locale.clearColumnSetting,
 						type: 'danger',
 						click(){
-							if(confirm('您确定清除当前列设置，还原为默认状态？')) {
+							if(confirm(stable.locale.clearColumnSettingTips)) {
 								stable.store.resetColumnsState();
 							}
 						}
 					}, {
-						text: '取消',
+						text: this.locale.cancel,
 						click(){
 							this.close();
 						}
