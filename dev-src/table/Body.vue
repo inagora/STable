@@ -74,8 +74,8 @@
 						</template>
 						<div v-else-if="col.type=='button'" class="st-table-btn-box st-table-cell">
 							<x-button
-								v-for="btn of col.buttons"
-								:key="btn"
+								v-for="(btn, btnIdx) of col.buttons"
+								:key="btnIdx"
 								:type="btn.type"
 								:size="btn.size"
 								:icon="btn.icon"

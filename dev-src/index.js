@@ -1,13 +1,9 @@
 import STable from './STable.vue';
 
-var ss = require('./com/qtip.js');
-window.ss = ss;
-
 //注册全局组件
 Vue.component('x-stable', STable);
 
-console.log('%c👨‍💻STable',"color:#205424;font-size:18px");
-console.log('%c文档地址：https://stable.wfxteam.com/',"color:#191919;font-size:14px");
+console.log('%cSTable doc：https://stable.wfxteam.com/',"color:#191919;font-size:14px");
 
 export var version = '2.0.0';
 export function init(config, Vue) {

@@ -12,14 +12,26 @@
 import XButton from './com/Button.vue';
 export default {
 	components: {XButton},
-	inject: [
-		'toolbar',
-		'addUrl',
-		'addConf',
-		'batDeleteUrl',
-		'downloadable',
-		'actionMethods'
-	],
+	inject: {
+		toolbar: {
+			default: []
+		},
+		addUrl:{
+			default: false
+		},
+		addConf: {
+			default: []
+		},
+		batDeleteUrl: {
+			default: false
+		},
+		downloadable: {
+			default: false
+		},
+		actionMethods: {
+			default: {}
+		}
+	},
 	data(){
 		let tb = [];
 		if(this.toolbar && Array.isArray(this.toolbar)) {
