@@ -3,28 +3,28 @@
     <!-- tree组件 -->
     <div class="st-form-box">
       <span class="benchmark">树型菜单:</span>
-      <x-cascader v-model="value" :options="configOptions" @change="handleChange"></x-cascader>
+      <x-tree v-model="value" :options="configOptions" @change="handleChange"></x-tree>
     </div>
     <!-- 级联选择组件 -->
     <div >
       <span class="dropTreeLists">
         <span class="benchmark">多选级联选择器:</span>
-        <multi-cascader 
+        <x-cascader 
                       v-on:CheckedsIndexCodes="fromTreeCheckeds"
                       :options="configOptions"
                       @on-selected="getSelected"
-                      :inputValue="configTips"></multi-cascader>
+                      :inputValue="configTips"></x-cascader>
       </span>
     </div>
   </div>
 </template>
 
 <script>
-import XCascader from './form/cascader.vue';
-import multiCascader from "./form/mulCascader.vue";
+import XTree from './form/tree.vue';
+import XCascader from "./form/cascader.vue";
 
 export default {
-	components: {XCascader,multiCascader},
+	components: {XTree,XCascader},
 	data(){
     return {
       value: [],
