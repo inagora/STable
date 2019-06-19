@@ -23,6 +23,10 @@
       <span class="benchmark">textarea输入框:</span>
       <x-input :placeholder="'这是一个input组件-textarea'" type="textarea" v-model="textareaData" maxlength="5" :showWordLimit="true"></x-input>
     </div>
+    <div>
+      <span class="benchmark">tag标签:</span>
+      <x-tag v-for="(tag,index) in tags" :key="index" :type="tag.type" :closable="true" :size="index == 0 ? 'small' : ''" @close="closeTag(index)">{{tag.name}}</x-tag>
+    </div>
   </div>
 </template>
 
@@ -30,9 +34,10 @@
 import XTree from './form/tree.vue';
 import XCascader from "./form/cascader.vue";
 import XInput from "./form/input.vue";
+import XTag from "./form/tag.vue";
 
 export default {
-	components: {XTree,XCascader,XInput},
+	components: {XTree,XCascader,XInput,XTag},
 	data(){
     return {
       value: [],
@@ -112,6 +117,13 @@ export default {
       SaveCascadeIndexCodes: [],
       inputData: '',
       textareaData: '',
+      tags: [
+        { name: '标签一', type: '' },
+        { name: '标签二', type: 'success' },
+        { name: '标签三', type: 'info' },
+        { name: '标签四', type: 'warning' },
+        { name: '标签五', type: 'danger' }
+      ]
     }
   },
   mounted() {
@@ -151,6 +163,9 @@ export default {
       //IndexCodes就是选中的item的数组，操作他就好了
       this.SaveCascadeIndexCodes = IndexCodes;
     },
+    closeTag(index) {
+      this.tags.splice(index,1)
+    }
   }
 }
 </script>
