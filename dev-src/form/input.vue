@@ -233,8 +233,8 @@ export default {
   &-count {
     // color: #f56c6c;
     position: absolute;
-    right: 20px;
-    bottom: 20px;
+    right: 10px;
+    bottom: 10px;
   }
 }
 </style>
