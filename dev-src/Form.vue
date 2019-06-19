@@ -20,6 +20,8 @@
     <div>
       <span class="benchmark">input输入框:</span>
       <x-input :placeholder="'这是一个input组件'" type="text" v-model="inputData" :clearable="true"></x-input>
+      <span class="benchmark">textarea输入框:</span>
+      <x-input :placeholder="'这是一个input组件-textarea'" type="textarea" v-model="textareaData" maxlength="5" :showWordLimit="true"></x-input>
     </div>
   </div>
 </template>
@@ -108,7 +110,8 @@ export default {
       ],
       commonLength: 0,
       SaveCascadeIndexCodes: [],
-      inputData: ''
+      inputData: '',
+      textareaData: '',
     }
   },
   mounted() {

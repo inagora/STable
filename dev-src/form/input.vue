@@ -5,9 +5,9 @@
     <template v-if="type != 'textarea'">
       <div class="st-input-wrap" >
         <input 
-          v-if="type != 'textarea'"
           class="st-input-wrap-item"
           ref="input"
+          v-bind="$attrs"
           :class="[{'st-input-wrap-disabled': disabled}]"
           :type="showPassword ? 'password' : type"
           :disabled="disabled"
@@ -24,9 +24,22 @@
             ></i>
       </div>
     </template>
-    <template v-else>
-      <div>
+    <template v-if="type == 'textarea'">
+      <div class="st-textarea-wrap">
+        <textarea class="st-textarea-wrap-con"
+                :class="[{'st-textarea-wrap-exceed':inputExceed}]"
+                @input="handleInput"
+                @focus="handleFocus"
+                @blur="handleBlur"
+                @change="handleChange"
+                ref="textarea"
+                v-bind="$attrs"
+                :disabled="disabled"
+                :placeholder="placeholder"
+                :readonly="readonly">
         
+        </textarea>
+        <span v-if="isWordLimitVisible && type === 'textarea'" class="st-textarea-wrap-count">{{ textLength }}/{{ upperLimit }}</span>
       </div>
     </template>
   </div>
@@ -62,7 +75,15 @@ export default {
     placeholder:{
       type: String,
       default: ''
-    }
+    },
+    length: {
+      type: Number,
+    },
+    showWordLimit: {
+      type: Boolean,
+      default: false
+    },
+
   },
   watch:{
     value(val) {
@@ -88,6 +109,27 @@ export default {
     nativeInputValue() {
       return this.value === null || this.value === undefined ? '' : String(this.value);
     },
+    isWordLimitVisible() {
+      return this.showWordLimit &&
+        this.$attrs.maxlength &&
+        (this.type === 'text' || this.type === 'textarea') &&
+        !this.disabled &&
+        !this.readonly &&
+        !this.showPassword;
+    },
+    upperLimit() {
+      return this.$attrs.maxlength;
+    },
+    textLength() {
+      if (typeof this.value === 'number') {
+        return String(this.value).length;
+      }
+      return (this.value || '').length;
+    },
+    inputExceed() {
+      return this.isWordLimitVisible &&
+        (this.textLength > this.upperLimit);
+    }
   },
   mounted(){
     this.setNativeInputValue();
@@ -136,8 +178,9 @@ export default {
 
 <style lang='scss' scoped>
 .st-input-wrap {
-  width: 1005;
+  width: 100%;
   display: flex;
+
   &-item {
     width: 220px;
     height: 40px;
@@ -165,6 +208,33 @@ export default {
     transform: translate(0, 50%);
     right: 20px;
     top: 50%;
+  }
+  
+}
+.st-textarea-wrap {
+  position: relative;
+
+  &-con {
+    width: 100%;
+    min-height: 80px;
+    text-align: left; 
+    padding: 0 15px;
+    outline: none;
+    font-size: inherit;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+  }
+
+  &-exceed{
+    background: #fef0f0;
+    border-color: #fbc4c4;
+  }
+
+  &-count {
+    // color: #f56c6c;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
   }
 }
 </style>
