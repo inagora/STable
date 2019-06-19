@@ -77,7 +77,7 @@ export default {
     toggleShowChildren() {
       this.showChildren= !this.showChildren;
     },
-    // 初始化数据 对于每一项 options 添加相关字段并且获取到当前被点击到的元素
+    // 初始化数据 
     initData() {
       this.setLevel();
       const { width, height } = this;
@@ -124,7 +124,7 @@ export default {
         return pev;
       }, []);
     },
-    // 展开配置中的各项， [{}], 排除 children 属性
+    // 展开配置中的各项
     toFlatOption(option) {
       const getItems = (arr, cur) => {
         const keys = Object.keys(cur);
@@ -154,7 +154,6 @@ export default {
     },
     // 触发 on-selected 事件
     whenOutPut(value) {
-      // 根据选中的值数组 value 输出特定 outputType 类型
       if (this.outputType !== "value") {
         this.outputValue = this.getTypeOptions(value, this.outputType);
       } else {

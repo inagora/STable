@@ -5,16 +5,8 @@
       text: String,
       closable: Boolean,
       type: String,
-      hit: Boolean,
       color: String,
-      size: String,
-      effect: {
-        type: String,
-        default: 'light',
-        validator(val) {
-          return ['dark', 'light', 'plain'].includes(val);
-        }
-      }
+      size: String
     },
     methods: {
       handleClose(event) {
@@ -31,13 +23,11 @@
       }
     },
     render(h) {
-      const { type, tagSize, hit, effect } = this;
+      const { type, tagSize } = this;
       const classes = [
         'st-tag',
         type ? `st-tag_${type}` : '',
         tagSize ? `st-tag_${tagSize}` : '',
-        effect ? `st-tag_${effect}` : '',
-        hit && 'is-hit'
       ];
       return (
         <span

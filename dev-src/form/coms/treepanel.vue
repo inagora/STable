@@ -45,8 +45,6 @@ export default {
   methods:{
     toggleChildren(val) {
       this.showChildren = !this.showChildren;
-      // this.checkedValue.push(val);
-      // console.log(this.checkedValue)
     }
   }
 }
