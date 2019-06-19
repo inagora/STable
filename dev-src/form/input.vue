@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div
+      @mouseenter="hovering = true"
+      @mouseleave="hovering = false">
     <template v-if="type != 'textarea'">
-      <div class="st-input-wrap">
+      <div class="st-input-wrap" >
         <input 
           v-if="type != 'textarea'"
           class="st-input-wrap-item"
@@ -9,13 +11,14 @@
           :class="[{'st-input-wrap-disabled': disabled}]"
           :type="showPassword ? 'password' : type"
           :disabled="disabled"
+          :placeholder="placeholder"
           :readonly="readonly"
           @input="handleInput"
           @focus="handleFocus"
           @blur="handleBlur"
           @change="handleChange"/>
           <!-- 后置元素 -->
-          <i v-if="showClear"
+          <i v-show="showClear"
               class="st-iconfont st-icon-close st-input-wrap-clear"
               @click="clear"
             ></i>
@@ -39,6 +42,7 @@ export default {
       hovering: false,
     }
   },
+  inject:{},
   props: {
     value: [String,Number],
     disabled: Boolean,
@@ -55,10 +59,14 @@ export default {
       type: Boolean,
       default: false
     },
+    placeholder:{
+      type: String,
+      default: ''
+    }
   },
   watch:{
     value(val) {
-
+      
     },
     nativeInputValue() {
       this.setNativeInputValue();
@@ -108,6 +116,7 @@ export default {
     handleInput(event) {
       if (event.target.value === this.nativeInputValue) return;
       this.$emit('input', event.target.value);
+      this.$nextTick(this.setNativeInputValue);
     },
     handleChange(event) {
       this.$emit('change', event.target.value);

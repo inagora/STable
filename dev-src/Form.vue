@@ -19,7 +19,7 @@
     <!-- input组件 -->
     <div>
       <span class="benchmark">input输入框:</span>
-      <x-input placeholder="这是一个input组件" type="text" v-model="inputData" :clearable="true"></x-input>
+      <x-input :placeholder="'这是一个input组件'" type="text" v-model="inputData" :clearable="true"></x-input>
     </div>
   </div>
 </template>
@@ -108,7 +108,7 @@ export default {
       ],
       commonLength: 0,
       SaveCascadeIndexCodes: [],
-      inputData: 'Hello World'
+      inputData: ''
     }
   },
   mounted() {
