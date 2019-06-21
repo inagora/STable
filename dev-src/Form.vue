@@ -23,9 +23,27 @@
       <span class="benchmark">textarea输入框:</span>
       <x-input :placeholder="'这是一个input组件-textarea'" type="textarea" v-model="textareaData" maxlength="5" :showWordLimit="true"></x-input>
     </div>
+    <!-- tag标签 -->
     <div>
       <span class="benchmark">tag标签:</span>
       <x-tag v-for="(tag,index) in tags" :key="index" :type="tag.type" :closable="true" :size="index == 0 ? 'small' : ''" @close="closeTag(index)">{{tag.name}}</x-tag>
+    </div>
+    <!-- select多选 -->
+    <div>
+      <span class="benchmark">select多选:</span>
+      <x-select 
+        v-model="selectValue" 
+        multiple
+        filterable
+        allow-create
+        default-first-option>
+        <x-option
+          v-for="(item,index) in selectOptions"
+          :key="index"
+          :label="item.label"
+          :value="item.value">
+        </x-option>
+      </x-select>
     </div>
   </div>
 </template>
@@ -35,9 +53,11 @@ import XTree from './form/tree.vue';
 import XCascader from "./form/cascader.vue";
 import XInput from "./form/input.vue";
 import XTag from "./form/tag.vue";
+import XSelect from "./form/select.vue";
+import XOption from "./form/coms/option.vue";
 
 export default {
-	components: {XTree,XCascader,XInput,XTag},
+	components: {XTree,XCascader,XInput,XTag,XSelect,XOption},
 	data(){
     return {
       value: [],
@@ -123,7 +143,27 @@ export default {
         { name: '标签三', type: 'info' },
         { name: '标签四', type: 'warning' },
         { name: '标签五', type: 'danger' }
-      ]
+      ],
+      selectOptions: [{
+        value: 'java',
+        label: 'java'
+      }, {
+        value: 'php',
+        label: 'php'
+      }, {
+        value: 'javascript',
+        label: 'javascript'
+      }, {
+        value: 'nodejs',
+        label: 'nodejs'
+      }, {
+        value: 'python',
+        label: 'python'
+      }, {
+        value: 'golang',
+        label: 'golang'
+      }],
+      selectValue: [],
     }
   },
   mounted() {
