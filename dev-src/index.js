@@ -1,4 +1,10 @@
 import STable from './STable.vue';
+import SidePanel from './com/SidePanel.js';
+import {create} from './com/Dialog.js';
+
+//测试代码，请注意删除
+window.SidePanel = SidePanel;
+window.Dialog = {create};
 
 //注册全局组件
 Vue.component('x-stable', STable);

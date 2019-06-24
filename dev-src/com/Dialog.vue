@@ -28,7 +28,7 @@
 			<div
 				v-if="buttons && buttons.length>0"
 				class="st-dialog-foot">
-				<x-button v-for="(btn, btnIdx) of buttons" v-bind="btn" :key="btnIdx">{{btn.text}}</x-button>
+				<x-button v-for="(btn, btnIdx) of buttons" v-bind="btn" :key="btnIdx" @click="btnClick(btnIdx)">{{btn.text}}</x-button>
 			</div>
 			<div
 				@mousedown="prepareResize"
@@ -101,6 +101,10 @@ export default {
 		});
 	},
 	methods: {
+		btnClick(idx){
+			if(this.buttons[idx].click)
+				this.buttons[idx].click.call(this.$root);
+		},
 		prepareDrag(evt){
 			if(!this.draggable)
 				return;

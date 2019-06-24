@@ -1,5 +1,23 @@
 import XDialog from './Dialog.vue';
 
+function formatArgs(msg, title, options){
+	if(msg && typeof msg != 'string')
+		return msg;
+	if(title && typeof title != 'string'){
+		options = title;
+		options.msg = msg;
+		return options;
+	}
+	if(!options){
+		options = {};
+	}
+	options.title = title||'提示';
+	options.msg = msg||'';
+	return options;
+}
+export function alert(msg, title, options){
+	let config = formatArgs(msg, title, options);
+}
 export function create(config) {
 	let el = document.createElement('div');
 	document.body.appendChild(el);
@@ -78,6 +96,9 @@ export function create(config) {
 				this._trigger('destroy');
 			}
 			return ret;
+		},
+		open(){
+			this.show();
 		},
 		close(){
 			let ret = this._trigger('beforeclose');

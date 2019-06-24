@@ -609,3 +609,224 @@ to {
   flex-direction: column;
 }
 
+.st-sp {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 99;
+}
+.st-sp-mask {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #000;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.st-sp-doc {
+    position: fixed;
+    background-color: #fff;
+    width: 90%;
+    max-width: 2000px;
+    top: 10px;
+    right: -2000px;
+    bottom: 10px;
+    transition: right 0.2s ease;
+    border-radius: 4px 0 0 4px;
+    border: 1px solid #ddd;
+    border-right-width: 0;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+.st-sp-show .st-sp-mask {
+    opacity: 0.3;
+}
+.st-sp-show .st-sp-doc {
+    right: 0;
+}
+.st-sp-head {
+    padding: 5px 15px;
+    border-bottom: 1px solid #ddd;
+    border-top-left-radius: 3px;
+    color: #333;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+}
+.st-sp-title {
+    margin-left: 10px;
+    flex: 1;
+    text-align: center;
+}
+.st-sp-close {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+}
+.st-sp-close > i {
+    transform: rotate(-90deg);
+}
+.st-sp-close:hover > i {
+    color: red;
+    font-size: 1.2em;
+}
+.st-sp-body {
+    position: absolute;
+    top: 41px;
+    right: 0;
+    bottom: 0;
+    left: 1px;
+    overflow: auto;
+}
+.st-sp-iframe {
+    border: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.st-dialog-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+.st-dialog-doc {
+  z-index: 100;
+  position: fixed;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #d0d0d0;
+  border-radius: 5px;
+  overflow: hidden;
+  color: #191919;
+  display: flex;
+  flex-direction: column;
+}
+.st-dialog-head {
+  border-bottom: 1px solid #e8eaec;
+  display: flex;
+  align-items: center;
+  height: 36px;
+  font-size: 16px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.st-dialog-title {
+  margin-left: 10px;
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  align-self: stretch;
+  line-height: 36px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+.st-dialog-draggable {
+  cursor: move;
+}
+.st-dialog-close {
+  margin: 0 10px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.st-dialog-close:hover {
+  opacity: 1;
+}
+.st-dialog-body {
+  flex: 1;
+  padding: 10px;
+  overflow: auto;
+  background-color: #fff;
+}
+.st-dialog-foot {
+  border-top: 1px solid #e8eaec;
+  background-color: #fafafa;
+  padding: 7px 20px 8px;
+  text-align: right;
+}
+.st-dialog-foot > button {
+  margin-left: 10px;
+}
+.st-dialog-proxy {
+  border: 1px dashed #666;
+  position: fixed;
+  box-sizing: border-box;
+  z-index: 100;
+}
+.st-dialog-rz {
+  position: absolute;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.st-dialog-n {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 3px;
+  cursor: row-resize;
+}
+.st-dialog-s {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  cursor: row-resize;
+}
+.st-dialog-e {
+  right: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  cursor: col-resize;
+}
+.st-dialog-w {
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  cursor: col-resize;
+}
+.st-dialog-nw {
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 3px;
+  cursor: nwse-resize;
+}
+.st-dialog-ne {
+  right: 0;
+  top: 0;
+  width: 3px;
+  height: 3px;
+  cursor: nesw-resize;
+}
+.st-dialog-se {
+  right: 0;
+  bottom: 0;
+  width: 3px;
+  height: 3px;
+  cursor: nwse-resize;
+}
+.st-dialog-sw {
+  left: 0;
+  bottom: 0;
+  width: 3px;
+  height: 3px;
+  cursor: nesw-resize;
+}
+
