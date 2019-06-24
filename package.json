@@ -23,7 +23,7 @@
     "font-awesome": "^4.7.0",
     "koa-webpack": "^5.1.0",
     "mini-css-extract-plugin": "^0.4.1",
-    "open": "0.0.5",
+    "open": "^6.3.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "pinyin": "^2.8.3",
     "style-loader": "^0.23.1",
