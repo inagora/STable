@@ -83,9 +83,10 @@
 import XTag from './tag.vue'
 import XInput from './input.vue'
 import XOption from './coms/option.vue'
-import {_typeOf,_getValueByPath,_valueEquals} from './tool';
+import Tool from './tool';
 
 export default {
+  mixins: [Tool],
   name: 'XSelect',
   componentName: 'XSelect',
   provide() {
@@ -115,7 +116,10 @@ export default {
     },
     selectDisabled() {
       return this.disabled;
-    }
+    },
+    optionsAllDisabled() {
+      return this.options.filter(option => option.visible).every(option => option.disabled);
+    },
   },
   props:{
     name: String,
@@ -143,6 +147,7 @@ export default {
   data(){
     return {
       options: [],
+      hoverOption: '',
       cachedOptions: [],
       createdLabel: null,
       createdSelected: false,
@@ -189,8 +194,8 @@ export default {
       if (this.filterable && !this.multiple) {
         this.inputLength = 20;
       }
-      // if (!_valueEquals(val, oldVal)) {
-      //   this.dispatch('ElFormItem', 'el.form.change', val);
+      // if (!this._valueEquals(val, oldVal)) {
+      //   this._dispatch('ElFormItem', 'el.form.change', val);
       // }
     },
     visible(val) {
@@ -232,7 +237,7 @@ export default {
           if (this.multiple) {
             this.$refs.input.focus();
           } else {
-            this.broadcastEvt('XOption', 'queryChange', '');
+            this._broadcast('XOption', 'queryChange', '');
             if (this.selectedLabel) {
               this.currentPlaceholder = this.selectedLabel;
               this.selectedLabel = '';
@@ -258,16 +263,47 @@ export default {
     placeholder(val) {
       this.cachedPlaceHolder = this.currentPlaceholder = val;
     },
+    hoverIndex(val) {
+      if (typeof val === 'number' && val > -1) {
+        this.hoverOption = this.options[val] || {};
+      }
+      this.options.forEach(option => {
+        option.hover = this.hoverOption === option;
+      });
+    }
   },
   methods: {
+    navigateOptions(direction) {
+      if (!this.visible) {
+        this.visible = true;
+        return;
+      }
+      if (this.options.length === 0 || this.filteredOptionsCount === 0) return;
+      if (!this.optionsAllDisabled) {
+        if (direction === 'next') {
+          this.hoverIndex++;
+          if (this.hoverIndex === this.options.length) {
+            this.hoverIndex = 0;
+          }
+        } else if (direction === 'prev') {
+          this.hoverIndex--;
+          if (this.hoverIndex < 0) {
+            this.hoverIndex = this.options.length - 1;
+          }
+        }
+        const option = this.options[this.hoverIndex];
+        if (option.disabled === true ||
+          option.groupDisabled === true ||
+          !option.visible) {
+          this.navigateOptions(direction);
+        }
+        // this.$nextTick(() => this.scrollToOption(this.hoverOption));
+      }
+    },
     managePlaceholder() {
       if (this.currentPlaceholder !== '') {
         this.currentPlaceholder = this.$refs.input.value ? '' : this.cachedPlaceHolder;
       }
-    },
-    //模拟实现广播
-    broadcastEvt(componentName, eventName, params) {
-      this.broadcastEvt.call(this, componentName, eventName, params);
     },
     handleQueryChange(val) {
       if (this.previousQuery === val) return;
@@ -277,7 +313,7 @@ export default {
       }
       this.previousQuery = val;
       // this.$nextTick(() => {
-      //   if (this.visible) this.broadcastEvt('ElSelectDropdown', 'updatePopper');
+      //   if (this.visible) this._broadcast('ElSelectDropdown', 'updatePopper');
       // });
       this.hoverIndex = -1;
       if (this.multiple && this.filterable) {
@@ -289,17 +325,17 @@ export default {
         });
       }
       this.filteredOptionsCount = this.optionsCount;
-      this.broadcastEvt('XOption', 'queryChange', val);
+      this._broadcast('XOption', 'queryChange', val);
       // if (this.remote && typeof this.remoteMethod === 'function') {
       //   this.hoverIndex = -1;
       //   this.remoteMethod(val);
       // } else if (typeof this.filterMethod === 'function') {
       //   this.filterMethod(val);
-      //   this.broadcastEvt('ElOptionGroup', 'queryChange');
+      //   this._broadcast('ElOptionGroup', 'queryChange');
       // } else {
       //   this.filteredOptionsCount = this.optionsCount;
-      //   this.broadcastEvt('XOption', 'queryChange', val);
-      //   this.broadcastEvt('ElOptionGroup', 'queryChange');
+      //   this._broadcast('XOption', 'queryChange', val);
+      //   this._broadcast('ElOptionGroup', 'queryChange');
       // }
       if (this.defaultFirstOption && (this.filterable ) && this.filteredOptionsCount) {
         this.checkDefaultFirsstOption();
@@ -310,8 +346,8 @@ export default {
       
       for (let i = this.cachedOptions.length - 1; i >= 0; i--) {
         const cachedOption = this.cachedOptions[i];
-        const isEqual = _typeOf(value) == 'object'
-          ? _getValueByPath(cachedOption.value, this.valueKey) === _getValueByPath(value, this.valueKey)
+        const isEqual = this._typeOf(value) == 'object'
+          ? this._getValueByPath(cachedOption.value, this.valueKey) === this._getValueByPath(value, this.valueKey)
           : cachedOption.value === value;
         if (isEqual) {
           option = cachedOption;
@@ -319,7 +355,7 @@ export default {
         }
       }
       if (option) return option;
-      const label = (_typeOf(value) == 'object' && _typeOf(value) == 'null' && _typeOf(value) == 'undefined')
+      const label = (this._typeOf(value) == 'object' && this._typeOf(value) == 'null' && this._typeOf(value) == 'undefined')
         ? value : '';
       let newOption = {
         value: value,
@@ -331,7 +367,7 @@ export default {
       return newOption;
     },
     emitChange(val) {
-      if (!_valueEquals(this.value, val)) {
+      if (!this._valueEquals(this.value, val)) {
         this.$emit('change', val);
       }
     },
@@ -455,7 +491,7 @@ export default {
           this.inputLength = 20;
         }
         if (this.filterable) this.$refs.input.focus();
-        console.log(value,this.value)
+        console.log(value, option.value)
       } else {
         this.$emit('input', option.value);
         this.emitChange(option.value);
@@ -476,13 +512,13 @@ export default {
       }
     },
     getValueIndex(arr = [], value) {
-      if (_typeOf(value) != 'object') {
+      if (this._typeOf(value) != 'object') {
         return arr.indexOf(value);
       } else {
         const valueKey = this.valueKey;
         let index = -1;
         arr.some((item, i) => {
-          if (_getValueByPath(item, valueKey) === _getValueByPath(value, valueKey)) {
+          if (this._getValueByPath(item, valueKey) === this._getValueByPath(value, valueKey)) {
             index = i;
             return true;
           }
@@ -532,6 +568,7 @@ export default {
       event.stopPropagation();
     },
     onInputChange() {
+      console.log('onInputChange')
       if (this.filterable && this.query !== this.selectedLabel) {
         this.query = this.selectedLabel;
         this.handleQueryChange(this.query);
@@ -584,7 +621,7 @@ export default {
       if (Object.prototype.toString.call(item.value).toLowerCase() !== '[object object]') {
         return item.value;
       } else {
-        return _getValueByPath(item.value, this.valueKey);
+        return this._getValueByPath(item.value, this.valueKey);
       }
     }
   },
