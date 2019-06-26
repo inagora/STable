@@ -141,6 +141,7 @@ export default {
 	&-free{
 		flex: 1;
 		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
 	}
 
 	&-tr{

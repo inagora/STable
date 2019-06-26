@@ -34,3 +34,9 @@ export function hashCode(str) {
 }
 
 export let isSafari = window.navigator.vendor.toLowerCase().includes('apple computer');
+
+export function tmpl(str, data){
+	return str.replace(/\$\{\s*(.+?)\s*\}/g, function(_, _$1){
+		return data[_$1]||''
+	});
+}

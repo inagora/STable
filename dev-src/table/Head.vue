@@ -84,7 +84,7 @@ export default {
 <style lang="scss">
 .st-table-head-free{
 	width: 100%;
-	overflow-x: auto;
+	overflow-x: hidden;
 	z-index: 1;
 }
 .st-table-head-free::-webkit-scrollbar{

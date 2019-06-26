@@ -1,9 +1,9 @@
 module.exports = function(app, server){
 	app.get('/ajaxList', (req, res)=>{
-		let params = req.params;
+		let params = req.query;
 		let allMovies = require('./movies.json');
-		let page = parseInt(params.page||1, 10);
-		let count = parseInt(params.count||20, 10);
+		let page = parseInt(params.page||1);
+		let count = parseInt(params.count||20);
 		if(params.name){
 			let name = params.name.toLocaleLowerCase();
 			allMovies = allMovies.filter(item=>item.name.toLocaleLowerCase().includes(name));
