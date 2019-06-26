@@ -25,7 +25,7 @@ export default {
   mixins: [Tool],
   name: 'XOption',
   componentName: 'XOption',
-  inject: ['select'],
+  inject: ['XSelect'],
   props: {
     value: {
       required: true
@@ -47,10 +47,10 @@ export default {
   },
   computed:{
     itemSelected() {
-      if (!this.select.multiple) {
-        return this._valueEquals(this.value, this.select.value);
+      if (!this.XSelect.multiple) {
+        return this._valueEquals(this.value, this.XSelect.value);
       } else {
-        return this.contains(this.select.value, this.value);
+        return this.contains(this.XSelect.value, this.value);
       }
     },
     currentLabel() {
@@ -62,10 +62,10 @@ export default {
   },
   watch:{
     currentLabel() {
-      if (!this.created && !this.select.remote) this._dispatch('XSelect', 'setSelected');
+      if (!this.created && !this.XSelect.remote) this._dispatch('XSelect', 'setSelected');
     },
     value(val, oldVal) {
-      const { remote, valueKey } = this.select;
+      const { remote, valueKey } = this.XSelect;
       if (!this.created && !remote) {
         if (valueKey && typeof val === 'object' && typeof oldVal === 'object' && val[valueKey] === oldVal[valueKey]) {
           return;
@@ -75,21 +75,21 @@ export default {
     }
   },
   created() {
-    this.select.options.push(this);
-    this.select.cachedOptions.push(this);
-    this.select.optionsCount++;
-    this.select.filteredOptionsCount++;
+    this.XSelect.options.push(this);
+    this.XSelect.cachedOptions.push(this);
+    this.XSelect.optionsCount++;
+    this.XSelect.filteredOptionsCount++;
     this.$on('queryChange', this.queryChange);
   },
   beforeDestroy() {
-    this.select.onOptionDestroy(this.select.options.indexOf(this));
+    this.XSelect.onOptionDestroy(this.XSelect.options.indexOf(this));
   },
   methods: {
     contains(arr = [], target) {
       if (this._typeOf(this.value) != 'object') {
         return arr && arr.indexOf(target) > -1;
       } else {
-        const valueKey = this.select.valueKey;
+        const valueKey = this.XSelect.valueKey;
         return arr && arr.some(item => {
           return this._getValueByPath(item, valueKey) === this._getValueByPath(target, valueKey);
         });
@@ -103,7 +103,7 @@ export default {
     queryChange(query) {
       this.visible = new RegExp(regExpString(query), 'i').test(this.currentLabel) || this.created;
       if (!this.visible) {
-        this.select.filteredOptionsCount--;
+        this.XSelect.filteredOptionsCount--;
       }
     },
   },

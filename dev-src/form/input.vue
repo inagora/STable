@@ -46,7 +46,10 @@
 </template>
 
 <script>
+import Tool from './tool';
+
 export default {
+  mixins: [Tool],
   name: 'XInput',
   componentName: 'XInput',
   data(){
@@ -55,7 +58,11 @@ export default {
       hovering: false,
     }
   },
-  inject:{},
+  inject:{
+    XSelect: {
+      default: ''
+    }
+  },
   props: {
     value: [String,Number],
     disabled: Boolean,
@@ -87,7 +94,8 @@ export default {
   },
   watch:{
     value(val) {
-      
+      console.log('input value change')
+      this._dispatch('XSelect', 'change', [val]);
     },
     nativeInputValue() {
       this.setNativeInputValue();
@@ -129,7 +137,10 @@ export default {
     inputExceed() {
       return this.isWordLimitVisible &&
         (this.textLength > this.upperLimit);
-    }
+    },
+    nativeInputValue() {
+      return this.value === null || this.value === undefined ? '' : String(this.value);
+    },
   },
   mounted(){
     this.setNativeInputValue();
@@ -156,11 +167,13 @@ export default {
       this.$emit('blur', event);
     },
     handleInput(event) {
+      console.log(`handleInput ${event.target.value}`)
       if (event.target.value === this.nativeInputValue) return;
       this.$emit('input', event.target.value);
       this.$nextTick(this.setNativeInputValue);
     },
     handleChange(event) {
+      console.log(`handleChange ${event.target.value}`)
       this.$emit('change', event.target.value);
     },
     clear(){

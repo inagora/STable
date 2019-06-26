@@ -13,6 +13,9 @@ function _broadcast(componentName, eventName, params) {
     }
   });
 }
+// function _t(...args) {
+//   return _t.apply(this, args);
+// }
 
 export default {
   methods: {
@@ -64,10 +67,12 @@ export default {
         if (a[i] !== b[i]) return false;
       }
       return true;
-    }
+    },
+    _focus(ref) {
+      this.$refs[ref].focus();
+    },
+    // _t(...args) {
+    //   return this._t.apply(this, args);
+    // }
   },
 };
-// export {
-//   _typeOf,
-//   _getValueByPath,
-// }

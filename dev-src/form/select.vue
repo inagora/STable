@@ -4,15 +4,16 @@
     <div class="st-select-tags"
          v-if="multiple"
          ref="tags">
-      <span v-if="selected.length">
-        <x-tag 
+      <span v-show="selected.length">
+        <x-tag
           type="info"
           v-for="item in selected"
           :key="getValueKey(item)"
           class="st-select-tags-item"
           :closable="!selectDisabled"
           @close="deleteTag($event, item)">
-          <span class="st-select-tags-text">{{ item.currentLabel }}</span>
+          <span class="st-select-tags-text">{{item.currentLabel}}</span>
+          <span class="st-select-tags-text">{{selected.length}}</span>
         </x-tag>
       </span>
       <!-- 搜索框 -->
@@ -31,7 +32,7 @@
         @keydown.esc.stop.prevent="visible = false"
         @keydown.delete="deletePrevTag"
         v-model="query"
-        @input="onInputChange"
+        @input="handleQueryChange"
         v-if="filterable"
         ref="input">
     </div>
@@ -91,36 +92,10 @@ export default {
   componentName: 'XSelect',
   provide() {
     return {
-      'select': this
+      'XSelect': this
     };
   },
   components:{XTag,XInput,XOption},
-  computed: {
-    readonly() {
-      return !this.filterable || this.multiple || !this.visible;
-    },
-    showClose() {
-      let hasValue = this.multiple
-          ? Array.isArray(this.value) && this.value.length > 0
-          : this.value !== undefined && this.value !== null && this.value !== '';
-      let criteria = this.clearable &&
-          !this.selectDisabled &&
-          this.inputHovering &&
-          hasValue;
-        return criteria;
-    },
-    showNewOption() {
-      let hasExistingOption = this.options.filter(option => !option.created)
-        .some(option => option.currentLabel === this.query);
-      return this.filterable && this.allowCreate && this.query !== '' && !hasExistingOption;
-    },
-    selectDisabled() {
-      return this.disabled;
-    },
-    optionsAllDisabled() {
-      return this.options.filter(option => option.visible).every(option => option.disabled);
-    },
-  },
   props:{
     name: String,
     id: String,
@@ -168,8 +143,56 @@ export default {
       currentPlaceholder: '',
       menuVisibleOnFocus: false,
       isOnComposition: false,
-      isSilentBlur: false
+      isSilentBlur: false,
     }
+  },
+  computed: {
+    readonly() {
+      return !this.filterable || this.multiple || !this.visible;
+    },
+    showClose() {
+      let hasValue = this.multiple
+          ? Array.isArray(this.value) && this.value.length > 0
+          : this.value !== undefined && this.value !== null && this.value !== '';
+      let criteria = this.clearable &&
+          !this.selectDisabled &&
+          this.inputHovering &&
+          hasValue;
+        return criteria;
+    },
+    showNewOption() {
+      let hasExistingOption = this.options.filter(option => !option.created)
+        .some(option => option.currentLabel === this.query);
+      return this.filterable && this.allowCreate && this.query !== '' && !hasExistingOption;
+    },
+    selectDisabled() {
+      return this.disabled;
+    },
+    optionsAllDisabled() {
+      return this.options.filter(option => option.visible).every(option => option.disabled);
+    },
+    // value() {
+    //   console.log('computed value')
+    //   if (this.multiple) {
+    //     this.resetInputHeight();
+    //     if ((this.value && this.value.length > 0) || (this.$refs.input && this.query !== '')) {
+    //       this.currentPlaceholder = '';
+    //     } else {
+    //       this.currentPlaceholder = this.cachedPlaceHolder;
+    //     }
+    //     if (this.filterable && !this.reserveKeyword) {
+    //       this.query = '';
+    //       this.handleQueryChange(this.query);
+    //     }
+    //   }
+    //   this.setSelected();
+    //   if (this.filterable && !this.multiple) {
+    //     this.inputLength = 20;
+    //   }
+    //   // if (!this._valueEquals(val, oldVal)) {
+    //   //   this._dispatch('XSelect', 'change', val);
+    //   // }
+    // },
   },
   watch: {
     selectDisabled() {
@@ -177,27 +200,45 @@ export default {
         this.resetInputHeight();
       });
     },
-    value(val, oldVal) {
-      if (this.multiple) {
-        this.resetInputHeight();
-        if ((val && val.length > 0) || (this.$refs.input && this.query !== '')) {
-          this.currentPlaceholder = '';
-        } else {
-          this.currentPlaceholder = this.cachedPlaceHolder;
-        }
-        if (this.filterable && !this.reserveKeyword) {
-          this.query = '';
-          this.handleQueryChange(this.query);
-        }
-      }
-      this.setSelected();
-      if (this.filterable && !this.multiple) {
-        this.inputLength = 20;
-      }
-      // if (!this._valueEquals(val, oldVal)) {
-      //   this._dispatch('ElFormItem', 'el.form.change', val);
-      // }
-    },
+    // selected(val, oldVal) {
+    //   if (!this._valueEquals(val, oldVal)) {
+        
+    //   let result = [];
+    //   if (Array.isArray(this.value)) {
+    //     this.value.forEach(value => {
+    //       result.push(this.getOption(value));
+    //     });
+    //   }
+    //   this.selected = result;
+    //   // console.log(this.selected)
+    //   }
+    // },
+    // value: {
+    //   immediate: true,
+    //   handler: function(val, oldVal) {
+    //     console.log('watch value')
+    //     if (this.multiple) {
+    //       this.resetInputHeight();
+    //       if ((val && val.length > 0) || (this.$refs.input && this.query !== '')) {
+    //         this.currentPlaceholder = '';
+    //       } else {
+    //         this.currentPlaceholder = this.cachedPlaceHolder;
+    //       }
+    //       if (this.filterable && !this.reserveKeyword) {
+    //         this.query = '';
+    //         this.handleQueryChange(this.query);
+    //       }
+    //     }
+    //     this.setSelected();
+    //     if (this.filterable && !this.multiple) {
+    //       this.inputLength = 20;
+    //     }
+    //     if (!this._valueEquals(val, oldVal)) {
+    //       this._dispatch('XSelect', 'change', val);
+    //     }
+    //   },
+    //   deep: true
+    // },
     visible(val) {
       if (!val) {
         if (this.$refs.input) {
@@ -248,6 +289,7 @@ export default {
       this.$emit('visible-change', val);
     },
     options() {
+      console.log('options')
       if (this.$isServer) return;
       if (this.multiple) {
         this.resetInputHeight();
@@ -306,6 +348,7 @@ export default {
       }
     },
     handleQueryChange(val) {
+      console.log('handleQueryChange')
       if (this.previousQuery === val) return;
       if (this.previousQuery === null ) {
         this.previousQuery = val;
@@ -342,14 +385,15 @@ export default {
       }
     },
     getOption(value) {
+      console.log('getOption')
       let option;
       
       for (let i = this.cachedOptions.length - 1; i >= 0; i--) {
         const cachedOption = this.cachedOptions[i];
-        const isEqual = this._typeOf(value) == 'object'
+        const isObj = this._typeOf(value) == 'object'
           ? this._getValueByPath(cachedOption.value, this.valueKey) === this._getValueByPath(value, this.valueKey)
           : cachedOption.value === value;
-        if (isEqual) {
+        if (isObj) {
           option = cachedOption;
           break;
         }
@@ -361,17 +405,21 @@ export default {
         value: value,
         currentLabel: label
       };
-      // if (this.multiple) {
-      //   newOption.hitState = false;
-      // }
+      if (this.multiple) {
+        newOption.hitState = false;
+      }
       return newOption;
     },
     emitChange(val) {
+      console.log(this.value)
       if (!this._valueEquals(this.value, val)) {
         this.$emit('change', val);
+        this.valChange(this.value,val)
+        this.value = val;
       }
     },
     setSelected() {
+      console.log('setSelected')
       if (!this.multiple) {
         let option = this.getOption(this.value);
         if (option.created) {
@@ -392,6 +440,7 @@ export default {
         });
       }
       this.selected = result;
+      // console.log(this.selected)
       this.$nextTick(() => {
         this.resetInputHeight();
       });
@@ -445,6 +494,7 @@ export default {
       this.resetInputHeight();
     },
     resetInputHeight() {
+      console.log('resetInputHeight')
       if (!this.filterable) return;
       this.$nextTick(() => {
         if (!this.$refs.reference) return;
@@ -499,10 +549,29 @@ export default {
       }
       this.isSilentBlur = byClick;
       this.setSoftFocus();
-      if (this.visible) return;
+      // if (this.visible) return;
       // this.$nextTick(() => {
       //   this.scrollToOption(option);
       // });
+    },
+    valChange(val, oldVal) {
+      console.log('valChange')
+      if (this.multiple) {
+        this.resetInputHeight();
+        if ((val && val.length > 0) || (this.$refs.input && this.query !== '')) {
+          this.currentPlaceholder = '';
+        } else {
+          this.currentPlaceholder = this.cachedPlaceHolder;
+        }
+        if (this.filterable && !this.reserveKeyword) {
+          this.query = '';
+          this.handleQueryChange(this.query);
+        }
+      }
+      this.setSelected();
+      if (this.filterable && !this.multiple) {
+        this.inputLength = 20;
+      }
     },
     setSoftFocus() {
       this.softFocus = true;
@@ -540,6 +609,7 @@ export default {
       }
     },
     selectOption() {
+      console.log('selectOption')
       if (!this.visible) {
         this.toggleMenu();
       } else {
