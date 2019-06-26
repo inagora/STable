@@ -15,6 +15,7 @@ import XToolbar from './Toolbar.vue';
 import XSearch from './Search.vue';
 import XTable from './table/index.vue';
 import XPagination from './Pagination.vue';
+import defaultLang from './lang/en.js';
 import {hashCode} from "./util.js";
 let stableCount = 0;
 export default {
@@ -91,7 +92,20 @@ export default {
 			 * @param {Object[]} records 静态化数据，设置了它后，就不会动态加载数据了
 			 */
 			records: false
-		}, this.config);
+		}, window&&window.STable && window.STable.default||{}, this.config);
+
+		//国际化
+		if(!conf.locale) {
+			conf.locale = defaultLang;
+		}else if(typeof conf.locale == 'string') {
+			if(window.STable && Window.STable.lang[conf.locale]) {
+				conf.locale = Window.STable.lang[conf.locale];
+				conf.locale = conf.locale.default||conf.locale;
+			} else {
+				conf.locale = defaultLang;
+			}
+		}
+
 		if(conf.layoutMode != 'expand')
 			conf.layoutMode == 'fixed';
 		if(typeof conf.hideTitle != 'undefined') {
@@ -504,5 +518,10 @@ export default {
 
 	display: flex;
 	flex-direction: column;
+}
+
+/*一些公用样式*/
+.st-flex-padding{
+	flex: 1;
 }
 </style>
