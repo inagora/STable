@@ -13,9 +13,6 @@
         event.stopPropagation();
         this.$emit('close', event);
       },
-      handleClick(event) {
-        this.$emit('click', event);
-      }
     },
     computed: {
       tagSize() {
@@ -32,8 +29,7 @@
       return (
         <span
           class={ classes }
-          style={{ backgroundColor: this.color }}
-          on-click={ this.handleClick }>
+          style={{ backgroundColor: this.color }}>
           { this.$slots.default }
           {
             this.closable && <i class="st-iconfont st-icon-close st-tag-close" on-click={ this.handleClose }></i>

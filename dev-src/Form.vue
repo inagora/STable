@@ -1,10 +1,5 @@
 <template>
   <div>
-    <!-- tree组件 -->
-    <div class="st-form-box">
-      <span class="benchmark">树型菜单:</span>
-      <x-tree v-model="value" :options="configOptions" @change="handleChange"></x-tree>
-    </div>
     <!-- 级联选择组件 -->
     <div >
       <span class="dropTreeLists">
@@ -32,35 +27,27 @@
     <div>
       <span class="benchmark">select多选:</span>
       <x-select 
-        v-model="selectValue" 
+        v-model="selectValue"
+        :options="selectOptions"
         multiple
         filterable
-        allow-create
-        default-first-option>
-        <x-option
-          v-for="(item,index) in selectOptions"
-          :key="index"
-          :label="item.label"
-          :value="item.value">
-        </x-option>
+        allow-create>
       </x-select>
     </div>
   </div>
 </template>
 
 <script>
-import XTree from './form/tree.vue';
 import XCascader from "./form/cascader.vue";
 import XInput from "./form/input.vue";
 import XTag from "./form/tag.vue";
+// import XSelect from "./form/select.vue";
 import XSelect from "./form/select.vue";
-import XOption from "./form/coms/option.vue";
 
 export default {
-	components: {XTree,XCascader,XInput,XTag,XSelect,XOption},
+	components: {XCascader,XInput,XTag,XSelect},
 	data(){
     return {
-      value: [],
       configTips: "请选择",
       configOptions: [
         {

@@ -167,7 +167,7 @@ export default {
       this.$emit('blur', event);
     },
     handleInput(event) {
-      console.log(`handleInput ${event.target.value}`)
+      console.log('input-handleInput')
       if (event.target.value === this.nativeInputValue) return;
       this.$emit('input', event.target.value);
       this.$nextTick(this.setNativeInputValue);
