@@ -34,6 +34,18 @@
         allow-create>
       </x-select>
     </div>
+    <!-- form 表单 -->
+    <div>
+      <span class="benchmark">form表单:</span>
+      <x-form ref="form" :formConfig="formConfig">
+      </x-form>
+    </div>
+    <!-- checkbox 多选 -->
+    <div>
+      <span class="benchmark">checkbox多选:</span>
+      <x-checkbox :name="'checkboxname'" :label="'科目一'">
+      </x-checkbox>
+    </div>
   </div>
 </template>
 
@@ -41,11 +53,13 @@
 import XCascader from "./form/cascader.vue";
 import XInput from "./form/input.vue";
 import XTag from "./form/tag.vue";
-// import XSelect from "./form/select.vue";
 import XSelect from "./form/select.vue";
+import XForm from "./form/form.vue";
+import XCheckbox from "./form/checkbox.vue";
+import XRadio from "./form/radio.vue";
 
 export default {
-	components: {XCascader,XInput,XTag,XSelect},
+	components: {XCascader,XInput,XTag,XSelect,XForm,XCheckbox,XRadio},
 	data(){
     return {
       configTips: "请选择",
@@ -151,6 +165,60 @@ export default {
         label: 'golang'
       }],
       selectValue: [],
+      formConfig:[
+        {
+          type: 'input',
+          label: '活动名称',
+          placeholder: '请填写活动名称',
+          name: 'activity_name',
+        },
+        {
+          type: 'textarea',
+          label: '活动形式',
+          placeholder: '请填写活动形式',
+          name: 'activity_name',
+        },
+        {
+          type: 'select',
+          label: '活动区域',
+          placeholder: '请选择活动区域',
+          name: 'activity_region',
+          options:[
+            {
+              label: '上海',
+              value: '0'
+            },
+            {
+              label: '北京',
+              value: '1'
+            },
+            {
+              label: '杭州',
+              value: '2'
+            }
+          ]
+        },
+        {
+          type: 'checkbox',
+          label: '活动性质',
+          options: [
+            {label: '美食/餐厅线上活动'},
+            {label: '地推活动'},
+            {label: '线下主题活动'},
+            {label: '单纯品牌曝光'},
+          ],
+          name: 'activity_kind',
+        },
+        {
+          type: 'radio',
+          label: '是否收费',
+          options: [
+            {label: '收费'},
+            {label: '免费'},
+          ],
+          name: 'activity_fee',
+        },
+      ]
     }
   },
   mounted() {

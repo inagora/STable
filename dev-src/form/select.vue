@@ -57,26 +57,7 @@ import XTag from './tag.vue'
 import Tool from './tool';
 
 const regExpString = (value = '') => String(value).replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
-//自定义指令
-const clickoutside = {
-  bind(el, binding, vnode) {
-    function documentHandler(e) {
-      if (el.contains(e.target)) {
-          return false;
-			}
-      if (binding.expression) {
-        binding.value(e);
-      }
-		}
-    el.__vueClickOutside__ = documentHandler;
-    document.querySelector('body').addEventListener('click', documentHandler);
-  },
-  update() {},
-  unbind(el, binding) {
-    document.querySelector('body').removeEventListener('click', el.__vueClickOutside__);
-    delete el.__vueClickOutside__;
-  },
-}
+
 export default {
   mixins: [Tool],
   name: 'XSelect',
@@ -111,7 +92,7 @@ export default {
       searchFoucus: true,
     }
   },
-  directives: {clickoutside},
+  directives: {'clickoutside': Tool._clickOutside},
   computed: {
     
   },
@@ -126,11 +107,11 @@ export default {
         this.visible = val
       }
     },
-    searchFoucus:{
-      handler(val) {
-        this.searchFoucus = val
-      }
-    }
+    // searchFoucus:{
+    //   handler(val) {
+    //     this.searchFoucus = val
+    //   }
+    // }
   },
   methods: {
     showMenu() {
@@ -152,36 +133,37 @@ export default {
         this.visible = false;
       } else {
         const arr = (this.selected || []).slice();
-        const optionIndex = this.getValueIndex(arr, option.value);
+        const optionIndex = this.getValueIndex(arr, option.label);
         // 赋值
         if (optionIndex > -1) {
           //值已选中则删除
           arr.splice(optionIndex, 1);
         } else {
           //未选中 push
-          arr.push(option.value);
+          arr.push(option.label);
         }
         this.selected = arr
         this.visible = true
         this.query = ''
-        this.searchFoucus = true;
+        // this.searchFoucus = true;
+        document.querySelector('.st-select-input').focus();
       }
     },
     getValueKey(item) {
-      if (Object.prototype.toString.call(item.value).toLowerCase() !== '[object object]') {
+      if (Object.prototype.toString.call(item.label).toLowerCase() !== '[object object]') {
         return item.value;
       } else {
-        return this._getValueByPath(item.value, this.valueKey);
+        return Tool._getValueByPath(item.label, this.valueKey);
       }
     },
     getValueIndex(arr = [], value) {
-      if (this._typeOf(value) != 'object') {
+      if (Tool._typeOf(value) != 'object') {
         return arr.indexOf(value);
       } else {
         const valueKey = this.valueKey;
         let index = -1;
         arr.some((item, i) => {
-          if (this._getValueByPath(item, valueKey) === this._getValueByPath(value, valueKey)) {
+          if (Tool._getValueByPath(item, valueKey) === Tool._getValueByPath(value, valueKey)) {
             index = i;
             return true;
           }
@@ -191,7 +173,7 @@ export default {
       }
     },
     handleQueryChange(event) {
-      this.query = event.target.value
+      this.query = event.target.label
     },
     testRegExp(targetOpt) {
       // 正则匹配决定是否显示当前option
@@ -225,10 +207,10 @@ export default {
           this.hoverIndex = this.options.length - 1;
         }
       }
-      this.searchFoucus = true;
+      // this.searchFoucus = true;
+      document.querySelector('.st-select-input').focus();
     },
     setHoverIndex(index,item) {
-      console.log('setHoverIndex')
       this.hoverIndex = index;
       this.setSelected(index,item)
     },
@@ -245,18 +227,14 @@ export default {
     this.options.map(item=>{
       targetArr.push(item.label)
     })
-    console.log(targetArr.toString())
     this.targetArr = targetArr;
   },
   mounted() {
-    this.searchFoucus = true;
-    // this.$nextTick(()=>{
-    //   document.querySelector('body').addEventListener('click', this.clickOutSide)
-    // })
-    // // console.log(this.multiple)
+    // this.searchFoucus = true;
+    document.querySelector('.st-select-input').focus();
   },
   beforeDestroy() {
-    // document.querySelector('body').removeEventListener('click', this.clickOutSide)
+
   }
 }
 </script>

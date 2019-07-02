@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import Tool from './tool';
+import * as Tool from './tool';
 
 export default {
   mixins: [Tool],
@@ -94,7 +94,6 @@ export default {
   },
   watch:{
     value(val) {
-      console.log('input value change')
       this._dispatch('XSelect', 'change', [val]);
     },
     nativeInputValue() {
@@ -167,13 +166,11 @@ export default {
       this.$emit('blur', event);
     },
     handleInput(event) {
-      console.log('input-handleInput')
       if (event.target.value === this.nativeInputValue) return;
       this.$emit('input', event.target.value);
       this.$nextTick(this.setNativeInputValue);
     },
     handleChange(event) {
-      console.log(`handleChange ${event.target.value}`)
       this.$emit('change', event.target.value);
     },
     clear(){
