@@ -9,28 +9,51 @@
           :type="item.type" 
           :placeholder="item.placeholder || `请填写${item.label}`" 
           :name="item.name" 
-          v-model="item.value">
+          v-model="item.value"
+					@input="changeFn($event,item.name)">
         </x-input>
         <x-select v-if="item.type == 'select'"  
           v-model="item.value" 
           :options="item.options" 
           multiple
-          filterable>
+          filterable
+					@selectchange="changeFn($event,item.name)">
         </x-select>
         <template v-if="item.type == 'checkbox'">
           <x-checkbox 
             v-for="(checkitem, checkindex) in item.options"
             :key="checkindex" 
-            :label="checkitem.label">
+            :label="checkitem.label"
+						:value="checkitem.value"
+						@change="checkboxFn($event,item.name)">
 
           </x-checkbox>
         </template>
         <template v-if="item.type == 'radio'">
           <x-radio
-            :options="item.options">
+            :options="item.options"
+						@change="changeFn($event,item.name)">
 
           </x-radio>
         </template>
+        <template v-if="item.type == 'switch'">
+          <x-switch
+						:name="item.name"
+						@change="changeFn($event,item.name)">
+
+          </x-switch>
+        </template>
+				<template v-if="item.type == 'button'">
+					<div class="st-form-btn">
+						<x-button class="st-form-btn-item" 
+							v-for="(btn, btnindex) in item.options" 
+							:key="btnindex" 
+							:type="btn.theme" 
+							@click.prevent="clickFn(btn.handle)">
+							{{btn.text}}
+						</x-button>
+					</div>
+				</template>
       </div>
     </div>
   </form>
@@ -41,14 +64,16 @@ import XInput from "./input.vue";
 import XSelect from "./select.vue";
 import XCheckbox from "./checkbox.vue";
 import XRadio from "./radio.vue";
+import XSwitch from "./switch.vue";
+import XButton from "../com/Button.vue";
 
 export default {
   name: 'XForm',
   componentName: 'XForm',
-  components: {XInput,XSelect,XCheckbox,XRadio},
+  components: {XInput,XSelect,XCheckbox,XRadio,XSwitch,XButton},
   provide(){
     return {
-      Xform: this
+      XForm: this
     }
   },
   props: {
@@ -56,14 +81,48 @@ export default {
   },
   data() {
     return {
-
+			formValue: {},
+			checkedValue: [],
     }
-  },
+	},
+	watch: {
+		// formValue: {
+		// 	deep: true,
+		// 	immediate: true,
+		// 	handler(newVal,oldVal) {
+		// 		console.log(newVal);
+		// 		this.formValue = newVal;
+		// 	}
+		// }
+	},
   methods: {
-
+		clickFn(handle) {
+			if(handle === 'submit') 
+			console.log(this.formValue)
+		},
+		changeFn(val,name) {
+			this.formValue[name] = val
+		},
+		checkboxFn(param,name) {
+			let val = param[0];
+			let checked = param[1];
+			let idx = this.checkedValue.indexOf(val);
+			
+			if(idx == '-1' && checked) {
+				this.checkedValue.push(val) 
+			}	else if(idx != '-1' && !checked) {
+				this.checkedValue.splice(idx,1)
+			}
+			this.formValue[name] = this.checkedValue.toString();
+		}
   },
   created() {
-    console.log(this.formConfig)
+		let tmpArr = {}
+		this.formConfig.map(item=>{
+			if(item.type != 'button')
+			tmpArr[item.name] = item.value || ''
+		})
+		this.formValue = tmpArr
   }
 }
 </script>
@@ -76,7 +135,7 @@ export default {
       margin-bottom: 22px;
       
       &-label {
-        width: 80px;
+        min-width: 80px;
         text-align: right;
         vertical-align: middle;
         float: left;
@@ -88,11 +147,19 @@ export default {
       }
 
       &-content {
-        margin-left: 80px;
+        margin-left: 100px;
         line-height: 40px;
         position: relative;
         font-size: 14px;
       }
     }
+		&-btn {
+			display: flex;
+			justify-content: center;
+
+			&-item {
+				margin: 0 10px;
+			}
+		}
   }
 </style>

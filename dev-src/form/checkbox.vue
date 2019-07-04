@@ -15,7 +15,7 @@
         type="checkbox" 
         aria-hidden="true"
         :name="name" 
-        :value="label"
+        :value="value"
         @change="handleChange"/>
     </span>
     <span class="st-checkbox-label">
@@ -30,17 +30,18 @@ export default {
   compontent: 'XCheckbox',
   props: {
     name: String,
-    label: {},
+		label: {},
+		value: String,
   },
   data() {
     return {
       isChecked: false,
     }
-  },
+	},
   methods: {
     handleChange() {
-      this.isChecked = !this.isChecked
-      console.log(this.isChecked)
+			this.isChecked = !this.isChecked
+			this.$emit('change',[this.value,this.isChecked])
     }
   }
 }

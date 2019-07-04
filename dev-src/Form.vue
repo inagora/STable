@@ -23,28 +23,11 @@
       <span class="benchmark">tag标签:</span>
       <x-tag v-for="(tag,index) in tags" :key="index" :type="tag.type" :closable="true" :size="index == 0 ? 'small' : ''" @close="closeTag(index)">{{tag.name}}</x-tag>
     </div>
-    <!-- select多选 -->
-    <div>
-      <span class="benchmark">select多选:</span>
-      <x-select 
-        v-model="selectValue"
-        :options="selectOptions"
-        multiple
-        filterable
-        allow-create>
-      </x-select>
-    </div>
     <!-- form 表单 -->
     <div>
       <span class="benchmark">form表单:</span>
       <x-form ref="form" :formConfig="formConfig">
       </x-form>
-    </div>
-    <!-- checkbox 多选 -->
-    <div>
-      <span class="benchmark">checkbox多选:</span>
-      <x-checkbox :name="'checkboxname'" :label="'科目一'">
-      </x-checkbox>
     </div>
   </div>
 </template>
@@ -53,13 +36,14 @@
 import XCascader from "./form/cascader.vue";
 import XInput from "./form/input.vue";
 import XTag from "./form/tag.vue";
-import XSelect from "./form/select.vue";
 import XForm from "./form/form.vue";
-import XCheckbox from "./form/checkbox.vue";
-import XRadio from "./form/radio.vue";
+// import XSelect from "./form/select.vue";
+// import XCheckbox from "./form/checkbox.vue";
+// import XRadio from "./form/radio.vue";
+// import XSwitch from "./form/switch.vue";
 
 export default {
-	components: {XCascader,XInput,XTag,XSelect,XForm,XCheckbox,XRadio},
+	components: {XCascader,XInput,XTag,XForm},
 	data(){
     return {
       configTips: "请选择",
@@ -176,7 +160,7 @@ export default {
           type: 'textarea',
           label: '活动形式',
           placeholder: '请填写活动形式',
-          name: 'activity_name',
+          name: 'activity_textarea',
         },
         {
           type: 'select',
@@ -202,10 +186,10 @@ export default {
           type: 'checkbox',
           label: '活动性质',
           options: [
-            {label: '美食/餐厅线上活动'},
-            {label: '地推活动'},
-            {label: '线下主题活动'},
-            {label: '单纯品牌曝光'},
+            {label: '美食/餐厅线上活动',value:'001'},
+            {label: '地推活动',value:'002'},
+            {label: '线下主题活动',value:'003'},
+            {label: '单纯品牌曝光',value:'004'},
           ],
           name: 'activity_kind',
         },
@@ -213,10 +197,31 @@ export default {
           type: 'radio',
           label: '是否收费',
           options: [
-            {label: '收费'},
-            {label: '免费'},
+            {label: '收费',value: 1},
+            {label: '免费',value: 0},
           ],
           name: 'activity_fee',
+				},
+				{
+          type: 'switch',
+					label: '不接收广告',
+					value: false,
+          name: 'activity_ad',
+				},
+				{
+          type: 'button',
+					options: [
+						{
+							text: '取消',
+							theme: 'default',
+							handle: 'cancel',
+						},
+						{
+							text: '提交',
+							theme: 'primary',	
+							handle: 'submit',
+						}
+					]
         },
       ]
     }

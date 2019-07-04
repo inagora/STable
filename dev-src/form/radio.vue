@@ -17,10 +17,10 @@
         <input 
           ref="radio"
           class="st-radio-original"
-          :value="item.label"
+          :value="item.value"
           type="radio"
           aria-hidden="true"
-          @change="handleChange(index)"
+          @click="handleChange(index)"
           :name="name"/>
       </span>
       <span class="st-radio-label">
@@ -35,12 +35,14 @@ export default {
   name: 'XRadio',
   compontents: 'XRadio',
   props: {
-    name: String,
+		name: String,
+		value: [String,Boolean,Number],
     options: Array,
   },
   data() {
     return {
-      checkIndex: -1,
+			checkIndex: -1,
+			checkVal: '',
     }
   },
   computed: {
@@ -48,7 +50,9 @@ export default {
   },
   methods: {
     handleChange(index) {
-      this.checkIndex = index;
+			this.checkIndex = index;
+			this.checkVal = this.options[index].value
+			this.$emit('change',this.checkVal)
     }
   }
 }
@@ -93,6 +97,18 @@ export default {
       display: inline-block;
       box-sizing: border-box;
     }
+		&-inner::after {
+			width: 4px;
+			height: 4px;
+			border-radius: 100%;
+			background-color: #fff;
+			content: "";
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%,-50%) scale(0);
+			transition: transform .15s ease-in;
+		}
 
     &-original {
       opacity: 0;

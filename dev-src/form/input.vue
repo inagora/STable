@@ -93,9 +93,9 @@ export default {
 
   },
   watch:{
-    value(val) {
-      this._dispatch('XSelect', 'change', [val]);
-    },
+    // value(val) {
+    //   this._dispatch('XSelect', 'change', [val]);
+    // },
     nativeInputValue() {
       this.setNativeInputValue();
     },
@@ -192,7 +192,7 @@ export default {
   display: flex;
 
   &-item {
-    width: 220px;
+    width: 100%;
     height: 40px;
     line-height: 40px;
     border: 1px solid #dcdfe6;

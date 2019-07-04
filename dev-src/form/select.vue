@@ -100,6 +100,7 @@ export default {
     selected: {
       handler(val) {
         this.selected = val
+				this.$emit('selectchange', this.selected.toString());
       }
     },
     visible: {
@@ -107,11 +108,6 @@ export default {
         this.visible = val
       }
     },
-    // searchFoucus:{
-    //   handler(val) {
-    //     this.searchFoucus = val
-    //   }
-    // }
   },
   methods: {
     showMenu() {
@@ -147,7 +143,7 @@ export default {
         this.query = ''
         // this.searchFoucus = true;
         document.querySelector('.st-select-input').focus();
-      }
+			}
     },
     getValueKey(item) {
       if (Object.prototype.toString.call(item.label).toLowerCase() !== '[object object]') {
@@ -246,7 +242,7 @@ export default {
   width: 100%;
 }
 .st-select {
-  min-width: 200px;
+  width: 100%;
   min-height: 40px;
   display: inline-block;
   position: relative;
