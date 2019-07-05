@@ -23,6 +23,18 @@
       <span class="benchmark">tag标签:</span>
       <x-tag v-for="(tag,index) in tags" :key="index" :type="tag.type" :closable="true" :size="index == 0 ? 'small' : ''" @close="closeTag(index)">{{tag.name}}</x-tag>
     </div>
+		<!-- XDatetimePicker -->
+    <div>
+      <span class="benchmark">DatetimePicker:</span>
+      <x-datetime-picker v-model="time" format="YYYY-MM-DD HH:mm:ss">
+      </x-datetime-picker>
+    </div>
+		<!-- XDatetimePicker range -->
+    <div>
+      <span class="benchmark">DatetimePicker range:</span>
+      <x-datetime-picker v-model="range" range-separator="至" format="YYYY-MM-DD HH:mm:ss">
+      </x-datetime-picker>
+    </div>
     <!-- form 表单 -->
     <div>
       <span class="benchmark">form表单:</span>
@@ -31,19 +43,23 @@
     </div>
   </div>
 </template>
+<script src="./form/datetimepicker.js"></script>
 
 <script>
 import XCascader from "./form/cascader.vue";
 import XInput from "./form/input.vue";
 import XTag from "./form/tag.vue";
 import XForm from "./form/form.vue";
+import XDatetimePicker from "./form/datetimepicker.vue";
 // import XSelect from "./form/select.vue";
 // import XCheckbox from "./form/checkbox.vue";
 // import XRadio from "./form/radio.vue";
 // import XSwitch from "./form/switch.vue";
-
+var range_start = new Date();
+var tmp = new Date()
+var range_end = new Date(tmp.setMonth(tmp.getMonth() + 1))
 export default {
-	components: {XCascader,XInput,XTag,XForm},
+	components: {XCascader,XInput,XTag,XForm,XDatetimePicker},
 	data(){
     return {
       configTips: "请选择",
@@ -223,7 +239,9 @@ export default {
 						}
 					]
         },
-      ]
+			],
+			time: new Date(),
+			range: [range_start,range_end],
     }
   },
   mounted() {
