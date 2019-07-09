@@ -101,7 +101,8 @@ export default {
 			console.log(this.formValue)
 		},
 		changeFn(val,name) {
-			this.formValue[name] = val
+			// this.formValue[name] = val
+			this.formValue = Object.assign(this.formValue,{[name]: val})
 		},
 		checkboxFn(param,name) {
 			let val = param[0];

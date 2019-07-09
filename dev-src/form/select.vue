@@ -22,32 +22,46 @@
         type="text"
         class="st-select-input"
         v-if="filterable"
-        :autofocus="searchFoucus"
         @input="handleQueryChange"
-        @keydown.enter.prevent="createOption"
         @keydown.delete="deletePrevTag"
-        v-model="query">
+				@keydown.enter.prevent="handleOption"
+        :value="query">
     </div>
     <template v-else>
+        <!-- @keydown.enter.prevent="createOption" -->
       <input 
         type="text"
         class="st-select-input"
-        @keydown.enter.prevent="createOption"
         v-model="selected.label"/>
     </template>
     
     <div class="st-select-menu" v-show="visible" v-clickoutside="handleClose">
-      <ul v-if="options.length > 0 && visible">
-        <li 
-          v-for="(item,index) in options"
-          :key="getValueKey(item)"
-          class="st-select-menu-item"
-          :class="[{'st-select-menu-item-hover': index == hoverIndex}]"
-          v-show="testRegExp(item.label)"
-          @click.stop="setSelected(index,item)">
-          {{item.label}}
-        </li>
-      </ul>
+			<template v-if="filterOptions.length == 0">
+				<ul v-show="options.length > 0 && visible">
+					<li 
+						v-for="(item,index) in options"
+						:key="getValueKey(item)"
+						class="st-select-menu-item"
+						:class="[{'st-select-menu-item-hover': index == hoverIndex}]"
+						@click.stop="setSelected(index,item)">
+						{{item.label}}
+					</li>
+				</ul>
+			</template>
+			<template v-if="filterOptions.length > 0">
+				<ul v-show="visible">
+					<li 
+						v-for="(item,index) in filterOptions"
+						:key="getValueKey(item)"
+						class="st-select-menu-item"
+						:class="[{'st-select-menu-item-hover': index == hoverIndex}]"
+						@click.stop="setSelected(index,item)"
+						@keydown.enter.prevent="setSelected(index,item)">
+						{{item.label}}
+					</li>
+				</ul>
+			</template>
+      
     </div>
   </div>
 </template>
@@ -55,6 +69,7 @@
 <script>
 import XTag from './tag.vue'
 import Tool from './tool';
+import {loadJs} from '../util';
 
 const regExpString = (value = '') => String(value).replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
 
@@ -89,7 +104,7 @@ export default {
       hoverIndex: -1,
       query: '',
       targetArr: '',
-      searchFoucus: true,
+			filterOptions: [],
     }
   },
   directives: {'clickoutside': Tool._clickOutside},
@@ -107,9 +122,35 @@ export default {
       handler(val) {
         this.visible = val
       }
-    },
+		},
+		filterOptions: {
+			deep: true,
+			handler(val) {
+				this.filterOptions = val
+      }
+		},
+		query: {
+			handler(val) {
+				this.query = val;
+				if (val == '') {
+					this.filterOptions = [];
+				}
+			}
+		}
   },
   methods: {
+		handleOption() {
+			if (!this.visible) {
+				this.showMenu();
+			} else {
+				if (this.filterOptions.length == 0 && this.options[this.hoverIndex]) {
+					this.setSelected(this.hoverIndex, this.options[this.hoverIndex]);
+				}
+				if (this.filterOptions.length > 0 && this.filterOptions[this.hoverIndex]) {
+					this.setSelected(this.hoverIndex, this.filterOptions[this.hoverIndex]);
+				}
+			}
+		},
     showMenu() {
       if(!this.visible)
       this.visible = true;
@@ -141,8 +182,7 @@ export default {
         this.selected = arr
         this.visible = true
         this.query = ''
-        // this.searchFoucus = true;
-        document.querySelector('.st-select-input').focus();
+        // document.querySelector('.st-select-input').focus();
 			}
     },
     getValueKey(item) {
@@ -169,8 +209,34 @@ export default {
       }
     },
     handleQueryChange(event) {
-      this.query = event.target.label
-    },
+      this.query = event.target.value
+			this.searchQuery(this.options,this.query);
+		},
+		searchQuery(options, query) {
+			let self = this;
+			function joinText(arr){
+				return arr.map(item=>item[0]).join('');
+			}
+			loadJs('https://cdn.jsdelivr.net/gh/inagora/STable/dist/pinyin.min.js').then(()=>{
+				let py = window.pinyin;
+				let _options = options;
+				_options.forEach(item=>{
+					let text = item.label.toLocaleLowerCase();
+					item._s = [
+						text,
+						joinText(py(text, {style:py.STYLE_FIRST_LETTER})),
+						joinText(py(text, {style:py.STYLE_INITIALS})),
+						joinText(py(text, {style:py.STYLE_NORMAL}))
+					];
+				});
+				let q = this.query.toLocaleLowerCase();
+				let newOptions = _options.filter(item=>{
+					let opt = item._s;
+					return opt.includes(q) || item.label.includes(q)
+				});
+				this.filterOptions = newOptions
+			});
+		},
     testRegExp(targetOpt) {
       // 正则匹配决定是否显示当前option
       if (this.filterable)
@@ -203,15 +269,14 @@ export default {
           this.hoverIndex = this.options.length - 1;
         }
       }
-      // this.searchFoucus = true;
-      document.querySelector('.st-select-input').focus();
+      // document.querySelector('.st-select-input').focus();
     },
     setHoverIndex(index,item) {
       this.hoverIndex = index;
       this.setSelected(index,item)
     },
     deletePrevTag() {
-      if((this.multiple && this.selected.length == 0) || (!this.multiple && this.selected.label == '')) return
+      if((this.multiple && this.selected.length == 0) || (!this.multiple && this.selected.label == '') || this.query != '') return
       this.selected.pop();
     },
     handleClose(e) {
@@ -226,8 +291,7 @@ export default {
     this.targetArr = targetArr;
   },
   mounted() {
-    // this.searchFoucus = true;
-    document.querySelector('.st-select-input').focus();
+    // document.querySelector('.st-select-input').focus();
   },
   beforeDestroy() {
 
