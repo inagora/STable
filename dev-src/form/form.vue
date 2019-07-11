@@ -10,14 +10,16 @@
           :placeholder="item.placeholder || `请填写${item.label}`" 
           :name="item.name" 
           v-model="item.value"
-					@input="changeFn($event,item.name)">
+					@input="changeFn($event,item.name)"
+					@validate="fieldListFn($event,item.name)">
         </x-input>
         <x-select v-if="item.type == 'select'"  
           v-model="item.value" 
           :options="item.options" 
           multiple
           filterable
-					@selectchange="changeFn($event,item.name)">
+					@selectchange="changeFn($event,item.name)"
+					@validate="fieldListFn($event,item.name)">
         </x-select>
         <template v-if="item.type == 'checkbox'">
           <x-checkbox 
@@ -32,7 +34,8 @@
         <template v-if="item.type == 'radio'">
           <x-radio
             :options="item.options"
-						@change="changeFn($event,item.name)">
+						@change="changeFn($event,item.name)"
+						@validate="fieldListFn($event,item.name)">
 
           </x-radio>
         </template>
@@ -56,6 +59,7 @@
 				</template>
       </div>
     </div>
+		<div class="st-form-tips" v-show="showErr">{{errMsg}}</div>
   </form>
 </template>
 
@@ -66,6 +70,8 @@ import XCheckbox from "./checkbox.vue";
 import XRadio from "./radio.vue";
 import XSwitch from "./switch.vue";
 import XButton from "../com/Button.vue";
+import defaultLocale from '../../src/lang/en.js';
+import { setTimeout } from 'timers';
 
 export default {
   name: 'XForm',
@@ -77,23 +83,36 @@ export default {
     }
   },
   props: {
-    formConfig: Array,
-  },
+		formConfig: Array,
+		rules: [Object, Array],
+	},
+	inject: {
+		locale: {
+			default: defaultLocale
+		}
+	},
   data() {
     return {
 			formValue: {},
 			checkedValue: [],
+			showErr: false,
+			errMsg: ''
     }
 	},
 	watch: {
-		// formValue: {
-		// 	deep: true,
-		// 	immediate: true,
-		// 	handler(newVal,oldVal) {
-		// 		console.log(newVal);
-		// 		this.formValue = newVal;
-		// 	}
-		// }
+		errMsg: {
+			handler(val) {
+				if (val != '') {
+					this.errMsg = val;
+					this.showErr = true;
+					setTimeout(()=>{
+						this.showErr = false;
+					},2000)
+				} else {
+					this.showErr = false;
+				}
+			}
+		}
 	},
   methods: {
 		clickFn(handle) {
@@ -101,7 +120,6 @@ export default {
 			console.log(this.formValue)
 		},
 		changeFn(val,name) {
-			// this.formValue[name] = val
 			this.formValue = Object.assign(this.formValue,{[name]: val})
 		},
 		checkboxFn(param,name) {
@@ -115,7 +133,26 @@ export default {
 				this.checkedValue.splice(idx,1)
 			}
 			this.formValue[name] = this.checkedValue.toString();
-		}
+			this.fieldListFn(val,name)
+		},
+		getType(target) {
+			if (this.formConfig[target] && this.formConfig[target].type) {
+				return this.formConfig[target].type
+			}
+		},
+		fieldListFn(val,name) {
+			let fieldlist = this.rules;
+			const placeholder = name == 'select' || 'checkbox' ? this.locale.chooseMsg : this.locale.inputMsg;
+			// this.errMsg = placeholder + fieldlist[name].label;
+		
+			if (fieldlist[name] && fieldlist[name].validator && typeof fieldlist[name].validator == 'function') {
+				//callback 执行
+				let callback = (param)=>{
+					this.errMsg = param
+				}
+				fieldlist[name].validator(fieldlist[name], val, callback)
+			}
+		},
   },
   created() {
 		let tmpArr = {}
@@ -123,7 +160,7 @@ export default {
 			if(item.type != 'button')
 			tmpArr[item.name] = item.value || ''
 		})
-		this.formValue = tmpArr
+		this.formValue = tmpArr;
   }
 }
 </script>
@@ -131,6 +168,7 @@ export default {
 <style lang="scss" scoped>
   .st-form {
     width: 100%;
+		position: relative;
 
     &-item {
       margin-bottom: 22px;
@@ -161,6 +199,24 @@ export default {
 			&-item {
 				margin: 0 10px;
 			}
+		}
+
+		&-tips {
+			width: 400px;
+			height: 60px;
+			padding: 8px 16px;
+			background: #fef0f0;
+			box-sizing: border-box;
+    	border-radius: 4px;
+			color: #f56c6c;
+			text-align: center;
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%,-50%);
 		}
   }
 </style>

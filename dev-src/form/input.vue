@@ -58,11 +58,6 @@ export default {
       hovering: false,
     }
   },
-  inject:{
-    XSelect: {
-      default: ''
-    }
-  },
   props: {
     value: [String,Number],
     disabled: Boolean,
@@ -94,7 +89,6 @@ export default {
   },
   watch:{
     // value(val) {
-    //   this._dispatch('XSelect', 'change', [val]);
     // },
     nativeInputValue() {
       this.setNativeInputValue();
@@ -163,7 +157,8 @@ export default {
     },
     handleBlur(event) {
       this.focused = false;
-      this.$emit('blur', event);
+			this.$emit('blur', event);
+			this.$emit('validate', event.target.value);
     },
     handleInput(event) {
       if (event.target.value === this.nativeInputValue) return;

@@ -38,6 +38,9 @@ export default {
       isChecked: false,
     }
 	},
+	watch: {
+		
+	},
   methods: {
     handleChange() {
 			this.isChecked = !this.isChecked

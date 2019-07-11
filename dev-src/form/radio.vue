@@ -44,7 +44,15 @@ export default {
 			checkIndex: -1,
 			checkVal: '',
     }
-  },
+	},
+	watch: {
+		checkVal: {
+			handler(val) {
+				this.checkVal = val;
+				this.$emit('validate',event.target.value)
+			}
+		}
+	},
   computed: {
     
   },

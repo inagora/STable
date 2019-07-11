@@ -38,7 +38,7 @@
     <!-- form 表单 -->
     <div>
       <span class="benchmark">form表单:</span>
-      <x-form ref="form" :formConfig="formConfig">
+      <x-form ref="form" :formConfig="formConfig" :rules="rules">
       </x-form>
     </div>
   </div>
@@ -51,10 +51,7 @@ import XInput from "./form/input.vue";
 import XTag from "./form/tag.vue";
 import XForm from "./form/form.vue";
 import XDatetimePicker from "./form/datetimepicker.vue";
-// import XSelect from "./form/select.vue";
-// import XCheckbox from "./form/checkbox.vue";
-// import XRadio from "./form/radio.vue";
-// import XSwitch from "./form/switch.vue";
+
 var range_start = new Date();
 var tmp = new Date()
 var range_end = new Date(tmp.setMonth(tmp.getMonth() + 1))
@@ -240,6 +237,13 @@ export default {
 					]
         },
 			],
+			rules: {
+				activity_kind: {validator: this.validateKind},
+				activity_fee: {validator: this.validateFee},
+				activity_textarea: {validator: this.validateTextarea},
+				activity_name: {validator: this.validateName},
+				activity_region: {validator: this.validateRegion},
+			},
 			time: new Date(),
 			range: [range_start,range_end],
     }
@@ -248,8 +252,35 @@ export default {
     this.getData(); //多选
   },
   methods: {
-    handleChange(value) {
-      // console.log(value);
+		// 验证方法
+		validateKind(rule,val,callback) {
+			let arr = val.split(',')
+			console.log(arr)
+			if (arr.length < 2) {
+				callback('最少选择两项')
+			}
+		},
+		validateFee(rule,val,callback) {
+			if (val == '') {
+				callback('请选择')
+			}
+		},
+		validateTextarea(rule,val,callback) {
+			if (val.length < 10) {
+				callback('最少10个字 略略略')
+			}
+		},
+		validateName(rule,val,callback) {
+			console.log(val)
+			 if (val.length > 5) {
+				callback('最多不超过5个字 哈哈哈')
+			 }
+		},
+    validateRegion(rule,val) {
+			console.log(val)
+      if (val == '') {
+				console.log('请至少选择一个地区')
+			}
     },
     // 点击每一个item的时候的操作，在这个方法判断多选的状态
     getSelected(val) {

@@ -116,6 +116,7 @@ export default {
       handler(val) {
         this.selected = val
 				this.$emit('selectchange', this.selected.toString());
+				this.$emit('validate', this.selected.toString());
       }
     },
     visible: {
@@ -269,7 +270,6 @@ export default {
           this.hoverIndex = this.options.length - 1;
         }
       }
-      // document.querySelector('.st-select-input').focus();
     },
     setHoverIndex(index,item) {
       this.hoverIndex = index;
@@ -291,7 +291,7 @@ export default {
     this.targetArr = targetArr;
   },
   mounted() {
-    // document.querySelector('.st-select-input').focus();
+		
   },
   beforeDestroy() {
 
