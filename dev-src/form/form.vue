@@ -7,7 +7,7 @@
       <div class="st-form-item-content">
         <x-input v-if="item.type == 'input' || item.type == 'textarea'" 
           :type="item.type" 
-          :placeholder="item.placeholder || `请填写${item.label}`" 
+          :placeholder="item.placeholder || `${locale.inputMsg + item.label}`" 
           :name="item.name" 
           v-model="item.value"
 					@input="changeFn($event,item.name)"

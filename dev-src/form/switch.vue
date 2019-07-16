@@ -32,7 +32,10 @@ export default {
   // },
 	props: {
 		name: String,
-		value: Boolean,
+		value: {
+			type: Boolean,
+			default: false,
+		},
 		// checked: {
     //   type: Number,
     //   default: 0

@@ -255,7 +255,6 @@ export default {
 		// 验证方法
 		validateKind(rule,val,callback) {
 			let arr = val.split(',')
-			console.log(arr)
 			if (arr.length < 2) {
 				callback('最少选择两项')
 			}
@@ -271,13 +270,11 @@ export default {
 			}
 		},
 		validateName(rule,val,callback) {
-			console.log(val)
 			 if (val.length > 5) {
 				callback('最多不超过5个字 哈哈哈')
 			 }
 		},
     validateRegion(rule,val) {
-			console.log(val)
       if (val == '') {
 				console.log('请至少选择一个地区')
 			}

@@ -349,7 +349,9 @@ export default {
     margin: 5px 0;   
     padding: 6px 0; 
     z-index: 9;
-    
+    > ul {
+			padding: 0;
+		}
     &-item {
       font-size: 14px;
       padding: 0 20px;
