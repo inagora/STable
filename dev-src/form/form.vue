@@ -52,7 +52,7 @@
 							v-for="(btn, btnindex) in item.options" 
 							:key="btnindex" 
 							:type="btn.theme" 
-							@click.prevent="clickFn(btn.handle)">
+							@click.prevent="clickFn(btn,$event)">
 							{{btn.text}}
 						</x-button>
 					</div>
@@ -115,8 +115,8 @@ export default {
 		}
 	},
   methods: {
-		clickFn(handle) {
-			if(handle === 'submit') 
+		clickFn(btn,evt) {
+			if (btn.handle == 'submit')
 			console.log(this.formValue)
 		},
 		changeFn(val,name) {
@@ -133,7 +133,7 @@ export default {
 				this.checkedValue.splice(idx,1)
 			}
 			this.formValue[name] = this.checkedValue.toString();
-			this.fieldListFn(val,name)
+			// this.fieldListFn(val,name) 验证
 		},
 		getType(target) {
 			if (this.formConfig[target] && this.formConfig[target].type) {
