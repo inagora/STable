@@ -452,7 +452,6 @@ export default {
 		}
 	},
 	mounted(){
-		console.log('stable mounted');
 		if(this.config.listeners && this.config.listeners.ready){
 			this.config.listeners.ready.call(this);
 		}
