@@ -5,7 +5,7 @@ export default {
 			resizing: false,
 			startResizePos: 0,
 			endResizePos: 0,
-		}
+		};
 	},
 	mounted(){
 		this._resize = this.resize.bind(this);
@@ -32,7 +32,7 @@ export default {
 				pos = this.startResizePos+25;
 			this.endResizePos = pos;
 		},
-		resizeEnd(evt){
+		resizeEnd(){
 			this.clearResize();
 			this.columns[this._resizeColumnIdx].width = this.endResizePos - this.startResizePos;
 			this.layout();

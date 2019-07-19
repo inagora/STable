@@ -236,7 +236,7 @@ function ajax(options) {
 	});
 }
 export {
-  ajax
+	ajax
 };
 export function get() {
 	return ajax(parseArguments.apply(null, arguments));

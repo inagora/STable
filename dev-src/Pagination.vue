@@ -5,12 +5,14 @@
 				icon="st-iconfont st-icon-left"
 				size="small"
 				:disabled="!store.hasPrePage"
-				:title="locale.previousPage"></x-button>
+				:title="locale.previousPage"
+			/>
 			<x-button
 				icon="st-iconfont st-icon-right"
 				size="small"
 				:disabled="!store.hasNextPage"
-				:title="locale.nextPage"></x-button>
+				:title="locale.nextPage"
+			/>
 		</div>
 		<div v-else class="st-pn-normal">
 			<x-button
@@ -18,7 +20,7 @@
 				size="small"
 				:disabled="store.page<=1"
 				:title="locale.previousPage"
-				@click="jumpTo(store.page-1)"></x-button>
+				@click="jumpTo(store.page-1)"/>
 			<x-button
 				v-for="(item,idx) of pnoList"
 				:key="idx"
@@ -30,7 +32,7 @@
 				size="small"
 				:disabled="store.page>=store.page_count"
 				:title="locale.nextPage"
-				@click="jumpTo(store.page+1)"></x-button>
+				@click="jumpTo(store.page+1)"/>
 		</div>
 		<select v-model="pageSize" v-if="pagination.pageSizeOptions" class="st-pn-size">
 			<option v-for="(size, idx) of pagination.pageSizeOptions" :value="size" :key="idx" v-text="size+' '+locale.pageSizeUnit"></option>

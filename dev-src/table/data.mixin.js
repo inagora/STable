@@ -1,4 +1,6 @@
 import {ajax} from '../ajax';
+import {alert} from '../com/Dialog';
+import Progressbar from '../com/Progressbar';
 export default {
 	inject: ['store', 'records', 'params', 'url', 'actionMethods', 'listeners', 'pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt'],
 	data() {
@@ -6,7 +8,7 @@ export default {
 			flymanVisible: false,
 			recordList: [],
 			clean: true	//"干净"状态下的表格，不会提示下一页没有数据之类的提示
-		}
+		};
 	},
 	watch: {
 		'store.page': function(){
@@ -208,7 +210,7 @@ export default {
 						for(let v of valueList) {
 							sortRet[v][0]._wd_aux.merges[dataIndex] = sortRet[v].length;
 							for(let i=1,len=sortRet[v].length;i<len;i++){
-								sortRet[v][i]._wd_aux.ignoreRenders.push(dataIndex)
+								sortRet[v][i]._wd_aux.ignoreRenders.push(dataIndex);
 							}
 							ret.push(sortRet[v]);
 						}

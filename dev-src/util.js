@@ -37,6 +37,18 @@ export let isSafari = window.navigator.vendor.toLowerCase().includes('apple comp
 
 export function tmpl(str, data){
 	return str.replace(/\$\{\s*(.+?)\s*\}/g, function(_, _$1){
-		return data[_$1]||''
+		return data[_$1]||'';
 	});
 }
+
+export let Console = {
+	log(...args){
+		window.console && window.console.log.apply(window.console, args);
+	},
+	warn(...args){
+		window.console && window.console.warn.apply(window.console, args);
+	},
+	error(...args){
+		window.console && window.console.error.apply(window.console, args);
+	}
+};

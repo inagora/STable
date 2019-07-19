@@ -117,13 +117,13 @@ export default {
 				rect,
 				startIdx,
 				targetIdx
-			}
+			};
 		},
 		drop(data){
 			if(this.dragger.startIdx < 0)
 				return;
 			let {column, evt} = data;
-			let {valid, pos, rect, startIdx, targetIdx} = this.dropValidCheck(column, evt);
+			let {valid, pos, startIdx, targetIdx} = this.dropValidCheck(column, evt);
 			if(valid) {
 				//store.column的修改，会引起formatColumn()
 				let startColumn = this.columns[startIdx];
@@ -159,4 +159,4 @@ export default {
 			docEl.removeEventListener('mouseup', this.dragger.clearDrag, false);
 		}
 	}
-}
+};

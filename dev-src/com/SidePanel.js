@@ -3,21 +3,13 @@ class SidePanel {
 	constructor(){
 		let self = this;
 		this.app = new Vue({
+			components: {XSidePanel},
 			data:{
 				title: '',
 				visible: false,
 				html: '',
 				isPage: false
 			},
-			components: {XSidePanel},
-			template: 
-				'<x-side-panel'
-					+ ' :visible="visible"'
-					+ ' :title="title"'
-					+ ' :html="html"'
-					+ ' :is-page="isPage"'
-					+ ' @close="hide">'
-				+ '</x-side-panel>',
 			methods: {
 				hide(){
 					if(self == SidePanel._ins) {
@@ -25,7 +17,15 @@ class SidePanel {
 					} else 
 						self.hide();
 				}
-			}
+			},
+			template: 
+				'<x-side-panel'
+					+ ' :visible="visible"'
+					+ ' :title="title"'
+					+ ' :html="html"'
+					+ ' :is-page="isPage"'
+					+ ' @close="hide">'
+				+ '</x-side-panel>'
 		});
 	}
 	init(){

@@ -17,6 +17,7 @@ function formatArgs(msg, title, options){
 }
 export function alert(msg, title, options){
 	let config = formatArgs(msg, title, options);
+	alert(config.title);
 }
 export function create(config) {
 	let el = document.createElement('div');
@@ -39,7 +40,7 @@ export function create(config) {
 	];
 	let dialogConfig = {};
 	dialogConfigKeys.forEach(key=>{
-		if(config.hasOwnProperty(key)) {
+		if(Object.prototype.hasOwnProperty.call(config, key)) {
 			dialogConfig[key] = config[key];
 			delete config[key];
 		}
