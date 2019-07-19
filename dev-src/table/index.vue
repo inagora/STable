@@ -76,6 +76,7 @@ import data from './data.mixin.js';
 import drag from './drag.mixin.js';
 import resize from './resize.mixin.js';
 import ResizeObserver from '../util/ResizeObserver';
+import {create as createDia} from '../com/Dialog';
 export default {
 	mixins: [data, drag, resize],
 	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode'],
@@ -172,7 +173,7 @@ export default {
 				leftColumns = [],
 				rightColumns = [],
 				freeColumns = [];
-			this.store.columns.forEach((item, idx)=>{
+			this.store.columns.forEach((item)=>{
 				if(!item.visible) return;
 				if(item.locked) {
 					if(item.locked=='right')
@@ -279,7 +280,7 @@ export default {
 					click: (record)=>{
 						this.$confirm('您确定要删除此行数据？', '提示', {
 							type: 'error'
-						}).then((res)=>{
+						}).then(()=>{
 							let id = record[this.idIndex];
 							let data = {};
 							data[this.idIndex] = id;
@@ -305,12 +306,12 @@ export default {
 					text: '编辑',
 					icon: 'el-icon-edit-outline',
 					click:(record)=> {
-						self = this;
-						Dialog.create({
+						let self = this;
+						createDia({
 							title: '编辑',
 							width: 600,
 							height: '62%',
-							html,
+							// html, //html未定义
 							buttons: [
 								{
 									text: '确认修改',
@@ -324,9 +325,6 @@ export default {
 									}
 								}
 							],
-							components:{
-								XForm
-							},
 							data: {
 								fields: this.editConf,
 								params: record,
@@ -400,7 +398,7 @@ export default {
 					return;
 				
 				if(typeof item.width != 'undefined') {
-					if(typeof item.width=='string' && /^([\d\.]+)%$/.test(item.width)) {
+					if(typeof item.width=='string' && /^([\d.]+)%$/.test(item.width)) {
 						let w = Math.floor(boxWidth*parseFloat(RegExp.$1)/100);
 						/**
 						 * @param {Number} column.minWidth 列的最小宽度
@@ -458,7 +456,7 @@ export default {
 			this.leftColumns.forEach(c=>totalLeftWidth+=c._width);
 			this.freeColumns.forEach(c=>{
 				if(c.type != 'pad')
-					totalFreeWidth+=c._width
+					totalFreeWidth+=c._width;
 			});
 			this.rightColumns.forEach(c=>totalRightWidth+=c._width);
 			
@@ -488,14 +486,14 @@ export default {
 					this.recordsHeight = hs;
 				}
 
-				this.$el.querySelector('.st-table-body-free').dispatchEvent(new Event('scroll'))
+				this.$el.querySelector('.st-table-body-free').dispatchEvent(new Event('scroll'));
 			}, 0);
 		},
 		showMenu(data){
 			this.$refs.menu.show(data);
 		}
 	}
-}
+};
 </script>
 
 <style lang="scss">

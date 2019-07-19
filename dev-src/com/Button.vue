@@ -3,15 +3,19 @@ const rxTwoCNChar = /^[\u4e00-\u9fa5]{2}$/;
 export default {
 	props: {
 		size: {
+			type: String,
 			default: 'medium'
 		},
 		type: {
+			type: String,
 			default: 'default'
 		},
 		icon: {
+			type: String,
 			default: ''
 		},
 		nativeType: {
+			type: String,
 			default: 'button'
 		}
 	},
@@ -54,13 +58,13 @@ export default {
 			{
 				'class': ['st-btn', 'st-btn-'+this.type, 'st-btn-'+size],
 				on: {
-					click(evt){self.$emit('click', evt)},
+					click(evt){self.$emit('click', evt);}
 				},
 			},
 			children
 		);
 	}
-}
+};
 </script>
 
 <style lang="scss">

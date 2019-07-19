@@ -68,12 +68,12 @@ module.exports = function(env, argv) {
 		},
 		module: {
 			rules: [
-				{
-					enforce: 'pre',
-					test: /\.(js|vue)$/,
-					loader: 'eslint-loader',
-					exclude: /node_modules/
-				},
+				// {
+				// 	enforce: 'pre',
+				// 	test: /\.(js|vue)$/,
+				// 	loader: 'eslint-loader',
+				// 	exclude: /node_modules|form\/|Form.vue/
+				// },
 				{
 					test: /\.vue$/,
 					use: 'vue-loader'

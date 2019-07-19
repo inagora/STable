@@ -1,7 +1,13 @@
 <template>
 	<div class="st-stable" :class="[config.layoutMode=='expand'?'st-expand-stable':'st-fixed-stable']">
 		<div class="st-stable-doc">
-			<component v-for="com of comOrder" :key="com.name" :is="com.com" :ref="com.name"></component>
+			<template v-for="com of comOrder">
+				<component
+					:is="com.com"
+					:key="com.name"
+					:ref="com.name"
+				/>
+			</template>
 		</div>
 	</div>
 </template>
@@ -17,10 +23,15 @@ import XForm from './Form.vue';
 import XTable from './table/index.vue';
 import XPagination from './Pagination.vue';
 import defaultLang from './lang/en.js';
-import {hashCode} from "./util.js";
+import {hashCode, Console} from "./util.js";
 let stableCount = 0;
 export default {
-	props: ['config'],
+	props: {
+		config: {
+			type: Object,
+			required: true
+		}
+	},
 	provide() {
 		let conf = Object.assign({
 			/**
@@ -240,7 +251,7 @@ export default {
 			if(_type != 'undefined') {
 				if(_type=='string') {
 					//可能是百分比，否则全转化为整数
-					if(!/^[\d\.]+%$/.test(item.width)) {
+					if(!/^[\d.]+%$/.test(item.width)) {
 						item.width = parseInt(item.width, 10);
 					}
 				}
@@ -413,7 +424,7 @@ export default {
 					try{
 						window.localStorage.setItem(conf._key, JSON.stringify(colState));
 					}catch(e){
-						console.error(e);
+						Console.error(e);
 					}
 				},
 				resetColumnsState(){
@@ -421,7 +432,7 @@ export default {
 						window.localStorage.removeItem(conf._key);
 						location.reload();
 					}catch(e){
-						console.error(e);
+						Console.error(e);
 					}
 				}
 			}
@@ -441,8 +452,8 @@ export default {
 			tip: XTip,
 			toolbar: XToolbar,
 			search: XSearch,
-      table: XTable,
-      form: XForm,
+			table: XTable,
+			form: XForm,
 			pagination: XPagination
 		};
 		let order = ['title', 'tip', 'toolbar', 'search', 'table', 'pagination','form'];
@@ -451,7 +462,7 @@ export default {
 		}
 		return {
 			comOrder: order.map(name=>({name, com:coms[name]}))
-		}
+		};
 	},
 	mounted(){
 		if(this.config.listeners && this.config.listeners.ready){
@@ -494,7 +505,7 @@ export default {
 			this.$refs.table.setRecords(list);
 		}
 	}
-}
+};
 </script>
 <style lang="scss">
 @import url(./iconfont/iconfont.css);

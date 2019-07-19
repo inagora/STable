@@ -26,7 +26,15 @@ module.exports = {
 				"max": 1,
 				"allowFirstLine": false
 			}
-		}]
+		}],
+		"vue/html-self-closing": ["error", {
+			"html": {
+				"void": "always",
+				"normal": "any",
+				"component": "always"
+			}
+		}],
+		"vue/no-v-html": "off"
 	},
 	"globals": {
 		"Vue": false,
