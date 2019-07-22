@@ -35,9 +35,15 @@ export default {
 	name: 'XCheckbox',
 	compontent: 'XCheckbox',
 	props: {
-		name: String,
+		name: {
+			type: String,
+			default: ''
+		},
 		label: {},
-		value: String,
+		value: {
+			type: String,
+			default: ''
+		},
 	},
 	data() {
 		return {

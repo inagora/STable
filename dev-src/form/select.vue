@@ -93,8 +93,14 @@ export default {
 		};
 	},
 	props:{
-		filterable: Boolean,
-		allowCreate: Boolean,
+		filterable: {
+			type: Boolean,
+			default: true
+		},
+		allowCreate: {
+			type: Boolean,
+			default: true
+		},
 		multiple: {
 			type: Boolean,
 			default: false,

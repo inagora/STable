@@ -32,7 +32,10 @@ export default {
 	//   event: 'change'
 	// },
 	props: {
-		name: String,
+		name: {
+			type: String,
+			default: ''
+		},
 		value: {
 			type: Boolean,
 			default: false,

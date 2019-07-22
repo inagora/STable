@@ -6,7 +6,7 @@
 				v-model="inputValue"
 				class="slect-panel"
 				readonly
-			/>
+			>
 			<caspanel
 				:height="height"
 				:width="width"

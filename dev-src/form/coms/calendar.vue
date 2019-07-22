@@ -96,7 +96,10 @@ export default {
 		dd: val => ('0' + val).slice(-2)
 	},
 	props: {
-		value: null,
+		value: {
+			type: [Object,String],
+			default: null
+		},
 		left: {
 			type: Boolean,
 			default: false,

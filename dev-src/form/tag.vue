@@ -2,11 +2,26 @@
 export default {
 	name: 'XTag',
 	props: {
-		text: String,
-		closable: Boolean,
-		type: String,
-		color: String,
-		size: String
+		text: {
+			type: String,
+			default: ''
+		},
+		closable: {
+			type: Boolean,
+			default: false
+		},
+		type: {
+			type: String,
+			default: ''
+		},
+		color: {
+			type: String,
+			default: '#fff'
+		},
+		size: {
+			type: String,
+			default: 'small'
+		}
 	},
 	computed: {
 		tagSize() {

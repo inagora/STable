@@ -56,9 +56,18 @@ export default {
 	mixins: [Tool],
 	componentName: 'XInput',
 	props: {
-		value: [String,Number],
-		disabled: Boolean,
-		readonly: Boolean,
+		value: {
+			type: [String,Number],
+			default: ''
+		},
+		disabled: {
+			type: Boolean,
+			default: false
+		},
+		readonly: {
+			type: Boolean,
+			default: false
+		},
 		type: {
 			type: String,
 			default: 'text'

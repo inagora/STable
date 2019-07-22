@@ -39,8 +39,14 @@ export default {
 	name: 'XRadio',
 	compontents: 'XRadio',
 	props: {
-		name: String,
-		value: [String,Boolean,Number],
+		name: {
+			type: String,
+			default: ''
+		},
+		value: {
+			type: [String,Boolean,Number],
+			default: ''
+		},
 		options: Array,
 	},
 	data() {

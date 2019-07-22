@@ -26,10 +26,10 @@
 				</template>
 				<div v-if="showButtons" class="datepicker__buttons">
 					<button class="datepicker__button-cancel" @click.prevent.stop="cancel">
-						{{ this.local.cancelTip }}
+						{{ local.cancelTip }}
 					</button>
 					<button class="datepicker__button-select" @click.prevent.stop="submit">
-						{{ this.local.submitTip }}
+						{{ local.submitTip }}
 					</button>
 				</div>
 			</div>
@@ -44,11 +44,26 @@ export default {
 	name: 'XDatetimePicker',
 	components: { XCalendar },
 	props: {
-		name: [String],
-		inputClass: [String],
-		popupClass: [String],
-		value: [Date, Array, String],
-		disabled: [Boolean],
+		name: {
+			type: [String],
+			default: ''
+		},
+		inputClass: {
+			type: [String],
+			default: ''
+		},
+		popupClass: {
+			type: [String],
+			default: ''
+		},
+		value: {
+			type: [Date, Array, String],
+			default: '',
+		},
+		disabled: {
+			type: [Boolean],
+			default: false
+		},
 		type: {
 			type: String,
 			default: 'normal'
@@ -61,7 +76,10 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		placeholder: [String],
+		placeholder: {
+			type: [String],
+			default: ''
+		},
 		disabledDate: {
 			type: Function,
 			default: () => {
@@ -93,7 +111,12 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		dateRangeSelect: [Function]
+		dateRangeSelect: {
+			type: [Function],
+			default: () => {
+				return true;
+			}
+		}
 	},
 	data () {
 		return {
