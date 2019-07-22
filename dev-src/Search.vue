@@ -12,19 +12,21 @@
 			size="small"
 			:field-list="searchFilter"
 			:default-values="params"
-			:action-methods="actionMethods" @submit="search"
+			:action-methods="actionMethods"
+			@submit="search"
 		>
-			<el-form-item>
+			<x-button />
+			<!-- <el-form-item>
 				<el-button type="primary" icon="fa fa-search" native-type="submit">{{locale.search}}</el-button>
 				<el-button v-if="searchResetable" @click="reset">{{locale.reset}}</el-button>
-			</el-form-item>
+			</el-form-item> -->
 		</x-form>
 	</div>
 </template>
 
 <script>
 import XForm from './Form.vue';
-import XButton from './coms/Button.vue';
+import XButton from './com/Button.vue';
 export default {
 	components:{XForm, XButton},
 	inject: {
@@ -44,6 +46,9 @@ export default {
 		if(this.searchFilter) {
 			this.store.searchParams = this.getParams();
 		}
+	},
+	methods: {
+		search(){}
 	}
 };
 </script>
