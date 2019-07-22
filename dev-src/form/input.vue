@@ -1,183 +1,182 @@
 <template>
-  <div
-      @mouseenter="hovering = true"
-      @mouseleave="hovering = false">
-    <template v-if="type != 'textarea'">
-      <div class="st-input-wrap" >
-        <input 
-          class="st-input-wrap-item"
-          ref="input"
-          v-bind="$attrs"
-          :class="[{'st-input-wrap-disabled': disabled}]"
-          :type="showPassword ? 'password' : type"
-          :disabled="disabled"
-          :placeholder="placeholder"
-          :readonly="readonly"
-          @input="handleInput"
-          @focus="handleFocus"
-          @blur="handleBlur"
-          @change="handleChange"/>
-          <!-- 后置元素 -->
-          <i v-show="showClear"
-              class="st-iconfont st-icon-close st-input-wrap-clear"
-              @click="clear"
-            ></i>
-      </div>
-    </template>
-    <template v-if="type == 'textarea'">
-      <div class="st-textarea-wrap">
-        <textarea class="st-textarea-wrap-con"
-                :class="[{'st-textarea-wrap-exceed':inputExceed}]"
-                @input="handleInput"
-                @focus="handleFocus"
-                @blur="handleBlur"
-                @change="handleChange"
-                ref="textarea"
-                v-bind="$attrs"
-                :disabled="disabled"
-                :placeholder="placeholder"
-                :readonly="readonly">
-        
-        </textarea>
-        <span v-if="isWordLimitVisible && type === 'textarea'" class="st-textarea-wrap-count">{{ textLength }}/{{ upperLimit }}</span>
-      </div>
-    </template>
-  </div>
+	<div
+		@mouseenter="hovering = true"
+		@mouseleave="hovering = false"
+	>
+		<template v-if="type != 'textarea'">
+			<div class="st-input-wrap">
+				<input 
+					ref="input"
+					class="st-input-wrap-item"
+					v-bind="$attrs"
+					:class="[{'st-input-wrap-disabled': disabled}]"
+					:type="showPassword ? 'password' : type"
+					:disabled="disabled"
+					:placeholder="placeholder"
+					:readonly="readonly"
+					@input="handleInput"
+					@focus="handleFocus"
+					@blur="handleBlur"
+					@change="handleChange"
+				>
+				<!-- 后置元素 -->
+				<i
+					v-show="showClear"
+					class="st-iconfont st-icon-close st-input-wrap-clear"
+					@click="clear"
+				/>
+			</div>
+		</template>
+		<template v-if="type == 'textarea'">
+			<div class="st-textarea-wrap">
+				<textarea
+					ref="textarea"
+					class="st-textarea-wrap-con"
+					:class="[{'st-textarea-wrap-exceed':inputExceed}]"
+					v-bind="$attrs"
+					:disabled="disabled"
+					:placeholder="placeholder"
+					:readonly="readonly"
+					@input="handleInput"
+					@focus="handleFocus"
+					@blur="handleBlur"
+					@change="handleChange"
+				/>
+				<span v-if="isWordLimitVisible && type === 'textarea'" class="st-textarea-wrap-count">{{ textLength }}/{{ upperLimit }}</span>
+			</div>
+		</template>
+	</div>
 </template>
 
 <script>
 import * as Tool from './tool';
 
 export default {
-  mixins: [Tool],
-  name: 'XInput',
-  componentName: 'XInput',
-  data(){
-    return {
-      focused: false,
-      hovering: false,
-    }
-  },
-  props: {
-    value: [String,Number],
-    disabled: Boolean,
-    readonly: Boolean,
-    type: {
-      type: String,
-      default: 'text'
-    },
-    showPassword: {
-      type: Boolean,
-      default: false
-    },
-    clearable: {
-      type: Boolean,
-      default: false
-    },
-    placeholder:{
-      type: String,
-      default: ''
-    },
-    length: {
-      type: Number,
-    },
-    showWordLimit: {
-      type: Boolean,
-      default: false
-    },
+	name: 'XInput',
+	mixins: [Tool],
+	componentName: 'XInput',
+	props: {
+		value: [String,Number],
+		disabled: Boolean,
+		readonly: Boolean,
+		type: {
+			type: String,
+			default: 'text'
+		},
+		showPassword: {
+			type: Boolean,
+			default: false
+		},
+		clearable: {
+			type: Boolean,
+			default: false
+		},
+		placeholder:{
+			type: String,
+			default: ''
+		},
+		length: {
+			type: Number,
+		},
+		showWordLimit: {
+			type: Boolean,
+			default: false
+		},
 
-  },
-  watch:{
-    // value(val) {
-    // },
-    nativeInputValue() {
-      this.setNativeInputValue();
-    },
-    type() {
-      this.$nextTick(() => {
-        this.setNativeInputValue();
-      });
-    }
-  },
-  computed: {
-    showClear() {
-      return this.clearable && 
+	},
+	data(){
+		return {
+			focused: false,
+			hovering: false,
+		};
+	},
+	computed: {
+		showClear() {
+			return this.clearable && 
         !this.disabled &&
         !this.readonly &&
-        this.nativeInputValue &&
         (this.focused || this.hovering);
-    },
-    nativeInputValue() {
-      return this.value === null || this.value === undefined ? '' : String(this.value);
-    },
-    isWordLimitVisible() {
-      return this.showWordLimit &&
+		},
+		nativeInputValue() {
+			return this.value === null || this.value === undefined ? '' : String(this.value);
+		},
+		isWordLimitVisible() {
+			return this.showWordLimit &&
         this.$attrs.maxlength &&
         (this.type === 'text' || this.type === 'textarea') &&
         !this.disabled &&
         !this.readonly &&
         !this.showPassword;
-    },
-    upperLimit() {
-      return this.$attrs.maxlength;
-    },
-    textLength() {
-      if (typeof this.value === 'number') {
-        return String(this.value).length;
-      }
-      return (this.value || '').length;
-    },
-    inputExceed() {
-      return this.isWordLimitVisible &&
+		},
+		upperLimit() {
+			return this.$attrs.maxlength;
+		},
+		textLength() {
+			if (typeof this.value === 'number') {
+				return String(this.value).length;
+			}
+			return (this.value || '').length;
+		},
+		inputExceed() {
+			return this.isWordLimitVisible &&
         (this.textLength > this.upperLimit);
-    },
-    nativeInputValue() {
-      return this.value === null || this.value === undefined ? '' : String(this.value);
-    },
-  },
-  mounted(){
-    this.setNativeInputValue();
-  },
-  methods: {
-    setNativeInputValue() {
-      const input = this.getInput();
-      if (!input) return;
-      if (input.value === this.nativeInputValue) return;
-      input.value = this.nativeInputValue;
-    },
-    focus() {
-      this.getInput().focus();
-    },
-    blur() {
-      this.getInput().blur();
-    },
-    handleFocus(event) {
-      this.focused = true;
-      this.$emit('focus', event);
-    },
-    handleBlur(event) {
-      this.focused = false;
+		}
+	},
+	watch:{
+		// value(val) {
+		// },
+		nativeInputValue() {
+			this.setNativeInputValue();
+		},
+		type() {
+			this.$nextTick(() => {
+				this.setNativeInputValue();
+			});
+		}
+	},
+	mounted(){
+		this.setNativeInputValue();
+	},
+	methods: {
+		setNativeInputValue() {
+			const input = this.getInput();
+			if (!input) return;
+			if (input.value === this.nativeInputValue) return;
+			input.value = this.nativeInputValue;
+		},
+		focus() {
+			this.getInput().focus();
+		},
+		blur() {
+			this.getInput().blur();
+		},
+		handleFocus(event) {
+			this.focused = true;
+			this.$emit('focus', event);
+		},
+		handleBlur(event) {
+			this.focused = false;
 			this.$emit('blur', event);
 			this.$emit('validate', event.target.value);
-    },
-    handleInput(event) {
-      if (event.target.value === this.nativeInputValue) return;
-      this.$emit('input', event.target.value);
-      this.$nextTick(this.setNativeInputValue);
-    },
-    handleChange(event) {
-      this.$emit('change', event.target.value);
-    },
-    clear(){
-      this.$emit('input', '');
-      this.$emit('change', '');
-      this.$emit('clear');
-    },
-    getInput() {
-      return this.$refs.input || this.$refs.textarea;
-    },
-  },
-}
+		},
+		handleInput(event) {
+			if (event.target.value === this.nativeInputValue) return;
+			this.$emit('input', event.target.value);
+			this.$nextTick(this.setNativeInputValue);
+		},
+		handleChange(event) {
+			this.$emit('change', event.target.value);
+		},
+		clear(){
+			this.$emit('input', '');
+			this.$emit('change', '');
+			this.$emit('clear');
+		},
+		getInput() {
+			return this.$refs.input || this.$refs.textarea;
+		},
+	},
+};
 </script>
 
 

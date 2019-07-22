@@ -1,47 +1,65 @@
 <template>
-  <div>
-    <!-- 级联选择组件 -->
-    <div >
-      <span class="dropTreeLists">
-        <span class="benchmark">多选级联选择器:</span>
-        <x-cascader 
-                      v-on:CheckedsIndexCodes="fromTreeCheckeds"
-                      :options="configOptions"
-                      @on-selected="getSelected"
-                      :inputValue="configTips"></x-cascader>
-      </span>
-    </div>
-    <!-- input组件 -->
-    <div>
-      <span class="benchmark">input输入框:</span>
-      <x-input :placeholder="'这是一个input组件'" type="text" v-model="inputData" :clearable="true"></x-input>
-      <span class="benchmark">textarea输入框:</span>
-      <x-input :placeholder="'这是一个input组件-textarea'" type="textarea" v-model="textareaData" maxlength="5" :showWordLimit="true"></x-input>
-    </div>
-    <!-- tag标签 -->
-    <div>
-      <span class="benchmark">tag标签:</span>
-      <x-tag v-for="(tag,index) in tags" :key="index" :type="tag.type" :closable="true" :size="index == 0 ? 'small' : ''" @close="closeTag(index)">{{tag.name}}</x-tag>
-    </div>
+	<div>
+		<!-- 级联选择组件 -->
+		<div>
+			<span class="dropTreeLists">
+				<span class="benchmark">多选级联选择器:</span>
+				<x-cascader 
+					:options="configOptions"
+					:input-value="configTips"
+					@CheckedsIndexCodes="fromTreeCheckeds"
+					@on-selected="getSelected"
+				/>
+			</span>
+		</div>
+		<!-- input组件 -->
+		<div>
+			<span class="benchmark">input输入框:</span>
+			<x-input
+				v-model="inputData"
+				:placeholder="'这是一个input组件'"
+				type="text"
+				:clearable="true"
+			/>
+			<span class="benchmark">textarea输入框:</span>
+			<x-input
+				v-model="textareaData"
+				:placeholder="'这是一个input组件-textarea'"
+				type="textarea"
+				maxlength="5"
+				:show-word-limit="true"
+			/>
+		</div>
+		<!-- tag标签 -->
+		<div>
+			<span class="benchmark">tag标签:</span>
+			<x-tag
+				v-for="(tag,index) in tags"
+				:key="index"
+				:type="tag.type"
+				:closable="true"
+				:size="index == 0 ? 'small' : ''"
+				@close="closeTag(index)"
+			>
+				{{ tag.name }}
+			</x-tag>
+		</div>
 		<!-- XDatetimePicker -->
-    <div>
-      <span class="benchmark">DatetimePicker:</span>
-      <x-datetime-picker v-model="time" format="YYYY-MM-DD HH:mm:ss">
-      </x-datetime-picker>
-    </div>
+		<div>
+			<span class="benchmark">DatetimePicker:</span>
+			<x-datetime-picker v-model="time" format="YYYY-MM-DD HH:mm:ss" />
+		</div>
 		<!-- XDatetimePicker range -->
-    <div>
-      <span class="benchmark">DatetimePicker range:</span>
-      <x-datetime-picker v-model="range" range-separator="至" format="YYYY-MM-DD HH:mm:ss">
-      </x-datetime-picker>
-    </div>
-    <!-- form 表单 -->
-    <div>
-      <span class="benchmark">form表单:</span>
-      <x-form ref="form" :formConfig="formConfig" :rules="rules">
-      </x-form>
-    </div>
-  </div>
+		<div>
+			<span class="benchmark">DatetimePicker range:</span>
+			<x-datetime-picker v-model="range" range-separator="至" format="YYYY-MM-DD HH:mm:ss" />
+		</div>
+		<!-- form 表单 -->
+		<div>
+			<span class="benchmark">form表单:</span>
+			<x-form ref="form" :form-config="formConfig" :rules="rules" />
+		</div>
+	</div>
 </template>
 <script src="./form/datetimepicker.js"></script>
 
@@ -270,9 +288,9 @@ export default {
 			}
 		},
 		validateName(rule,val,callback) {
-			 if (val.length > 5) {
+			if (val.length > 5) {
 				callback('最多不超过5个字 哈哈哈')
-			 }
+			}
 		},
     validateRegion(rule,val) {
       if (val == '') {
