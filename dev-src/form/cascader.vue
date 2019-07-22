@@ -6,7 +6,7 @@
 				v-model="inputValue"
 				class="slect-panel"
 				readonly
-			>
+			/>
 			<caspanel
 				:height="height"
 				:width="width"
@@ -85,7 +85,6 @@ export default {
 		// 初始化数据 
 		initData() {
 			this.setLevel();
-			const { width, height } = this;
 			const checkedValues = [];
 			let childrenValues = [];
 			const getChecked = item => {
@@ -93,6 +92,9 @@ export default {
 				if (siblingValues) {
 					const tempValues = [...siblingValues];
 					item.siblingValues = tempValues;
+				}
+				if (level) {
+					console.log(level);
 				}
 				childrenValues.push(value);
 				if (children && children.length > 0) {
@@ -117,7 +119,6 @@ export default {
 		},
 		getTypeOptions(values, outputType) {
 			const outputValues = [...values];
-			const finalOutputArr = [];
 			return this.flatOptions.reduce((pev, cur) => {
 				const { value: curVal } = cur;
 				if (outputType === "item") {
