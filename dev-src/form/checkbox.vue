@@ -22,7 +22,7 @@
 				:name="name" 
 				:value="value"
 				@change="handleChange"
-			>
+			/>
 		</span>
 		<span class="st-checkbox-label">
 			{{ label }}
@@ -39,7 +39,10 @@ export default {
 			type: String,
 			default: ''
 		},
-		label: {},
+		label: {
+			type: String,
+			default: ''
+		},
 		value: {
 			type: String,
 			default: ''

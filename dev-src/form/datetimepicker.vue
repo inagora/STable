@@ -8,7 +8,7 @@
 			:disabled="disabled"
 			:placeholder="placeholder"
 			:name="name"
-		>
+		/>
 		<a class="datepicker-close" @click.stop="cls" />
 		<transition name="datepicker-anim">
 			<div

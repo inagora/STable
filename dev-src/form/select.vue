@@ -31,7 +31,7 @@
 				@input="handleQueryChange"
 				@keydown.delete="deletePrevTag"
 				@keydown.enter.prevent="handleOption"
-			>
+			/>
 		</div>
 		<template v-else>
 			<!-- @keydown.enter.prevent="createOption" -->
@@ -39,7 +39,7 @@
 				v-model="selected.label"
 				type="text"
 				class="st-select-input"
-			>
+			/>
 		</template>
     
 		<div v-show="visible" v-clickoutside="handleClose" class="st-select-menu">
@@ -105,7 +105,7 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		options: Array,
+		options: Array || [],
 		valueKey: {
 			type: String,
 			default: 'value'

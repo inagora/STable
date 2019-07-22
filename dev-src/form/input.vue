@@ -18,7 +18,7 @@
 					@focus="handleFocus"
 					@blur="handleBlur"
 					@change="handleChange"
-				>
+				/>
 				<!-- 后置元素 -->
 				<i
 					v-show="showClear"
