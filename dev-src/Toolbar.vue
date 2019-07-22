@@ -1,9 +1,13 @@
 <template>
 	<div class="st-toolbar">
 		<template v-for="(btn, btnIdx) of btns">
-			<div v-if="btn=='|'" :key="btnIdx" class="st-toolbar-separator">&nbsp;</div>
+			<div v-if="btn=='|'" :key="btnIdx" class="st-toolbar-separator">
+				&nbsp;
+			</div>
 			<div v-else-if="btn==' '" :key="btnIdx" class="st-toolbar-space"></div>
-			<x-button v-else :key="btnIdx" v-bind="btn">{{btn.text}}</x-button>
+			<x-button v-else :key="btnIdx" v-bind="btn">
+				{{ btn.text }}
+			</x-button>
 		</template>
 	</div>
 </template>
@@ -45,14 +49,14 @@ export default {
 					type: 'primary',
 					text: '下载所有页',
 					icon: 'st-iconfont st-icon-download'
-				})
+				});
 			}
 			if(this.downloadable=='single' || this.downloadable===true) {
 				tb.unshift({
 					type: 'primary',
 					text: '下载当前页',
 					icon: 'st-iconfont st-icon-download'
-				})
+				});
 			}
 			if(this.batDeleteUrl){
 				tb.unshift({
@@ -71,9 +75,9 @@ export default {
 		}
 		return {
 			btns: tb
-		}
+		};
 	}
-}
+};
 </script>
 
 <style lang="scss">

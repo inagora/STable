@@ -7,7 +7,7 @@
 <script>
 export default {
 	inject: ['title', 'titleVisible']
-}
+};
 </script>
 
 <style>

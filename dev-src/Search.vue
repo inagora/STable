@@ -9,7 +9,7 @@ export default {
 			this.store.searchParams = this.getParams();
 		}
 	}
-}
+};
 </script>
 
 <style>

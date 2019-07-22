@@ -1,5 +1,5 @@
 <template>
-	<div class="st-sp" v-show="spVisible">
+	<div v-show="spVisible" class="st-sp">
 		<div class="st-sp-mask" @click="$emit('close')"></div>
 		<div class="st-sp-doc">
 			<div class="st-sp-head">
@@ -11,13 +11,33 @@
 			<div v-if="isPage" v-show="contentVisible" class="st-sp-body">
 				<iframe class="st-sp-iframe" :src="html"></iframe>
 			</div>
-			<div v-else v-show="contentVisible" class="st-sp-body" v-html="html"></div>
+			<div
+				v-else
+				v-show="contentVisible"
+				class="st-sp-body"
+				v-html="html"
+			></div>
 		</div>
 	</div>
 </template>
 <script>
 export default {
-	props:['visible', 'title', 'html', 'isPage'],
+	props:{
+		visible: {
+			type: Boolean
+		}, 
+		title:{
+			type: String,
+			default: ''
+		}, 
+		html: {
+			type: String,
+			default: ''
+		}, 
+		isPage: {
+			type: Boolean
+		}
+	},
 	data(){
 		return {
 			spVisible: false,
@@ -47,7 +67,7 @@ export default {
 			},200);
 		}
 	}
-}
+};
 </script>
 <style lang="scss">
 .st-sp{

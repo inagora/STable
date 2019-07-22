@@ -20,29 +20,46 @@
 				size="small"
 				:disabled="store.page<=1"
 				:title="locale.previousPage"
-				@click="jumpTo(store.page-1)"/>
+				@click="jumpTo(store.page-1)"
+			/>
 			<x-button
 				v-for="(item,idx) of pnoList"
 				:key="idx"
 				:class="{'st-pn-active': store.page==item.pno}"
+				size="small"
 				@click="jumpTo(item.pno)"
-				size="small">{{item.text||item.pno}}</x-button>
+			>
+				{{ item.text||item.pno }}
+			</x-button>
 			<x-button
 				icon="st-iconfont st-icon-right"
 				size="small"
 				:disabled="store.page>=store.page_count"
 				:title="locale.nextPage"
-				@click="jumpTo(store.page+1)"/>
+				@click="jumpTo(store.page+1)"
+			/>
 		</div>
-		<select v-model="pageSize" v-if="pagination.pageSizeOptions" class="st-pn-size">
-			<option v-for="(size, idx) of pagination.pageSizeOptions" :value="size" :key="idx" v-text="size+' '+locale.pageSizeUnit"></option>
+		<select
+			v-if="pagination.pageSizeOptions"
+			v-model="pageSize"
+			class="st-pn-size"
+		>
+			<option
+				v-for="(size, idx) of pagination.pageSizeOptions"
+				:key="idx"
+				:value="size"
+				v-text="size+' '+locale.pageSizeUnit"
+			/>
 		</select>
-		<div class="st-toolbar-separator">&nbsp;</div>
+		<div class="st-toolbar-separator">
+			&nbsp;
+		</div>
 		<x-button
 			icon="st-iconfont st-icon-sync"
 			size="small"
 			:title="locale.refresh"
-			@click="refresh"></x-button>
+			@click="refresh"
+		/>
 		<div class="st-flex-padding"></div>
 		<div class="st-pn-msg" v-text="msg"></div>
 	</div>
@@ -66,7 +83,7 @@ export default {
 			msg: '',
 			pageSize: this.params.count,
 			pnoList: [{pno:1}]
-		}
+		};
 	},
 	watch: {
 		'store.page_count'(){
@@ -134,7 +151,7 @@ export default {
 			this.$parent.$refs.table.refresh();
 		}
 	}
-}
+};
 </script>
 
 <style lang="scss">

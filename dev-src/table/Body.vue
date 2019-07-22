@@ -2,33 +2,37 @@
 	<div
 		v-show="columns.length>0"
 		class="st-table-body-box"
-		@mousedown="blur"
 		:class="{
 			'st-table-body-left':locked=='left',
 			'st-table-body-right':locked=='right',
 			'st-table-body-free': !locked
-		}">
+		}"
+		@mousedown="blur"
+	>
 		<table
 			class="st-table-body"
 			:style="{
 				width: tableWidth+'px'
-			}">
+			}"
+		>
 			<col
 				v-for="(col, idx) of columns"
+				:key="idx"
 				:width="col._width"
-				:key="idx"/>
+			/>
 			<tbody>
 				<tr
 					v-for="(record, idx) of recordList"
 					:key="idx"
 					class="st-table-body-tr"
-					@mouseenter="store.hlRowNum=idx"
-					@mousedown="store.focusRowNum=idx"
 					:class="{
 						'st-table-body-tr-hl': idx==store.hlRowNum,
 						'st-table-body-tr-focus':idx==store.focusRowNum
 					}"
-					:style="{height:recordsHeight[idx]}">
+					:style="{height:recordsHeight[idx]}"
+					@mouseenter="store.hlRowNum=idx"
+					@mousedown="store.focusRowNum=idx"
+				>
 					<td
 						v-for="(col, colIdx) of columns"
 						:key="colIdx"
@@ -40,12 +44,13 @@
 								'st-table-td-rownumber':col.type=='rownumber'
 							}
 						]"
-						:style="col.style">
+						:style="col.style"
+					>
 						<label v-if="col.type=='radio'" class="st-table-label-cell st-table-cell">
-							<input type="radio" :value="idx" v-model="store.radioVal" />
+							<input v-model="store.radioVal" :value="idx" type="radio" />
 						</label>
 						<label v-else-if="col.type=='checkbox'" class="st-table-label-cell st-table-cell">
-							<input type="checkbox" :value="idx" v-model="store.checkboxVal" />
+							<input v-model="store.checkboxVal" :value="idx" type="checkbox" />
 						</label>
 						<div v-else-if="col.type=='rownumber'" class="st-table-cell" v-text="record._wd_aux.rownumber"></div>
 						<template v-else-if="col.type=='text'">
@@ -55,16 +60,28 @@
 									:key="_textIdx"
 									class="st-table-cell"
 									:class="{'st-table-cell-nowrap':!col.cellWrap}"
-									v-text="_text"></div>
+									v-text="_text"
+								></div>
 							</template>
-							<div v-else class="st-table-cell" :class="{'st-table-cell-nowrap':!col.cellWrap}" v-text="record[col.dataIndex]"></div>
+							<div
+								v-else
+								class="st-table-cell"
+								:class="{'st-table-cell-nowrap':!col.cellWrap}"
+								v-text="record[col.dataIndex]"
+							></div>
 						</template>
-						<div v-else-if="col.type=='render'" class="st-table-cell" :class="{'st-table-cell-nowrap':!col.cellWrap}" v-html="record['_'+col.dataIndex+'_render_val']"></div>
+						<div
+							v-else-if="col.type=='render'"
+							class="st-table-cell"
+							:class="{'st-table-cell-nowrap':!col.cellWrap}"
+							v-html="record['_'+col.dataIndex+'_render_val']"
+						></div>
 						<template v-else-if="col.type=='image'">
 							<template v-if="sublistAt.includes(col.dataIndex)">
 								<div
 									v-for="(_src,_srcIdx) of record[col.dataIndex]"
-									:key="_srcIdx">
+									:key="_srcIdx"
+								>
 									<img :src="_src" :style="col.imgStyle" />
 								</div>
 							</template>
@@ -79,7 +96,11 @@
 								:type="btn.type"
 								:size="btn.size"
 								:icon="btn.icon"
-								@click="btnClick(btn, record, $event)">{{btn.text}}</x-button>
+								@click="btnClick(btn, record, $event)"
+							>
+								{{ btn.text
+								}}
+							</x-button>
 						</div>
 					</td>
 				</tr>
@@ -91,13 +112,38 @@
 <script>
 import XButton from '../com/Button.vue';
 export default {
-	inject: ['store', 'groupBy','sublistAt', 'layoutMode'],
-	props: ['locked', 'columns', 'recordList', 'tableWidth', 'recordsHeight'],
+	inject: [
+		'store',
+		'sublistAt', 
+		'layoutMode'
+	],
 	components: {XButton},
+	props: {
+		locked:{
+			type: [Boolean, String],
+			default: false
+		}, 
+		columns: {
+			type: Array,
+			required: true
+		}, 
+		recordList: {
+			type: Array,
+			required: true
+		}, 
+		tableWidth: {
+			type: Number,
+			required: true
+		},
+		recordsHeight: {
+			type: Number,
+			required: true
+		}
+	},
 	data(){
 		return {
 			tableStyle: {}
-		}
+		};
 	},
 	methods: {
 		btnClick(btn, record, evt){
@@ -111,7 +157,7 @@ export default {
 			}
 		}
 	}
-}
+};
 </script>
 
 <style lang="scss">

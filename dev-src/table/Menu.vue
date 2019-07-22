@@ -1,25 +1,33 @@
 <template>
 	<div
+		v-show="visible"
 		class="st-table-menu-box"
 		:style="{
 			left: left+'px',
 			top: top + 'px'
 		}"
-		v-show="visible"
-		@click.stop>
-		<div
-			class="st-table-menu">
+		@click.stop
+	>
+		<div class="st-table-menu">
 			<template v-if="curIdx>=0">
-				<div class="st-table-menu-item" @click="toggleVisible(curIdx)" @mouseenter="showSubmenu('')">
+				<div
+					class="st-table-menu-item"
+					@click="toggleVisible(curIdx)"
+					@mouseenter="showSubmenu('')"
+				>
 					<i
 						class="st-iconfont"
-						:class="[list[curIdx].visible?'st-icon-eye':'st-icon-eye-close']"></i>
+						:class="[list[curIdx].visible?'st-icon-eye':'st-icon-eye-close']"
+					></i>
 					<span v-text="list[curIdx].text"></span>
 				</div>
 				<div
 					class="st-table-menu-item"
-					:class="{'st-table-menu-item-hover': submenu=='lock'}"
-					@mouseenter="showSubmenu('lock', $event)">
+					:class="{
+						'st-table-menu-item-hover': submenu=='lock'
+					}"
+					@mouseenter="showSubmenu('lock', $event)"
+				>
 					<i class="st-iconfont st-icon-lock"></i>
 					<span>列锁定</span>
 					<i class="st-iconfont st-icon-caret-down st-table-menu-more"></i>
@@ -28,8 +36,11 @@
 
 			<div
 				class="st-table-menu-item"
-				:class="{'st-table-menu-item-hover': submenu=='column'}"
-				@mouseenter="showSubmenu('column', $event)">
+				:class="{
+					'st-table-menu-item-hover': submenu=='column'
+				}"
+				@mouseenter="showSubmenu('column', $event)"
+			>
 				<i class="st-iconfont st-icon-filter"></i>
 				<span>列筛选</span>
 				<i class="st-iconfont st-icon-caret-down st-table-menu-more"></i>
@@ -39,35 +50,41 @@
 		<div v-if="submenu=='lock'" class="st-table-menu st-table-submenu">
 			<div
 				class="st-table-menu-item"
-				@click="lock('left')">
+				@click="lock('left')"
+			>
 				<i
 					class="st-iconfont"
 					:class="{
 						'st-icon-check-square': list[curIdx].locked=='left',
 						'st-icon-border': list[curIdx].locked!='left'
-					}"></i>
+					}"
+				></i>
 				<span>左锁定</span>
 			</div>
 			<div
 				class="st-table-menu-item"
-				@click="lock('right')">
+				@click="lock('right')"
+			>
 				<i
 					class="st-iconfont"
 					:class="{
 						'st-icon-check-square': list[curIdx].locked=='right',
 						'st-icon-border': list[curIdx].locked!='right'
-					}"></i>
+					}"
+				></i>
 				<span>右锁定</span>
 			</div>
 			<div
 				class="st-table-menu-item"
-				@click="lock(false)">
+				@click="lock(false)"
+			>
 				<i
 					class="st-iconfont"
 					:class="{
 						'st-icon-check-square': !list[curIdx].locked,
 						'st-icon-border': list[curIdx].locked
-					}"></i>
+					}"
+				></i>
 				<span>不锁定</span>
 			</div>
 		</div>
@@ -77,10 +94,12 @@
 				v-for="(item, itemIdx) of list"
 				:key="item"
 				class="st-table-menu-item"
-				@click="toggleVisible(itemIdx)">
+				@click="toggleVisible(itemIdx)"
+			>
 				<i
 					class="st-iconfont"
-					:class="[item.visible?'st-icon-check-square':'st-icon-border']"></i>
+					:class="[item.visible?'st-icon-check-square':'st-icon-border']"
+				></i>
 				<span v-text="item.text"></span>
 			</div>
 		</div>
@@ -90,7 +109,12 @@
 <script>
 let docEl = document.documentElement;
 export default {
-	props: ['columns'],
+	props: {
+		columns: {
+			type: Array,
+			required: true
+		}
+	},
 	data(){
 		return {
 			list: [],
@@ -123,7 +147,7 @@ export default {
 					text: item.text,
 					visible: item.visible,
 					locked: item.locked
-				}
+				};
 			});
 			this.curIdx = curIdx;
 			this.visible = true;
@@ -198,7 +222,7 @@ export default {
 			this.hide();
 		}
 	}
-}
+};
 </script>
 
 <style lang="scss">

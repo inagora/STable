@@ -8,31 +8,49 @@
 				height,
 				left,
 				top
-			}">
+			}"
+		>
 			<div class="st-dialog-head">
 				<div
-					v-text="title"
-					@mousedown="prepareDrag"
 					:class="{
 						'st-dialog-draggable': draggable
 					}"
-					class="st-dialog-title"></div>
-				<div v-if="closable" @click="$emit('close')" class="st-dialog-close">❎</div>
+					class="st-dialog-title"
+					@mousedown="prepareDrag"
+					v-text="title"
+				></div>
+				<div
+					v-if="closable"
+					class="st-dialog-close"
+					@click="$emit('close')"
+				>
+					❎
+				</div>
 			</div>
 			<div
 				:class="[bodyCls]"
 				:style="bodyStyle"
-				class="st-dialog-body">
+				class="st-dialog-body"
+			>
 				<slot></slot>
 			</div>
 			<div
 				v-if="buttons && buttons.length>0"
-				class="st-dialog-foot">
-				<x-button v-for="(btn, btnIdx) of buttons" v-bind="btn" :key="btnIdx" @click="btnClick(btnIdx)">{{btn.text}}</x-button>
+				class="st-dialog-foot"
+			>
+				<x-button
+					v-for="(btn, btnIdx) of buttons"
+					:key="btnIdx"
+					v-bind="btn"
+					@click="btnClick(btnIdx)"
+				>
+					{{ btn.text }}
+				</x-button>
 			</div>
 			<div
+				v-if="resizable"
 				@mousedown="prepareResize"
-				v-if="resizable">
+			>
 				<div class="st-dialog-rz st-dialog-n"></div>
 				<div class="st-dialog-rz st-dialog-e"></div>
 				<div class="st-dialog-rz st-dialog-s"></div>
@@ -43,12 +61,11 @@
 				<div class="st-dialog-rz st-dialog-sw"></div>
 			</div>
 		</div>
-		<div class="st-dialog-proxy" v-show="proxyVisible"></div>
+		<div v-show="proxyVisible" class="st-dialog-proxy"></div>
 	</div>
 </template>
 
 <script>
-import XButton from './Button.vue';
 let docEl = document.documentElement;
 export default {
 	inject: ['dialogConfig'],
@@ -193,104 +210,104 @@ export default {
 			let left,top,width,height;
 			const MIN_SIZE = 50;
 			switch(this.resizePos.type) {
-				case 'nw': {
-					left = evt.clientX - startX + rect.left;
-					top = evt.clientY - startY + rect.top;
-					width = rect.width - (evt.clientX - startX);
-					height = rect.height - (evt.clientY - startY);
-					if(width < MIN_SIZE) {
-						width = MIN_SIZE;
-						left = rect.left+rect.width-MIN_SIZE;
-					}
-					if(height < MIN_SIZE) {
-						height = MIN_SIZE;
-						top = rect.top+rect.height-MIN_SIZE;
-					}
-					break;
+			case 'nw': 
+				left = evt.clientX - startX + rect.left;
+				top = evt.clientY - startY + rect.top;
+				width = rect.width - (evt.clientX - startX);
+				height = rect.height - (evt.clientY - startY);
+				if(width < MIN_SIZE) {
+					width = MIN_SIZE;
+					left = rect.left+rect.width-MIN_SIZE;
 				}
-				case 'ne': {
-					left = rect.left;
-					top = evt.clientY - startY + rect.top;
-					width = evt.clientX - startX + rect.width;
-					height = rect.height - (evt.clientY - startY);
-					if(width < MIN_SIZE) {
-						width = MIN_SIZE;
-					}
-					if(height < MIN_SIZE) {
-						height = MIN_SIZE;
-						top = rect.top+rect.height-MIN_SIZE;
-					}
-					break;
+				if(height < MIN_SIZE) {
+					height = MIN_SIZE;
+					top = rect.top+rect.height-MIN_SIZE;
 				}
-				case 'se': {
-					left = rect.left;
-					top = rect.top;
-					width = evt.clientX - startX + rect.width;
-					height = evt.clientY - startY + rect.height;
-					if(width < MIN_SIZE) {
-						width = MIN_SIZE;
-					}
-					if(height < MIN_SIZE) {
-						height = MIN_SIZE;
-					}
-					break;
+				break;
+			
+			case 'ne': {
+				left = rect.left;
+				top = evt.clientY - startY + rect.top;
+				width = evt.clientX - startX + rect.width;
+				height = rect.height - (evt.clientY - startY);
+				if(width < MIN_SIZE) {
+					width = MIN_SIZE;
 				}
-				case 'sw': {
-					left = evt.clientX - startX + rect.left;
-					top = rect.top;
-					width = rect.width - (evt.clientX - startX);
-					height = evt.clientY - startY + rect.height;
-					if(width < MIN_SIZE){
-						width = MIN_SIZE;
-						left = rect.left+rect.width-MIN_SIZE;
-					}
-					if(height < MIN_SIZE) {
-						height = MIN_SIZE;
-					}
-					break;
+				if(height < MIN_SIZE) {
+					height = MIN_SIZE;
+					top = rect.top+rect.height-MIN_SIZE;
 				}
-				case 'n': {
-					left = rect.left;
-					top = evt.clientY - startY + rect.top;
-					width = rect.width;
-					height = rect.height - (evt.clientY - startY);
-					if(height < MIN_SIZE) {
-						height = MIN_SIZE;
-						top = rect.top + rect.height - MIN_SIZE;
-					}
-					break;
+				break;
+			}
+			case 'se': {
+				left = rect.left;
+				top = rect.top;
+				width = evt.clientX - startX + rect.width;
+				height = evt.clientY - startY + rect.height;
+				if(width < MIN_SIZE) {
+					width = MIN_SIZE;
 				}
-				case 'e': {
-					left = rect.left;
-					top = rect.top;
-					width = evt.clientX - startX + rect.width;
-					height = rect.height;
-					if(width < MIN_SIZE) {
-						width = MIN_SIZE;
-					}
-					break;
+				if(height < MIN_SIZE) {
+					height = MIN_SIZE;
 				}
-				case 's': {
-					left = rect.left;
-					top = rect.top;
-					width = rect.width;
-					height = evt.clientY - startY + rect.height;
-					if(height< MIN_SIZE){
-						height = MIN_SIZE;
-					}
-					break;
+				break;
+			}
+			case 'sw': {
+				left = evt.clientX - startX + rect.left;
+				top = rect.top;
+				width = rect.width - (evt.clientX - startX);
+				height = evt.clientY - startY + rect.height;
+				if(width < MIN_SIZE){
+					width = MIN_SIZE;
+					left = rect.left+rect.width-MIN_SIZE;
 				}
-				case 'w': {
-					left = evt.clientX - startX + rect.left;
-					top = rect.top;
-					width = rect.width - (evt.clientX - startX);
-					height = rect.height;
-					if(width < MIN_SIZE){
-						width = MIN_SIZE;
-						left = rect.left + rect.width - MIN_SIZE;
-					}
-					break;
+				if(height < MIN_SIZE) {
+					height = MIN_SIZE;
 				}
+				break;
+			}
+			case 'n': {
+				left = rect.left;
+				top = evt.clientY - startY + rect.top;
+				width = rect.width;
+				height = rect.height - (evt.clientY - startY);
+				if(height < MIN_SIZE) {
+					height = MIN_SIZE;
+					top = rect.top + rect.height - MIN_SIZE;
+				}
+				break;
+			}
+			case 'e': {
+				left = rect.left;
+				top = rect.top;
+				width = evt.clientX - startX + rect.width;
+				height = rect.height;
+				if(width < MIN_SIZE) {
+					width = MIN_SIZE;
+				}
+				break;
+			}
+			case 's': {
+				left = rect.left;
+				top = rect.top;
+				width = rect.width;
+				height = evt.clientY - startY + rect.height;
+				if(height< MIN_SIZE){
+					height = MIN_SIZE;
+				}
+				break;
+			}
+			case 'w': {
+				left = evt.clientX - startX + rect.left;
+				top = rect.top;
+				width = rect.width - (evt.clientX - startX);
+				height = rect.height;
+				if(width < MIN_SIZE){
+					width = MIN_SIZE;
+					left = rect.left + rect.width - MIN_SIZE;
+				}
+				break;
+			}
 			}
 
 			this.proxy.style.cssText= `top: ${top}px;left:${left}px;width:${width}px;height:${height}px`;
@@ -306,7 +323,7 @@ export default {
 				this.proxyVisible = false;
 			}
 		},
-		stopResize(evt){
+		stopResize(){
 			if(this.proxy){
 				let rect = this.proxy.getBoundingClientRect();
 				this.left = rect.left+'px';
@@ -317,7 +334,7 @@ export default {
 			this.clearResize();
 		}
 	}
-}
+};
 </script>
 
 <style lang="scss">
