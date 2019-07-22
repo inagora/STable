@@ -456,7 +456,15 @@ export default {
 			form: XForm,
 			pagination: XPagination
 		};
-		let order = ['title', 'tip', 'toolbar', 'search', 'table', 'pagination','form'];
+		let order = [
+			'title', 
+			'tip', 
+			'toolbar', 
+			'search', 
+			'table',
+			'pagination',
+			'form'
+		];
 		if(this.config.componentOrder) {
 			order = this.config.componentOrder;
 		}
