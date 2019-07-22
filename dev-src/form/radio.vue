@@ -1,69 +1,79 @@
 <template>
-  <div>
-    <label 
-      v-for="(item, index) in options"
-      :key="index" 
-      class="st-radio"
-      role="radio"
-      :class="{
-        'is-checked': index === checkIndex                        
-      }"
-      :aria-checked="index === checkIndex">
-      <span class="st-radio-input"
-        :class="{
-          'is-checked': index === checkIndex
-        }">
-        <span class="st-radio-inner"></span>
-        <input 
-          ref="radio"
-          class="st-radio-original"
-          :value="item.value"
-          type="radio"
-          aria-hidden="true"
-          @click="handleChange(index)"
-          :name="name"/>
-      </span>
-      <span class="st-radio-label">
-        {{item.label}}
-      </span>
-    </label>
-  </div>
+	<div>
+		<label 
+			v-for="(item, index) in options"
+			:key="index" 
+			class="st-radio"
+			role="radio"
+			:class="{
+				'is-checked': index === checkIndex                        
+			}"
+			:aria-checked="index === checkIndex"
+		>
+			<span
+				class="st-radio-input"
+				:class="{
+					'is-checked': index === checkIndex
+				}"
+			>
+				<span class="st-radio-inner" />
+				<input 
+					ref="radio"
+					class="st-radio-original"
+					:value="item.value"
+					type="radio"
+					aria-hidden="true"
+					:name="name"
+					@click="handleChange(index)"
+				>
+			</span>
+			<span class="st-radio-label">
+				{{ item.label }}
+			</span>
+		</label>
+	</div>
 </template>
 
 <script>
 export default {
-  name: 'XRadio',
-  compontents: 'XRadio',
-  props: {
-		name: String,
-		value: [String,Boolean,Number],
-    options: Array,
-  },
-  data() {
-    return {
+	name: 'XRadio',
+	compontents: 'XRadio',
+	props: {
+		name: {
+			type: String,
+			default: ''
+		},
+		value: {
+			type: [String,Boolean,Number],
+			default: ''
+		},
+		options: Array,
+	},
+	data() {
+		return {
 			checkIndex: -1,
 			checkVal: '',
-    }
+		};
+	},
+	computed: {
+    
 	},
 	watch: {
 		checkVal: {
 			handler(val) {
 				this.checkVal = val;
-				this.$emit('validate',event.target.value)
+				this.$emit('validate',event.target.value);
 			}
 		}
 	},
-  computed: {
-    
-  },
-  methods: {
-    handleChange(index) {
+	methods: {
+		handleChange(index) {
 			this.checkIndex = index;
-			this.checkVal = this.options[index].value
-			this.$emit('change',this.checkVal)
-    }
-  }
-}
+			this.checkVal = this.options[index].value;
+			this.$emit('change',this.checkVal);
+		}
+	}
+};
 </script>
 
 <style lang="scss" scoped>

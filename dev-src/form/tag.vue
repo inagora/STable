@@ -1,43 +1,58 @@
 <script>
-  export default {
-    name: 'XTag',
-    props: {
-      text: String,
-      closable: Boolean,
-      type: String,
-      color: String,
-      size: String
-    },
-    methods: {
-      handleClose(event) {
-        event.stopPropagation();
-        this.$emit('close', event);
-      },
-    },
-    computed: {
-      tagSize() {
-        return this.size || 'normal';
-      }
-    },
-    render(h) {
-      const { type, tagSize } = this;
-      const classes = [
-        'st-tag',
-        type ? `st-tag_${type}` : '',
-        tagSize ? `st-tag_${tagSize}` : '',
-      ];
-      return (
-        <span
-          class={ classes }
-          style={{ backgroundColor: this.color }}>
-          { this.$slots.default }
-          {
-            this.closable && <i class="st-iconfont st-icon-close st-tag-close" on-click={ this.handleClose }></i>
-          }
-        </span>
-      );
-    }
-  };
+export default {
+	name: 'XTag',
+	props: {
+		text: {
+			type: String,
+			default: ''
+		},
+		closable: {
+			type: Boolean,
+			default: false
+		},
+		type: {
+			type: String,
+			default: ''
+		},
+		color: {
+			type: String,
+			default: '#fff'
+		},
+		size: {
+			type: String,
+			default: 'small'
+		}
+	},
+	computed: {
+		tagSize() {
+			return this.size || 'normal';
+		}
+	},
+	methods: {
+		handleClose(event) {
+			event.stopPropagation();
+			this.$emit('close', event);
+		},
+	},
+	render() {
+		const { type, tagSize } = this;
+		const classes = [
+			'st-tag',
+			type ? `st-tag_${type}` : '',
+			tagSize ? `st-tag_${tagSize}` : '',
+		];
+		return (
+			<span
+				class={ classes }
+				style={{ backgroundColor: this.color }}>
+				{ this.$slots.default }
+				{
+					this.closable && <i class="st-iconfont st-icon-close st-tag-close" on-click={ this.handleClose }></i>
+				}
+			</span>
+		);
+	}
+};
 </script>
 
 <style lang="scss" scoped>

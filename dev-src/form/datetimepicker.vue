@@ -1,179 +1,220 @@
 <template>
-<div class="datepicker" :class="{'datepicker-range':range,'datepicker__clearable':clearable&&text&&!disabled}">
-  <input readonly :value="text" :class="[show ? 'focus' : '', inputClass]" :disabled="disabled" :placeholder="placeholder" :name="name" v-if="type!=='inline'"/>
-  <a class="datepicker-close" @click.stop="cls"></a>
-  <transition name="datepicker-anim">
-    <div class="datepicker-popup" :class="[popupClass,{'datepicker-inline':type==='inline'}]" tabindex="-1" v-if="show||type==='inline'">
-      <template v-if="range">
-        <x-calendar v-model="dates[0]" :left="true"></x-calendar>
-        <x-calendar v-model="dates[1]" :right="true"></x-calendar>
-      </template>
-      <template v-else>
-        <x-calendar v-model="dates[0]"></x-calendar>
-      </template>
-      <div v-if="showButtons" class="datepicker__buttons">
-        <button @click.prevent.stop="cancel" class="datepicker__button-cancel">{{this.local.cancelTip}}</button>
-        <button @click.prevent.stop="submit" class="datepicker__button-select">{{this.local.submitTip}}</button>
-      </div>
-    </div>
-  </transition>
-</div>
+	<div class="datepicker" :class="{'datepicker-range':range,'datepicker__clearable':clearable&&text&&!disabled}">
+		<input
+			v-if="type!=='inline'"
+			readonly
+			:value="text"
+			:class="[show ? 'focus' : '', inputClass]"
+			:disabled="disabled"
+			:placeholder="placeholder"
+			:name="name"
+		>
+		<a class="datepicker-close" @click.stop="cls" />
+		<transition name="datepicker-anim">
+			<div
+				v-if="show||type==='inline'"
+				class="datepicker-popup"
+				:class="[popupClass,{'datepicker-inline':type==='inline'}]"
+				tabindex="-1"
+			>
+				<template v-if="range">
+					<x-calendar v-model="dates[0]" :left="true" />
+					<x-calendar v-model="dates[1]" :right="true" />
+				</template>
+				<template v-else>
+					<x-calendar v-model="dates[0]" />
+				</template>
+				<div v-if="showButtons" class="datepicker__buttons">
+					<button class="datepicker__button-cancel" @click.prevent.stop="cancel">
+						{{ local.cancelTip }}
+					</button>
+					<button class="datepicker__button-select" @click.prevent.stop="submit">
+						{{ local.submitTip }}
+					</button>
+				</div>
+			</div>
+		</transition>
+	</div>
 </template>
 
 <script>
-import XCalendar from './coms/calendar.vue'
-import { constants } from 'crypto';
+import XCalendar from './coms/calendar.vue';
+
 export default {
-  name: 'XDatetimePicker',
-  components: { XCalendar },
-  props: {
-    name: [String],
-    inputClass: [String],
-    popupClass: [String],
-    value: [Date, Array, String],
-    disabled: [Boolean],
-    type: {
-      type: String,
-      default: 'normal'
-    },
-    rangeSeparator: {
-      type: String,
-      default: '~'
-    },
-    clearable: {
-      type: Boolean,
-      default: false
-    },
-    placeholder: [String],
-    disabledDate: {
-      type: Function,
-      default: () => {
-        return false
-      }
-    },
-    format: {
-      type: String,
-      default: 'YYYY-MM-DD'
-    },
-    local: {
-      type: Object,
-      default () {
-        return {
-          dow: 1, // Monday is the first day of the week
-          hourTip: '选择小时', // tip of select hour
-          minuteTip: '选择分钟', // tip of select minute
-          secondTip: '选择秒数', // tip of select second
-          yearSuffix: '年', // format of head
-          monthsHead: '1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月'.split('_'), // months of head
-          months: '一月_二月_三月_四月_五月_六月_七月_八月_九月_十月_十一月_十二月'.split('_'), // months of panel
-          weeks: '一_二_三_四_五_六_日'.split('_'), // weeks
-          cancelTip: '取消', // default text for cancel button
-          submitTip: '确定' // default text for submit button
-        }
-      }
-    },
-    showButtons: {
-      type: Boolean,
-      default: false
-    },
-    dateRangeSelect: [Function]
-  },
-  data () {
-    return {
-      show: false,
-      dates: this.vi(this.value)
-    }
-  },
-  computed: {
-    range () {
-      return this.dates.length === 2
-    },
-    text () {
-      const val = this.value
-      const txt = this.dates.map(date => this.tf(date)).join(` ${this.rangeSeparator} `)
-      if (Array.isArray(val)) {
-        return val.length > 1 ? txt : ''
-      } else {
-        return val ? txt : ''
-      }
-    }
-  },
-  watch: {
-    value (val) {
-      this.dates = this.vi(this.value)
-    }
-  },
-  methods: {
-    get () {
-      return Array.isArray(this.value) ? this.dates : this.dates[0]
-    },
-    cls () {
-      this.$emit('clear')
-      this.$emit('input', this.range ? [] : '')
-    },
-    vi (val) {
-      if (Array.isArray(val)) {
-        return val.length > 1 ? val.map(item => new Date(item)) : [new Date(), new Date()]
-      } else {
-        return val ? new Array(new Date(val)) : [new Date()]
-      }
-    },
-    ok (leaveOpened) {
-      const $this = this
-      $this.$emit('input', $this.get())
-      !leaveOpened && !$this.showButtons && setTimeout(() => {
-        $this.show = $this.range
-      })
-    },
-    tf (time, format) {
-      const year = time.getFullYear()
-      const month = time.getMonth()
-      const day = time.getDate()
-      const hours24 = time.getHours()
-      const hours = hours24 % 12 === 0 ? 12 : hours24 % 12
-      const minutes = time.getMinutes()
-      const seconds = time.getSeconds()
-      const milliseconds = time.getMilliseconds()
-      const dd = t => ('0' + t).slice(-2)
-      const map = {
-        YYYY: year,
-        MM: dd(month + 1),
-        MMM: this.local.months[month],
-        MMMM: this.local.monthsHead[month],
-        M: month + 1,
-        DD: dd(day),
-        D: day,
-        HH: dd(hours24),
-        H: hours24,
-        hh: dd(hours),
-        h: hours,
-        mm: dd(minutes),
-        m: minutes,
-        ss: dd(seconds),
-        s: seconds,
-        S: milliseconds
-      }
-      return (format || this.format).replace(/Y+|M+|D+|H+|h+|m+|s+|S+/g, str => map[str])
-    },
-    dc (e) {
-      this.show = this.$el.contains(e.target) && !this.disabled
-    },
-    submit () {
-      this.$emit('confirm', this.get())
-      this.show = false
-    },
-    cancel () {
-      this.$emit('cancel')
-      this.show = false
-    }
-  },
-  mounted () {
-    document.querySelector('body').addEventListener('click', this.dc, true)
-  },
-  beforeDestroy () {
-    document.querySelector('body').removeEventListener('click', this.dc, true)
-  }
-}
+	name: 'XDatetimePicker',
+	components: { XCalendar },
+	props: {
+		name: {
+			type: [String],
+			default: ''
+		},
+		inputClass: {
+			type: [String],
+			default: ''
+		},
+		popupClass: {
+			type: [String],
+			default: ''
+		},
+		value: {
+			type: [Date, Array, String],
+			default: '',
+		},
+		disabled: {
+			type: [Boolean],
+			default: false
+		},
+		type: {
+			type: String,
+			default: 'normal'
+		},
+		rangeSeparator: {
+			type: String,
+			default: '~'
+		},
+		clearable: {
+			type: Boolean,
+			default: false
+		},
+		placeholder: {
+			type: [String],
+			default: ''
+		},
+		disabledDate: {
+			type: Function,
+			default: () => {
+				return false;
+			}
+		},
+		format: {
+			type: String,
+			default: 'YYYY-MM-DD'
+		},
+		local: {
+			type: Object,
+			default () {
+				return {
+					dow: 1, // Monday is the first day of the week
+					hourTip: '选择小时', // tip of select hour
+					minuteTip: '选择分钟', // tip of select minute
+					secondTip: '选择秒数', // tip of select second
+					yearSuffix: '年', // format of head
+					monthsHead: '1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月'.split('_'), // months of head
+					months: '一月_二月_三月_四月_五月_六月_七月_八月_九月_十月_十一月_十二月'.split('_'), // months of panel
+					weeks: '一_二_三_四_五_六_日'.split('_'), // weeks
+					cancelTip: '取消', // default text for cancel button
+					submitTip: '确定' // default text for submit button
+				};
+			}
+		},
+		showButtons: {
+			type: Boolean,
+			default: false
+		},
+		dateRangeSelect: {
+			type: [Function],
+			default: () => {
+				return true;
+			}
+		}
+	},
+	data () {
+		return {
+			show: false,
+			dates: this.vi(this.value)
+		};
+	},
+	computed: {
+		range () {
+			return this.dates.length === 2;
+		},
+		text () {
+			const val = this.value;
+			const txt = this.dates.map(date => this.tf(date)).join(` ${this.rangeSeparator} `);
+			if (Array.isArray(val)) {
+				return val.length > 1 ? txt : '';
+			} else {
+				return val ? txt : '';
+			}
+		}
+	},
+	watch: {
+		value (val) {
+			console.log(val);
+			this.dates = this.vi(this.value);
+		}
+	},
+	mounted () {
+		document.querySelector('body').addEventListener('click', this.dc, true);
+	},
+	beforeDestroy () {
+		document.querySelector('body').removeEventListener('click', this.dc, true);
+	},
+	methods: {
+		get () {
+			return Array.isArray(this.value) ? this.dates : this.dates[0];
+		},
+		cls () {
+			this.$emit('clear');
+			this.$emit('input', this.range ? [] : '');
+		},
+		vi (val) {
+			if (Array.isArray(val)) {
+				return val.length > 1 ? val.map(item => new Date(item)) : [new Date(), new Date()];
+			} else {
+				return val ? new Array(new Date(val)) : [new Date()];
+			}
+		},
+		ok (leaveOpened) {
+			const $this = this;
+			$this.$emit('input', $this.get());
+			!leaveOpened && !$this.showButtons && setTimeout(() => {
+				$this.show = $this.range;
+			});
+		},
+		tf (time, format) {
+			const year = time.getFullYear();
+			const month = time.getMonth();
+			const day = time.getDate();
+			const hours24 = time.getHours();
+			const hours = hours24 % 12 === 0 ? 12 : hours24 % 12;
+			const minutes = time.getMinutes();
+			const seconds = time.getSeconds();
+			const milliseconds = time.getMilliseconds();
+			const dd = t => ('0' + t).slice(-2);
+			const map = {
+				YYYY: year,
+				MM: dd(month + 1),
+				MMM: this.local.months[month],
+				MMMM: this.local.monthsHead[month],
+				M: month + 1,
+				DD: dd(day),
+				D: day,
+				HH: dd(hours24),
+				H: hours24,
+				hh: dd(hours),
+				h: hours,
+				mm: dd(minutes),
+				m: minutes,
+				ss: dd(seconds),
+				s: seconds,
+				S: milliseconds
+			};
+			return (format || this.format).replace(/Y+|M+|D+|H+|h+|m+|s+|S+/g, str => map[str]);
+		},
+		dc (e) {
+			this.show = this.$el.contains(e.target) && !this.disabled;
+		},
+		submit () {
+			this.$emit('confirm', this.get());
+			this.show = false;
+		},
+		cancel () {
+			this.$emit('cancel');
+			this.show = false;
+		}
+	}
+};
 </script>
 
 <style>

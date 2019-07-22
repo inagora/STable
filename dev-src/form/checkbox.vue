@@ -1,53 +1,65 @@
 <template>
-  <label class="st-checkbox"
-    role="checkbox"
-    :class="{
-      'is-checked': isChecked
-    }"
-    :aria-checked="isChecked || 'mixed'">
-    <span class="st-checkbox-input" 
-      :class="{
-        'is-checked': isChecked
-      }"
-      aria-checked="mixed">
-      <span class="st-checkbox-inner"></span>
-      <input class="st-checkbox-original" 
-        type="checkbox" 
-        aria-hidden="true"
-        :name="name" 
-        :value="value"
-        @change="handleChange"/>
-    </span>
-    <span class="st-checkbox-label">
-      {{label}}
-    </span>
-  </label>
+	<label
+		class="st-checkbox"
+		role="checkbox"
+		:class="{
+			'is-checked': isChecked
+		}"
+		:aria-checked="isChecked || 'mixed'"
+	>
+		<span
+			class="st-checkbox-input" 
+			:class="{
+				'is-checked': isChecked
+			}"
+			aria-checked="mixed"
+		>
+			<span class="st-checkbox-inner" />
+			<input
+				class="st-checkbox-original" 
+				type="checkbox" 
+				aria-hidden="true"
+				:name="name" 
+				:value="value"
+				@change="handleChange"
+			>
+		</span>
+		<span class="st-checkbox-label">
+			{{ label }}
+		</span>
+	</label>
 </template>
 
 <script>
 export default {
-  name: 'XCheckbox',
-  compontent: 'XCheckbox',
-  props: {
-    name: String,
+	name: 'XCheckbox',
+	compontent: 'XCheckbox',
+	props: {
+		name: {
+			type: String,
+			default: ''
+		},
 		label: {},
-		value: String,
-  },
-  data() {
-    return {
-      isChecked: false,
-    }
+		value: {
+			type: String,
+			default: ''
+		},
+	},
+	data() {
+		return {
+			isChecked: false,
+		};
 	},
 	watch: {
 		
 	},
-  methods: {
-    handleChange() {
-			this.isChecked = !this.isChecked
-			this.$emit('change',[this.value,this.isChecked])
-    }
-  }
-}
+	methods: {
+		handleChange() {
+			this.isChecked = !this.isChecked;
+			this.$emit('change',[this.value,this.isChecked]);
+		}
+	}
+};
 </script>
 
 <style lang="scss" scoped>

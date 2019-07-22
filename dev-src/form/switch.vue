@@ -1,19 +1,20 @@
 <template>
-	<div class="st-switch"
+	<div
+		class="st-switch"
 		:class="{'is-checked': checked }"
 		role="switch"
 		:aria-checked="checked"
-		@click.prevent="handleChange">
+		@click.prevent="handleChange"
+	>
 		<input
+			ref="input"
 			class="st-switch-input"
 			type="checkbox"
-			@change="handleChange"
-			ref="input"
 			:name="name"
+			@change="handleChange"
 			@keydown.enter="handleChange"
-			/>
-			<span class="st-switch-core" ref="core">
-    </span>
+		>
+		<span ref="core" class="st-switch-core" />
 	</div>
 </template>
 
@@ -27,24 +28,27 @@ export default {
 		}
 	},
 	// model: {
-  //   prop: 'checked',
-  //   event: 'change'
-  // },
+	//   prop: 'checked',
+	//   event: 'change'
+	// },
 	props: {
-		name: String,
+		name: {
+			type: String,
+			default: ''
+		},
 		value: {
 			type: Boolean,
 			default: false,
 		},
 		// checked: {
-    //   type: Number,
-    //   default: 0
-    // }
+		//   type: Number,
+		//   default: 0
+		// }
 	},
 	data() {
 		return {
 			checked: false,
-		}
+		};
 	},
 	watch:{
 		// checked: {
@@ -56,10 +60,10 @@ export default {
 	methods: {
 		handleChange() {
 			this.checked = !this.checked;
-			this.$emit('change',this.checked)
+			this.$emit('change',this.checked);
 		},
 	},
-}
+};
 </script>
 
 <style lang="scss" scoped>
