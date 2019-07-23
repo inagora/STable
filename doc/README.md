@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /img/logo.jpg
+heroImage: img/logo.jpg
 actionText: 快速上手 →
 actionLink: /guide/install.html
 features:
