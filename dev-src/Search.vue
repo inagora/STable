@@ -6,46 +6,40 @@
 			'st-search-label-invisible':!labelVisible
 		}"
 	>
-		<x-form
-			ref="form"
-			:inline="true"
-			size="small"
-			:field-list="searchFilter"
-			:default-values="params"
-			:action-methods="actionMethods"
-			@submit="search"
-		>
-			<x-button />
-			<!-- <el-form-item>
-				<el-button type="primary" icon="fa fa-search" native-type="submit">{{locale.search}}</el-button>
-				<el-button v-if="searchResetable" @click="reset">{{locale.reset}}</el-button>
-			</el-form-item> -->
+		<x-form @submit.prevent="submit" inline>
+			<x-button :native-type="'submit'">
+				{{ locale.search }}
+			</x-button>
+			<x-button
+				v-if="searchResetable"
+				@click="reset"
+			>
+				{{ locale.reset }}
+			</x-button>
 		</x-form>
 	</div>
 </template>
 
 <script>
-import XForm from './Form.vue';
 import XButton from './com/Button.vue';
+import XForm from './form/form.vue';
 export default {
-	components:{XForm, XButton},
-	inject: {
-		searchFilter: {
-			default: false
-		},
-		searchResetable: 'searchResetable',
-		labelVisible: 'labelVisible',
-		listeners: 'listeners',
-		actionMethods: 'actionMethods',
-		params: 'params',
-		store: 'store',
-		ignoreEmptySearchParam: 'ignoreEmptySearchParam',
-		locale: 'locale'
-	},
+	components:{ XButton, XForm },
+	inject: [
+		'searchFilter',
+		'searchResetable',
+		'labelVisible',
+		'listeners',
+		'actionMethods',
+		'params',
+		'store',
+		'ignoreEmptySearchParam',
+		'locale'
+	],
 	mounted(){
-		if(this.searchFilter) {
-			this.store.searchParams = this.getParams();
-		}
+		// if(this.searchFilter) {
+		// 	this.store.searchParams = this.getParams();
+		// }
 	},
 	methods: {
 		search(){}

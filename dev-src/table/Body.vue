@@ -136,7 +136,7 @@ export default {
 			required: true
 		},
 		recordsHeight: {
-			type: Number,
+			type: Array,
 			required: true
 		}
 	},

@@ -16,7 +16,11 @@ export default {
 		},
 		nativeType: {
 			type: String,
-			default: 'button'
+			default: 'button' //button/submit/reset
+		},
+		htmlTag: {
+			type: String,
+			default: 'button'	//button/a/div/span之类的
 		}
 	},
 	render(createElement) {
@@ -54,9 +58,10 @@ export default {
 			size = 'sm';
 		let self = this;
 		return createElement(
-			this.nativeType,
+			this.htmlTag,
 			{
 				'class': ['st-btn', 'st-btn-'+this.type, 'st-btn-'+size],
+				type: this.nativeType,
 				on: {
 					click(evt){self.$emit('click', evt);}
 				},

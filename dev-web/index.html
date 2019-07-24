@@ -48,6 +48,7 @@
 		url: '/ajaxList',
 		rowNumberVisible: true,
 		selectMode: 'single',
+		searchFilter: [{name:'goods_name'}],
 		columns: [
 			{
 				header: 'id',
@@ -163,7 +164,7 @@
 		},
 		
 		componentOrder: [
-			'title','toolbar', 'table','pagination'
+			'title','toolbar', 'search', 'table','pagination'
 		]
 	});
 	</script>
