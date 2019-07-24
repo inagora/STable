@@ -3,7 +3,7 @@ let qtipBox, manualList=[];
 function show(type, msg, duration, onclose){
 	if(!qtipBox) {
 		qtipBox = document.createElement('div');
-		qtipBox.className = 'st-qtip-box'
+		qtipBox.className = 'st-qtip-box';
 		document.body.appendChild(qtipBox);
 	}
 	if(typeof duration=='function'){
@@ -29,14 +29,14 @@ function show(type, msg, duration, onclose){
 		</div>
 	`;
 	qtipBox.appendChild(el);
-	return new Promise((resolve, reject)=>{
+	return new Promise((resolve)=>{
 		setTimeout(function(){
 			el.classList.add('st-qtip-visible');
 			if(duration){
 				setTimeout(function(){
 					el.classList.remove('st-qtip-visible');
 				}, duration*1000);
-				
+				// eslint-disable-next-line no-inner-declarations
 				function r(){
 					if(!el.classList.contains('st-qtip-visible')){
 						el.removeEventListener('transitionend', r, false);
