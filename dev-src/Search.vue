@@ -47,15 +47,25 @@ export default {
 					type: 'radio',
 					label: '测试radio',
 					name: 'type1',
-					value: '喜剧',
+					options: [
+						{name: 'radioname',value: 'radiovalue'},
+						{name: 'radioname',value: 'radiovalue'}
+					],
 				}, {
 					type: 'checkbox',
 					label: '测试checkbox',
 					name: 'type_list',
-					value: ['喜剧','悬疑'],
+					options: [
+						{label: '喜剧',value:'001'},
+						{label: '悬疑',value:'002'},
+						{label: '恐怖',value:'003'},
+						{label: '爱情',value:'004'},
+					],
 				}, {
-					label: '姓名',
+					type: 'input',
+					label: '其他',
 					name: 'uname',
+					value: 'pjc',
 					required: true
 				}
 			], 
