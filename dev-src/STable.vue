@@ -15,7 +15,6 @@
 /**
  * STable.vue对外提供唯一的组件
  */
-import XForm from './Form.vue';
 import XTitle from './Title.vue';
 import XTip from './Tip.vue';
 import XToolbar from './Toolbar.vue';
@@ -448,7 +447,6 @@ export default {
 		 * @param {String[]} componentOrder 组件的展示顺序
 		 */
 		let coms = {
-			form: XForm,
 			title: XTitle,
 			tip: XTip,
 			toolbar: XToolbar,
@@ -457,7 +455,6 @@ export default {
 			pagination: XPagination
 		};
 		let order = [
-			'form',
 			'title', 
 			'tip', 
 			'toolbar', 

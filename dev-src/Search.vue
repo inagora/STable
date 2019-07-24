@@ -6,7 +6,7 @@
 			'st-search-label-invisible':!labelVisible
 		}"
 	>
-		<x-form @submit.prevent="submit">
+		<x-form @submit.prevent="submit" inline>
 			<x-button :native-type="'submit'">
 				{{ locale.search }}
 			</x-button>
@@ -37,9 +37,9 @@ export default {
 		'locale'
 	],
 	mounted(){
-		if(this.searchFilter) {
-			this.store.searchParams = this.getParams();
-		}
+		// if(this.searchFilter) {
+		// 	this.store.searchParams = this.getParams();
+		// }
 	},
 	methods: {
 		search(){}

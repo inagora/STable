@@ -75,7 +75,7 @@ import XRadio from "./radio.vue";
 import XSwitch from "./switch.vue";
 import XButton from "../com/Button.vue";
 import defaultLocale from '../../src/lang/en.js';
-import * as qtip from '../com/qtip';
+import qtip from '../com/qtip';
 
 export default {
 	name: 'XForm',
@@ -118,6 +118,7 @@ export default {
 		}
 	},
 	data() {
+		console.log(this.inline)
 		return {
 			formValue: {},
 			checkedValue: [],
