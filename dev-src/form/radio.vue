@@ -25,7 +25,7 @@
 					aria-hidden="true"
 					:name="name"
 					@click="handleChange(index)"
-				>
+				/>
 			</span>
 			<span class="st-radio-label">
 				{{ item.label }}
@@ -47,7 +47,7 @@ export default {
 			type: [String,Boolean,Number],
 			default: ''
 		},
-		options: Array,
+		options: Array || [],
 	},
 	data() {
 		return {

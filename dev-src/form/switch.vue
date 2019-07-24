@@ -13,7 +13,7 @@
 			:name="name"
 			@change="handleChange"
 			@keydown.enter="handleChange"
-		>
+		/>
 		<span ref="core" class="st-switch-core" />
 	</div>
 </template>

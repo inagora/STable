@@ -17,7 +17,7 @@
 							type="checkbox"
 							:disabled="item.disabled"
 							@change="checkChange(item)"
-						>
+						/>
 						<lable :for="`${item.value}-${index}`">{{ item.label }}</lable>
 					</span>
 					<span v-else @click="checkChange(item)">{{ item.label }}</span>

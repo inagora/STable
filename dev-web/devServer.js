@@ -125,4 +125,94 @@ module.exports = function(app, server){
 			});
 		},Math.round(t));
 	});
+	app.get('/ajaxFormList',(req,res)=>{
+		// let params = req.data;
+
+		let t = Math.random();
+		if(t>0.9)
+			t = t*1000;
+		else
+			t=0;
+
+		setTimeout(()=>{
+			res.json({
+				errno: 0,
+				data: [
+					{
+						type: 'input',
+						label: '活动名称',
+						placeholder: '请填写活动名称',
+						name: 'activity_name',
+					},
+					{
+						type: 'textarea',
+						label: '活动形式',
+						placeholder: '请填写活动形式',
+						name: 'activity_textarea',
+					},
+					{
+						type: 'select',
+						label: '活动区域',
+						placeholder: '请选择活动区域',
+						name: 'activity_region',
+						options:[
+							{
+								label: '上海',
+								value: '0'
+							},
+							{
+								label: '北京',
+								value: '1'
+							},
+							{
+								label: '杭州',
+								value: '2'
+							}
+						]
+					},
+					{
+						type: 'checkbox',
+						label: '活动性质',
+						options: [
+							{label: '美食/餐厅线上活动',value:'001'},
+							{label: '地推活动',value:'002'},
+							{label: '线下主题活动',value:'003'},
+							{label: '单纯品牌曝光',value:'004'},
+						],
+						name: 'activity_kind',
+					},
+					{
+						type: 'radio',
+						label: '是否收费',
+						options: [
+							{label: '收费',value: 1},
+							{label: '免费',value: 0},
+						],
+						name: 'activity_fee',
+					},
+					{
+						type: 'switch',
+						label: '不接收广告',
+						value: false,
+						name: 'activity_ad',
+					},
+					{
+						type: 'button',
+						options: [
+							{
+								text: '取消',
+								theme: 'default',
+								handle: 'cancel',
+							},
+							{
+								text: '提交',
+								theme: 'primary',	
+								handle: 'submit',
+							}
+						]
+					}
+				]
+			});
+		},Math.round(t));
+	});
 };

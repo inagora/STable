@@ -6,7 +6,7 @@
 			'st-search-label-invisible':!labelVisible
 		}"
 	>
-		<form @submit.prevent="submit">
+		<x-form @submit.prevent="submit">
 			<x-button :native-type="'submit'">
 				{{ locale.search }}
 			</x-button>
@@ -16,14 +16,15 @@
 			>
 				{{ locale.reset }}
 			</x-button>
-		</form>
+		</x-form>
 	</div>
 </template>
 
 <script>
 import XButton from './com/Button.vue';
+import XForm from './form/form.vue';
 export default {
-	components:{ XButton },
+	components:{ XButton, XForm },
 	inject: [
 		'searchFilter',
 		'searchResetable',
