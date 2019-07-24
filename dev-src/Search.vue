@@ -48,8 +48,8 @@ export default {
 					label: '测试radio',
 					name: 'type1',
 					options: [
-						{name: 'radioname',value: 'radiovalue'},
-						{name: 'radioname',value: 'radiovalue'}
+						{name: 'radioname',value: 'radiovalue',label: '喜剧2'},
+						{name: 'radioname',value: 'radiovalue',label: '悬疑'}
 					],
 				}, {
 					type: 'checkbox',

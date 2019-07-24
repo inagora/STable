@@ -27,9 +27,7 @@
 					@click="handleChange(index)"
 				/>
 			</span>
-			<span class="st-radio-label">
-				{{ item.label }}
-			</span>
+			<span class="st-radio-label" v-text="item.label"></span>
 		</label>
 	</div>
 </template>
