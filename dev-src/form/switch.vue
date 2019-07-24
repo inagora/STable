@@ -22,11 +22,6 @@
 export default {
 	name: 'XSwitch',
 	compontents: 'XSwitch',
-	inject: {
-		XForm: {
-			default: ''
-		}
-	},
 	// model: {
 	//   prop: 'checked',
 	//   event: 'change'

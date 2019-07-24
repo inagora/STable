@@ -75,21 +75,42 @@ import XRadio from "./radio.vue";
 import XSwitch from "./switch.vue";
 import XButton from "../com/Button.vue";
 import defaultLocale from '../../src/lang/en.js';
-// import { setTimeout } from 'timers';
-// import XChart from 'js/section/Chart.vue';
+import * as qtip from '../com/qtip';
 
 export default {
 	name: 'XForm',
 	componentName: 'XForm',
 	components: {XInput,XSelect,XCheckbox,XRadio,XSwitch,XButton},
-	provide(){
-		return {
-			XForm: this
-		};
-	},
 	props: {
-		formConfig: [Object, Array] || {},
-		rules: [Object, Array] || [],
+		formConfig: {
+			type: [Object, Array],
+			default() {
+				return {};
+			}
+		},
+		rules: {
+			type: [Object, Array],
+			default() {
+				return {};
+			}
+		},
+		fieldList: {
+			type: Array,
+			default() {
+				return [];
+			}
+		},
+		actionMethods: {
+			default: {
+				read: "GET"
+			}
+		},
+		defaultValues: {
+			default: {}
+		},
+		inline: {
+			default: false
+		}
 	},
 	inject: {
 		locale: {
@@ -101,7 +122,7 @@ export default {
 			formValue: {},
 			checkedValue: [],
 			showErr: false,
-			errMsg: ''
+			errMsg: '',
 		};
 	},
 	watch: {
@@ -120,48 +141,62 @@ export default {
 		}
 	},
 	created() {
-		this.getFormList(this.formConfig.getMethods);
-		this.$nextTick(()=>{
-			let tmpArr = {};
-			this.formConfig.formList.map(item=>{
-				if(item.type != 'button')
-					tmpArr[item.name] = item.value || '';
+		this.packPropData().then((res)=>{
+			this.getFormList(res.getMethods).then(()=>{
+				let tmpArr = {};
+				this.formConfig.formList.map(item=>{
+					if(item.type != 'button')
+						tmpArr[item.name] = item.value || '';
+				});
+				this.formValue = tmpArr;
 			});
-			this.formValue = tmpArr;
 		});
+		
 	},
 	methods: {
+		packPropData() {
+			return new Promise((resolve)=>{
+				if ((this.fieldList && this.fieldList.length > 0) || this.actionMethods || this.inline) {
+					let tmpConf = Object.assign({},{
+						getMethods: {
+							url: '/ajaxFormList',
+							read: this.actionMethods.read,
+							data: {}
+						},
+						postMethods: '',
+						formList: this.fieldList,
+					});
+					this.formConfig = tmpConf;
+					resolve(this.formConfig);
+				}
+			});
+		},
 		getFormList(actionMethods) {
 			return new Promise(resolve=>{
 				if(actionMethods.url && actionMethods.url != '') {
 					let data = actionMethods.data;
-					ajax({url: actionMethods.url, data, type: actionMethods.method}).then(res=>{
+					ajax({url: actionMethods.url, data, type: actionMethods.read}).then(res=>{
 						res = res[0];
 						if(res.errno==0 || res.code==0) {
 							this.formConfig.formList = res.data;
 							resolve();
 						} else {
-							console.log(res.msg);
+							qtip.error(res.msg);
 						}
 					});
-				} else {
-					console.log('尚未定义url');
 				}
 			});
 		},
 		clickFn(btn,postUrl) {
-			console.log(postUrl);
 			let data = this.formValue;
-			console.log(data);
-			if (btn.handle == 'submit' && postUrl) {
+			if (btn.handle == 'submit' && postUrl != '') {
 				return new Promise(resolve=>{
 					ajax({url: postUrl, data, type:'POST'}).then(res=>{
 						res = res[0];
 						if(res.errno==0 || res.code==0) {
-							console.log(res);
 							resolve();
 						} else {
-							console.log(res.msg);
+							qtip.error(res.msg);
 						}
 					});
 				});

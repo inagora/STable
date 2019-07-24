@@ -1,67 +1,16 @@
 <template>
 	<div>
-		<!-- 级联选择组件 -->
-		<!-- <div>
-			<span class="dropTreeLists">
-				<span class="benchmark">多选级联选择器:</span>
-				<x-cascader 
-					:options="configOptions"
-					:input-value="configTips"
-					@CheckedsIndexCodes="fromTreeCheckeds"
-					@on-selected="getSelected"
-				/>
-			</span>
-		</div> -->
-		<!-- input组件 -->
-		<!-- <div>
-			<span class="benchmark">input输入框:</span>
-			<x-input
-				v-model="inputData"
-				:placeholder="'这是一个input组件'"
-				type="text"
-				:clearable="true"
-			/>
-			<span class="benchmark">textarea输入框:</span>
-			<x-input
-				v-model="textareaData"
-				:placeholder="'这是一个input组件-textarea'"
-				type="textarea"
-				maxlength="5"
-				:show-word-limit="true"
-			/>
-		</div> -->
-		<!-- tag标签 -->
-		<!-- <div>
-			<span class="benchmark">tag标签:</span>
-			<x-tag
-				v-for="(tag,index) in tags"
-				:key="index"
-				:type="tag.type"
-				:closable="true"
-				:size="index == 0 ? 'small' : ''"
-				@close="closeTag(index)"
-			>
-				{{ tag.name }}
-			</x-tag>
-		</div> -->
-		<!-- XDatetimePicker -->
-		<!-- <div>
-			<span class="benchmark">DatetimePicker:</span>
-			<x-datetime-picker v-model="time" format="YYYY-MM-DD HH:mm:ss" />
-		</div> -->
-		<!-- XDatetimePicker range -->
-		<!-- <div>
-			<span class="benchmark">DatetimePicker range:</span>
-			<x-datetime-picker v-model="range" range-separator="至" format="YYYY-MM-DD HH:mm:ss" />
-		</div> -->
-		<!-- form 表单 -->
+	
 		<div>
 			<span class="benchmark">form表单:</span>
 			<x-form 
 				ref="form" 
-				:form-config="formConfig" 
+				:form-config="formConfig"
 				:rules="rules" 
 			/>
+			<!--  -->
+			<!-- :action-methods="actionMethods"
+			:field-list="fieldList" -->
 		</div>
 	</div>
 </template>
@@ -82,117 +31,17 @@ export default {
 	components: {XForm},
 	data(){
 		return {
-			// configTips: "请选择",
-			// configOptions: [
-			// 	{
-			// 		value: "1",
-			// 		label: "一级菜单1",
-			// 		checked: false,  //控制是否默认选中
-			// 		multiple: false,   //是否多选   false为该一级菜单不多选，true表示多选
-			// 		children: [
-			// 			{
-			// 				value: 11,
-			// 				checked: false,
-			// 				multiple: false,
-			// 				disabled: false,    //是否禁用
-			// 				label: "二级菜单1",
-			// 				children: [
-			// 					{
-			// 						value: "111",
-			// 						checked: false,
-			// 						multiple: false,   //是否多选   false为该一级菜单不多选，true表示多选
-			// 						disabled: false,    //是否禁用
-			// 						label: "三级菜单1"
-			// 					},
-			// 					{
-			// 						value: "112",
-			// 						multiple: false,
-			// 						checked: false,
-			// 						label: "三级菜单2"
-			// 					},
-			// 					{
-			// 						value: "113",
-			// 						multiple: false,
-			// 						checked: false,
-			// 						label: "三级菜单3"
-			// 					}
-			// 				]
-			// 			},
-			// 			{
-			// 				value: "12",
-			// 				checked: false,
-			// 				multiple: false,
-			// 				label: "二级菜单2",
-			// 				disabled: false,
-			// 				children: [
-			// 					{
-			// 						value: "121",
-			// 						checked: false,
-			// 						multiple: true,
-			// 						disabled: false,
-			// 						label: "三级菜单121"
-			// 					},
-			// 					{
-			// 						value: "122",
-			// 						checked: false,
-			// 						multiple: true,
-			// 						label: "三级菜单122"
-			// 					},
-			// 					{
-			// 						value: "123",
-			// 						checked: false,
-			// 						multiple: true,
-			// 						label: "三级菜单123"
-			// 					}
-			// 				]
-			// 			}
-			// 		]
-			// 	},{
-			// 		value: "2",
-			// 		label: "一级菜单2",
-			// 		checked: false,  //控制是否默认选中
-			// 		multiple: false,
-			// 	}
-			// ],
-			// commonLength: 0,
-			// SaveCascadeIndexCodes: [],
-			// inputData: '',
-			// textareaData: '',
-			// tags: [
-			// 	{ name: '标签一', type: '' },
-			// 	{ name: '标签二', type: 'success' },
-			// 	{ name: '标签三', type: 'info' },
-			// 	{ name: '标签四', type: 'warning' },
-			// 	{ name: '标签五', type: 'danger' }
-			// ],
-			// selectOptions: [{
-			// 	value: 'java',
-			// 	label: 'java'
-			// }, {
-			// 	value: 'php',
-			// 	label: 'php'
-			// }, {
-			// 	value: 'javascript',
-			// 	label: 'javascript'
-			// }, {
-			// 	value: 'nodejs',
-			// 	label: 'nodejs'
-			// }, {
-			// 	value: 'python',
-			// 	label: 'python'
-			// }, {
-			// 	value: 'golang',
-			// 	label: 'golang'
-			// }],
-			// selectValue: [],
-			
+			actionMethods: {
+				read: 'GET',
+			},
+			fieldList: [],
 			formConfig:{
 				getMethods: {
 					url: '/ajaxFormList',
-					method: 'GET',
+					read: 'GET',
 					data: {}
 				},
-				postMethods: '/ajaxPostForm',
+				postMethods: '',
 				formList: [],
 			},
 			rules: {
