@@ -4,7 +4,7 @@
 			<span class="benchmark">form表单:</span>
 			<x-form 
 				ref="form" 
-				:form-config="formConfig"
+				:form-config="formConfigData"
 				:rules="rules"
 				@submit="submit"
 			/>
@@ -31,7 +31,7 @@ export default {
 				read: 'GET',
 			},
 			fieldList: [],
-			formConfig:{
+			formConfigData: {
 				getConfig: {
 					url: '/ajaxFormList',
 					read: 'GET',
@@ -52,6 +52,7 @@ export default {
 	},
 	mounted() {
 		this.getData(); //多选
+		
 	},
 	methods: {
 		submit() {

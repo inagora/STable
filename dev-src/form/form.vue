@@ -1,6 +1,6 @@
 <template>
 	<form class="st-form" @submit.prevent="clickFn()">
-		<div v-for="(item, index) in formConfig.formList" :key="index" class="st-form-item">
+		<div v-for="(item, index) in formConfig.fieldList || fieldList" :key="index" class="st-form-item">
 			<div class="st-form-item-label">
 				<label v-text="item.label"></label>
 			</div>
@@ -45,7 +45,7 @@
 						@change="changeFn($event,item.name)"
 					/>
 				</template>
-				<template v-if="item.type == 'button'">
+				<!-- <template v-if="item.type == 'button'">
 					<div class="st-form-btn">
 						<x-button
 							v-for="(btn, btnindex) in item.options" 
@@ -57,10 +57,10 @@
 							{{ btn.text }}
 						</x-button>
 					</div>
-				</template>
-				<slot></slot>
+				</template> -->
 			</div>
 		</div>
+		<slot></slot>
 		<div v-show="showErr" class="st-form-tips" v-text="errMsg"></div>
 	</form>
 </template>
@@ -72,17 +72,17 @@ import XSelect from "./select.vue";
 import XCheckbox from "./checkbox.vue";
 import XRadio from "./radio.vue";
 import XSwitch from "./switch.vue";
-import XButton from "../com/Button.vue";
+// import XButton from "../com/Button.vue";
 import defaultLocale from '../../src/lang/en.js';
 import qtip from '../com/qtip';
 
 export default {
 	name: 'XForm',
 	componentName: 'XForm',
-	components: {XInput,XSelect,XCheckbox,XRadio,XSwitch,XButton},
+	components: {XInput,XSelect,XCheckbox,XRadio,XSwitch},
 	props: {
 		formConfig: {
-			type: [Object, Array],
+			type: Object,
 			default() {
 				return {};
 			}
@@ -94,7 +94,7 @@ export default {
 			}
 		},
 		fieldList: {
-			type: Array,
+			type: [Array],
 			default() {
 				return [];
 			}
@@ -108,9 +108,9 @@ export default {
 			}
 		},
 		defaultValues: {
-			type: Object,
+			type: [Array,Boolean],
 			default() {
-				return {};
+				return [];
 			}
 		},
 		inline: {
@@ -144,67 +144,37 @@ export default {
 			}
 		}
 	},
-	created() {
-		this.packPropData().then((res)=>{
-			this.getFormList(res.getConfig).then(()=>{
-				let tmpArr = {};
-				for (const item of this.formConfig.formList) {
-					if(item.type != 'button')
-						tmpArr[item.name] = item.value || '';
-				}
-				this.formValue = tmpArr;
-			});
-		});
-		
+	mounted() {
+		this.getFormList();
 	},
 	methods: {
-		packPropData() {
-			return new Promise((resolve)=>{
-				if ((this.fieldList && this.fieldList.length > 0) || this.actionMethods || this.inline) {
-					let tmpConf = Object.assign({},{
-						getConfig: {
-							url: '/ajaxFormList',
-							read: this.actionMethods ? this.actionMethods.read : 'GET',
-							data: {}
-						},
-						postConfig: {
-							url: ''
-						},
-						formList: this.fieldList,
-					});
-					this.formConfig = tmpConf;
-					resolve(this.formConfig);
-				}
-			});
-		},
-		getFormList(getconf) {
-			return new Promise(resolve=>{
-				if(getconf.url && getconf.url != '') {
-					let data = getconf.data;
-					ajax({url: getconf.url, data, type: getconf.read}).then(res=>{
-						res = res[0];
-						if(res.errno==0 || res.code==0) {
-							this.formConfig.formList = res.data;
-							resolve();
-						} else {
-							qtip.error(res.msg);
-						}
-					});
-				}
-			});
+		getFormList() {
+			if (this.fieldList && this.fieldList.length > 0) {
+				this.formConfig.fieldList = this.fieldList;
+			} else {
+				let getParam = this.formConfig.getConfig;
+				let data = getParam ? getParam.data : {};
+				return ajax({url: getParam.url, data, type: getParam.read}).then(res=>{
+					res = res[0];
+					if(res.errno==0 || res.code==0) {
+						this.formConfig.fieldList = res.data;
+					} else {
+						qtip.error(res.msg);
+					}
+				});
+			}
+			let tmpArr = {};
+			for (const item of this.formConfig.fieldList) {
+				if(item.type != 'button')
+					tmpArr[item.name] = item.value || '';
+			}
+			this.formValue = tmpArr;
+			console.log(this.formConfig);
 		},
 		clickFn(btn,postUrl) {
 			let data = this.formValue;
 			if (btn && btn.handle == 'submit' && postUrl != '') {
 				this.$emit('submit', data);
-				// ajax({url: postUrl, data, type:'POST'}).then(res=>{
-				// 	res = res[0];
-				// 	if(res.errno==0 || res.code==0) {
-				// 		qtip.success("提交成功");
-				// 	} else {
-				// 		qtip.error(res.msg);
-				// 	}
-				// });
 			}
 		},
 		changeFn(val,name) {
@@ -221,7 +191,6 @@ export default {
 				this.checkedValue.splice(idx,1);
 			}
 			this.formValue[name] = this.checkedValue.toString();
-			// this.fieldListFn(val,name) 验证
 		},
 		getType(target) {
 			if (this.formConfig[target] && this.formConfig[target].type) {

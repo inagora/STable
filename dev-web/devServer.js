@@ -196,21 +196,21 @@ module.exports = function(app, server){
 						value: false,
 						name: 'activity_ad',
 					},
-					{
-						type: 'button',
-						options: [
-							{
-								text: '取消',
-								theme: 'default',
-								handle: 'cancel',
-							},
-							{
-								text: '提交',
-								theme: 'primary',	
-								handle: 'submit',
-							}
-						]
-					}
+					// {
+					// 	type: 'button',
+					// 	options: [
+					// 		{
+					// 			text: '取消',
+					// 			theme: 'default',
+					// 			handle: 'cancel',
+					// 		},
+					// 		{
+					// 			text: '提交',
+					// 			theme: 'primary',	
+					// 			handle: 'submit',
+					// 		}
+					// 	]
+					// }
 				]
 			});
 		},Math.round(t));
