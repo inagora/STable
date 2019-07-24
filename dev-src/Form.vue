@@ -1,14 +1,13 @@
 <template>
 	<div>
-	
 		<div>
 			<span class="benchmark">form表单:</span>
 			<x-form 
 				ref="form" 
 				:form-config="formConfig"
-				:rules="rules" 
+				:rules="rules"
+				@submit="submit"
 			/>
-			<!--  -->
 			<!-- :action-methods="actionMethods"
 			:field-list="fieldList" -->
 		</div>
@@ -16,11 +15,8 @@
 </template>
 
 <script>
-// import XCascader from "./form/cascader.vue";
-// import XInput from "./form/input.vue";
-// import XTag from "./form/tag.vue";
-// import XDatetimePicker from "./form/datetimepicker.vue";
 import XForm from "./form/form.vue";
+import qtip from './com/qtip';
 // import {ajax} from './ajax';
 
 var range_start = new Date();
@@ -36,12 +32,11 @@ export default {
 			},
 			fieldList: [],
 			formConfig:{
-				getMethods: {
+				getConfig: {
 					url: '/ajaxFormList',
 					read: 'GET',
 					data: {}
 				},
-				postMethods: '',
 				formList: [],
 			},
 			rules: {
@@ -59,6 +54,9 @@ export default {
 		this.getData(); //多选
 	},
 	methods: {
+		submit() {
+			qtip.success('你好，这里是submit');
+		},
 		// 验证方法
 		validateKind(rule,val,callback) {
 			let arr = val.split(',');
@@ -133,7 +131,7 @@ export default {
 
   &-separator {
     display: inline-block;
-    width: 1px;
+		width: 1px;
     overflow: hidden;
     margin-right: 8px;
     margin-bottom: 10px;

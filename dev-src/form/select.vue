@@ -105,7 +105,12 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		options: Array || [],
+		options: {
+			type: Array,
+			default() {
+				return [];
+			}
+		},
 		valueKey: {
 			type: String,
 			default: 'value'

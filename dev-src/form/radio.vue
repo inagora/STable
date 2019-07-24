@@ -47,7 +47,12 @@ export default {
 			type: [String,Boolean,Number],
 			default: ''
 		},
-		options: Array || [],
+		options: {
+			type: Array,
+			default() {
+				return [];
+			}
+		}
 	},
 	data() {
 		return {

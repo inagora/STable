@@ -86,6 +86,7 @@ export default {
 		},
 		length: {
 			type: Number,
+			default: 1
 		},
 		showWordLimit: {
 			type: Boolean,

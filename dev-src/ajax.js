@@ -136,7 +136,6 @@ function ajax(options) {
 	return new Promise((resolve, reject)=>{
 		let settings = Object.assign({}, ajaxSettings, options || {}),
 			hashIndex;
-
 		if ((hashIndex = settings.url.indexOf('#')) > -1)
 			settings.url = settings.url.slice(0, hashIndex);
 		serializeData(settings);

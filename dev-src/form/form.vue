@@ -1,15 +1,15 @@
 <template>
-	<form class="st-form">
+	<form class="st-form" @submit.prevent="clickFn()">
 		<div v-for="(item, index) in formConfig.formList" :key="index" class="st-form-item">
 			<div class="st-form-item-label">
-				<label>{{ item.label }}</label>
+				<label v-text="item.label"></label>
 			</div>
 			<div class="st-form-item-content">
 				<x-input
 					v-if="item.type == 'input' || item.type == 'textarea'" 
 					v-model="item.value" 
 					:type="item.type" 
-					:placeholder="item.placeholder || `${locale.inputMsg + item.label}`" 
+					:placeholder="item.placeholder || locale.inputMsg + item.label" 
 					:name="item.name"
 					@input="changeFn($event,item.name)"
 					@validate="fieldListFn($event,item.name)"
@@ -52,17 +52,16 @@
 							:key="btnindex" 
 							class="st-form-btn-item" 
 							:type="btn.theme" 
-							@click.prevent="clickFn(btn,formConfig.postMethods)"
+							@click.prevent="clickFn(btn)"
 						>
 							{{ btn.text }}
 						</x-button>
 					</div>
 				</template>
+				<slot></slot>
 			</div>
 		</div>
-		<div v-show="showErr" class="st-form-tips">
-			{{ errMsg }}
-		</div>
+		<div v-show="showErr" class="st-form-tips" v-text="errMsg"></div>
 	</form>
 </template>
 
@@ -75,7 +74,7 @@ import XRadio from "./radio.vue";
 import XSwitch from "./switch.vue";
 import XButton from "../com/Button.vue";
 import defaultLocale from '../../src/lang/en.js';
-import * as qtip from '../com/qtip';
+import qtip from '../com/qtip';
 
 export default {
 	name: 'XForm',
@@ -101,14 +100,21 @@ export default {
 			}
 		},
 		actionMethods: {
-			default: {
-				read: "GET"
+			type: Object,
+			default() {
+				return  {
+					read: "GET"
+				};
 			}
 		},
 		defaultValues: {
-			default: {}
+			type: Object,
+			default() {
+				return {};
+			}
 		},
 		inline: {
+			type: Boolean,
 			default: false
 		}
 	},
@@ -126,28 +132,26 @@ export default {
 		};
 	},
 	watch: {
-		errMsg: {
-			handler(val) {
-				if (val != '') {
-					this.errMsg = val;
-					this.showErr = true;
-					setTimeout(()=>{
-						this.showErr = false;
-					},2000);
-				} else {
+		errMsg(val) {
+			if (val != '') {
+				this.errMsg = val;
+				this.showErr = true;
+				setTimeout(()=>{
 					this.showErr = false;
-				}
+				},2000);
+			} else {
+				this.showErr = false;
 			}
 		}
 	},
 	created() {
 		this.packPropData().then((res)=>{
-			this.getFormList(res.getMethods).then(()=>{
+			this.getFormList(res.getConfig).then(()=>{
 				let tmpArr = {};
-				this.formConfig.formList.map(item=>{
+				for (const item of this.formConfig.formList) {
 					if(item.type != 'button')
 						tmpArr[item.name] = item.value || '';
-				});
+				}
 				this.formValue = tmpArr;
 			});
 		});
@@ -158,12 +162,14 @@ export default {
 			return new Promise((resolve)=>{
 				if ((this.fieldList && this.fieldList.length > 0) || this.actionMethods || this.inline) {
 					let tmpConf = Object.assign({},{
-						getMethods: {
+						getConfig: {
 							url: '/ajaxFormList',
-							read: this.actionMethods.read,
+							read: this.actionMethods ? this.actionMethods.read : 'GET',
 							data: {}
 						},
-						postMethods: '',
+						postConfig: {
+							url: ''
+						},
 						formList: this.fieldList,
 					});
 					this.formConfig = tmpConf;
@@ -171,11 +177,11 @@ export default {
 				}
 			});
 		},
-		getFormList(actionMethods) {
+		getFormList(getconf) {
 			return new Promise(resolve=>{
-				if(actionMethods.url && actionMethods.url != '') {
-					let data = actionMethods.data;
-					ajax({url: actionMethods.url, data, type: actionMethods.read}).then(res=>{
+				if(getconf.url && getconf.url != '') {
+					let data = getconf.data;
+					ajax({url: getconf.url, data, type: getconf.read}).then(res=>{
 						res = res[0];
 						if(res.errno==0 || res.code==0) {
 							this.formConfig.formList = res.data;
@@ -189,17 +195,16 @@ export default {
 		},
 		clickFn(btn,postUrl) {
 			let data = this.formValue;
-			if (btn.handle == 'submit' && postUrl != '') {
-				return new Promise(resolve=>{
-					ajax({url: postUrl, data, type:'POST'}).then(res=>{
-						res = res[0];
-						if(res.errno==0 || res.code==0) {
-							resolve();
-						} else {
-							qtip.error(res.msg);
-						}
-					});
-				});
+			if (btn && btn.handle == 'submit' && postUrl != '') {
+				this.$emit('submit', data);
+				// ajax({url: postUrl, data, type:'POST'}).then(res=>{
+				// 	res = res[0];
+				// 	if(res.errno==0 || res.code==0) {
+				// 		qtip.success("提交成功");
+				// 	} else {
+				// 		qtip.error(res.msg);
+				// 	}
+				// });
 			}
 		},
 		changeFn(val,name) {
