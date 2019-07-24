@@ -6,7 +6,7 @@
 			'st-search-label-invisible':!labelVisible
 		}"
 	>
-		<x-form @submit.prevent="submit" inline>
+		<x-form inline @submit.prevent="submit">
 			<x-button :native-type="'submit'">
 				{{ locale.search }}
 			</x-button>

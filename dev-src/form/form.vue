@@ -124,7 +124,6 @@ export default {
 		}
 	},
 	data() {
-		console.log(this.inline)
 		return {
 			formValue: {},
 			checkedValue: [],
