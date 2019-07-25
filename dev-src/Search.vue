@@ -9,7 +9,8 @@
 		<x-form 
 			:field-list="defaultVal"
 			inline
-			@submit="search">
+			@submit="search"
+		>
 			<x-button :native-type="'submit'">
 				{{ locale.search }}
 			</x-button>

@@ -4,7 +4,8 @@
 			v-for="(item, index) in formConfig.fieldList || fieldList" 
 			:key="index" 
 			class="st-form-item" 
-			:class="{'st-form-inline': inline}">
+			:class="{'st-form-inline': inline}"
+		>
 			<div class="st-form-item-label">
 				<label v-text="item.label"></label>
 			</div>
