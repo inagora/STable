@@ -47,7 +47,6 @@ module.exports = {
 		"clearInterval": false,
 		"Promise": false,
 		"module": false,
-		"console": false,
 		"require": false,
 		"STable": false,
 		"HTMLElement": false
