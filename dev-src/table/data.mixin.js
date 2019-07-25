@@ -1,4 +1,4 @@
-import {ajax} from '../ajax';
+import {ajax} from '../util/ajax';
 import {alert} from '../com/Dialog';
 import Progressbar from '../com/Progressbar';
 export default {

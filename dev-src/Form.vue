@@ -17,7 +17,6 @@
 <script>
 import XForm from "./form/form.vue";
 import qtip from './com/qtip';
-// import {ajax} from './ajax';
 
 var range_start = new Date();
 var tmp = new Date();

@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import {ajax} from '../ajax';
+import {ajax} from '../util/ajax';
 import XInput from "./input.vue";
 import XSelect from "./select.vue";
 import XCheckbox from "./checkbox.vue";
