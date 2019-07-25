@@ -3,13 +3,12 @@
 		<div 
 			v-for="(item, index) in formConfig.fieldList || fieldList" 
 			:key="index" 
-			class="st-form-item" 
-			:class="{'st-form-inline': inline}"
+			class="st-form-item"
 		>
 			<div class="st-form-item-label">
 				<label v-text="item.label"></label>
 			</div>
-			<div class="st-form-item-content" :class="{'st-form-inline': inline}">
+			<div class="st-form-item-content">
 				<x-input
 					v-if="item.type == 'input' || item.type == 'textarea'" 
 					v-model="item.value" 
