@@ -8,8 +8,8 @@
 	>
 		<x-form 
 			:field-list="defaultVal"
-			inline 
-			@submit.prevent="submit">
+			inline
+			@submit="search">
 			<x-button :native-type="'submit'">
 				{{ locale.search }}
 			</x-button>
@@ -44,29 +44,20 @@ export default {
 			//老版本参数
 			defaultVal: [
 				{
-					type: 'radio',
-					label: '测试radio',
-					name: 'type1',
-					options: [
-						{name: 'radioname',value: 'radiovalue',label: '喜剧2'},
-						{name: 'radioname',value: 'radiovalue',label: '悬疑'}
-					],
-				}, {
-					type: 'checkbox',
-					label: '测试checkbox',
-					name: 'type_list',
-					options: [
-						{label: '喜剧',value:'001'},
-						{label: '悬疑',value:'002'},
-						{label: '恐怖',value:'003'},
-						{label: '爱情',value:'004'},
-					],
-				}, {
 					type: 'input',
-					label: '其他',
+					label: '姓名',
 					name: 'uname',
 					value: 'pjc',
 					required: true
+				},
+				{
+					type: 'select',
+					label: '影片类型',
+					name: 'selectname',
+					options: [
+						{value: 'xiju',label: '喜剧'},
+						{value: 'xuanyi',label: '悬疑'}
+					],
 				}
 			], 
 			//新版本参数
@@ -86,7 +77,10 @@ export default {
 		// }
 	},
 	methods: {
-		search(){}
+		search(data) {
+			//data处理
+			console.log(data);
+		}
 	}
 };
 </script>

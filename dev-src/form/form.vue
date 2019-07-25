@@ -1,10 +1,14 @@
 <template>
-	<form class="st-form" @submit.prevent="clickFn()">
-		<div v-for="(item, index) in formConfig.fieldList || fieldList" :key="index" class="st-form-item">
+	<form class="st-form" :class="{'st-form-inline': inline}" @submit.prevent="clickFn()">
+		<div 
+			v-for="(item, index) in formConfig.fieldList || fieldList" 
+			:key="index" 
+			class="st-form-item" 
+			:class="{'st-form-inline': inline}">
 			<div class="st-form-item-label">
 				<label v-text="item.label"></label>
 			</div>
-			<div class="st-form-item-content">
+			<div class="st-form-item-content" :class="{'st-form-inline': inline}">
 				<x-input
 					v-if="item.type == 'input' || item.type == 'textarea'" 
 					v-model="item.value" 
@@ -145,6 +149,7 @@ export default {
 		}
 	},
 	mounted() {
+
 		this.getFormList();
 	},
 	methods: {
@@ -169,13 +174,10 @@ export default {
 					tmpArr[item.name] = item.value || '';
 			}
 			this.formValue = tmpArr;
-			console.log(this.formConfig);
 		},
-		clickFn(btn,postUrl) {
+		clickFn() {
 			let data = this.formValue;
-			if (btn && btn.handle == 'submit' && postUrl != '') {
-				this.$emit('submit', data);
-			}
+			this.$emit('submit', data);
 		},
 		changeFn(val,name) {
 			this.formValue = Object.assign(this.formValue,{[name]: val});
@@ -265,6 +267,12 @@ export default {
 			left: 50%;
 			top: 50%;
 			transform: translate(-50%,-50%);
+		}
+
+		&-inline {
+			display: flex;
+			flex-direction: row;
+			margin-left: 0;
 		}
   }
 </style>
