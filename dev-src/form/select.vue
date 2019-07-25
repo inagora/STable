@@ -19,7 +19,7 @@
 					:closable="true"
 					@close="deleteTag($event, item)"
 				>
-					<span class="st-select-tags-text">{{ multiple ? item : item.label }}</span>
+					<span class="st-select-tags-text" v-text="multiple ? item : item.label"></span>
 				</x-tag>
 			</span>
 			<!-- 搜索框 -->
@@ -51,9 +51,8 @@
 						class="st-select-menu-item"
 						:class="[{'st-select-menu-item-hover': index == hoverIndex}]"
 						@click.stop="setSelected(index,item)"
-					>
-						{{ item.label }}
-					</li>
+						v-text="item.label"
+					></li>
 				</ul>
 			</template>
 			<template v-if="filterOptions.length > 0">
@@ -65,9 +64,8 @@
 						:class="[{'st-select-menu-item-hover': index == hoverIndex}]"
 						@click.stop="setSelected(index,item)"
 						@keydown.enter.prevent="setSelected(index,item)"
-					>
-						{{ item.label }}
-					</li>
+						v-text="item.label"
+					></li>
 				</ul>
 			</template>
 		</div>

@@ -24,9 +24,7 @@
 				@change="handleChange"
 			/>
 		</span>
-		<span class="st-checkbox-label">
-			{{ label }}
-		</span>
+		<span class="st-checkbox-label" v-text="label"></span>
 	</label>
 </template>
 

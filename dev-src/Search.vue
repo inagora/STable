@@ -6,7 +6,10 @@
 			'st-search-label-invisible':!labelVisible
 		}"
 	>
-		<x-form inline @submit.prevent="submit">
+		<x-form 
+			:field-list="defaultVal"
+			inline
+			@submit="search">
 			<x-button :native-type="'submit'">
 				{{ locale.search }}
 			</x-button>
@@ -36,13 +39,48 @@ export default {
 		'ignoreEmptySearchParam',
 		'locale'
 	],
+	data() {
+		return {
+			//老版本参数
+			defaultVal: [
+				{
+					type: 'input',
+					label: '姓名',
+					name: 'uname',
+					value: 'pjc',
+					required: true
+				},
+				{
+					type: 'select',
+					label: '影片类型',
+					name: 'selectname',
+					options: [
+						{value: 'xiju',label: '喜剧'},
+						{value: 'xuanyi',label: '悬疑'}
+					],
+				}
+			], 
+			//新版本参数
+			formConfigData: {
+				getConfig: {
+					url: '/ajaxFormList',
+					read: 'GET',
+					data: {}
+				},
+				fieldList: [],
+			},
+		};
+	},
 	mounted(){
 		// if(this.searchFilter) {
 		// 	this.store.searchParams = this.getParams();
 		// }
 	},
 	methods: {
-		search(){}
+		search(data) {
+			//data处理
+			console.log(data);
+		}
 	}
 };
 </script>

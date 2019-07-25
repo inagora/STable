@@ -23,13 +23,15 @@ export default {
 	componentName: 'XUpload',
 	components: {XButton},
 	props: {
-		type: {
+		fileType: {
 			type: String,
 			default: 'file'
 		},
-		value: {
-			type: [String,Number],
-			default: ''
+		fileList: {
+			type: [Array],
+			default() {
+				return [];
+			}
 		},
 		disabled: {
 			type: Boolean,

@@ -2,6 +2,7 @@ import STable from './STable.vue';
 import SidePanel from './com/SidePanel.js';
 import {create} from './com/Dialog.js';
 import {Console} from './util';
+import XForm from './form/form.vue';
 
 //测试代码，请注意删除
 window.SidePanel = SidePanel;
@@ -9,6 +10,7 @@ window.Dialog = {create};
 
 //注册全局组件
 Vue.component('x-stable', STable);
+Vue.component('x-form', XForm);
 
 Console.log('%cSTable doc：https://stable.wfxteam.com/',"color:#191919;font-size:14px");
 
