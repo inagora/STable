@@ -1,5 +1,10 @@
 <template>
-	<form class="st-form" :class="{'st-form-inline': inline}" @submit.prevent="clickFn()">
+	<form
+		class="st-form" 
+		:class="{'st-form-inline': inline}" 
+		@submit.prevent="submitFormData"
+		@reset.prevent="resetFields"
+	>
 		<div 
 			v-for="(item, index) in formConfig.fieldList || fieldList" 
 			:key="index" 
@@ -11,7 +16,7 @@
 			<div class="st-form-item-content">
 				<x-input
 					v-if="item.type == 'input' || item.type == 'textarea'" 
-					v-model="item.value" 
+					v-model="formValue[item.name]" 
 					:type="item.type" 
 					:placeholder="item.placeholder || locale.inputMsg + item.label" 
 					:name="item.name"
@@ -19,11 +24,11 @@
 					@validate="fieldListFn($event,item.name)"
 				/>
 				<x-select
-					v-if="item.type == 'select'"  
+					v-if="['select','combobox','multiple'].includes(item.type)"  
 					v-model="item.value" 
 					:options="item.options" 
-					multiple
-					filterable
+					:multiple="item.type == 'multiple'"
+					:filterable="item.type == 'multiple'"
 					@selectchange="changeFn($event,item.name)"
 					@validate="fieldListFn($event,item.name)"
 				/>
@@ -56,7 +61,7 @@
 							:key="btnindex" 
 							class="st-form-btn-item" 
 							:type="btn.theme" 
-							@click.prevent="clickFn(btn)"
+							@click.prevent="submit(btn)"
 						>
 							{{ btn.text }}
 						</x-button>
@@ -79,6 +84,7 @@ import XSwitch from "./switch.vue";
 // import XButton from "../com/Button.vue";
 import defaultLocale from '../../src/lang/en.js';
 import qtip from '../com/qtip';
+import {Console} from "../util.js";
 
 export default {
 	name: 'XForm',
@@ -149,7 +155,6 @@ export default {
 		}
 	},
 	mounted() {
-
 		this.getFormList();
 	},
 	methods: {
@@ -175,7 +180,8 @@ export default {
 			}
 			this.formValue = tmpArr;
 		},
-		clickFn() {
+		submitFormData() {
+			Console.log('submit');
 			let data = this.formValue;
 			this.$emit('submit', data);
 		},
@@ -210,6 +216,16 @@ export default {
 				};
 				fieldlist[name].validator(fieldlist[name], val, callback);
 			}
+		},
+		resetFields(fields){
+			// this.$refs.form.reset();
+			let tmpFields = fields.split(',');
+			if (tmpFields && tmpFields.length > 0) {
+				for (const item of tmpFields) {
+					this.formValue[item] = '';
+				}
+			}
+			
 		},
 	}
 };

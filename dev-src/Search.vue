@@ -6,10 +6,11 @@
 			'st-search-label-invisible':!labelVisible
 		}"
 	>
-		<x-form 
+		<x-form
+			ref="form"
 			:field-list="defaultVal"
 			inline
-			@submit="search"
+			@submit="search($event)"
 		>
 			<x-button :native-type="'submit'">
 				{{ locale.search }}
@@ -27,6 +28,8 @@
 <script>
 import XButton from './com/Button.vue';
 import XForm from './form/form.vue';
+import { Console } from './util';
+// import {Console} from "./util.js";
 export default {
 	components:{ XButton, XForm },
 	inject: [
@@ -52,7 +55,14 @@ export default {
 					required: true
 				},
 				{
-					type: 'select',
+					type: 'input',
+					label: '年龄',
+					name: 'age',
+					value: '25',
+					required: true
+				},
+				{
+					type: 'combobox',
 					label: '影片类型',
 					name: 'selectname',
 					options: [
@@ -80,7 +90,11 @@ export default {
 	methods: {
 		search(data) {
 			//data处理
-			console.log(data);
+			Console.log(data);
+			// this.$refs.form.submit();
+		},
+		reset() {
+			this.$refs.form.resetFields('uname,age');
 		}
 	}
 };

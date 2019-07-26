@@ -63,7 +63,10 @@ export default {
 				'class': ['st-btn', 'st-btn-'+this.type, 'st-btn-'+size],
 				type: this.nativeType,
 				on: {
-					click(evt){self.$emit('click', evt);}
+					click(evt){
+						evt.preventDefault();
+						self.$emit('click', evt);
+					}
 				},
 			},
 			children

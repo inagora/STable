@@ -19,7 +19,7 @@
 					:closable="true"
 					@close="deleteTag($event, item)"
 				>
-					<span class="st-select-tags-text" v-text="multiple ? item : item.label"></span>
+					<span class="st-select-tags-text">{{ multiple ? item : item.label }}</span>
 				</x-tag>
 			</span>
 			<!-- 搜索框 -->
@@ -36,7 +36,7 @@
 		<template v-else>
 			<!-- @keydown.enter.prevent="createOption" -->
 			<input 
-				v-model="selected.label"
+				:value="selected.label"
 				type="text"
 				class="st-select-input"
 			/>
