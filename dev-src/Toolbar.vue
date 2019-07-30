@@ -5,7 +5,11 @@
 				&nbsp;
 			</div>
 			<div v-else-if="btn==' '" :key="btnIdx" class="st-toolbar-space"></div>
-			<x-button v-else :key="btnIdx" v-bind="btn">
+			<x-button
+				v-else
+				:key="btnIdx"
+				v-bind="btn"
+				@submit="triggerClick(btn, $event)">
 				{{ btn.text }}
 			</x-button>
 		</template>
@@ -76,6 +80,11 @@ export default {
 		return {
 			btns: tb
 		};
+	},
+	methods: {
+		triggerClick(btn, evt){
+			btn.click&&btn.click.call(this.$parent, evt);
+		}
 	}
 };
 </script>

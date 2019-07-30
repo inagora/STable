@@ -222,7 +222,7 @@ export default {
 				}
 			}
 			if (!item.dataIndex) {
-				item.dataIndex = "stable_column_"+idx;
+				item.dataIndex = "_st_column_"+idx;
 			}
 
 			/**
@@ -283,12 +283,6 @@ export default {
 			if(!item.text)
 				item.text = '-';
 			
-			/**
-			 * @param {String} column.fx 此列的计算函数名
-			 */
-			if(item.fx)
-				item.fx = item.fx.toLowerCase();
-			
 			return item;
 		});
 
@@ -305,7 +299,7 @@ export default {
 				}
 				delete sp.stable;
 
-				//兼容之前版使用的postParam 和 postData
+				//兼容之前版使用的postParam 和 postData参数，已过时
 				Object.assign(conf.params, conf.postParam, conf.postData, sp);
 			}
 		}
@@ -332,7 +326,7 @@ export default {
 
 		if(conf.deleteUrl || conf.updateUrl) {
 			columns.push({
-				dataIndex:'_wd_aux_op',
+				dataIndex:'_st_column_op',
 				type: 'button',
 				text: '操作',
 				_width: 0,
@@ -364,7 +358,8 @@ export default {
 		if(!conf.sortDirection)
 			conf.sortDirection = 'asc';
 
-		conf._key = hashCode(JSON.stringify(columns));
+		let loc = window.location;
+		conf._key = hashCode(loc.host+loc.pathname+JSON.stringify(columns));
 		let localColumnSet;
 		try{
 			localColumnSet = window.localStorage.getItem(conf._key);
@@ -392,11 +387,13 @@ export default {
 			columns = _columns;
 		}
 
+		let self = this;
 		conf.store = new Vue({
 			data: {
+				_key: conf._key,
 				columns,
 				page: conf.params.page || 1,
-				page_count: 1,
+				pageCount: 1,
 				hasNextPage: true,
 				hasPrePage: false,
 				loadAction: '',
@@ -421,17 +418,22 @@ export default {
 					});
 
 					try{
-						window.localStorage.setItem(conf._key, JSON.stringify(colState));
+						window.localStorage.setItem(this._key, JSON.stringify(colState));
 					}catch(e){
 						Console.error(e);
 					}
 				},
 				resetColumnsState(){
 					try{
-						window.localStorage.removeItem(conf._key);
+						window.localStorage.removeItem(this._key);
 						location.reload();
 					}catch(e){
 						Console.error(e);
+					}
+				},
+				emit(evtName, ...args){
+					if(self.config.listeners && self.config.listeners[evtName]) {
+						self.config.listeners[evtName].apply(self, args);
 					}
 				}
 			}

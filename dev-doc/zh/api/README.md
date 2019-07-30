@@ -90,6 +90,19 @@
 	删除数据时的提交地址。如果有此参数，会在每一行的最后添加一列，此列中有一个“删除”按钮，点此按钮，会删除此行。
 * __See also__: todo
 
+### componentOrder
+* __Type__: `Array`
+* __Default__: [ 'title', 'tip', 'toolbar', 'search', 'table', 'pagination' ]
+* __Detail__: 
+
+	STable由几个“部件”构成，分别是：标题(title)、提示(tip)、工具栏(toolbar)、搜索区(search)、表格(table)、分页栏(pagination)。通过componentOrder，我们可以对部件的展示顺序自己调整，比如想把工具栏显示在表格下面，就可以这样设置
+	```js
+	STable.init({
+		//some other config
+		componentOrder: ['search', 'table', 'toolbar', 'pagination']
+	})
+	```
+* __See also__: todo
 
 ### downloadable
 * __Type__: `Boolean|String`
@@ -349,6 +362,13 @@
 	同sortKey，sortDirection决定了默认排序方向
 * __See also__: 
 
+### tip
+* __Type__: `String`
+* __Detail__: 
+
+	STable的提示区显示的内容
+* __See also__: 
+
 ### title
 * __Type__: `String`
 * __Detail__: 
@@ -480,5 +500,7 @@
 
 
 ## 实例属性
+title
+tip
 
 ## 实例方法
