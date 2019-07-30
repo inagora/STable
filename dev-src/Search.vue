@@ -6,18 +6,21 @@
 			'st-search-label-invisible':!labelVisible
 		}"
 	>
-		<x-form 
+		<x-form
 			:field-list="searchFilter"
 			inline
 			:label-visible="labelVisible"
-			@submit="search"
+			@submit="search()"
 		>
-			<x-button :native-type="'submit'" type="primary">
+			<x-button 
+				:native-type="'submit'" 
+				type="primary"
+			>
 				{{ locale.search }}
 			</x-button>
 			<x-button
 				v-if="searchResetable"
-				@click="reset"
+				@click.prevent="reset"
 			>
 				{{ locale.reset }}
 			</x-button>
@@ -28,6 +31,7 @@
 <script>
 import XButton from './com/Button.vue';
 import XForm from './form/form.vue';
+import {Console} from "./util/util.js";
 export default {
 	components:{ XButton, XForm },
 	inject: [
@@ -44,7 +48,11 @@ export default {
 	methods: {
 		search(data) {
 			//data处理
-			console.log(data);
+			Console.log(data);
+			this.$refs.form.submit();
+		},
+		reset() {
+			this.$refs.form.resetFields('uname,age');
 		}
 	}
 };

@@ -1,18 +1,22 @@
 <template>
-	<form class="st-form" :class="{'st-form-inline': inline}" @submit.prevent="clickFn()">
+	<form
+		class="st-form" 
+		:class="{'st-form-inline': inline}" 
+		@submit="submit()"
+		@reset="resetFields"
+	>
 		<div 
 			v-for="(item, index) in formConfig.fieldList || fieldList" 
 			:key="index" 
-			class="st-form-item" 
-			:class="{'st-form-inline': inline}"
+			class="st-form-item"
 		>
-			<div class="st-form-item-label">
+			<div v-if="labelVisible" class="st-form-item-label">
 				<label v-text="item.label"></label>
 			</div>
-			<div class="st-form-item-content" :class="{'st-form-inline': inline}">
+			<div class="st-form-item-content">
 				<x-input
 					v-if="item.type == 'input' || item.type == 'textarea'" 
-					v-model="item.value" 
+					v-model="formValue[item.name]" 
 					:type="item.type" 
 					:placeholder="item.placeholder || locale.inputMsg + item.label" 
 					:name="item.name"
@@ -20,11 +24,11 @@
 					@validate="fieldListFn($event,item.name)"
 				/>
 				<x-select
-					v-if="item.type == 'select'"  
+					v-if="['select','combobox','multiple'].includes(item.type)"  
 					v-model="item.value" 
 					:options="item.options" 
-					multiple
-					filterable
+					:multiple="item.type == 'multiple'"
+					:filterable="item.type == 'multiple'"
 					@selectchange="changeFn($event,item.name)"
 					@validate="fieldListFn($event,item.name)"
 				/>
@@ -50,6 +54,13 @@
 						@change="changeFn($event,item.name)"
 					/>
 				</template>
+				<template v-if="item.type == 'file'">
+					<x-upload 
+						:mode="item.mode"
+						:name="item.name"
+						:action="item.action"
+					/>
+				</template>
 				<!-- <template v-if="item.type == 'button'">
 					<div class="st-form-btn">
 						<x-button
@@ -57,7 +68,7 @@
 							:key="btnindex" 
 							class="st-form-btn-item" 
 							:type="btn.theme" 
-							@click.prevent="clickFn(btn)"
+							@click.prevent="submit(btn)"
 						>
 							{{ btn.text }}
 						</x-button>
@@ -77,14 +88,16 @@ import XSelect from "./select.vue";
 import XCheckbox from "./checkbox.vue";
 import XRadio from "./radio.vue";
 import XSwitch from "./switch.vue";
+import XUpload from "./upload.vue";
 // import XButton from "../com/Button.vue";
 import defaultLocale from '../../src/lang/en.js';
 import qtip from '../com/qtip';
+import {Console} from "../util/util.js";
 
 export default {
 	name: 'XForm',
 	componentName: 'XForm',
-	components: {XInput,XSelect,XCheckbox,XRadio,XSwitch},
+	components: {XInput,XSelect,XCheckbox,XRadio,XSwitch,XUpload},
 	props: {
 		formConfig: {
 			type: Object,
@@ -121,6 +134,10 @@ export default {
 		inline: {
 			type: Boolean,
 			default: false
+		},
+		labelVisible: {
+			type: Boolean,
+			default: true
 		}
 	},
 	inject: {
@@ -150,7 +167,6 @@ export default {
 		}
 	},
 	mounted() {
-
 		this.getFormList();
 	},
 	methods: {
@@ -176,7 +192,8 @@ export default {
 			}
 			this.formValue = tmpArr;
 		},
-		clickFn() {
+		submit() {
+			Console.log('submit');
 			let data = this.formValue;
 			this.$emit('submit', data);
 		},
@@ -211,6 +228,16 @@ export default {
 				};
 				fieldlist[name].validator(fieldlist[name], val, callback);
 			}
+		},
+		resetFields(fields){
+			// this.$refs.form.reset();
+			let tmpFields = fields.split(',');
+			if (tmpFields && tmpFields.length > 0) {
+				for (const item of tmpFields) {
+					this.formValue[item] = '';
+				}
+			}
+			
 		},
 	}
 };

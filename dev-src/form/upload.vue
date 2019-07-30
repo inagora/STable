@@ -1,13 +1,21 @@
 <template>
 	<div class="st-upload-wrap">
-		<template v-if="type == 'file'">
-			<div>
-				
-			</div>
-		</template>
-		<template v-if="type == 'img'">
-			<div>
-				
+		<template>
+			<div >
+				<input 
+					type="file"
+					ref="choosefile" 
+					hidden
+					multiple
+					@change="chooseUploadFile"
+				/>
+				<div v-for="(item, index) in uploadFiles" :key="name+ '-' +index" class="st-upload-file">
+					<div class="st-upload-file-name st-icon-file">{{item.name}}</div>
+					<div class="st-upload-file-icon st-icon-close" @click.prevent="delUploadFiles(index)"></div>
+				</div>
+				<x-button class="st-form-btn-item" type="primary" @click.prevent="click">
+					上传
+				</x-button>
 			</div>
 		</template>
 	</div>
@@ -16,208 +24,102 @@
 <script>
 import * as Tool from './tool';
 import XButton from "../com/Button.vue";
+import {Console} from "../util/util.js";
+import {ajax} from '../util/ajax';
+import qtip from '../com/qtip';
 
 export default {
 	name: 'XUpload',
 	mixins: [Tool],
 	componentName: 'XUpload',
-	components: {XButton},
+	components: {XButton,},
 	props: {
-		fileType: {
+		type: {
 			type: String,
 			default: 'file'
 		},
-		fileList: {
-			type: [Array],
-			default() {
-				return [];
-			}
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		},
-		readonly: {
-			type: Boolean,
-			default: false
-		},
-		showPassword: {
-			type: Boolean,
-			default: false
-		},
-		clearable: {
-			type: Boolean,
-			default: false
-		},
-		placeholder:{
+		action: {
 			type: String,
-			default: ''
+			default: '',
+			required: true
 		},
-		length: {
-			type: Number,
+		name: {
+			type: String,
+			default: 'file'
 		},
-		showWordLimit: {
-			type: Boolean,
-			default: false
-		},
-
 	},
 	data(){
 		return {
-			focused: false,
-			hovering: false,
+			uploadFiles: [],
+			params: {},
 		};
 	},
-	computed: {
-		showClear() {
-			return this.clearable && 
-        !this.disabled &&
-        !this.readonly &&
-        (this.focused || this.hovering);
-		},
-		nativeInputValue() {
-			return this.value === null || this.value === undefined ? '' : String(this.value);
-		},
-		isWordLimitVisible() {
-			return this.showWordLimit &&
-        this.$attrs.maxlength &&
-        (this.type === 'text' || this.type === 'textarea') &&
-        !this.disabled &&
-        !this.readonly &&
-        !this.showPassword;
-		},
-		upperLimit() {
-			return this.$attrs.maxlength;
-		},
-		textLength() {
-			if (typeof this.value === 'number') {
-				return String(this.value).length;
-			}
-			return (this.value || '').length;
-		},
-		inputExceed() {
-			return this.isWordLimitVisible &&
-        (this.textLength > this.upperLimit);
-		}
-	},
-	watch:{
-		// value(val) {
-		// },
-		nativeInputValue() {
-			this.setNativeInputValue();
-		},
-		type() {
-			this.$nextTick(() => {
-				this.setNativeInputValue();
-			});
-		}
-	},
-	mounted(){
-		this.setNativeInputValue();
+	watch: {
+		// uploadFiles(){
+		// 	let params = this.params;
+		// 	this.ajaxUploadFile(params);
+		// }
 	},
 	methods: {
-		setNativeInputValue() {
-			const input = this.getInput();
-			if (!input) return;
-			if (input.value === this.nativeInputValue) return;
-			input.value = this.nativeInputValue;
+		click() {
+			this.$refs.choosefile.click();
 		},
-		focus() {
-			this.getInput().focus();
+		chooseUploadFile() {
+			this.uploadFiles = [];
+			let files = this.$refs.choosefile.files;
+			if (!files.length) {
+				this.uploadFiles = [];
+			} else {
+				for (const item of files) {
+					this.uploadFiles.push(item);
+				}
+			}
+			this.ajaxUploadFiles(this.uploadFiles);
 		},
-		blur() {
-			this.getInput().blur();
+		delUploadFiles(index) {
+			if (index > -1) {
+				let value = this.uploadFiles;
+				value.splice(index, 1);
+				this.uploadFiles = value;
+				this.ajaxUploadFiles(this.uploadFiles);
+			}
 		},
-		handleFocus(event) {
-			this.focused = true;
-			this.$emit('focus', event);
-		},
-		handleBlur(event) {
-			this.focused = false;
-			this.$emit('blur', event);
-			this.$emit('validate', event.target.value);
-		},
-		handleInput(event) {
-			if (event.target.value === this.nativeInputValue) return;
-			this.$emit('input', event.target.value);
-			this.$nextTick(this.setNativeInputValue);
-		},
-		handleChange(event) {
-			this.$emit('change', event.target.value);
-		},
-		clear(){
-			this.$emit('input', '');
-			this.$emit('change', '');
-			this.$emit('clear');
-		},
-		getInput() {
-			return this.$refs.input || this.$refs.textarea;
-		},
+		ajaxUploadFiles(files) {
+			let params = new FormData();
+			params.append(this.name, files);
+			return ajax({url: this.action, params, type: 'POST'}).then(res=>{
+				res = res[0];
+				if(res.errno==0 || res.code==0) {
+					Console.log(res.data);
+					this.$refs.choosefile.value = null;
+				} else {
+					qtip.error(res.msg);
+				}
+			});
+		}
 	},
 };
 </script>
 
 
 <style lang='scss' scoped>
-.st-input-wrap {
+.st-upload-wrap {
   width: 100%;
   display: flex;
-
-  &-item {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    border: 1px solid #dcdfe6;
-    font-size: inherit;
-    padding: 0 15px;
-    outline: none;
-    text-align: left; 
-    border-radius: 4px;
-    position: relative;
-  }
-
-  &-disabled {
-    background: #f5f7fa;
-    border-color: #e4e7ed;
-    color: #c0c4cc;
-    cursor: not-allowed;
-  }
-  &-clear  {
-    position: relative;
-    right: 10px;
-    width: 20px;
-    height: 20px;
-    transform: translate(0, 50%);
-    right: 20px;
-    top: 50%;
-  }
-  
 }
-.st-textarea-wrap {
-  position: relative;
+.st-upload-file {
+	display: flex;
+	font-family: 'st-iconfont';
+	justify-content: space-between;
 
-  &-con {
-    width: 100%;
-    min-height: 80px;
-    text-align: left; 
-    padding: 0 15px;
-    outline: none;
-    font-size: inherit;
-    border-radius: 4px;
-    border: 1px solid #dcdfe6;
-  }
-
-  &-exceed{
-    background: #fef0f0;
-    border-color: #fbc4c4;
-  }
-
-  &-count {
-    // color: #f56c6c;
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-  }
+  &-name {
+		font-size: 12px;
+		margin-left: 30px;
+	}
+	&-icon {
+		width: 40px;
+		height: 40px;
+	}
 }
 </style>
 
