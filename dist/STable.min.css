@@ -584,6 +584,24 @@
 	opacity: 1;
 	margin-top: 8px;
 }
+.st-upload-wrap[data-v-28bda1ab] {
+  width: 100%;
+  display: flex;
+}
+.st-upload-file[data-v-28bda1ab] {
+  display: flex;
+  font-family: 'st-iconfont';
+  justify-content: space-between;
+}
+.st-upload-file-name[data-v-28bda1ab] {
+    font-size: 12px;
+    margin-left: 30px;
+}
+.st-upload-file-icon[data-v-28bda1ab] {
+    width: 40px;
+    height: 40px;
+}
+
 .st-form[data-v-c6c07924] {
   width: 100%;
   position: relative;
@@ -1240,7 +1258,9 @@ to {
 .st-icon-eye-close:before {
   content: "\e8ff";
 }
-
+.st-icon-file:before {
+	content: "\e607";
+}
 
 @charset "UTF-8";
 .st-stable,

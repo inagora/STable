@@ -359,10 +359,10 @@ export default {
 			conf.sortDirection = 'asc';
 
 		let loc = window.location;
-		conf._key = hashCode(loc.host+loc.pathname+JSON.stringify(columns));
+		conf._storage_key = hashCode(loc.host+loc.pathname+JSON.stringify(columns));
 		let localColumnSet;
 		try{
-			localColumnSet = window.localStorage.getItem(conf._key);
+			localColumnSet = window.localStorage.getItem(conf._storage_key);
 			if(localColumnSet)
 				localColumnSet = JSON.parse(localColumnSet);
 		}catch(e){
@@ -390,7 +390,7 @@ export default {
 		let self = this;
 		conf.store = new Vue({
 			data: {
-				_key: conf._key,
+				storageKey: conf._storage_key,
 				columns,
 				page: conf.params.page || 1,
 				pageCount: 1,
@@ -418,14 +418,14 @@ export default {
 					});
 
 					try{
-						window.localStorage.setItem(this._key, JSON.stringify(colState));
+						window.localStorage.setItem(this.storageKey, JSON.stringify(colState));
 					}catch(e){
 						Console.error(e);
 					}
 				},
 				resetColumnsState(){
 					try{
-						window.localStorage.removeItem(this._key);
+						window.localStorage.removeItem(this.storageKey);
 						location.reload();
 					}catch(e){
 						Console.error(e);

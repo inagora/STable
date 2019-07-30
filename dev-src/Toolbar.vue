@@ -9,7 +9,8 @@
 				v-else
 				:key="btnIdx"
 				v-bind="btn"
-				@submit="triggerClick(btn, $event)">
+				@submit="triggerClick(btn, $event)"
+			>
 				{{ btn.text }}
 			</x-button>
 		</template>
