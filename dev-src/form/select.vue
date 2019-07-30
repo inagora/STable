@@ -75,7 +75,7 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
-import {loadJs} from '../util';
+import {loadJs} from '../util/util';
 
 const regExpString = (value = '') => String(value).replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
 

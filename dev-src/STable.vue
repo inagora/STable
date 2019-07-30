@@ -22,7 +22,7 @@ import XSearch from './Search.vue';
 import XTable from './table/index.vue';
 import XPagination from './Pagination.vue';
 import defaultLang from './lang/en.js';
-import {hashCode, Console} from "./util.js";
+import {hashCode, Console} from "./util/util.js";
 let stableCount = 0;
 export default {
 	props: {

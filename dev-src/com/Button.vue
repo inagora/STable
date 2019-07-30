@@ -64,7 +64,7 @@ export default {
 				type: this.nativeType,
 				on: {
 					click(evt){
-						evt.preventDefault();
+						// evt.preventDefault();
 						self.$emit('click', evt);
 					}
 				},

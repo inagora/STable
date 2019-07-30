@@ -7,17 +7,20 @@
 		}"
 	>
 		<x-form
-			ref="form"
-			:field-list="defaultVal"
+			:field-list="searchFilter"
 			inline
-			@submit="search($event)"
+			:label-visible="labelVisible"
+			@submit="search()"
 		>
-			<x-button :native-type="'submit'">
+			<x-button 
+				:native-type="'submit'" 
+				type="primary"
+			>
 				{{ locale.search }}
 			</x-button>
 			<x-button
 				v-if="searchResetable"
-				@click="reset"
+				@click.prevent="reset"
 			>
 				{{ locale.reset }}
 			</x-button>
@@ -28,8 +31,7 @@
 <script>
 import XButton from './com/Button.vue';
 import XForm from './form/form.vue';
-import { Console } from './util';
-// import {Console} from "./util.js";
+import {Console} from "./util/util.js";
 export default {
 	components:{ XButton, XForm },
 	inject: [
@@ -43,55 +45,11 @@ export default {
 		'ignoreEmptySearchParam',
 		'locale'
 	],
-	data() {
-		return {
-			//老版本参数
-			defaultVal: [
-				{
-					type: 'input',
-					label: '姓名',
-					name: 'uname',
-					value: 'pjc',
-					required: true
-				},
-				{
-					type: 'input',
-					label: '年龄',
-					name: 'age',
-					value: '25',
-					required: true
-				},
-				{
-					type: 'combobox',
-					label: '影片类型',
-					name: 'selectname',
-					options: [
-						{value: 'xiju',label: '喜剧'},
-						{value: 'xuanyi',label: '悬疑'}
-					],
-				}
-			], 
-			//新版本参数
-			formConfigData: {
-				getConfig: {
-					url: '/ajaxFormList',
-					read: 'GET',
-					data: {}
-				},
-				fieldList: [],
-			},
-		};
-	},
-	mounted(){
-		// if(this.searchFilter) {
-		// 	this.store.searchParams = this.getParams();
-		// }
-	},
 	methods: {
 		search(data) {
 			//data处理
 			Console.log(data);
-			// this.$refs.form.submit();
+			this.$refs.form.submit();
 		},
 		reset() {
 			this.$refs.form.resetFields('uname,age');
@@ -100,6 +58,8 @@ export default {
 };
 </script>
 
-<style>
-
+<style lang="scss">
+.st-search{
+	border-bottom: 1px solid #d0d0d0;
+}
 </style>

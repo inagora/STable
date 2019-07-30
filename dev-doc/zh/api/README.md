@@ -5,6 +5,33 @@
 
 对于一些过时的参数，我们会打上<sup style="color:red">dep</sup>标识。
 
+### acc
+* __Type__: `Object`
+* __Detail__:
+
+	是additionalColumnConfig的缩写。有时候列配置columns是从服务端下发的，但在页面里还需要用js做一些额外配置，就可以用这个参数配置
+* __Usage__:
+	```html
+	<script>
+	var columns={%$columns|json%}; //模板下发了列配置
+	STable.init({
+		//some other config
+		columns,
+		acc: {	//额外增加一些列设置
+			actorName: {
+				width: 200
+			},
+			avatar: {
+				render(record){
+					return `<a href="/avatar/big/${record.id}" target="_blank"><img src="${record.avatar}"></a>`;
+				}
+			}
+		}
+	});
+	</script>
+	```
+* __See also__: todo
+
 ### actionMethods
 * __Type__: `Object`
 * __Default__:
@@ -94,6 +121,14 @@
 	超时时间(毫秒)。全量下载所有数据时，会分页面请求数据，可以用此参数指定每个页面请求的超时时间。如果超时，会中断请求，重新发起一个。
 * __See also__: todo
 
+### dynamicParallelCount
+* __Type__: `Boolean`
+* __Default__: false
+* __Detail__: 
+
+	全量下载表格时，根据下载速度，动态调整最大并行数
+* __See also__: todo
+
 
 ### editConfig
 * __Type__: `Array`
@@ -129,6 +164,14 @@
 	crud操作(增删改查)中，修改或者删除行时，由此参数来唯一标识行数据，并发给服务端。
 * __See also__: todo
 
+### ignoreEmptySearchParam
+* __Type__: `Boolean`
+* __default__: true
+* __Detail__: 
+
+	忽略搜索条件中空字符串的项，在请求页数据时，不带上它们
+* __See also__: todo
+
 ### labelVisible
 * __Type__: `Boolean`
 * __Default__: true
@@ -146,6 +189,13 @@
 	* "fixed"，固定高度模式。STable所在区域高度固定，会根据总体高度、工具栏、搜索区和分页区，决定表格区的高度
 	* "expand"，自动伸展模式。STable高度不固定，根据表格区行数不同，自动调整STable的高度。
 * __See also__: 
+
+### locale
+* __Type__: `String|Object`
+* __Detail__: 
+
+	STable使用的语言配置。
+* __See also__: todo
 
 ### sublistAt
 * __Type__: `Array|String`
@@ -180,95 +230,159 @@
 * __See also__: 
 	* [事件](##listeners)
 
-### 
-* __Type__: ``
-* __Default__: 
+### page
+* __Type__: `Number`
+* __Default__: 1
 * __Detail__: 
+
+	初始加载的页号。
+	::: tip
+	页号从1开始。
+	:::
 * __Usage__: 
 * __See also__: 
 
-### 
-* __Type__: ``
-* __Default__: 
+### pageMode
+* __Type__: `String`
+* __Default__: "normal"
 * __Detail__: 
+
+	分页模式。目前支持两种：
+	* normal，模认的分页模式，需要通过页号和每页的行数，决定每一页的数据内容
+	* waterfall，瀑布流模式，需要根据当前页的第一行的pageIndex向前找上一页或者最后一行数据的pageIndex向后找一页的数据
 * __Usage__: 
 * __See also__: 
 
-### 
-* __Type__: ``
-* __Default__: 
+### pageIndex
+* __Type__: `String` 
+* __default__: "id"
 * __Detail__: 
+
+	如果分页模式是瀑布模式(waterfall)，需要指定由哪个数据字段决定分页，默认是id
 * __Usage__: 
 * __See also__: 
 
-### 
-* __Type__: ``
-* __Default__: 
+### parallelCount
+* __Type__: `Number` 
+* __default__: 6
 * __Detail__: 
+
+	全量下载表格时，并行请求数
 * __Usage__: 
 * __See also__: 
 
-### 
-* __Type__: ``
-* __Default__: 
+### params
+* __Type__: `Object`
+* __default__:
+	```json
+	params: {
+		count: 20
+	}
+	```
 * __Detail__: 
+
+	从服务端拉取每页数据时，params中的值也会当做参数一起发送过去。使用这个字段，可以让开发者自定义一些参数，发给列表接口。比如，可以设置
+	```json
+	params: {
+		count: 100
+	}
+	```
+	让每页请求100条数据，而不是默20条。
+* __See also__: 
+
+### records
+* __Type__: `Array` 
+* __Detail__: 
+
+	静态化数据，设置了它后，就不会动态加载页面数据了。直接展示它定义的表格数据
 * __Usage__: 
 * __See also__: 
 
-### 
-* __Type__: ``
-* __Default__: 
+### rowNumberVisible
+* __Type__: `Boolean`
+* __Default__: false
 * __Detail__: 
+
+	是否在行首显示行号。
+* __See also__: 
+
+### searchFilter
+* __Type__: `array|Object`
+* __Detail__: 
+
+	搜索区域的配置。因为搜索区域本质上是一个form表单，搜索配置其实是表单项的配置
 * __Usage__: 
 * __See also__: 
 
-### 
-* __Type__: ``
-* __Default__: 
+### searchResetable
+* __Type__: `Boolean`
+* __Default__: false
 * __Detail__: 
+
+	在搜索区是否显示“重置”按钮
+* __See also__: 
+
+### selectMode
+* __Type__: `String`
+* __Default__: "none"
+* __Detail__: 
+
+	行的选择模式。在单选框或复选框选择行之后，可以通过STable的getSelectedRows接口获取所有选中的行。有以下三种模式：
+	* 'none'，在表格行前面不显示选择按钮
+	* 'single'，单选模式，在表格行前显示单选按钮
+	* 'multiple'，多选模式，在表格行前显示多选按钮
 * __Usage__: 
 * __See also__: 
 
-### 
-* __Type__: ``
-* __Default__: 
+### sortKey
+* __Type__: `String`
 * __Detail__: 
-* __Usage__: 
+
+	默认按哪个列排序，它决定请求页数据时，sort_key字段的值。
 * __See also__: 
 
-### 
-* __Type__: ``
-* __Default__: 
+### sortDirection
+* __Type__: `String`
+* __Default__:  "asc"
 * __Detail__: 
-* __Usage__: 
+
+	同sortKey，sortDirection决定了默认排序方向
 * __See also__: 
 
-### 
-* __Type__: ``
-* __Default__: 
+### title
+* __Type__: `String`
 * __Detail__: 
-* __Usage__: 
+
+	标题，显示在标题栏。它也会用作下载时的默认文件名。
 * __See also__: 
 
-### 
-* __Type__: ``
-* __Default__: 
+### titleVisible
+* __Type__: `Boolean`
+* __Default__: false
 * __Detail__: 
-* __Usage__: 
+
+	是否显示标题栏。
 * __See also__: 
 
-### 
-* __Type__: ``
-* __Default__: 
+### toolbar
+* __Type__: `Array`
 * __Detail__: 
-* __Usage__: 
+
+	表格的工具栏，它里面是按钮或分割符。
 * __See also__: 
 
-### 
-* __Type__: ``
-* __Default__: 
+### updateUrl
+* __Type__: `String`
 * __Detail__: 
-* __Usage__: 
+
+	修改行数据时的提交地址。如果有此参数，会在每一行的最后添加一列，此列中有一个“修改”按钮，点此按钮，会显示修改窗口。
+* __See also__: 
+
+### url
+* __Type__: `String`
+* __Detail__: 
+
+	请求每页数据的异步接口。
 * __See also__: 
 
 ### 

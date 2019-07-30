@@ -1,7 +1,7 @@
 import STable from './STable.vue';
 import SidePanel from './com/SidePanel.js';
 import {create} from './com/Dialog.js';
-import {Console} from './util';
+import {Console} from './util/util';
 import XForm from './form/form.vue';
 
 //测试代码，请注意删除

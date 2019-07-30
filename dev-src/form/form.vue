@@ -2,15 +2,15 @@
 	<form
 		class="st-form" 
 		:class="{'st-form-inline': inline}" 
-		@submit.prevent="submitFormData"
-		@reset.prevent="resetFields"
+		@submit="submit()"
+		@reset="resetFields"
 	>
 		<div 
 			v-for="(item, index) in formConfig.fieldList || fieldList" 
 			:key="index" 
 			class="st-form-item"
 		>
-			<div class="st-form-item-label">
+			<div class="st-form-item-label" v-if="labelVisible">
 				<label v-text="item.label"></label>
 			</div>
 			<div class="st-form-item-content">
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import {ajax} from '../ajax';
+import {ajax} from '../util/ajax';
 import XInput from "./input.vue";
 import XSelect from "./select.vue";
 import XCheckbox from "./checkbox.vue";
@@ -84,7 +84,7 @@ import XSwitch from "./switch.vue";
 // import XButton from "../com/Button.vue";
 import defaultLocale from '../../src/lang/en.js';
 import qtip from '../com/qtip';
-import {Console} from "../util.js";
+import {Console} from "../util/util.js";
 
 export default {
 	name: 'XForm',
@@ -126,6 +126,10 @@ export default {
 		inline: {
 			type: Boolean,
 			default: false
+		},
+		labelVisible: {
+			type: Boolean,
+			default: true
 		}
 	},
 	inject: {
@@ -180,7 +184,7 @@ export default {
 			}
 			this.formValue = tmpArr;
 		},
-		submitFormData() {
+		submit() {
 			Console.log('submit');
 			let data = this.formValue;
 			this.$emit('submit', data);

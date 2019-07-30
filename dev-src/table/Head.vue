@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import {isSafari} from '../util';
+import {isSafari} from '../util/util';
 /**
  * @param {String} column.desc 列头的描述
  */
