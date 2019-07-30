@@ -109,4 +109,6 @@
 .st-icon-eye-close:before {
   content: "\e8ff";
 }
-
+.st-icon-file:before {
+	content: "\e607";
+}

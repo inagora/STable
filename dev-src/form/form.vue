@@ -10,7 +10,7 @@
 			:key="index" 
 			class="st-form-item"
 		>
-			<div class="st-form-item-label" v-if="labelVisible">
+			<div v-if="labelVisible" class="st-form-item-label">
 				<label v-text="item.label"></label>
 			</div>
 			<div class="st-form-item-content">
@@ -54,6 +54,13 @@
 						@change="changeFn($event,item.name)"
 					/>
 				</template>
+				<template v-if="item.type == 'file'">
+					<x-upload 
+						:mode="item.mode"
+						:name="item.name"
+						:action="item.action"
+					/>
+				</template>
 				<!-- <template v-if="item.type == 'button'">
 					<div class="st-form-btn">
 						<x-button
@@ -81,6 +88,7 @@ import XSelect from "./select.vue";
 import XCheckbox from "./checkbox.vue";
 import XRadio from "./radio.vue";
 import XSwitch from "./switch.vue";
+import XUpload from "./upload.vue";
 // import XButton from "../com/Button.vue";
 import defaultLocale from '../../src/lang/en.js';
 import qtip from '../com/qtip';
@@ -89,7 +97,7 @@ import {Console} from "../util/util.js";
 export default {
 	name: 'XForm',
 	componentName: 'XForm',
-	components: {XInput,XSelect,XCheckbox,XRadio,XSwitch},
+	components: {XInput,XSelect,XCheckbox,XRadio,XSwitch,XUpload},
 	props: {
 		formConfig: {
 			type: Object,
