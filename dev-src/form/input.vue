@@ -133,8 +133,6 @@ export default {
 		}
 	},
 	watch:{
-		// value(val) {
-		// },
 		nativeInputValue() {
 			this.setNativeInputValue();
 		},
