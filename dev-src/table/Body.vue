@@ -98,8 +98,7 @@
 								:icon="btn.icon"
 								@click="btnClick(btn, record, $event)"
 							>
-								{{ btn.text
-								}}
+								{{ btn.text }}
 							</x-button>
 						</div>
 					</td>

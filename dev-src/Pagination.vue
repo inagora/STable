@@ -173,7 +173,7 @@ export default {
 	}
 	& &-active{
 		color: #1890ff;
-		border-color: #1890ff;
+		// border-color: #1890ff;
 		font-weight: 500;
 	}
 	.st-toolbar-separator{
