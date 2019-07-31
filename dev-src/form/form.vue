@@ -2,7 +2,7 @@
 	<form
 		class="st-form" 
 		:class="{'st-form-inline': inline}" 
-		@submit="submit()"
+		@submit.prevent="submit"
 		@reset="resetFields"
 	>
 		<div 
@@ -193,7 +193,7 @@ export default {
 			this.formValue = tmpArr;
 		},
 		submit() {
-			Console.log('submit');
+			Console.log('form submit');
 			let data = this.formValue;
 			this.$emit('submit', data);
 		},
@@ -237,7 +237,6 @@ export default {
 					this.formValue[item] = '';
 				}
 			}
-			
 		},
 	}
 };

@@ -7,10 +7,10 @@
 		}"
 	>
 		<x-form
+			ref="form"
 			:field-list="searchFilter"
 			inline
 			:label-visible="labelVisible"
-			@submit="search()"
 		>
 			<x-button 
 				:native-type="'submit'" 
@@ -31,7 +31,7 @@
 <script>
 import XButton from './com/Button.vue';
 import XForm from './form/form.vue';
-import {Console} from "./util/util.js";
+// import {Console} from "./util/util.js";
 export default {
 	components:{ XButton, XForm },
 	inject: [
@@ -46,9 +46,9 @@ export default {
 		'locale'
 	],
 	methods: {
-		search(data) {
+		search() {
 			//data处理
-			Console.log(data);
+			// Console.log(data);
 			this.$refs.form.submit();
 		},
 		reset() {

@@ -1,28 +1,27 @@
 <template>
 	<div class="st-upload-wrap">
-		<template>
-			<div >
-				<input 
-					type="file"
-					ref="choosefile" 
-					hidden
-					multiple
-					@change="chooseUploadFile"
-				/>
-				<div v-for="(item, index) in uploadFiles" :key="name+ '-' +index" class="st-upload-file">
-					<div class="st-upload-file-name st-icon-file">{{item.name}}</div>
-					<div class="st-upload-file-icon st-icon-close" @click.prevent="delUploadFiles(index)"></div>
+		<div>
+			<input 
+				ref="choosefile" 
+				type="file"
+				hidden
+				multiple
+				@change="chooseUploadFile"
+			/>
+			<div v-for="(item, index) in uploadFiles" :key="index" class="st-upload-file">
+				<div class="st-upload-file-name st-icon-file">
+					{{ item.name }}
 				</div>
-				<x-button class="st-form-btn-item" type="primary" @click.prevent="click">
-					上传
-				</x-button>
+				<div class="st-upload-file-icon st-icon-close" @click.prevent="delUploadFiles(index)"></div>
 			</div>
-		</template>
+			<x-button class="st-form-btn-item" type="primary" @click.prevent="click">
+				上传
+			</x-button>
+		</div>
 	</div>
 </template>
 
 <script>
-import * as Tool from './tool';
 import XButton from "../com/Button.vue";
 import {Console} from "../util/util.js";
 import {ajax} from '../util/ajax';
@@ -30,9 +29,7 @@ import qtip from '../com/qtip';
 
 export default {
 	name: 'XUpload',
-	mixins: [Tool],
-	componentName: 'XUpload',
-	components: {XButton,},
+	components: {XButton},
 	props: {
 		type: {
 			type: String,
