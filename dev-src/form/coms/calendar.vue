@@ -97,8 +97,10 @@ export default {
 	},
 	props: {
 		value: {
-			type: [Object,String],
-			default: null
+			type: [Date,Object,String],
+			default() {
+				return new Date();
+			}
 		},
 		left: {
 			type: Boolean,
