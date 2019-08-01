@@ -15,7 +15,7 @@
 			</div>
 			<div class="st-form-item-content">
 				<x-input
-					v-if="item.type == 'input' || item.type == 'textarea' || !item.type" 
+					v-if="item.type == 'text' || item.type == 'input' || item.type == 'textarea' || !item.type" 
 					v-model="formValue[item.name]" 
 					:type="item.type" 
 					:placeholder="item.placeholder || locale.inputMsg + item.label" 
@@ -62,11 +62,11 @@
 					/>
 				</template>
 				<template>
-					<div v-if="item.type == 'date' && dataRange.length>0">
+					<div v-if="['date','time','datetime'].includes(item.type)">
 						<x-datetime-picker
 							:value="time"
 							:name="item.name"
-							format="YYYY-MM-DD HH:mm:ss"
+							:format="item.type == 'date' ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss'"
 							@input="dateChangeFn($event, item.name)"
 						/>
 					</div>
