@@ -11,5 +11,8 @@ module.exports = {
 			title: 'STable - 专注于表格',
 			description: '一个专注于web表格展示的工具'
 		}
+	},
+	themeConfig: {
+		sidebar:'auto'
 	}
 };
