@@ -10,12 +10,12 @@
 			:key="index" 
 			class="st-form-item"
 		>
-			<div v-if="labelVisible" class="st-form-item-label">
+			<div v-if="labelVisible" class="st-form-item-label" :class="{'st-form-item-label-left': inline}">
 				<label v-text="item.label"></label>
 			</div>
 			<div class="st-form-item-content">
 				<x-input
-					v-if="item.type == 'input' || item.type == 'textarea'" 
+					v-if="item.type == 'text' || item.type == 'input' || item.type == 'textarea' || !item.type" 
 					v-model="formValue[item.name]" 
 					:type="item.type" 
 					:placeholder="item.placeholder || locale.inputMsg + item.label" 
@@ -61,6 +61,16 @@
 						:action="item.action"
 					/>
 				</template>
+				<template>
+					<div v-if="['date','time','datetime'].includes(item.type)">
+						<x-datetime-picker
+							:value="time"
+							:name="item.name"
+							:format="item.type == 'date' ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss'"
+							@input="dateChangeFn($event, item.name)"
+						/>
+					</div>
+				</template>
 				<!-- <template v-if="item.type == 'button'">
 					<div class="st-form-btn">
 						<x-button
@@ -89,6 +99,7 @@ import XCheckbox from "./checkbox.vue";
 import XRadio from "./radio.vue";
 import XSwitch from "./switch.vue";
 import XUpload from "./upload.vue";
+import XDatetimePicker from "./datetimepicker.vue";
 // import XButton from "../com/Button.vue";
 import defaultLocale from '../../src/lang/en.js';
 import qtip from '../com/qtip';
@@ -97,7 +108,7 @@ import {Console} from "../util/util.js";
 export default {
 	name: 'XForm',
 	componentName: 'XForm',
-	components: {XInput,XSelect,XCheckbox,XRadio,XSwitch,XUpload},
+	components: {XInput,XSelect,XCheckbox,XRadio,XSwitch,XUpload,XDatetimePicker},
 	props: {
 		formConfig: {
 			type: Object,
@@ -151,7 +162,14 @@ export default {
 			checkedValue: [],
 			showErr: false,
 			errMsg: '',
+			dataRange: [],
+			time: new Date(),
 		};
+	},
+	computed: {
+		syncTime(){
+			return new Date();
+		}
 	},
 	watch: {
 		errMsg(val) {
@@ -189,15 +207,19 @@ export default {
 			for (const item of this.formConfig.fieldList) {
 				if(item.type != 'button')
 					tmpArr[item.name] = item.value || '';
+				if(item.type == 'date') {
+					this.dataRange.push(item);
+				}
 			}
 			this.formValue = tmpArr;
 		},
 		submit() {
-			Console.log('form submit');
 			let data = this.formValue;
+			Console.log(data);
 			this.$emit('submit', data);
 		},
 		changeFn(val,name) {
+			Console.log(val);
 			this.formValue = Object.assign(this.formValue,{[name]: val});
 		},
 		checkboxFn(param,name) {
@@ -211,6 +233,10 @@ export default {
 				this.checkedValue.splice(idx,1);
 			}
 			this.formValue[name] = this.checkedValue.toString();
+		},
+		dateChangeFn(val,name){
+			let realDate = this.timeFormat(val,'YYYY-MM-DD');
+			this.changeFn(realDate,name);
 		},
 		getType(target) {
 			if (this.formConfig[target] && this.formConfig[target].type) {
@@ -238,6 +264,34 @@ export default {
 				}
 			}
 		},
+		timeFormat (time, format) {
+			const year = time.getFullYear();
+			const month = time.getMonth();
+			const day = time.getDate();
+			const hours24 = time.getHours();
+			const hours = hours24 % 12 === 0 ? 12 : hours24 % 12;
+			const minutes = time.getMinutes();
+			const seconds = time.getSeconds();
+			const milliseconds = time.getMilliseconds();
+			const dd = t => ('0' + t).slice(-2);
+			const map = {
+				YYYY: year,
+				MM: dd(month + 1),
+				M: month + 1,
+				DD: dd(day),
+				D: day,
+				HH: dd(hours24),
+				H: hours24,
+				hh: dd(hours),
+				h: hours,
+				mm: dd(minutes),
+				m: minutes,
+				ss: dd(seconds),
+				s: seconds,
+				S: milliseconds
+			};
+			return format.replace(/Y+|M+|D+|H+|h+|m+|s+|S+/g, str => map[str]);
+		},
 	}
 };
 </script>
@@ -248,7 +302,8 @@ export default {
 		position: relative;
 
     &-item {
-      margin-bottom: 22px;
+			margin-bottom: 6px;
+			margin-right: 10px;
       
       &-label {
         min-width: 80px;
@@ -259,7 +314,11 @@ export default {
         color: #606266;
         line-height: 40px;
         padding: 0 12px 0 0;
-        box-sizing: border-box;
+				box-sizing: border-box;
+
+				&-left {
+					text-align: left;
+				}
       }
 
       &-content {
@@ -298,6 +357,7 @@ export default {
 
 		&-inline {
 			display: flex;
+			flex-wrap: wrap;
 			flex-direction: row;
 			margin-left: 0;
 		}

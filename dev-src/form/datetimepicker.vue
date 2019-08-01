@@ -46,6 +46,7 @@ export default {
 	props: {
 		name: {
 			type: [String],
+			required: true,
 			default: ''
 		},
 		inputClass: {
@@ -57,8 +58,10 @@ export default {
 			default: ''
 		},
 		value: {
-			type: [Date, Array, String],
-			default: '',
+			type: [Date, Array, String, Object],
+			default() {
+				return new Date();
+			},
 		},
 		disabled: {
 			type: [Boolean],
