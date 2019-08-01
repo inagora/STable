@@ -81,6 +81,8 @@
 				left: endResizePos+'px'
 			}"
 		></div>
+
+		<x-flyman :visible="flymanVisible" />
 	</div>
 </template>
 
@@ -88,6 +90,7 @@
 import XHead from './Head.vue';
 import XBody from './Body.vue';
 import XMenu from './Menu';
+import XFlyman from '../com/FlyMan.vue';
 import {ajax} from '../util/ajax';
 import data from './data.mixin.js';
 import drag from './drag.mixin.js';
@@ -95,7 +98,7 @@ import resize from './resize.mixin.js';
 import ResizeObserver from '../util/ResizeObserver';
 import {create as createDia} from '../com/Dialog';
 export default {
-	components: {XHead, XBody, XMenu},
+	components: {XHead, XBody, XMenu, XFlyman},
 	mixins: [data, drag, resize],
 	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode'],
 	data() {

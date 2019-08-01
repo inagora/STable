@@ -146,7 +146,7 @@ export default {
 						}
 					}else{
 						this.setRecords(res.data.list);
-						this.store.page_count = res.data.page_count||this.store.page;
+						this.store.pageCount = res.data.page_count||this.store.page;
 					}
 				}
 
@@ -295,9 +295,9 @@ export default {
 				let list = [];
 				let jobList = [];
 				let retryList = [];
-				let page_count = this.store.page_count||1;
+				let pageCount = this.store.pageCount||1;
 				if(this.downloadAllFromJustOnePage) {
-					page_count = 1;
+					pageCount = 1;
 				}
 				let pnoIdx = 0;
 				/**
@@ -337,20 +337,20 @@ export default {
 						res = res[0];
 						list[params.page] = res.data&&res.data.list||[];
 						if(res.data && res.data.page_count)
-							page_count = res.data.page_count;
+							pageCount = res.data.page_count;
 						let jobIndex = jobList.indexOf(job);
 						jobList.splice(jobIndex, 1);
 						startJob();
 
 						loadedCount++;
-						let per = loadedCount*100/page_count;
+						let per = loadedCount*100/pageCount;
 						if(per>0 && per<1)
 							per = 1;
 						else if(per>99 && per<100)
 							per = 99;
 						else
 							per = Math.floor(per);
-						progressbar.update(per/100, `已下载${loadedCount}页，共${page_count}页`);
+						progressbar.update(per/100, `已下载${loadedCount}页，共${pageCount}页`);
 					}, function(){
 						loadTime.push(new Date() - startTime);
 						jobList.splice(jobList.indexOf(job), 1);
@@ -390,16 +390,16 @@ export default {
 						let pno = retryList.shift();
 						jobList.push(createJob(pno));
 						startJob();
-					}else if(pnoIdx < page_count) {
+					}else if(pnoIdx < pageCount) {
 						pnoIdx++;
 						jobList.push(createJob(pnoIdx));
 						startJob();
 					}
 					
-					if(retryList.length<=0 && jobList.length<=0 && pnoIdx>=page_count) {
+					if(retryList.length<=0 && jobList.length<=0 && pnoIdx>=pageCount) {
 						progressbar.destroy();
 						let ret = [];
-						for(let i=1;i<=page_count;i++){
+						for(let i=1;i<=pageCount;i++){
 							if(!list[i])
 								alert('页面 '+i+' 数据有问题');
 							ret = ret.concat(list[i]);
