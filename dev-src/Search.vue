@@ -10,6 +10,7 @@
 			ref="form"
 			:field-list="searchFilter"
 			inline
+			:size="'small'"
 			:label-visible="labelVisible"
 		>
 			<x-button 

@@ -7,8 +7,9 @@
 	>
 		<div 
 			v-for="(item, index) in formConfig.fieldList || fieldList" 
-			:key="index" 
+			:key="index"
 			class="st-form-item"
+			:class="size"
 		>
 			<div v-if="labelVisible" class="st-form-item-label" :class="{'st-form-item-label-left': inline}">
 				<label v-text="item.label"></label>
@@ -149,6 +150,10 @@ export default {
 		labelVisible: {
 			type: Boolean,
 			default: true
+		},
+		size: {
+			type: String,
+			default: 'medium'
 		}
 	},
 	inject: {
@@ -300,20 +305,29 @@ export default {
   .st-form {
     width: 100%;
 		position: relative;
+		.small {
+			font-size: 8px;
+		}
+		.medium {
+			font-size: 9px;
+		}
+		.large {
+			font-size: 10px;
+		}
 
     &-item {
 			margin-bottom: 6px;
 			margin-right: 10px;
       
       &-label {
-        min-width: 80px;
+        // min-width: 80px;
         text-align: right;
         vertical-align: middle;
         float: left;
-        font-size: 14px;
+        font-size: 1.4em;
         color: #606266;
-        line-height: 40px;
-        padding: 0 12px 0 0;
+        line-height: 3em;
+        padding: 0 1.2em 0 0;
 				box-sizing: border-box;
 
 				&-left {
@@ -322,10 +336,16 @@ export default {
       }
 
       &-content {
-        margin-left: 100px;
-        line-height: 40px;
+				// margin-left: 100px;
+				display: flex;
+        line-height: 3em;
         position: relative;
-        font-size: 14px;
+				font-size: 1.4em;
+				color: #666;
+				
+				>input {
+					height: 3em;
+				}
       }
     }
 		&-btn {
