@@ -3,7 +3,8 @@
 		class="st-table"
 		:class="{
 			'st-table-left-shadow': leftShadow,
-			'st-table-right-shadow': rightShadow
+			'st-table-right-shadow': rightShadow,
+			'st-table-firefox': isFirefox
 		}"
 	>
 		<div class="st-table-head-area">
@@ -39,27 +40,62 @@
 			/>
 		</div>
 		<div class="st-table-body-area">
-			<x-body
-				locked="left"
-				:columns="leftColumns"
-				:record-list="recordList"
-				:records-height="recordsHeight"
-				:table-width="totalLeftWidth"
-			/>
-			<x-body
-				:locked="false"
-				:columns="freeColumns"
-				:record-list="recordList"
-				:records-height="recordsHeight"
-				:table-width="totalFreeWidth"
-			/>
-			<x-body
-				locked="right"
-				:columns="rightColumns"
-				:record-list="recordList"
-				:records-height="recordsHeight"
-				:table-width="totalRightWidth"
-			/>
+			<div class="st-table-body-panel">
+				<x-body
+					locked="left"
+					:columns="leftColumns"
+					:record-list="recordList"
+					:records-height="recordsHeight"
+					:table-width="totalLeftWidth"
+				/>
+				<x-body
+					:locked="false"
+					:columns="freeColumns"
+					:record-list="recordList"
+					:records-height="recordsHeight"
+					:table-width="totalFreeWidth"
+				/>
+				<x-body
+					locked="right"
+					:columns="rightColumns"
+					:record-list="recordList"
+					:records-height="recordsHeight"
+					:table-width="totalRightWidth"
+				/>
+			</div>
+		</div>
+
+		<div v-show="fakeVisible" class="st-fake-scrollbar">
+			<div
+				v-if="leftColumns.length>0"
+				class="st-fake-left"
+			>
+				<div
+					class="st-fake-content"
+					:style="{
+						width: totalLeftWidth+'px'
+					}"
+				></div>
+			</div>
+			<div class="st-fake-free">
+				<div
+					class="st-fake-content"
+					:style="{
+						width: totalFreeWidth+'px'
+					}"
+				></div>
+			</div>
+			<div
+				v-if="rightColumns.length>0"
+				class="st-fake-right"
+			>
+				<div
+					class="st-fake-content"
+					:style="{
+						width: totalRightWidth+'px'
+					}"
+				></div>
+			</div>
 		</div>
 		<x-menu
 			ref="menu"
@@ -92,10 +128,10 @@ import XBody from './Body.vue';
 import XMenu from './Menu';
 import XFlyman from '../com/FlyMan.vue';
 import {ajax} from '../util/ajax';
+import {isFirefox} from '../util/util';
 import data from './data.mixin.js';
 import drag from './drag.mixin.js';
 import resize from './resize.mixin.js';
-import ResizeObserver from '../util/ResizeObserver';
 import {create as createDia} from '../com/Dialog';
 export default {
 	components: {XHead, XBody, XMenu, XFlyman},
@@ -113,7 +149,9 @@ export default {
 			recordsHeight: [],
 			totalLeftWidth: 0,
 			totalFreeWidth: 0,
-			totalRightWidth: 0
+			totalRightWidth: 0,
+			fakeVisible: false,
+			isFirefox
 		};
 	},
 	watch: {
@@ -121,6 +159,7 @@ export default {
 			this.formatColumns();
 		},
 		recordList: function(){
+			console.log('recordList');
 			this.syncHeight();
 		},
 	},
@@ -128,65 +167,33 @@ export default {
 		this.columns = [];
 		this.formatColumns();
 		let freeBox = this.$el.querySelector('.st-table-body-free');
-		if(this.layoutMode=='fixed'){
-			let resizeObserver = new ResizeObserver(() => {
-				this.calcLayout();
-			});
-			resizeObserver.observe(this.$el.querySelector('.st-table-body-left .st-table-body'));
-			resizeObserver.observe(this.$el.querySelector('.st-table-body-free .st-table-body'));
-			resizeObserver.observe(this.$el.querySelector('.st-table-body-right .st-table-body'));
-			this.resizeObserver = resizeObserver;
-
-			let headBox = this.$el.querySelector('.st-table-head-free');
-			let leftBox = this.$el.querySelector('.st-table-body-left');
-			let rightBox = this.$el.querySelector('.st-table-body-right');
-			let syncScroll = function(){
-				let left = freeBox.scrollLeft;
-				headBox.scrollLeft = left;
-				
-				leftBox.scrollTop = freeBox.scrollTop;
-				rightBox.scrollTop = freeBox.scrollTop;
-			};
-			freeBox.addEventListener('scroll', syncScroll, false);
-			let scroll = function(e){
-				freeBox.scrollTop += e.deltaY;
-				if(e.deltaX != 0) {
-					e.stopPropagation();
-					e.preventDefault();
-					freeBox.scrollLeft += e.deltaX;
-				}
-			};
-			this.$el.querySelector('.st-table-body-left').addEventListener('mousewheel', scroll, false);
-			this.$el.querySelector('.st-table-body-right').addEventListener('mousewheel', scroll, false);
-		}
+		let fakeFreeBox = this.$el.querySelector('.st-fake-free');
 
 		let self = this;
-		function shadowDetect(){
+		var sync2scrollbar = function(){
 			let scrollLeft = freeBox.scrollLeft,
 				clientWidth = freeBox.clientWidth,
 				scrollWidth = freeBox.scrollWidth;
 			self.leftShadow = scrollLeft>0;
 			self.rightShadow = (scrollLeft+clientWidth)<scrollWidth;
-		}
-		freeBox.addEventListener('scroll', shadowDetect, false);
-	},
-	beforeDestroy(){
-		if(this.layoutMode=='fixed'){
-			this.resizeObserver.disconnect();
-			this.resizeObserver = null;
+
+			if(scrollLeft != fakeFreeBox.scrollLeft) {
+				fakeFreeBox.scrollLeft = scrollLeft;
+			}
+		};
+		freeBox.addEventListener('scroll', sync2scrollbar, false);
+		fakeFreeBox.addEventListener('scroll',()=>{
+			let scrollLeft = fakeFreeBox.scrollLeft;
+			if(scrollLeft != freeBox.scrollLeft) {
+				freeBox.scrollLeft = scrollLeft;
+			}
+		}, false);
+
+		if(this.isFirefox) {
+			this.$el.querySelector('.st-table-body-panel').style.width = this.$el.querySelector('.st-table-body-area').clientWidth+'px';
 		}
 	},
 	methods: {
-		calcLayout(){
-			let freeTable = this.$el.querySelector('.st-table-body-free');
-			let leftTable = this.$el.querySelector('.st-table-body-left');
-			let rightTable = this.$el.querySelector('.st-table-body-right');
-			let bodyHeight = freeTable.clientHeight;
-			leftTable.style.height = bodyHeight+'px';
-			rightTable.style.height = bodyHeight+'px';
-			rightTable.style.right = this.$el.querySelector('.st-table-body-area').clientWidth - freeTable.clientWidth + 'px';
-			this.syncHeight();
-		},
 		formatColumns(){
 			let leftColumns = [],
 				rightColumns = [],
@@ -487,6 +494,15 @@ export default {
 			this.totalRightWidth = totalRightWidth;
 		},
 		syncHeight(){
+			console.log('-- prepare syncHeight');
+			if(this.syncTimer) {
+				clearTimeout(this.syncHeight);
+			}
+			this.syncTimer = setTimeout(()=>{this._syncHeight();}, 50);
+		},
+		_syncHeight(){
+			console.log('syncHeight');
+			this.syncTimer = null;
 			this.recordsHeight = this.recordList.map(()=>'auto');
 			setTimeout(()=>{
 				let leftTrs = this.$el.querySelectorAll('.st-table-body-left>table>tbody>tr');
@@ -502,9 +518,15 @@ export default {
 						hs.push(max+'px');
 					}
 					this.recordsHeight = hs;
-				}
 
-				this.$el.querySelector('.st-table-body-free').dispatchEvent(new Event('scroll'));
+					setTimeout(()=>{
+						let freeEl = this.$el.querySelector('.st-table-body-free');
+						this.fakeVisible = freeEl.scrollWidth>freeEl.clientWidth;
+						if(this.fakeVisible) {
+							this.$el.querySelector('.st-fake-scrollbar').style.width = this.$el.querySelector('.st-table-body-panel').clientWidth+'px';
+						}
+					}, 0);
+				}
 			}, 0);
 		},
 		showMenu(data){
@@ -526,6 +548,15 @@ export default {
 
 	&-body-area{
 		position: relative;
+	}
+
+	&-body-panel{
+		display: flex;
+	}
+	&-firefox &-body-panel{
+		position: absolute;
+		left: 0;
+		top: 0;
 	}
 
 	&-cell{
@@ -569,7 +600,7 @@ export default {
 }
 .st-fixed-stable .st-table-body-area{
 	flex: 1;
-	overflow: hidden;
+	overflow-y: scroll;
 }
 
 .st-table-left-shadow .st-table-head-left{
@@ -583,6 +614,36 @@ export default {
 }
 .st-table-right-shadow .st-table-body-right{
 	box-shadow: -5px -6px 6px -4px rgba(0,0,0,0.15);
+}
+
+.st-fake-scrollbar{
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	display: flex;
+	z-index: 1;
+}
+.st-fake-left,
+.st-fake-right{
+	overflow-y: hidden;
+	overflow-x: scroll;
+}
+.st-fake-left{
+	border-right: 1px solid #e8eaec;
+}
+.st-fake-right{
+	border-left: 1px solid #e8eaec;
+}
+.st-fake-free{
+	flex: 1;
+	overflow-y: hidden;
+	overflow-x: scroll;
+}
+.st-fake-content{
+	height: 1px;
+	line-height: 0;
+	font-size: 0;
+	overflow: hidden;
 }
 
 

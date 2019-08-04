@@ -168,25 +168,27 @@ export default {
 
 	&-left{
 		border-right: 1px solid #e8eaec;
-		position: absolute;
-		top: 0;
-		left: 0;
 		z-index: 1;
-		overflow: hidden;
+		// position: absolute;
+		// top: 0;
+		// left: 0;
+		// z-index: 1;
+		// overflow: hidden;
 	}
 	&-right{
 		border-left: 1px solid #e8eaec;
-		position: absolute;
-		top: 0;
-		right: 0;
 		z-index: 1;
-		overflow: hidden;
+		// position: absolute;
+		// top: 0;
+		// right: 0;
+		// z-index: 1;
+		// overflow: hidden;
 	}
 	
 	&-free{
 		flex: 1;
 		overflow-x: auto;
-		-webkit-overflow-scrolling: touch;
+		// -webkit-overflow-scrolling: touch;
 	}
 
 	&-tr{
@@ -210,12 +212,12 @@ export default {
 	margin-bottom: 7px;
 }
 .st-fixed-stable .st-table-body-free{
-	overflow-y: scroll;
-	overflow-x: auto;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
+	// overflow-y: scroll;
+	// overflow-x: auto;
+	// position: absolute;
+	// top: 0;
+	// right: 0;
+	// bottom: 0;
+	// left: 0;
 }
 </style>
