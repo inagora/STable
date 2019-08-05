@@ -1,6 +1,7 @@
 <template>
 	<div
 		class="st-select"
+		:class="{'focus': visible}"
 		@click.stop="showMenu"
 	>
 		<div
@@ -109,6 +110,12 @@ export default {
 				return [];
 			}
 		},
+		list: {
+			type: Array,
+			default() {
+				return [];
+			}
+		},
 		valueKey: {
 			type: String,
 			default: 'value'
@@ -156,6 +163,9 @@ export default {
 		}
 	},
 	created() {
+		if (this.list.length > 0 && this.options.length == 0) {
+			this.options = this.list;
+		}
 		let targetArr = [];
 		this.options.map(item=>{
 			targetArr.push(item.label);
@@ -318,19 +328,22 @@ export default {
 <style lang="scss" scoped>
 .st-input {
   position: relative;
-  font-size: 14px;
+  font-size: 1.4em;
   width: 100%;
 }
 .st-select {
   width: 100%;
-  min-height: 40px;
+  min-height: 3em;
   display: inline-block;
   position: relative;
-  border: 1px solid #dcdfe6;
+	border: 1px solid #dcdfe6;
+	border-radius: 4px;
+	padding: 0 15px;
 
   &-input {
     // border-color: #409eff;
     border: none;
+		font-size: 1em;
   }
   &-input:focus {
     outline: none;
@@ -343,11 +356,11 @@ export default {
     flex-wrap: wrap;
     display: flex;
     align-items: center;
-    min-height: 40px;
+    min-height: 3em;
     
     &-item {
-      height: 24px;
-      line-height: 22px;
+      height: 2em;
+      line-height: 1;
       padding: 0 8px;
       box-sizing: border-box;
       margin: 2px 0 2px 6px;
@@ -386,6 +399,11 @@ export default {
       }
     }
   }
+}
+.focus {
+	border-color: #409eff;
+	-webkit-box-shadow: 0 0 5px rgba(59, 180, 242, .3);
+	box-shadow: 0 0 5px rgba(59, 180, 242, .3);
 }
 </style>
 

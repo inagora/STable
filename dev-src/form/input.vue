@@ -9,7 +9,7 @@
 					ref="input"
 					class="st-input-wrap-item"
 					v-bind="$attrs"
-					:class="[{'st-input-wrap-disabled': disabled}]"
+					:class="[{'st-input-wrap-disabled': disabled,'focus': focused}]"
 					:type="showPassword ? 'password' : type"
 					:disabled="disabled"
 					:placeholder="placeholder"
@@ -32,7 +32,7 @@
 				<textarea
 					ref="textarea"
 					class="st-textarea-wrap-con"
-					:class="[{'st-textarea-wrap-exceed':inputExceed}]"
+					:class="[{'st-textarea-wrap-exceed':inputExceed,'focus': focused}]"
 					v-bind="$attrs"
 					:disabled="disabled"
 					:placeholder="placeholder"
@@ -191,12 +191,12 @@ export default {
 <style lang='scss' scoped>
 .st-input-wrap {
   width: 100%;
-  display: flex;
+	display: flex;
 
   &-item {
     width: 100%;
-    height: 40px;
-    line-height: 40px;
+    height: 3em;
+    line-height: 1;
     border: 1px solid #dcdfe6;
     font-size: inherit;
     padding: 0 15px;
@@ -204,7 +204,12 @@ export default {
     text-align: left; 
     border-radius: 4px;
     position: relative;
-  }
+	}
+	.focus {
+		border-color: #409eff;
+		-webkit-box-shadow: 0 0 5px rgba(59, 180, 242, .3);
+		box-shadow: 0 0 5px rgba(59, 180, 242, .3);
+	}
 
   &-disabled {
     background: #f5f7fa;
@@ -228,7 +233,7 @@ export default {
 
   &-con {
     width: 100%;
-    min-height: 80px;
+    // min-height: 80px;
     text-align: left; 
     padding: 0 15px;
     outline: none;

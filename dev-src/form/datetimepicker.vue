@@ -229,7 +229,7 @@ export default {
   content: '';
   display: block;
   position: absolute;
-  width: 34px;
+  width: 3em;
   height: 100%;
   top: 0;
   right: 0;
@@ -238,7 +238,7 @@ export default {
 .datepicker-close {
   display: none;
   position: absolute;
-  width: 34px;
+  width: 3em;
   height: 100%;
   top: 0;
   right: 0;
@@ -273,19 +273,21 @@ export default {
   color: #666;
   transition: all 200ms ease;
   border: 1px solid #e5e5e5;
-  height: 34px;
+  height: 3em;
   box-sizing: border-box;
   outline: none;
-  padding: 0 34px 0 12px;
-  font-size: 14px;
-  width: 100%;
+	padding: 0 3em 0 1em;
+	font-size: 1em;
+  /* font-size: 14px; */
+	width: 100%;
+	border-radius: 4px;
   user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
 }
 .datepicker>input.focus {
-  border-color: #3bb4f2;
+  border-color: #409eff;
   -webkit-box-shadow: 0 0 5px rgba(59, 180, 242, .3);
   box-shadow: 0 0 5px rgba(59, 180, 242, .3);
 }
