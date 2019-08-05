@@ -143,9 +143,9 @@ export default {
 			focusRowNum: -1,
 			leftShadow: false,
 			rightShadow: false,
-			leftColumns: [{text:'',_width:0}],
-			freeColumns: [{text:'',_width:0}],
-			rightColumns: [{text:'',_width:0}],
+			leftColumns: [{text:'',_st_width:0}],
+			freeColumns: [{text:'',_st_width:0}],
+			rightColumns: [{text:'',_st_width:0}],
 			recordsHeight: [],
 			totalLeftWidth: 0,
 			totalFreeWidth: 0,
@@ -159,16 +159,17 @@ export default {
 			this.formatColumns();
 		},
 		recordList: function(){
-			console.log('recordList');
 			this.syncHeight();
 		},
 	},
 	mounted(){
 		this.columns = [];
 		this.formatColumns();
+
+		//监听滚动，以达到头、身体和fake滚动条一致
 		let freeBox = this.$el.querySelector('.st-table-body-free');
 		let fakeFreeBox = this.$el.querySelector('.st-fake-free');
-
+		let freeHeadBox = this.$el.querySelector('.st-table-head-free');
 		let self = this;
 		var sync2scrollbar = function(){
 			let scrollLeft = freeBox.scrollLeft,
@@ -176,7 +177,7 @@ export default {
 				scrollWidth = freeBox.scrollWidth;
 			self.leftShadow = scrollLeft>0;
 			self.rightShadow = (scrollLeft+clientWidth)<scrollWidth;
-
+			
 			if(scrollLeft != fakeFreeBox.scrollLeft) {
 				fakeFreeBox.scrollLeft = scrollLeft;
 			}
@@ -187,6 +188,7 @@ export default {
 			if(scrollLeft != freeBox.scrollLeft) {
 				freeBox.scrollLeft = scrollLeft;
 			}
+			freeHeadBox.scrollLeft = scrollLeft;
 		}, false);
 
 		if(this.isFirefox) {
@@ -208,7 +210,7 @@ export default {
 				} else {
 					freeColumns.push(item);
 				}
-				item._width = 0;
+				item._st_width = 0;
 			});
 			
 			if(this.selectMode=='single') {
@@ -217,7 +219,6 @@ export default {
 					text: '⚪',
 					type: 'radio',
 					width: 40,
-					_width: 0,
 					locked: true
 				});
 			} else if(this.selectMode=='multiple'){
@@ -226,7 +227,6 @@ export default {
 					text: '☑',
 					type: 'checkbox',
 					width: 40,
-					_width: 0,
 					locked: true
 				});
 			}
@@ -236,43 +236,32 @@ export default {
 					text: '#',
 					type: 'rownumber',
 					locked: true,
-					_width: 0,
 					width: 40,
 				});
 			}
 			if(this.deleteUrl || this.updateUrl) {
-				let cm = rightColumns.filter(item=>item.dataIndex=='_st_aux_op')[0];
-				cm.buttons = this.getOpBtns();
+				rightColumns.push({
+					dataIndex: '_st_aux_op',
+					type: 'button',
+					buttons: this.getOpBtns(),
+					width: 0,
+					text: '操作'
+				});
 			}
 
 			freeColumns.push({
 				dataIndex:'_st_aux_pad',
 				type: 'pad',
 				width: 0,
-				_width: 0,
 				text: ' '
 			});
 			
-
-			freeColumns.unshift({
-				dataIndex:'_st_aux_pad_left',
-				text: '',
-				_width: 0,
-				type: 'pad'
-			});
-			freeColumns.push({
-				dataIndex:'_st_aux_pad_right',
-				text: '',
-				_width: 0,
-				type: 'pad'
-			});
 			this.leftColumns = leftColumns;
 			this.freeColumns = freeColumns;
 			this.rightColumns = rightColumns;
 
 			this.columns = leftColumns.concat(freeColumns, rightColumns);
 
-			let haveFx = false;
 			for(let i=0;i<this.columns.length;i++){
 				let col = this.columns[i];
 				col._st_idx = i;
@@ -286,12 +275,7 @@ export default {
 					if(typeof col.width=='undefined')
 						col.width = 100*col.buttons.length;
 				}
-
-				if(col.fx) {
-					haveFx = true;
-				}
 			}
-			this.haveFx = haveFx;
 			
 			this.layout();
 		},
@@ -425,6 +409,10 @@ export default {
 				if(typeof item.width != 'undefined') {
 					if(typeof item.width=='string' && /^([\d.]+)%$/.test(item.width)) {
 						let w = Math.floor(boxWidth*parseFloat(RegExp.$1)/100);
+
+						if( w < MIN_COLUMN_WIDTH){
+							w = MIN_COLUMN_WIDTH;
+						}
 						/**
 						 * @param {Number} column.minWidth 列的最小宽度
 						 * @param {Number} column.maxWidth 列的最大宽度
@@ -435,12 +423,12 @@ export default {
 						if(typeof item.maxWidth != 'undefined' && w > item.maxWidth) {
 							w = item.maxWidth;
 						}
-						item._width = w;
+						item._st_width = w;
 						countWidth += w;
 						return;
 					}
-					item._width = parseInt(item.width);
-					countWidth += item._width;
+					item._st_width = parseInt(item.width);
+					countWidth += item._st_width;
 				} else {
 					totalFlex += item.flex;
 					flexColumn.push(idx);
@@ -462,32 +450,25 @@ export default {
 						if(w > columns[idx].maxWidth)
 							w = columns[idx].maxWidth;
 					}
-					columns[idx]._width = Math.floor(w);
-					countWidth += columns[idx]._width;
+					columns[idx]._st_width = Math.floor(w);
+					countWidth += columns[idx]._st_width;
 				}
 			}
 
 
 			if(countWidth<boxWidth){
-				this.freeColumns[this.freeColumns.length-2]._width = boxWidth - countWidth;
+				this.freeColumns[this.freeColumns.length-1]._st_width = boxWidth - countWidth;
 				countWidth = boxWidth;
 			} else {
-				this.freeColumns[this.freeColumns.length-2]._width = 0;
+				this.freeColumns[this.freeColumns.length-1]._st_width = 0;
 			}
 
 			let totalLeftWidth = 0,
 				totalFreeWidth = 0,
 				totalRightWidth = 0;
-			this.leftColumns.forEach(c=>totalLeftWidth+=c._width);
-			this.freeColumns.forEach(c=>{
-				if(c.type != 'pad')
-					totalFreeWidth+=c._width;
-			});
-			this.rightColumns.forEach(c=>totalRightWidth+=c._width);
-			
-			this.freeColumns[0]._width = totalLeftWidth;
-			this.freeColumns[this.freeColumns.length-1]._width = totalRightWidth;
-			totalFreeWidth = totalLeftWidth+totalFreeWidth+totalRightWidth;
+			this.leftColumns.forEach(c=>totalLeftWidth+=c._st_width);
+			this.freeColumns.forEach(c=>totalFreeWidth+=c._st_width);
+			this.rightColumns.forEach(c=>totalRightWidth+=c._st_width);
 		
 			this.totalLeftWidth = totalLeftWidth;
 			this.totalFreeWidth = totalFreeWidth;
@@ -544,6 +525,7 @@ export default {
 	&-head-area{
 		position: relative;
 		border-bottom: 1px solid #d0d0d0;
+		display: flex;
 	}
 
 	&-body-area{
@@ -580,27 +562,19 @@ export default {
 		z-index: 100;
 	}
 }
-.st-expand-stable{
+.st-fixed-stable{
 	.st-table{
-		&-head-area{
-			overflow-x: hidden;
-		}
-		&-body-area{
-			overflow-x: hidden;
-		}
+		flex: 1;
+		display: flex;
+		flex-direction: column;
 	}
-}
-.st-fixed-stable .st-table{
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-}
-.st-fixed-stable .st-table-head-area{
-	overflow-y: scroll;
-}
-.st-fixed-stable .st-table-body-area{
-	flex: 1;
-	overflow-y: scroll;
+	.st-table-head-area{
+		overflow-y: scroll;
+	}
+	.st-table-body-area{
+		flex: 1;
+		overflow-y: scroll;
+	}
 }
 
 .st-table-left-shadow .st-table-head-left{

@@ -5,8 +5,7 @@
 		:class="{
 			'st-table-head-left':locked=='left',
 			'st-table-head-right':locked=='right',
-			'st-table-head-free': !locked,
-			'st-table-head-safari-patch': locked&&isSafari
+			'st-table-head-free': !locked
 		}"
 	>
 		<table
@@ -23,7 +22,7 @@
 							'st-table-head-th-hover':col._hl
 						}]"
 						:style="[col.style, {
-							width: col._width+'px'
+							width: col._st_width+'px'
 						}]"
 					>
 						<div v-if="col.type=='radio'" class="st-table-cell">
@@ -88,7 +87,6 @@
 </template>
 
 <script>
-import {isSafari} from '../util/util';
 /**
  * @param {String} column.desc 列头的描述
  */
@@ -113,47 +111,23 @@ export default {
 			}
 		}
 	},
-	inject: ['store'],
-	data(){
-		return {
-			isSafari
-		};
-	},
-	mounted(){
-		if(isSafari){
-			setTimeout(()=>{
-				this.$el.style.display = 'block';
-			}, 0);
-		}
-	}
+	inject: ['store']
 };
 </script>
 
 <style lang="scss">
 .st-table-head-free{
-	width: 100%;
+	flex: 1;
 	overflow-x: hidden;
 	z-index: 1;
 }
-.st-table-head-free::-webkit-scrollbar{
-	display: none;
-}
 .st-table-head-left{
-	position: absolute;
-	left: 0;
-	top: 0;
 	z-index: 2;
 }
 .st-table-head-right{
-	position: absolute;
-	right: 0;
-	top: 0;
 	z-index: 2;
 }
 
-.st-table-head-safari-patch{
-	display: none;
-}
 .st-table-head{
 	table-layout: fixed;
 	border-collapse: collapse;
