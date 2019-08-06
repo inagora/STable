@@ -62,5 +62,6 @@ export default {
 <style lang="scss">
 .st-search{
 	border-bottom: 1px solid #d0d0d0;
+	padding: 10px 0 0 10px;
 }
 </style>

@@ -34,7 +34,7 @@
 			<x-button
 				icon="st-iconfont st-icon-right"
 				size="small"
-				:disabled="store.page>=store.page_count"
+				:disabled="store.page>=store.pageCount"
 				:title="locale.nextPage"
 				@click="jumpTo(store.page+1)"
 			/>
@@ -86,7 +86,7 @@ export default {
 		};
 	},
 	watch: {
-		'store.page_count'(){
+		'store.pageCount'(){
 			this.buildPno();
 		},
 		'store.page'(){
@@ -95,11 +95,12 @@ export default {
 	},
 	methods: {
 		jumpTo(pno){
-			if(pno>0 && pno<=this.store.page_count)
+			if(pno>0 && pno<=this.store.pageCount)
 				this.store.page = pno;
 		},
 		buildPno(){
-			let pageCount = this.store.page_count;
+			let pageCount = this.store.pageCount;
+			console.log('pageCount', typeof pageCount, pageCount);
 			let list = [];
 			let page = this.store.page;
 			if(pageCount<=9) {

@@ -92,7 +92,7 @@
 		<div v-if="submenu=='column'" class="st-table-menu st-table-submenu">
 			<div
 				v-for="(item, itemIdx) of list"
-				:key="item"
+				:key="item.text+itemIdx"
 				class="st-table-menu-item"
 				@click="toggleVisible(itemIdx)"
 			>

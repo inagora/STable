@@ -34,6 +34,7 @@ export function hashCode(str) {
 }
 
 export let isSafari = window.navigator.vendor.toLowerCase().includes('apple computer');
+export let isFirefox = window.navigator.userAgent.toLowerCase().includes('firefox');
 
 export function tmpl(str, data){
 	return str.replace(/\$\{\s*(.+?)\s*\}/g, function(_, _$1){
