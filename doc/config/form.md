@@ -67,6 +67,12 @@ list: [{text:'北京', value:'bj'},{text:'上海', value:'sh'},{text:'东京', v
 ```
 > 不过，这种方式翻译之后，不能保证数组顺序。
 
+##inline
+* 类型：Boolean
+* 详情
+* 表单布局方式
+  希望表单元素排布在同一行的传入参数inline:true或仅声明inline(比如搜索框表单元素)，默认为false，即表单元素纵向布局。
+
 ## name
 * 类型：string
 * 详细：
@@ -105,11 +111,7 @@ input输入验证失败时，比如正则验证失败、required为true但内容
 指定表单项的类型，现支持以下几种类型：
 	* text，显示为一个普通的文本输入框
 	* date，显示一个日期选择器
-	* year，显示一个年份选择器
-	* month，显示一个月选择器
-	* time，显示一个时间选择器
-	* minute，显示一个小时和分钟选择器
-	* datetime，显示一个日期+时间的选择器
+	* time/datetime，显示一个日期+时间的选择器
 	* number，显示为一个数字输入框
 	* select，显示为一个普通的下拉选择
 	* combobox，显示为一个带搜索过滤功能的下拉选择
