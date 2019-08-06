@@ -561,6 +561,27 @@ export default {
 		overflow: hidden;
 		z-index: 100;
 	}
+
+
+	&-checkbox-cell{
+		position: relative;
+	}
+	&-checkbox-mask{
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		cursor: pointer;
+	}
+	& &-label-cell{
+		padding: 7px 6px 6px;
+		cursor: pointer;
+	}
+	&-label-cell input[type=checkbox],
+	&-label-cell input[type=radio]{
+		font-size: 20px;
+	}
 }
 .st-fixed-stable{
 	.st-table{

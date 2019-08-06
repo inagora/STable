@@ -212,14 +212,6 @@ export default {
 			if (item.buttons) {
 				if(!item.type)
 					item.type = 'button';
-				// item.buttons.forEach(btn=>{
-				// 	if(btn.icon) {
-				// 		btn.iconCls = btn.icon;
-				// 	}
-				// });
-				if(item.type=='button' && typeof item.width=='undefined') {
-					item.width = item.buttons.length*100;
-				}
 			}
 			if (!item.dataIndex) {
 				item.dataIndex = "_st_column_"+idx;
@@ -230,6 +222,13 @@ export default {
 			 */
 			if (item.render) {
 				item.type = 'render';
+			}
+
+			/**
+			 * @param {Function} column.options 显示内容的映射
+			 */
+			if (item.options && !item.type) {
+				item.type = 'option';
 			}
 
 			/**
@@ -399,6 +398,7 @@ export default {
 				loadAction: '',
 				radioVal: '',
 				checkboxVal: [],
+				chkAll: false,
 				sortKey: conf.sortKey||'',
 				sortDirection: conf.sortDirection,
 
@@ -433,7 +433,7 @@ export default {
 				},
 				emit(evtName, ...args){
 					if(self.config.listeners && self.config.listeners[evtName]) {
-						self.config.listeners[evtName].apply(self, args);
+						return self.config.listeners[evtName].apply(self, args);
 					}
 				}
 			}

@@ -2,7 +2,7 @@ import {ajax} from '../util/ajax';
 import {alert} from '../com/Dialog';
 import Progressbar from '../com/Progressbar';
 export default {
-	inject: ['store', 'records', 'params', 'url', 'actionMethods', 'listeners', 'pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt'],
+	inject: ['store', 'records', 'params', 'url', 'actionMethods',  'pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt'],
 	data() {
 		return {
 			flymanVisible: false,
@@ -27,6 +27,10 @@ export default {
 				else if(val == 'loadNextPage')
 					this.load('next');
 			}
+		},
+		'store.checkboxVal'(){
+			let checkedAll = this.recordList.every((item, idx)=>this.store.checkboxVal.includes(idx));
+			this.store.chkAll = checkedAll;
 		}
 	},
 	mounted(){
@@ -36,6 +40,13 @@ export default {
 				this.reset();
 			else
 				this.load();
+		});
+		this.store.$on('selectall', val=>{
+			if(val) {
+				this.store.checkboxVal = this.recordList.map((item,idx)=>idx);
+			} else {
+				this.store.checkboxVal = [];
+			}
 		});
 		this.store.getCurrentPage = ()=>{
 			return this.recordList;
@@ -100,11 +111,11 @@ export default {
 
 			this.lastRequestParams = params;
 			let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read};
-			if(this.listeners.beforedatarequest){
-				let ret = this.listeners.beforedatarequest(ajaxOptions);
-				if(ret && ret.url)
-					ajaxOptions = ret;
-			}
+			
+			let ret = this.store.emit('beforedatarequest', ajaxOptions);
+			if(ret && ret.url)
+				ajaxOptions = ret;
+			
 			ajax(ajaxOptions).then(res=>{
 				this.isPageLoading = false;
 				res = res[0];
@@ -114,11 +125,10 @@ export default {
 				}
 				this.flymanVisible = false;
 				
-				if(this.listeners.dataload) {
-					let ret = this.listeners.dataload(res);
-					if(ret)
-						res = ret;
-				}
+				let ret = this.store.emit('dataload', res);
+				if(ret)
+					res = ret;
+				
 				if(res.errno){
 					alert(res.errmsg||res.msg,'提示', {type: 'error'});
 				} else {
@@ -178,13 +188,16 @@ export default {
 		setRecords(records) {
 			records.forEach((r,idx)=>{
 				//每一行的辅助数据
-				r._wd_aux = {
-					//这一行有哪些列会开起跨行，跨多少行
+				r._st_aux = {
+					//这一行有哪些列会开启跨行，跨多少行
 					merges: {},
-					//哪些列需要渲染dom。有跨行时，可能不需要渲染td
+					//哪些列不需要渲染dom。有跨行时，可能不需要渲染td
 					ignoreRenders: [],
 					//这一行的行号是多少
-					rownumber: idx+1
+					rownumber: idx+1,
+					render: {},
+					btnsVisible: {},
+					option: {}
 				};
 			});
 			if(this.groupBy && this.groupBy.length>0) {
@@ -208,9 +221,9 @@ export default {
 						}
 						let ret = [];
 						for(let v of valueList) {
-							sortRet[v][0]._wd_aux.merges[dataIndex] = sortRet[v].length;
+							sortRet[v][0]._st_aux.merges[dataIndex] = sortRet[v].length;
 							for(let i=1,len=sortRet[v].length;i<len;i++){
-								sortRet[v][i]._wd_aux.ignoreRenders.push(dataIndex);
+								sortRet[v][i]._st_aux.ignoreRenders.push(dataIndex);
 							}
 							ret.push(sortRet[v]);
 						}
@@ -221,25 +234,23 @@ export default {
 					}
 				}
 
-				//???这一步是不是多余的
+				
 				records = [];
 				recordGroup.forEach(group=>{
 					records = records.concat(group);
 				});
 
-				this.store.$emit('refresh', records);
+				this.store.emit('refresh', records);
 			} else {
-				this.store.$emit('refresh', records);
+				this.store.emit('refresh', records);
 			}
 
 			records.forEach((record, idx)=>{
 				this.columns.forEach(col=>{
 					if(col.type=='render' && col.render) {
-						//???统一私有变量的命名，比如以_st_开判断
-						record['_'+col.dataIndex+'_render_val'] = col.render(record, col, idx);
+						record._st_aux.render[col.dataIndex] = col.render(record, col, idx);
 					} else if (col.type=='button') {
-						//???统一私有变量的命名，比如以_st_开判断
-						record['_'+col.dataIndex+'_btns'] = [];
+						let visibleList = record._st_aux.btnsVisible[col.dataIndex] = [];
 						(col.buttons||[]).forEach(btn=>{
 							let visible = true;
 							if(btn.visible) {
@@ -249,39 +260,20 @@ export default {
 									visible = btn.visible(record);
 								}
 							}
-							record['_'+col.dataIndex+'_btns'].push(visible);
+							visibleList.push(visible);
 						}); 
-					} else if (col.options) {
-						//??? todo，这里直接影响了原因数据，是一种不友好的做法，新版中请解决这个问题
-						record['_ori_'+col.dataIndex] = record[col.dataIndex];
-						record[col.dataIndex] = col.options[record[col.dataIndex]+''];
+					} else if (col.type=='option') {
+						let val = col.options[record[col.dataIndex]+''];
+						if(typeof val=='undefined') {
+							if(typeof col.defaultOption!='undefined') {
+								val = col.defaultOption!='undefined';
+							} else 
+								val = '';
+						}
+						record._st_aux.option[col.dataIndex] = val;
 					}
 				});
 			});
-			if(this.haveFx) {
-				let fxResult = {};
-				this.columns.forEach(column=>{
-					let di = column.dataIndex;
-					if(column.fx == 'sum' || column.fx == 'average') {
-						let total = 0;
-						records.forEach(item=>{
-							if(typeof item[di] != 'number')
-								total += Number(item[di]);
-							else
-								total += item[di];
-						});
-						if(column.fx=='sum')
-							fxResult[di] = '和：'+total;
-						else if(records.length>0)
-							fxResult[di] = '平均：'+total/records.length;
-						else
-							fxResult[di] = '平均：0';
-					} else {
-						fxResult[di] = '';
-					}
-				});
-				this.fxResult = fxResult;
-			}
 			
 			this.recordList = records;
 			this.store.$emit('selectall', false);
@@ -324,12 +316,11 @@ export default {
 						params.count = 'max';
 					}
 					let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
-					if(this.listeners.beforedatarequest){
-						let ret = this.listeners.beforedatarequest(ajaxOptions);
-						if(ret && ret.url)
-							ajaxOptions = ret;
-					}
-
+					
+					let ret = this.store.emit('beforedatarequest', ajaxOptions);
+					if(ret && ret.url)
+						ajaxOptions = ret;
+				
 					let startTime = new Date();
 					let job = ajax(ajaxOptions);
 					job.then(res=>{
@@ -439,11 +430,11 @@ export default {
 						params.count = 'max';
 					}
 					let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
-					if(this.listeners.beforedatarequest){
-						let ret = this.listeners.beforedatarequest(ajaxOptions);
-						if(ret && ret.url)
-							ajaxOptions = ret;
-					}
+					
+					let ret = this.store.emit('beforedatarequest', ajaxOptions);
+					if(ret && ret.url)
+						ajaxOptions = ret;
+					
 					ajax(ajaxOptions).then(res=>{
 						res = res[0];
 						if(res.errno){
@@ -494,12 +485,13 @@ export default {
 			if(this.selectMode=='single') {
 				if(typeof this.store.radioVal=='number') {
 					let record = this.recordList[this.store.radioVal];
-					if(record) return [record];
-					else return [];
+					if(record)
+						return [record];
 				}
 			} else {
 				return this.store.checkboxVal.map(idx=>this.recordList[idx]);
 			}
+			return [];
 		}
 	}
 };

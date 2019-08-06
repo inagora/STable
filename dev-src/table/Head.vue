@@ -30,9 +30,16 @@
 								&nbsp;
 							</div>
 						</div>
-						<label v-else-if="col.type=='checkbox'" class="st-table-cell st-table-cell-label" @click="selectAll">
-							<input v-model="chkAll" type="checkbox" />
-						</label>
+						<div
+							v-else-if="col.type=='checkbox'"
+							class="st-table-cell st-table-label-cell st-table-checkbox-cell"
+						>
+							<input v-model="store.chkAll" type="checkbox" />
+							<span
+								class="st-table-checkbox-mask"
+								@click="store.$emit('selectall', !store.chkAll)"
+							></span>
+						</div>
 						<div
 							v-else-if="col.type=='rownumber'"
 							class="st-table-cell"

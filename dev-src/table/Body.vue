@@ -36,7 +36,7 @@
 					<td
 						v-for="(col, colIdx) of columns"
 						:key="colIdx"
-						:rowspan="record._wd_aux.merges[col.dataIndex]"
+						:rowspan="record._st_aux.merges[col.dataIndex]"
 						class="st-table-body-td"
 						:class="[
 							col.cls,
@@ -52,7 +52,7 @@
 						<label v-else-if="col.type=='checkbox'" class="st-table-label-cell st-table-cell">
 							<input v-model="store.checkboxVal" :value="idx" type="checkbox" />
 						</label>
-						<div v-else-if="col.type=='rownumber'" class="st-table-cell" v-text="record._wd_aux.rownumber"></div>
+						<div v-else-if="col.type=='rownumber'" class="st-table-cell" v-text="record._st_aux.rownumber"></div>
 						<template v-else-if="col.type=='text'">
 							<template v-if="sublistAt.includes(col.dataIndex)">
 								<div
@@ -74,7 +74,7 @@
 							v-else-if="col.type=='render'"
 							class="st-table-cell"
 							:class="{'st-table-cell-nowrap':!col.cellWrap}"
-							v-html="record['_'+col.dataIndex+'_render_val']"
+							v-html="record._st_aux.render[col.dataIndex]"
 						></div>
 						<template v-else-if="col.type=='image'">
 							<template v-if="sublistAt.includes(col.dataIndex)">
@@ -90,17 +90,25 @@
 							</div>
 						</template>
 						<div v-else-if="col.type=='button'" class="st-table-btn-box st-table-cell">
-							<x-button
-								v-for="(btn, btnIdx) of col.buttons"
-								:key="btnIdx"
-								:type="btn.type"
-								:size="btn.size"
-								:icon="btn.icon"
-								@click="btnClick(btn, record, $event)"
-							>
-								{{ btn.text }}
-							</x-button>
+							<template v-for="(btn, btnIdx) of col.buttons">
+								<x-button
+									v-if="record._st_aux.btnsVisible[col.dataIndex][btnIdx]"
+									:key="btnIdx"
+									:type="btn.type"
+									:size="btn.size"
+									:icon="btn.icon"
+									@click="btnClick(btn, record, $event)"
+								>
+									{{ btn.text }}
+								</x-button>
+							</template>
 						</div>
+						<div
+							v-else-if="col.type=='option'"
+							class="st-table-cell"
+							:class="{'st-table-cell-nowrap':!col.cellWrap}"
+							v-text="record._st_aux.option[col.dataIndex]"
+						></div>
 					</td>
 				</tr>
 			</tbody>
@@ -138,11 +146,6 @@ export default {
 			type: Array,
 			required: true
 		}
-	},
-	data(){
-		return {
-			tableStyle: {}
-		};
 	},
 	methods: {
 		btnClick(btn, record, evt){
