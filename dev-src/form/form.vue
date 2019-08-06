@@ -39,6 +39,7 @@
 						:key="checkindex" 
 						:label="checkitem.label"
 						:value="checkitem.value"
+						:checked="checkitem.ischecked"
 						@change="checkboxFn($event,item.name)"
 					/>
 				</template>
@@ -209,11 +210,19 @@ export default {
 				});
 			}
 			let tmpArr = {};
+			console.log(this.formConfig.fieldList);
 			for (const item of this.formConfig.fieldList) {
 				if(item.type != 'button')
 					tmpArr[item.name] = item.value || '';
 				if(item.type == 'date') {
 					this.dataRange.push(item);
+				}
+				if (item.type == 'checkbox') {
+					for (const cbx of item.options) {
+						if (cbx.ischecked == true)
+							this.checkedValue.push(cbx.value);
+						tmpArr[item.name] = this.checkedValue.toString();
+					}
 				}
 			}
 			this.formValue = tmpArr;

@@ -109,6 +109,11 @@
 .st-icon-eye-close:before {
   content: "\e8ff";
 }
+
 .st-icon-file:before {
-	content: "\e607";
+	content: "\e68a";
+}
+
+.st-icon-calendar:before {
+	content: '\e60b';
 }

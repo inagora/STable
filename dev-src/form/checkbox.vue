@@ -3,14 +3,14 @@
 		class="st-checkbox"
 		role="checkbox"
 		:class="{
-			'is-checked': isChecked
+			'st-checkbox-checked': isChecked
 		}"
 		:aria-checked="isChecked || 'mixed'"
 	>
 		<span
 			class="st-checkbox-input" 
 			:class="{
-				'is-checked': isChecked
+				'st-checkbox-checked': isChecked
 			}"
 			aria-checked="mixed"
 		>
@@ -45,10 +45,14 @@ export default {
 			type: String,
 			default: ''
 		},
+		checked: {
+			type: Boolean,
+			default: false
+		}
 	},
 	data() {
 		return {
-			isChecked: false,
+			isChecked: this.checked,
 		};
 	},
 	watch: {
@@ -85,7 +89,7 @@ export default {
       vertical-align: middle;
     }
 
-    &-input+.is-checked {
+    &-input+.st-checkbox-checked {
       color: #409eff;
     }
 
@@ -131,13 +135,13 @@ export default {
       width: 0;
       height: 0;
       z-index: -1;
-    }
-  }
-  .st-checkbox.is-checked .st-checkbox-inner{
-    background-color: #409eff;
-    border-color: #409eff;
-  }
-  .st-checkbox-input.is-checked .st-checkbox-inner:after {
-    transform: rotate(45deg) scaleY(1);
+		}
+		&-checked .st-checkbox-inner {
+			background-color: #409eff;
+			border-color: #409eff;
+		}
+		&-checked .st-checkbox-inner:after {
+			transform: rotate(45deg) scaleY(1);
+		}
   }
 </style>
