@@ -496,9 +496,19 @@
 * __详细__:
 * __用法__: 
 
-
 ## 实例属性
-title
-tip
+### title
+### tip
 
 ## 实例方法
+### refresh
+### layout
+### getSelectedRecords
+### getSearchParam
+### setRecords
+
+## column配置
+
+## form配置
+
+## button配置

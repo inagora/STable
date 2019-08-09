@@ -346,6 +346,10 @@ export default {
 			conf.selectMode = 'none';
 		}
 
+		if(conf.batDeleteUrl){
+			conf.selectMode = 'multiple';
+		}
+
 		if(typeof conf.page != 'undefined') {
 			conf.params.page = conf.page;
 		}
@@ -491,13 +495,19 @@ export default {
 			return this.$refs.search.getParams();
 		},
 		getSelectRows(){
-			return this.$refs.table.getSelectRows();
+			return this.getSelected();
 		},
 		/**
 		 * @member {Function} getSelectedRows 获得当前所有选中行的数据
 		 */
 		getSelectedRows(){
-			return this.getSelectRows();
+			return this.getSelected();
+		},
+		/**
+		 * @member {Function} getSelected 获得当前所有选中行的数据
+		 */
+		getSelected(){
+			return this.$refs.table.getSelectRows();
 		},
 		/**
 		 * @member {Function} layout 重新布局表格

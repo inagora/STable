@@ -3,6 +3,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 console.log('清空文件');
 fs.writeFileSync(
@@ -33,6 +34,14 @@ module.exports = function(env, argv) {
 			filename: 'STable.min.css'
 		})
 	];
+	if(!isDev) {
+		plugins.push(new OptimizeCssAssetsPlugin({
+			cssProcessor: require('cssnano'),
+			cssProcessorPluginOptions: {
+				preset: ['default', { discardComments: { removeAll: true } }],
+			}
+		}));
+	}
 
 	//热替换
 	let devServer = {};

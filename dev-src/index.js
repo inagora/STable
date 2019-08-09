@@ -1,12 +1,14 @@
 import STable from './STable.vue';
 import SidePanel from './com/SidePanel.js';
-import {create} from './com/Dialog.js';
+import {create, alert} from './com/Dialog.js';
+import qtip from './com/qtip.js';
 import {Console} from './util/util';
 import XForm from './form/form.vue';
 
 //测试代码，请注意删除
 window.SidePanel = SidePanel;
-window.Dialog = {create};
+window.Dialog = {create, alert};
+window.qtip = qtip;
 
 //注册全局组件
 Vue.component('x-stable', STable);

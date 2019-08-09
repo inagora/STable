@@ -38,6 +38,7 @@ module.exports = {
 	},
 	"globals": {
 		"Vue": false,
+		"XLSX": false,
 		"__dirname": false,
 		"window": false,
 		"document": false,

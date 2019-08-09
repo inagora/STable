@@ -13,6 +13,14 @@ module.exports = {
 		}
 	},
 	themeConfig: {
-		sidebar:'auto'
+		sidebarDepth: 3,
+		locales: {
+			'/zh/': {
+				sidebar: [
+					'/zh/api/',
+					'/zh/api/com'
+				]
+			}
+		}
 	}
 };
