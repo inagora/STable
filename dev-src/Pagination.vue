@@ -100,7 +100,6 @@ export default {
 		},
 		buildPno(){
 			let pageCount = this.store.pageCount;
-			console.log('pageCount', typeof pageCount, pageCount);
 			let list = [];
 			let page = this.store.page;
 			if(pageCount<=9) {

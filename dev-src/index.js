@@ -1,14 +1,9 @@
 import STable from './STable.vue';
-import SidePanel from './com/SidePanel.js';
-import {create, alert} from './com/Dialog.js';
-import qtip from './com/qtip.js';
 import {Console} from './util/util';
 import XForm from './form/form.vue';
-
-//测试代码，请注意删除
-window.SidePanel = SidePanel;
-window.Dialog = {create, alert};
-window.qtip = qtip;
+export {default as SidePanel} from './com/SidePanel.js';
+export {create as createDialog} from './com/Dialog.js';
+export {default as qtip} from './com/qtip.js';
 
 //注册全局组件
 Vue.component('x-stable', STable);
@@ -18,7 +13,7 @@ Console.log('%cSTable doc：https://stable.wfxteam.com/',"color:#191919;font-siz
 
 export var version = '2.0.0';
 export function init(config, Vue) {
-	let el = config.el || config.container || '#wdStableContainer';
+	let el = config.el || config.container || '#stableContainer';
 	if(typeof el == 'string') {
 		el = document.querySelector(el);
 	} else if (el.length) {

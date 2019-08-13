@@ -253,7 +253,6 @@ export default {
 			this.searchQuery(this.options,this.query);
 		},
 		searchQuery(options, query) {
-			console.log(query);
 			function joinText(arr){
 				return arr.map(item=>item[0]).join('');
 			}

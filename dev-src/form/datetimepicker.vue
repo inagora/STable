@@ -143,7 +143,6 @@ export default {
 	},
 	watch: {
 		value (val) {
-			console.log(val);
 			this.dates = this.vi(this.value);
 		}
 	},

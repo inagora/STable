@@ -133,6 +133,7 @@ import data from './data.mixin.js';
 import drag from './drag.mixin.js';
 import resize from './resize.mixin.js';
 import {create as createDia} from '../com/Dialog';
+import qtip from '../com/qtip.js';
 export default {
 	components: {XHead, XBody, XMenu, XFlyman},
 	mixins: [data, drag, resize],
@@ -287,26 +288,22 @@ export default {
 					icon: 'el-icon-close',
 					type: 'danger',
 					click: (record)=>{
-						this.$confirm('您确定要删除此行数据？', '提示', {
-							type: 'error'
-						}).then(()=>{
-							let id = record[this.idIndex];
-							let data = {};
-							data[this.idIndex] = id;
-							Object.assign(data, this.params);
-							ajax({url:this.deleteUrl, data, type: this.actionMethods.destroy}).then(res=>{
-								res = res[0];
-								if(res.errno==0) {
-									this.$message({
-										message: '删除成功',
-										type: 'success'
-									});
-									this.load('cur');
-								} else {
-									this.$message.error('删除失败');
-								}
-							});
-						}).catch(()=>{});
+						let ret = confirm('您确定要删除此行数据？');
+						if(ret!==true)
+							return;
+						let id = record[this.idIndex];
+						let data = {};
+						data[this.idIndex] = id;
+						Object.assign(data, this.params);
+						ajax({url:this.deleteUrl, data, type: this.actionMethods.destroy}).then(res=>{
+							res = res[0];
+							if(res.errno==0) {
+								qtip.success('删除成功');
+								this.load('cur');
+							} else {
+								qtip.error('删除失败');
+							}
+						});
 					}
 				});
 			}
@@ -475,14 +472,12 @@ export default {
 			this.totalRightWidth = totalRightWidth;
 		},
 		syncHeight(){
-			console.log('-- prepare syncHeight');
 			if(this.syncTimer) {
 				clearTimeout(this.syncHeight);
 			}
 			this.syncTimer = setTimeout(()=>{this._syncHeight();}, 50);
 		},
 		_syncHeight(){
-			console.log('syncHeight');
 			this.syncTimer = null;
 			this.recordsHeight = this.recordList.map(()=>'auto');
 			setTimeout(()=>{

@@ -12,7 +12,7 @@ module.exports = {
 		"indent": ["error", "tab"],
 		"linebreak-style": ["error", "unix"],
 		"semi": ["error", "always"],
-		"no-console": ["error", { "allow": ["warn", "log"] }],
+		"no-console": "error",
 		"vue/html-indent": ["error", "tab", {
 			"attribute": 1,
 			"baseIndent": 1,

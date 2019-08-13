@@ -22,10 +22,6 @@
 export default {
 	name: 'XSwitch',
 	compontents: 'XSwitch',
-	// model: {
-	//   prop: 'checked',
-	//   event: 'change'
-	// },
 	props: {
 		name: {
 			type: String,
@@ -34,23 +30,12 @@ export default {
 		value: {
 			type: Boolean,
 			default: false,
-		},
-		// checked: {
-		//   type: Number,
-		//   default: 0
-		// }
+		}
 	},
 	data() {
 		return {
 			checked: false,
 		};
-	},
-	watch:{
-		// checked: {
-		// 	handler(newVal,oldVal) {
-		// 		console.log(newVal)
-		// 	}
-		// }
 	},
 	methods: {
 		handleChange() {

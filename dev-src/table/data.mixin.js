@@ -1,5 +1,4 @@
 import {ajax} from '../util/ajax';
-import {alert} from '../com/Dialog';
 import Progressbar from '../com/Progressbar';
 export default {
 	inject: ['store', 'records', 'params', 'url', 'actionMethods',  'pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt'],
@@ -130,11 +129,11 @@ export default {
 					res = ret;
 				
 				if(res.errno){
-					alert(res.errmsg||res.msg,'提示', {type: 'error'});
+					alert(res.errmsg||res.msg);
 				} else {
 					if(this.pageMode=='waterfall'){
 						if(!this.clean && (!res.data.list || res.data.list.length<=0)) {
-							alert((params.count>0?'后面':'前面')+'已没有更多数据了','提示', {type: 'error'});
+							alert((params.count>0?'后面':'前面')+'已没有更多数据了');
 							if(params.count>0)
 								this.store.hasNextPage = false;
 							else
@@ -438,7 +437,7 @@ export default {
 					ajax(ajaxOptions).then(res=>{
 						res = res[0];
 						if(res.errno){
-							alert(res.errmsg,'提示', {type: 'error'});
+							alert(res.errmsg);
 							reject(res);
 						} else {
 							if(!res.data.list || res.data.list.length<=0) {

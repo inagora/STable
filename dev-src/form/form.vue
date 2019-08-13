@@ -210,7 +210,6 @@ export default {
 				});
 			}
 			let tmpArr = {};
-			console.log(this.formConfig.fieldList);
 			for (const item of this.formConfig.fieldList) {
 				if(item.type != 'button')
 					tmpArr[item.name] = item.value || '';

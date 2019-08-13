@@ -1,5 +1,5 @@
 <template>
-	<div class="st-toolbar" v-if="btns.length>0">
+	<div v-if="btns.length>0" class="st-toolbar">
 		<template v-for="(btn, btnIdx) of btns">
 			<div v-if="btn=='|'" :key="btnIdx" class="st-toolbar-separator">
 				&nbsp;
@@ -19,8 +19,8 @@
 
 <script>
 import XButton from './com/Button.vue';
-import {loadJs, Console} from './util/util.js';
-import {create, prompt} from './com/Dialog.js';
+import {loadJs} from './util/util.js';
+import {create} from './com/Dialog.js';
 import qtip from './com/qtip';
 import XForm from './form/form.vue';
 import {ajax} from './util/ajax.js';
@@ -243,17 +243,15 @@ export default {
 			}
 
 			let wb = XLSX.utils.book_new();
-			prompt(this.locale.toolbar.confirmFileName,this.title).then(name=>{
-				name = name.trim();
-				let ws = XLSX.utils.aoa_to_sheet(sheetData);
-				ws['!cols'] = colsConf;
-
-				/* Add the worksheet to the workbook */
-				XLSX.utils.book_append_sheet(wb, ws, name);
-				XLSX.writeFile(wb, (name||'data')+'.xlsx');
-			}).catch(e=>{
-				Console.error(e);
-			});
+			let name = prompt(this.locale.toolbar.confirmFileName,this.title);
+			name = (name||'stable').trim();
+			if(!name.includes('.')) {
+				name += '.xlsx';
+			}
+			let ws = XLSX.utils.aoa_to_sheet(sheetData);
+			ws['!cols'] = colsConf;
+			XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+			XLSX.writeFile(wb, name);
 		}
 	}
 };

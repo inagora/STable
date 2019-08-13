@@ -102,7 +102,11 @@ export default {
 			/**
 			 * @param {Object[]} records 静态化数据，设置了它后，就不会动态加载数据了
 			 */
-			records: false
+			records: false,
+			/**
+			 * @param {String} idIndex 删除、批量删除、修改数据时，用来标识记录的数据
+			 */
+			idIndex: ''
 		}, window&&window.STable && window.STable.default||{}, this.config);
 
 		//国际化
