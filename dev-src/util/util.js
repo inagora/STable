@@ -1,10 +1,3 @@
-export function loadScript(src) {
-	let script = document.createElement('script');
-	script.type = 'text/javascript';
-	script.src = src;
-	document.head.appendChild(script);
-}
-
 let jses = {};
 export function loadJs(url) {
 	if(jses[url])
@@ -35,12 +28,6 @@ export function hashCode(str) {
 
 export let isSafari = window.navigator.vendor.toLowerCase().includes('apple computer');
 export let isFirefox = window.navigator.userAgent.toLowerCase().includes('firefox');
-
-export function tmpl(str, data){
-	return str.replace(/\$\{\s*(.+?)\s*\}/g, function(_, _$1){
-		return data[_$1]||'';
-	});
-}
 
 export let Console = {
 	log(...args){
