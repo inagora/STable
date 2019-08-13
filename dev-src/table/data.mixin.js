@@ -371,8 +371,6 @@ export default {
 						}
 					}
 
-					console.log('parallelCount: '+parallelCount);
-
 
 					if(jobList.length>=parallelCount)
 						return;
