@@ -23,7 +23,6 @@
 					<span class="st-select-tags-text">{{ multiple ? item : item.label }}</span>
 				</x-tag>
 			</span>
-			<!-- 搜索框 -->
 			<input
 				v-if="filterable"
 				type="text"
@@ -35,7 +34,6 @@
 			/>
 		</div>
 		<template v-else>
-			<!-- @keydown.enter.prevent="createOption" -->
 			<input 
 				:value="selected.label"
 				type="text"
@@ -78,19 +76,10 @@ import XTag from './tag.vue';
 import Tool from './tool';
 import {loadJs} from '../util/util';
 
-const regExpString = (value = '') => String(value).replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
-
 export default {
-	name: 'XSelect',
 	components:{XTag},
 	directives: {'clickoutside': Tool._clickOutside},
 	mixins: [Tool],
-	componentName: 'XSelect',
-	provide() {
-		return {
-			'XSelect': this
-		};
-	},
 	props:{
 		filterable: {
 			type: Boolean,
@@ -131,9 +120,6 @@ export default {
 			filterOptions: [],
 		};
 	},
-	computed: {
-    
-	},
 	watch: {
 		selected: {
 			handler(val) {
@@ -172,12 +158,6 @@ export default {
 		});
 		this.targetArr = targetArr;
 	},
-	mounted() {
-		
-	},
-	beforeDestroy() {
-
-	},
 	methods: {
 		handleOption() {
 			if (!this.visible) {
@@ -211,7 +191,6 @@ export default {
 			} else {
 				const arr = (this.selected || []).slice();
 				const optionIndex = this.getValueIndex(arr, option.label);
-				// 赋值
 				if (optionIndex > -1) {
 					//值已选中则删除
 					arr.splice(optionIndex, 1);
@@ -222,7 +201,6 @@ export default {
 				this.selected = arr;
 				this.visible = true;
 				this.query = '';
-				// document.querySelector('.st-select-input').focus();
 			}
 		},
 		getValueKey(item) {
@@ -252,7 +230,7 @@ export default {
 			this.query = event.target.value;
 			this.searchQuery(this.options,this.query);
 		},
-		searchQuery(options, query) {
+		searchQuery(options) {
 			function joinText(arr){
 				return arr.map(item=>item[0]).join('');
 			}
@@ -275,11 +253,6 @@ export default {
 				});
 				this.filterOptions = newOptions;
 			});
-		},
-		testRegExp(targetOpt) {
-			// 正则匹配决定是否显示当前option
-			if (this.filterable)
-				return this.query!='' ? new RegExp(regExpString(this.query), 'i').test(targetOpt) : true;
 		},
 		createOption(event) {
 			let query = event.target.value;
@@ -319,7 +292,7 @@ export default {
 		},
 		handleClose() {
 			this.visible = false;
-		},
+		}
 	}
 };
 </script>
@@ -340,7 +313,6 @@ export default {
 	padding: 0 15px;
 
   &-input {
-    // border-color: #409eff;
     border: none;
 		font-size: 1em;
   }
@@ -356,7 +328,6 @@ export default {
     display: flex;
     align-items: center;
     min-height: 3em;
-    
     &-item {
       height: 2em;
       line-height: 1;

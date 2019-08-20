@@ -73,19 +73,6 @@
 						/>
 					</div>
 				</template>
-				<!-- <template v-if="item.type == 'button'">
-					<div class="st-form-btn">
-						<x-button
-							v-for="(btn, btnindex) in item.options" 
-							:key="btnindex" 
-							class="st-form-btn-item" 
-							:type="btn.theme" 
-							@click.prevent="submit(btn)"
-						>
-							{{ btn.text }}
-						</x-button>
-					</div>
-				</template> -->
 			</div>
 		</div>
 		<slot></slot>
@@ -94,6 +81,7 @@
 </template>
 
 <script>
+
 import {ajax} from '../util/ajax';
 import XInput from "./input.vue";
 import XSelect from "./select.vue";
@@ -102,10 +90,8 @@ import XRadio from "./radio.vue";
 import XSwitch from "./switch.vue";
 import XUpload from "./upload.vue";
 import XDatetimePicker from "./datetimepicker.vue";
-// import XButton from "../com/Button.vue";
 import defaultLocale from '../../src/lang/en.js';
 import qtip from '../com/qtip';
-import {Console} from "../util/util.js";
 
 export default {
 	name: 'XForm',
@@ -228,11 +214,9 @@ export default {
 		},
 		submit() {
 			let data = this.formValue;
-			Console.log(data);
 			this.$emit('submit', data);
 		},
 		changeFn(val,name) {
-			Console.log(val);
 			this.formValue = Object.assign(this.formValue,{[name]: val});
 		},
 		checkboxFn(param,name) {
@@ -258,8 +242,6 @@ export default {
 		},
 		fieldListFn(val,name) {
 			let fieldlist = this.rules;
-			// const placeholder = name == 'select' || 'checkbox' ? this.locale.chooseMsg : this.locale.inputMsg;
-		
 			if (fieldlist[name] && fieldlist[name].validator && typeof fieldlist[name].validator == 'function') {
 				//callback 执行
 				let callback = (param)=>{
@@ -269,7 +251,6 @@ export default {
 			}
 		},
 		resetFields(fields){
-			// this.$refs.form.reset();
 			let tmpFields = fields.split(',');
 			if (tmpFields && tmpFields.length > 0) {
 				for (const item of tmpFields) {
@@ -328,7 +309,6 @@ export default {
 			margin-right: 10px;
       
       &-label {
-        // min-width: 80px;
         text-align: right;
         vertical-align: middle;
         float: left;
@@ -344,7 +324,6 @@ export default {
       }
 
       &-content {
-				// margin-left: 100px;
 				display: flex;
         line-height: 3em;
         position: relative;
