@@ -142,7 +142,7 @@ export default {
 		}
 	},
 	watch: {
-		value (val) {
+		value (/*val*/) {
 			this.dates = this.vi(this.value);
 		}
 	},
