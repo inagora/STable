@@ -84,8 +84,7 @@ export default {
 		ajaxUploadFiles(files) {
 			let params = new FormData();
 			params.append(this.name, files);
-			return Ajax({url: this.action, params, type: 'POST'}).then(res=>{
-				res = res[0];
+			return Ajax.request({url: this.action, params, method: 'POST'}).then(res=>{
 				if(res.errno==0 || res.code==0) {
 					Console.log(res.data);
 					this.$refs.choosefile.value = null;
