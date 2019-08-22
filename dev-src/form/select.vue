@@ -20,7 +20,7 @@
 					:closable="true"
 					@close="deleteTag($event, item)"
 				>
-					<span class="st-select-tags-text">{{ multiple ? item : item.label }}</span>
+					<span class="st-select-tags-text">{{ item }}</span>
 				</x-tag>
 			</span>
 			<input
@@ -35,7 +35,7 @@
 		</div>
 		<template v-else>
 			<input 
-				:value="selected.label"
+				:value="selected"
 				type="text"
 				class="st-select-input"
 			/>
@@ -74,7 +74,7 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
-import {loadJs} from '../util/util';
+import {loadJs,Console} from '../util/util';
 
 export default {
 	components:{XTag},
@@ -112,7 +112,7 @@ export default {
 	},
 	data(){
 		return {
-			selected: this.multiple ? [] : {},
+			selected: [],
 			visible: false,
 			hoverIndex: -1,
 			query: '',
@@ -123,8 +123,9 @@ export default {
 	watch: {
 		selected: {
 			handler(val) {
+				Console.log(val);
 				this.selected = val;
-				this.$emit('selectchange', this.selected.toString());
+				this.$emit('selectchange', this.selected);
 				this.$emit('validate', this.selected.toString());
 			}
 		},
@@ -186,7 +187,9 @@ export default {
 		},
 		setSelected(index,option) {
 			if(!this.multiple) {
-				this.selected = option;
+				let arr = [];
+				arr.push(option.label);
+				this.selected = arr;
 				this.visible = false;
 			} else {
 				const arr = (this.selected || []).slice();
@@ -330,7 +333,6 @@ export default {
     min-height: 3em;
     &-item {
       height: 2em;
-      line-height: 1;
       padding: 0 8px;
       box-sizing: border-box;
       margin: 2px 0 2px 6px;

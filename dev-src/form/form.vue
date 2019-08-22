@@ -91,6 +91,7 @@ import XUpload from "./upload.vue";
 import XDatetimePicker from "./datetimepicker.vue";
 import defaultLocale from '../../src/lang/en.js';
 import qtip from '../com/qtip';
+import {Console} from '../util/util';
 
 export default {
 	name: 'XForm',
@@ -214,7 +215,7 @@ export default {
 					for (const cbx of item.options) {
 						if (cbx.ischecked == true)
 							this.checkedValue.push(cbx.value);
-						tmpArr[item.name] = this.checkedValue.toString();
+						tmpArr[item.name] = this.checkedValue;
 					}
 				}
 			}
@@ -222,6 +223,7 @@ export default {
 		},
 		submit() {
 			let data = this.formValue;
+			Console.log(data);
 			this.$emit('submit', data);
 		},
 		changeFn(val,name) {
@@ -231,13 +233,12 @@ export default {
 			let val = param[0];
 			let checked = param[1];
 			let idx = this.checkedValue.indexOf(val);
-			
 			if(idx == '-1' && checked) {
 				this.checkedValue.push(val); 
 			}	else if(idx != '-1' && !checked) {
 				this.checkedValue.splice(idx,1);
 			}
-			this.formValue[name] = this.checkedValue.toString();
+			this.formValue[name] = this.checkedValue;
 		},
 		dateChangeFn(val,name){
 			let realDate = this.timeFormat(val,'YYYY-MM-DD');
