@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import {ajax} from '../util/ajax';
+import Ajax from '../util/Ajax';
 import XInput from "./input.vue";
 import XSelect from "./select.vue";
 import XCheckbox from "./checkbox.vue";
@@ -155,6 +155,12 @@ export default {
 		size: {
 			type: String,
 			default: 'medium'
+		},
+		ajaxSetting: {
+			type: Object,
+			default() {
+				return {};
+			}
 		}
 	},
 	inject: {
@@ -162,7 +168,12 @@ export default {
 			default: defaultLocale
 		}
 	},
+	provide(){
+		Console.log('provide');
+		return {};
+	},
 	data() {
+		Console.log('data');
 		return {
 			formValue: {},
 			checkedValue: [],
@@ -191,6 +202,8 @@ export default {
 		}
 	},
 	mounted() {
+		Console.log('mounted');
+		this.ajax = new Ajax(Object.assign({}, window.STable && window.STable.default||{}, this.ajaxSetting));
 		this.getFormList();
 	},
 	methods: {
@@ -200,8 +213,7 @@ export default {
 			} else {
 				let getParam = this.formConfig.getConfig;
 				let data = getParam ? getParam.data : {};
-				return ajax({url: getParam.url, data, type: getParam.read}).then(res=>{
-					res = res[0];
+				return this.ajax.request({url: getParam.url, data, method: getParam.read}).then(res=>{
 					if(res.errno==0 || res.code==0) {
 						this.formConfig.fieldList = res.data;
 					} else {

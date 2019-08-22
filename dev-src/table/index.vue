@@ -127,7 +127,6 @@ import XHead from './Head.vue';
 import XBody from './Body.vue';
 import XMenu from './Menu';
 import XFlyman from '../com/FlyMan.vue';
-import {ajax} from '../util/ajax';
 import {isFirefox} from '../util/util';
 import data from './data.mixin.js';
 import drag from './drag.mixin.js';
@@ -137,7 +136,7 @@ import qtip from '../com/qtip.js';
 export default {
 	components: {XHead, XBody, XMenu, XFlyman},
 	mixins: [data, drag, resize],
-	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode'],
+	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax'],
 	data() {
 		return {
 			hlRowNum: -1,
@@ -295,8 +294,7 @@ export default {
 						let data = {};
 						data[this.idIndex] = id;
 						Object.assign(data, this.params);
-						ajax({url:this.deleteUrl, data, type: this.actionMethods.destroy}).then(res=>{
-							res = res[0];
+						this.ajax.request({url:this.deleteUrl, data, method: this.actionMethods.destroy}).then(res=>{
 							if(res.errno==0) {
 								qtip.success('删除成功');
 								this.load('cur');
@@ -353,8 +351,7 @@ export default {
 									}
 									data[self.idIndex] = record[self.idIndex];
 									
-									ajax({ url: updateUrl, data, type: self.actionMethods.update}).then(res=>{
-										res = res[0];
+									this.ajax.request({ url: updateUrl, data, method: self.actionMethods.update}).then(res=>{
 										if(res.errno==0){
 											this.$message({
 												message: '修改成功',

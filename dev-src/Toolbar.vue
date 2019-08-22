@@ -23,7 +23,6 @@ import {loadJs} from './util/util.js';
 import {create} from './com/Dialog.js';
 import qtip from './com/qtip';
 import XForm from './form/form.vue';
-import {ajax} from './util/ajax.js';
 
 export default {
 	components: {XButton},
@@ -36,7 +35,8 @@ export default {
 		'downloadable',
 		'actionMethods',
 		'store',
-		'idIndex'
+		'idIndex',
+		'ajax'
 	],
 	data(){
 		let self = this;
@@ -142,8 +142,7 @@ export default {
 							if(ret.data)
 								data = ret.data;
 						}
-						ajax({url: addUrl, data, type:toolbar.actionMethods.create}).then(res=>{
-							res = res[0];
+						this.ajax.request({url: addUrl, data, method:toolbar.actionMethods.create}).then(res=>{
 							if(res.errno==0){
 								qtip.success(toolbar.locale.toolbar.addSuccessMsg);
 								this.destroy();
@@ -172,12 +171,12 @@ export default {
 			}
 			let ids = records.map(r=>r[this.idIndex]);
 			
-			ajax({
+			this.ajax.request({
 				url: this.batDeleteUrl,
 				data: {
 					[this.idIndex]: ids
 				},
-				type: this.actionMethods.delete
+				method: this.actionMethods.delete
 			}).then(res=>{
 				if(res.errno){
 					qtip.error(res.errmsg);

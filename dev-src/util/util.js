@@ -40,3 +40,74 @@ export let Console = {
 		window.console && window.console.error.apply(window.console, args);
 	}
 };
+
+let class2type = {},
+	toString = class2type.toString;
+"Boolean Number String Function Array Date RegExp Object Error".split(" ").forEach(name => {
+	class2type["[object " + name + "]"] = name.toLowerCase();
+});
+
+function $type(obj) {
+	return obj == null ? String(obj) :
+		class2type[toString.call(obj)] || "object";
+}
+
+function isObject(obj) {
+	return $type(obj) == "object";
+}
+
+function isPlainObject(obj) {
+	return isObject(obj) && Object.getPrototypeOf(obj) == Object.prototype;
+}
+
+let FormData = window.FormData;
+let USP = window.URLSearchParams;
+
+function serialize(params, obj, scope) {
+	if(Array.isArray(obj)) {
+		obj.forEach(item=>serialize(params, item, `${scope}[]`));
+	} else if(isPlainObject(obj)) {
+		if(scope)
+			Object.keys(obj).forEach(key=>serialize(params, obj[key], `${scope}[${key}]`));
+		else
+			Object.keys(obj).forEach(key=>serialize(params, obj[key], key));
+	} else {
+		params.append(scope, obj);
+	}
+}
+function getFormData(data) {
+	if(data instanceof FormData) {
+		return data;
+	}else if(data instanceof USP){
+		let fd = new FormData();
+		for(let p of data) {
+			fd.append(p[0], p[1]);
+		}
+		return fd;
+	}else if($type(data)=='string') {
+		let searchParams = new USP(data);
+		let fd = new FormData();
+		for(let p of searchParams) {
+			fd.append(p[0], p[1]);
+		}
+		return fd;
+	} else if(isPlainObject(data)) {
+		let fd = new FormData();
+		serialize(fd, data);
+		return fd;
+	} else {
+		return new FormData();
+	}
+}
+
+function mergeFormData(target, ...fdList) {
+	target = getFormData(target);
+	for(let fd of fdList) {
+		for(let p of getFormData(fd)) {
+			target.append(p[0], p[1]);
+		}
+	}
+	return target;
+}
+
+export {$type, isObject, isPlainObject, getFormData, mergeFormData};

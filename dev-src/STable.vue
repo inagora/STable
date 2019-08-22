@@ -22,7 +22,8 @@ import XSearch from './Search.vue';
 import XTable from './table/index.vue';
 import XPagination from './Pagination.vue';
 import defaultLang from './lang/en.js';
-import {hashCode, Console} from "./util/util.js";
+import {hashCode, Console, getFormData, mergeFormData} from "./util/util.js";
+import Ajax from './util/Ajax.js';
 let stableCount = 0;
 export default {
 	props: {
@@ -107,7 +108,7 @@ export default {
 			 * @param {String} idIndex 删除、批量删除、修改数据时，用来标识记录的数据
 			 */
 			idIndex: ''
-		}, window&&window.STable && window.STable.default||{}, this.config);
+		}, window.STable && window.STable.default||{}, this.config);
 
 		//国际化
 		if(!conf.locale) {
@@ -289,21 +290,12 @@ export default {
 			return item;
 		});
 
+		conf.params = mergeFormData(conf.params, conf.postParam, conf.postData);
 		if(stableCount==0 && window.location.search.includes('stable=on')) {
-			let searchParams = new URLSearchParams(window.location.search);
-			if(searchParams.get('stable') == 'on'){
-				let sp = {};
-				for(let key of searchParams.keys()) {
-					let val = searchParams.getAll(key);
-					if(val.length>1)
-						sp[key] = val;
-					else
-						sp[key] = val[0];
-				}
-				delete sp.stable;
-
-				//兼容之前版使用的postParam 和 postData参数，已过时
-				Object.assign(conf.params, conf.postParam, conf.postData, sp);
+			let searchParams = getFormData(window.location.search);
+			if(searchParams.get('stable')=='on'){
+				searchParams.delete('stable');
+				conf.params = mergeFormData(conf.params, searchParams);
 			}
 		}
 
@@ -364,6 +356,9 @@ export default {
 			conf.sortDirection = conf.sort_direction;
 		if(!conf.sortDirection)
 			conf.sortDirection = 'asc';
+
+		//一些默认的请求参数，通过ajaxSetting传递
+		conf.ajax = new Ajax(conf.ajaxSetting);
 
 		let loc = window.location;
 		conf._storage_key = hashCode(loc.host+loc.pathname+JSON.stringify(columns));

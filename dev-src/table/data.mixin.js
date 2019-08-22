@@ -1,7 +1,6 @@
-import {ajax} from '../util/ajax';
 import Progressbar from '../com/Progressbar';
 export default {
-	inject: ['store', 'records', 'params', 'url', 'actionMethods',  'pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt'],
+	inject: ['store', 'records', 'params', 'url', 'actionMethods',  'pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt', 'ajax'],
 	data() {
 		return {
 			flymanVisible: false,
@@ -109,15 +108,14 @@ export default {
 				params.page = this.store.page;
 
 			this.lastRequestParams = params;
-			let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read};
+			let ajaxOptions = {url:this.url, data: params, method:this.actionMethods.read};
 			
 			let ret = this.store.emit('beforedatarequest', ajaxOptions);
 			if(ret && ret.url)
 				ajaxOptions = ret;
 			
-			ajax(ajaxOptions).then(res=>{
+			this.ajax.request(ajaxOptions).then(res=>{
 				this.isPageLoading = false;
-				res = res[0];
 				if(this.timer){
 					clearTimeout(this.timer);
 					this.timer = null;
@@ -314,17 +312,16 @@ export default {
 					if(this.downloadAllFromJustOnePage) {
 						params.count = 'max';
 					}
-					let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
+					let ajaxOptions = {url:this.url, data: params, method:this.actionMethods.read, timeout: this.downloadTimeout};
 					
 					let ret = this.store.emit('beforedatarequest', ajaxOptions);
 					if(ret && ret.url)
 						ajaxOptions = ret;
 				
 					let startTime = new Date();
-					let job = ajax(ajaxOptions);
+					let job = this.ajax.request(ajaxOptions);
 					job.then(res=>{
 						loadTime.push(new Date() - startTime);
-						res = res[0];
 						list[params.page] = res.data&&res.data.list||[];
 						if(res.data && res.data.page_count)
 							pageCount = res.data.page_count;
@@ -432,8 +429,7 @@ export default {
 					if(ret && ret.url)
 						ajaxOptions = ret;
 					
-					ajax(ajaxOptions).then(res=>{
-						res = res[0];
+					this.ajax.request(ajaxOptions).then(res=>{
 						if(res.errno){
 							alert(res.errmsg);
 							reject(res);
