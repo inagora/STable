@@ -46,9 +46,9 @@ export default {
 </script>
 <style lang="scss">
 .st-load{
-	position: fixed;
+	position: absolute;
 	width: 60%;
-	height: 300px;
+	height: 90%;
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%,-50%);
@@ -110,6 +110,16 @@ export default {
 		border-radius: 50%/50%;
 		transform: rotate(65deg);
 	}
+	&-heart:after {
+		content: '';
+		width: 3px;
+		height: 5px;
+		background-color: #ccc;
+		position: absolute;
+		border-radius: 50%/50%;
+		left: 1px;
+		top: 1px;
+	}
 
 	&-face {
 		position: absolute;
@@ -125,14 +135,25 @@ export default {
 		content: ' ';
 		background-color: #fff;
 		width: 3px;
-		height: 6px;
+		height: 4px;
 		font-size: 0;
 		line-height: 0;
 		position: absolute;
-		top: 9px;
-		left: 10px;
+		top: 11px;
+		left: 11px;
 		border-radius: 3px 0 2px 0;
-		transform: rotate(35deg);
+		transform: rotate(25deg);
+	}
+	&-face:after{
+		content: '';
+		position: absolute;
+		border: 1px solid #666;
+		border-width: 1px 0 0 1px;
+		width: 9px;
+		height: 4px;
+		left: 4px;
+		top: 9px;
+		transform: skew(-40deg);
 	}
 	@keyframes st_load_speeder {
 		0% {

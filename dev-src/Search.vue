@@ -12,6 +12,7 @@
 			inline
 			:size="'small'"
 			:label-visible="labelVisible"
+			@submit="search"
 		>
 			<x-button 
 				:native-type="'submit'" 
@@ -47,13 +48,35 @@ export default {
 		'locale'
 	],
 	methods: {
-		search() {
-			//data处理
-			// Console.log(data);
-			this.$refs.form.submit();
+		search(evt) {
+			let searchParams;
+			if(this.ignoreEmptySearchParam) {
+				searchParams = this.trimParam(evt);
+				
+			} else 
+				searchParams = evt;
+			
+			let ret = this.store.emit('search', evt);
+			if(ret===false)
+				return;
+			this.store.searchParams = searchParams;
+			this.store.$emit('load', {reset: true});
 		},
 		reset() {
-			this.$refs.form.resetFields('uname,age');
+			this.$refs.form.resetFields();
+		},
+		trimParam(data){
+			let params = {};
+			for(let key in data) {
+				if(typeof data[key]=='string') {
+					if(data[key])
+						params[key] = data[key];
+				} else if(typeof data[key] != 'undefined') {
+					params[key] = data[key];
+				}
+			}
+
+			return params;
 		}
 	}
 };
