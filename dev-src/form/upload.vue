@@ -24,7 +24,6 @@
 <script>
 import XButton from "../com/Button.vue";
 import {Console} from "../util/util.js";
-import Ajax from '../util/Ajax';
 import qtip from '../com/qtip';
 
 export default {
@@ -45,6 +44,7 @@ export default {
 			default: 'file'
 		},
 	},
+	inject:['ajax'],
 	data(){
 		return {
 			uploadFiles: [],
@@ -84,7 +84,7 @@ export default {
 		ajaxUploadFiles(files) {
 			let params = new FormData();
 			params.append(this.name, files);
-			return Ajax.request({url: this.action, params, method: 'POST'}).then(res=>{
+			return this.ajax.request({url: this.action, params, method: 'POST'}).then(res=>{
 				if(res.errno==0 || res.code==0) {
 					Console.log(res.data);
 					this.$refs.choosefile.value = null;
