@@ -73,19 +73,6 @@
 						/>
 					</div>
 				</template>
-				<!-- <template v-if="item.type == 'button'">
-					<div class="st-form-btn">
-						<x-button
-							v-for="(btn, btnindex) in item.options" 
-							:key="btnindex" 
-							class="st-form-btn-item" 
-							:type="btn.theme" 
-							@click.prevent="submit(btn)"
-						>
-							{{ btn.text }}
-						</x-button>
-					</div>
-				</template> -->
 			</div>
 		</div>
 		<slot></slot>
@@ -102,10 +89,9 @@ import XRadio from "./radio.vue";
 import XSwitch from "./switch.vue";
 import XUpload from "./upload.vue";
 import XDatetimePicker from "./datetimepicker.vue";
-// import XButton from "../com/Button.vue";
 import defaultLocale from '../../src/lang/en.js';
 import qtip from '../com/qtip';
-import {Console} from "../util/util.js";
+import {Console} from '../util/util';
 
 export default {
 	name: 'XForm',
@@ -169,7 +155,6 @@ export default {
 		}
 	},
 	provide(){
-		Console.log('provide');
 		return {
 			ajax: this.ajax
 		};
@@ -204,7 +189,6 @@ export default {
 		}
 	},
 	mounted() {
-		Console.log('mounted');
 		this.getFormList();
 	},
 	methods: {
@@ -233,7 +217,7 @@ export default {
 					for (const cbx of item.options) {
 						if (cbx.ischecked == true)
 							this.checkedValue.push(cbx.value);
-						tmpArr[item.name] = this.checkedValue.toString();
+						tmpArr[item.name] = this.checkedValue;
 					}
 				}
 			}
@@ -245,20 +229,18 @@ export default {
 			this.$emit('submit', data);
 		},
 		changeFn(val,name) {
-			Console.log(val);
 			this.formValue = Object.assign(this.formValue,{[name]: val});
 		},
 		checkboxFn(param,name) {
 			let val = param[0];
 			let checked = param[1];
 			let idx = this.checkedValue.indexOf(val);
-			
 			if(idx == '-1' && checked) {
 				this.checkedValue.push(val); 
 			}	else if(idx != '-1' && !checked) {
 				this.checkedValue.splice(idx,1);
 			}
-			this.formValue[name] = this.checkedValue.toString();
+			this.formValue[name] = this.checkedValue;
 		},
 		dateChangeFn(val,name){
 			let realDate = this.timeFormat(val,'YYYY-MM-DD');
@@ -271,8 +253,6 @@ export default {
 		},
 		fieldListFn(val,name) {
 			let fieldlist = this.rules;
-			// const placeholder = name == 'select' || 'checkbox' ? this.locale.chooseMsg : this.locale.inputMsg;
-		
 			if (fieldlist[name] && fieldlist[name].validator && typeof fieldlist[name].validator == 'function') {
 				//callback 执行
 				let callback = (param)=>{
@@ -282,7 +262,6 @@ export default {
 			}
 		},
 		resetFields(fields){
-			// this.$refs.form.reset();
 			let tmpFields = fields.split(',');
 			if (tmpFields && tmpFields.length > 0) {
 				for (const item of tmpFields) {
@@ -341,7 +320,6 @@ export default {
 			margin-right: 10px;
       
       &-label {
-        // min-width: 80px;
         text-align: right;
         vertical-align: middle;
         float: left;
@@ -357,7 +335,6 @@ export default {
       }
 
       &-content {
-				// margin-left: 100px;
 				display: flex;
         line-height: 3em;
         position: relative;

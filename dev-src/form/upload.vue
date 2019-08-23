@@ -23,7 +23,6 @@
 
 <script>
 import XButton from "../com/Button.vue";
-import {Console} from "../util/util.js";
 import qtip from '../com/qtip';
 
 export default {
@@ -50,12 +49,6 @@ export default {
 			uploadFiles: [],
 			params: {},
 		};
-	},
-	watch: {
-		// uploadFiles(){
-		// 	let params = this.params;
-		// 	this.ajaxUploadFile(params);
-		// }
 	},
 	methods: {
 		click() {
@@ -86,7 +79,6 @@ export default {
 			params.append(this.name, files);
 			return this.ajax.request({url: this.action, params, method: 'POST'}).then(res=>{
 				if(res.errno==0 || res.code==0) {
-					Console.log(res.data);
 					this.$refs.choosefile.value = null;
 				} else {
 					qtip.error(res.msg);

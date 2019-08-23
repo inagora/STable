@@ -55,9 +55,6 @@ export default {
 			isChecked: this.checked,
 		};
 	},
-	watch: {
-		
-	},
 	methods: {
 		handleChange() {
 			this.isChecked = !this.isChecked;

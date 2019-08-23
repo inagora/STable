@@ -20,10 +20,9 @@
 					:closable="true"
 					@close="deleteTag($event, item)"
 				>
-					<span class="st-select-tags-text">{{ multiple ? item : item.label }}</span>
+					<span class="st-select-tags-text">{{ item }}</span>
 				</x-tag>
 			</span>
-			<!-- 搜索框 -->
 			<input
 				v-if="filterable"
 				type="text"
@@ -35,9 +34,8 @@
 			/>
 		</div>
 		<template v-else>
-			<!-- @keydown.enter.prevent="createOption" -->
 			<input 
-				:value="selected.label"
+				:value="selected"
 				type="text"
 				class="st-select-input"
 			/>
@@ -76,21 +74,12 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
-import {loadJs} from '../util/util';
-
-const regExpString = (value = '') => String(value).replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
+import {loadJs,Console} from '../util/util';
 
 export default {
-	name: 'XSelect',
 	components:{XTag},
 	directives: {'clickoutside': Tool._clickOutside},
 	mixins: [Tool],
-	componentName: 'XSelect',
-	provide() {
-		return {
-			'XSelect': this
-		};
-	},
 	props:{
 		filterable: {
 			type: Boolean,
@@ -123,7 +112,7 @@ export default {
 	},
 	data(){
 		return {
-			selected: this.multiple ? [] : {},
+			selected: [],
 			visible: false,
 			hoverIndex: -1,
 			query: '',
@@ -131,14 +120,12 @@ export default {
 			filterOptions: [],
 		};
 	},
-	computed: {
-    
-	},
 	watch: {
 		selected: {
 			handler(val) {
+				Console.log(val);
 				this.selected = val;
-				this.$emit('selectchange', this.selected.toString());
+				this.$emit('selectchange', this.selected);
 				this.$emit('validate', this.selected.toString());
 			}
 		},
@@ -172,12 +159,6 @@ export default {
 		});
 		this.targetArr = targetArr;
 	},
-	mounted() {
-		
-	},
-	beforeDestroy() {
-
-	},
 	methods: {
 		handleOption() {
 			if (!this.visible) {
@@ -206,12 +187,13 @@ export default {
 		},
 		setSelected(index,option) {
 			if(!this.multiple) {
-				this.selected = option;
+				let arr = [];
+				arr.push(option.label);
+				this.selected = arr;
 				this.visible = false;
 			} else {
 				const arr = (this.selected || []).slice();
 				const optionIndex = this.getValueIndex(arr, option.label);
-				// 赋值
 				if (optionIndex > -1) {
 					//值已选中则删除
 					arr.splice(optionIndex, 1);
@@ -222,7 +204,6 @@ export default {
 				this.selected = arr;
 				this.visible = true;
 				this.query = '';
-				// document.querySelector('.st-select-input').focus();
 			}
 		},
 		getValueKey(item) {
@@ -252,7 +233,7 @@ export default {
 			this.query = event.target.value;
 			this.searchQuery(this.options,this.query);
 		},
-		searchQuery(options/*, query*/) {
+		searchQuery(options) {
 			function joinText(arr){
 				return arr.map(item=>item[0]).join('');
 			}
@@ -275,11 +256,6 @@ export default {
 				});
 				this.filterOptions = newOptions;
 			});
-		},
-		testRegExp(targetOpt) {
-			// 正则匹配决定是否显示当前option
-			if (this.filterable)
-				return this.query!='' ? new RegExp(regExpString(this.query), 'i').test(targetOpt) : true;
 		},
 		createOption(event) {
 			let query = event.target.value;
@@ -319,7 +295,7 @@ export default {
 		},
 		handleClose() {
 			this.visible = false;
-		},
+		}
 	}
 };
 </script>
@@ -340,7 +316,6 @@ export default {
 	padding: 0 15px;
 
   &-input {
-    // border-color: #409eff;
     border: none;
 		font-size: 1em;
   }
@@ -356,10 +331,8 @@ export default {
     display: flex;
     align-items: center;
     min-height: 3em;
-    
     &-item {
       height: 2em;
-      line-height: 1;
       padding: 0 8px;
       box-sizing: border-box;
       margin: 2px 0 2px 6px;

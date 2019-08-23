@@ -23,9 +23,6 @@ export const _clickOutside =  {
 		delete el.__vueClickOutside__;
 	},
 };
-// function _t(...args) {
-//   return _t.apply(this, args);
-// }
 
 export const _typeOf = function (obj) {
 	return obj == null ? String(obj) :
@@ -48,14 +45,4 @@ export const _getValueByPath = function (object, prop) {
 	}
 	return result;
 };
-export const _valueEquals = function (a, b) {
-	if (a === b) return true;
-	if (!(a instanceof Array)) return false;
-	if (!(b instanceof Array)) return false;
-	if (a.length !== b.length) return false;
-	for (let i = 0; i !== a.length; ++i) {
-		if (a[i] !== b[i]) return false;
-	}
-	return true;
-};
-export default {_clickOutside,_typeOf,_getValueByPath,_valueEquals};
+export default {_clickOutside,_typeOf,_getValueByPath};

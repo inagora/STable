@@ -94,10 +94,6 @@ export default {
     font-size: 12px;
     margin-left: 5px;
   }
-
-  &_normal {
-
-  }
   &_small{
     height: 20px;
     padding: 0 5px;
