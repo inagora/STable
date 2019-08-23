@@ -1,7 +1,6 @@
 import STable from './STable.vue';
 import {Console} from './util/util';
 import XForm from './form/form.vue';
-export {default as SidePanel} from './com/SidePanel.js';
 export {create as createDialog} from './com/Dialog.js';
 export {default as qtip} from './com/qtip.js';
 
