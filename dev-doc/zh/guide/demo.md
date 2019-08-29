@@ -81,10 +81,6 @@ demo需要覆盖所有功能点
 * progressbar
 * update
 * infinite
-## SidePanel
-* show
-* showPage
-* close callback
 ## Button
 * icon
 * size
