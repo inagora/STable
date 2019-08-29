@@ -468,9 +468,29 @@
 
 ### add
 * __Parameters__:
+	* data，`Object`，要添加的数据
 * __详细__:
-* __用法__: 
 
+	添加数据时触发。可以在此对要添加的数据在请求发送前做一些处理
+	::: tip
+	如果beforeadd的触发函数返回了false，就会中断本次添加动作。这个特性可以用来做数据提交前的检查，一旦发现有问题，可以用它中断添加动作。
+	:::
+* __用法__: 
+	todo，请梳理代码后重写说明和demo
+	```JS
+	STable.init({
+		//some other config
+		listeners: {
+			add(data){
+				let name = data.name;
+				if(!name || name.length<10){
+					alert('名字不能为空，且大于10个字符');
+					return false;
+				}
+			}
+		}
+	})
+	```
 ### beforeedit
 * __Parameters__:
 * __详细__:
@@ -498,17 +518,132 @@
 
 ## 实例属性
 ### title
+
+#### __类型__: `String`
+* __详细__: 
+	表格的标题。
+* __用法__: 
+	```js
+	STable.init({
+	//some other config
+		title: '这是一个标题'
+	})
+	
+	```
+* __参考__: todo
 ### tip
 
 ## 实例方法
 ### refresh
+
+#### __介绍__ :加载完新一页数据后触发，用在listeners中，用于对原始数据做处理。
+```js
+listeners: {
+	refresh(records){
+		//数据刷新之后，可以对数据做一些处理
+		let count = records.length;
+		console.log(`we get ${count} records`);
+	}
+}
+```
 ### layout
-### getSelectedRecords
+
+#### __介绍__ :table数据发生变化影响布局时调用。
+```js
+dataChange(): {
+	//数据发生变化逻辑
+	//调用方式
+	this.layout();
+}
+```
+
+### getSelectRows
+
+#### __介绍__ :获取table表格中选中的行，返回值为数组。
+```js
+getSelectRows(): {
+	//对数组进行操作[records]
+}
+```
 ### getSearchParam
+
+#### __介绍__ :获得当前搜索表单内容，返回值为formData对象，可使用append()方法添加字段（类型可以是 Blob, File）。
+```js
+handleSubmit(target): {
+	let formData = getSearchParam(target);
+	target.append('name','豆豆')
+	console.log(target);
+}
+```
+
 ### setRecords
 
+#### __介绍__ :设置表格数据，无需手动刷新。
+```js
+let dataList;
+//dataList = res.data.list
+this.setRecords(dataList);
+```
 ## column配置
+#### __类型__: `Array|Object`
+* __详细__: 
+
+	表格的列配置。数据中的每一项对应表格中的一列，通过它配置此列的表头、表格内容以及展示样式。
+* __用法__: *表示必填项
+	```js
+	columns: [
+		{
+			header: 'id', //* 每列的title
+			dataIndex:'id', //* 对应数据的字段名
+			width: 100, // 宽度（可不填）
+			locked: true, // 是否锁定，默认左侧锁定 可选值：right
+			sortable: true, // 是否排序
+			render(record){ //对当前行数据处理渲染
+				return record.actors.join(' | ');
+			},
+			buttons: [{ //详细使用方法见buttons
+				text: 'fff', //button文字颜色
+				click(){  //button操作
+					console.log(this);
+				},
+				icon: 'st-iconfont st-icon-eye', //button添加icon
+			}]
+		},
+	]
+	
+	```
+* __参考__: todo
+
+#### __介绍__ :设置表格数据，无需手动刷新。
+```js
+let dataList;
+//dataList = res.data.list
+this.setRecords(dataList);
+```
 
 ## form配置
+* __介绍__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件使用（x-form），也可集成在STable使用，详见demo。
+  
+### __集成在Stable demo__:
 
+<p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="pangcongcong" data-slug-hash="VwZPMgV" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="form">
+  <span>See the Pen <a href="https://codepen.io/pangcongcong/pen/VwZPMgV/">
+  form</a> by ccpang (<a href="https://codepen.io/pangcongcong">@pangcongcong</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+### __表单组件单独使用配置项 demo__:
+
+* __inline__: 默认为纵向布局，当垂直方向空间受限且表单较简单时（比如搜索），可以在一行内放置表单。
+* __size__: 默认值small，可选项small，middle，large。
+* __labelVisible__: 默认值true，是否显示form表单的label。
+* __fieldList__: 表单配置项（json对象）。
+* __submit__: 表单提交发起的请求。
+<p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="cocopang" data-slug-hash="NWKpLrv" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="NWKpLrv">
+  <span>See the Pen <a href="https://codepen.io/cocopang/pen/NWKpLrv/">
+  NWKpLrv</a> by ccpang (<a href="https://codepen.io/cocopang">@cocopang</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 ## button配置
