@@ -155,9 +155,12 @@ export default {
 		}
 	},
 	provide(){
-		return {};
+		return {
+			ajax: this.ajax
+		};
 	},
 	data() {
+		this.ajax = new Ajax(Object.assign({}, (window.STable && window.STable.default||{}).ajaxSetting, this.ajaxSetting));
 		return {
 			formValue: {},
 			checkedValue: [],
@@ -186,7 +189,6 @@ export default {
 		}
 	},
 	mounted() {
-		this.ajax = new Ajax(Object.assign({}, window.STable && window.STable.default||{}, this.ajaxSetting));
 		this.getFormList();
 	},
 	methods: {
