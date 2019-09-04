@@ -212,7 +212,14 @@
 * __类型__: `Array|String`
 * __详细__: 
 
-	把指定列的cell渲染成多行。
+	指定列的数据为数组，并且数据中的每一项，在此列以一行展示。
+* __用法__: 
+	```JS
+	STable.init({
+		//sublistAt: ['movieType','movieName']
+		sublistAt: 'movieType'
+	});
+	```
 * __参考__: 
 
 ### listeners
@@ -245,13 +252,16 @@
 * __类型__: `Number`
 * __默认值__: 1
 * __详细__: 
-
+  
 	初始加载的页号。
-	::: tip
-	页号从1开始。
-	:::
 * __用法__: 
-* __参考__: 
+	```JS
+	STable.init({
+		//some other config
+		//注意 页号从1开始
+		page: 1,
+	});
+	```
 
 ### pageMode
 * __类型__: `String`
@@ -259,10 +269,16 @@
 * __详细__: 
 
 	分页模式。目前支持两种：
-	* normal，模认的分页模式，需要通过页号和每页的行数，决定每一页的数据内容
-	* waterfall，瀑布流模式，需要根据当前页的第一行的pageIndex向前找上一页或者最后一行数据的pageIndex向后找一页的数据
+	* normal：模认的分页模式，需要通过页号和每页的行数，决定每一页的数据内容。
+	* waterfall：瀑布流模式，需要根据当前页的第一行的pageIndex向前找上一页或者最后一行数据的pageIndex向后找一页的数据。
 * __用法__: 
-* __参考__: 
+  ```JS
+	STable.init({
+		//some other config
+		//pageMode: ‘waterfall’
+		pageMode: 'normal',
+	});
+	
 
 ### pageIndex
 * __类型__: `String` 
@@ -271,7 +287,12 @@
 
 	如果分页模式是瀑布模式(waterfall)，需要指定由哪个数据字段决定分页，默认是id
 * __用法__: 
-* __参考__: 
+  ```JS
+	STable.init({
+		//some other config
+		//pageIndex要求唯一性。
+		pageIndex: 'id',
+	});
 
 ### parallelCount
 * __类型__: `Number` 
@@ -280,7 +301,11 @@
 
 	全量下载表格时，并行请求数
 * __用法__: 
-* __参考__: 
+  ```JS
+	STable.init({
+		//some other config
+		parallelCount: 6,
+	});
 
 ### params
 * __类型__: `Object`
@@ -295,11 +320,10 @@
 	从服务端拉取每页数据时，params中的值也会当做参数一起发送过去。使用这个字段，可以让开发者自定义一些参数，发给列表接口。比如，可以设置
 	```json
 	params: {
+		//让每页请求100条数据，而不是默认的20条。
 		count: 100
 	}
 	```
-	让每页请求100条数据，而不是默20条。
-* __参考__: 
 
 ### records
 * __类型__: `Array` 
@@ -307,7 +331,10 @@
 
 	静态化数据，设置了它后，就不会动态加载页面数据了。直接展示它定义的表格数据
 * __用法__: 
-* __参考__: 
+  ```json
+	//静态数据
+	records: [],
+	```
 
 ### rowNumberVisible
 * __类型__: `Boolean`
@@ -315,15 +342,32 @@
 * __详细__: 
 
 	是否在行首显示行号。
-* __参考__: 
+* __用法__: 
+  ```JS
+	STable.init({
+		//some other config
+		rowNumberVisible: true,
+	});
 
 ### searchFilter
 * __类型__: `array|Object`
 * __详细__: 
 
-	搜索区域的配置。因为搜索区域本质上是一个form表单，搜索配置其实是表单项的配置
+	搜索区域的配置。因为搜索区域本质上是一个form表单，搜索配置其实是表单项的配置。
 * __用法__: 
-* __参考__: 
+  ```JS
+	STable.init({
+		searchFilter: [
+			{
+				label: '名字',
+				name: 'name'
+			}
+			//some other config
+		],
+	});
+* __参考__:
+  
+	* [form表单配置](#form配置)
 
 ### searchResetable
 * __类型__: `Boolean`
@@ -331,7 +375,12 @@
 * __详细__: 
 
 	在搜索区是否显示“重置”按钮
-* __参考__: 
+* __用法__: 
+  ```JS
+	STable.init({
+		//some other config
+		searchResetable: false,
+	});
 
 ### selectMode
 * __类型__: `String`
@@ -343,14 +392,25 @@
 	* 'single'，单选模式，在表格行前显示单选按钮
 	* 'multiple'，多选模式，在表格行前显示多选按钮
 * __用法__: 
-* __参考__: 
+  ```JS
+	STable.init({
+		//some other config
+		//默认none。单选single，多选multiple
+		selectMode: 'none',
+	}); 
 
 ### sortKey
 * __类型__: `String`
 * __详细__: 
 
 	默认按哪个列排序，它决定请求页数据时，sort_key字段的值。
-* __参考__: 
+* __用法__: 
+  ```JS
+	STable.init({
+		//some other config
+		//按哪个字段值排序
+		selectMode: 'id',
+	}); 
 
 ### sortDirection
 * __类型__: `String`
@@ -358,21 +418,13 @@
 * __详细__: 
 
 	同sortKey，sortDirection决定了默认排序方向
-* __参考__: 
-
-### tip
-* __类型__: `String`
-* __详细__: 
-
-	STable的提示区显示的内容
-* __参考__: 
-
-### title
-* __类型__: `String`
-* __详细__: 
-
-	标题，显示在标题栏。它也会用作下载时的默认文件名。
-* __参考__: 
+* __用法__: 
+  ```JS
+	STable.init({
+		//some other config
+		//默认排序asc升序，可选值desc降序
+		sortDirection: 'asc',
+	});
 
 ### titleVisible
 * __类型__: `Boolean`
@@ -380,45 +432,84 @@
 * __详细__: 
 
 	是否显示标题栏。
-* __参考__: 
+* __用法__: 
+  ```JS
+	STable.init({
+		//some other config
+		//默认false，可选值true
+		titleVisible: false,
+	});
 
 ### toolbar
 * __类型__: `Array`
 * __详细__: 
 
 	表格的工具栏，它里面是按钮或分割符。
+* __用法__: 
+  ```js
+	Stable.init({
+		toolbar: [
+			{
+				text: '删除',
+				icon: 'close',
+				type: 'danger',
+				click(){
+					console.log(this.getSelectedRows())
+				}
+			}
+		]
+	})
+	```
 * __参考__: 
+<p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="cocopang" data-slug-hash="XWreYEo" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="toolbar">
+  <span>See the Pen <a href="https://codepen.io/cocopang/pen/XWreYEo/">
+  toolbar</a> by ccpang (<a href="https://codepen.io/cocopang">@cocopang</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
 ### updateUrl
 * __类型__: `String`
 * __详细__: 
 
 	修改行数据时的提交地址。如果有此参数，会在每一行的最后添加一列，此列中有一个“修改”按钮，点此按钮，会显示修改窗口。
-* __参考__: 
+* __用法__: 
+  ```js
+	Stable.init({
+		updateUrl: '/demo/ajaxUpdate',
+	})
+	```
 
 ### url
 * __类型__: `String`
 * __详细__: 
 
 	请求每页数据的异步接口。
-* __参考__: 
-
-### 
-* __类型__: ``
-* __默认值__: 
-* __详细__: 
 * __用法__: 
-* __参考__: 
-
-
-
+  ```js
+	Stable.init({
+		url: '/demo/ajaxList',
+	})
+	```
 
 ## 事件
 所有事件的监听函数中this都指向当前STable实例。当然，如果你用箭头函数等方式，就另当别论了。
+
 ### ready
 * __详细__:
 
 	在STable初始化之后触发。适合作一些准备工作，如事件绑定、数据准备，类似于浏览器的domready
+* __用法__: 
+	```JS
+	STable.init({
+		//some other config
+		listeners: {
+			ready(){
+				console.log('窗口初始化完毕');
+			}
+		}
+	});
+	```
 
 ### refresh
 * __Parameters__:
@@ -468,47 +559,247 @@
 
 ### add
 * __Parameters__:
+	* data，`Object`，要添加的数据
 * __详细__:
-* __用法__: 
 
+	添加数据时触发。可以在此对要添加的数据在请求发送前做一些处理
+	::: tip
+	如果beforeadd的触发函数返回了false，就会中断本次添加动作。这个特性可以用来做数据提交前的检查，一旦发现有问题，可以用它中断添加动作。
+	:::
+* __用法__: 
+	```JS
+	STable.init({
+		//some other config
+		listeners: {
+			add(data){
+				let name = data.name;
+				if(!name || name.length<10){
+					alert('名字不能为空，且大于10个字符');
+					return false;
+				}
+			}
+		}
+	})
+	```
 ### beforeedit
 * __Parameters__:
+	* data，`Object`，要编辑的数据
 * __详细__:
+
+	修改一行数据前触发。可以在此对要编辑的数据在请求发送前做一些处理
 * __用法__: 
+	::: warning
+	如果beforeedit的触发函数返回了false，就会中断本次修改动作
+	:::
+	```JS
+	STable.init({
+		//some other config
+		listeners: {
+			beforeedit(data){
+				let name = data.name;
+				if(!name || name.length<10){
+					alert('名字不能为空，且大于10个字符');
+					return false;
+				}
+			}
+		}
+	})
+	```
 
 ### edit
 * __Parameters__:
+  * data，`Object`，要编辑的数据
 * __详细__:
+
+	修改一行数据时触发。在此对要编辑的数据做处理和发送请求
 * __用法__: 
+	```JS
+	STable.init({
+		//some other config
+		listeners: {
+			edit(data){
+				let name = data.name;
+				if(!name || name.length<10){
+					alert('名字不能为空，且大于10个字符');
+					return false;
+				}
+			}
+		}
+	})
+	```
 
 ### search
 * __Parameters__:
+  * evt，`Object`，搜索的参数
 * __详细__:
+
+	可以在搜索时对于参数做处理，在搜索时触发
 * __用法__: 
+  ::: warning
+	注意，如果search的触发函数返回了false，就会中断本次搜索动作
+	:::
+  ```js
+	Stable.init({
+		//some other config
+		listeners: {
+			search(evt) {
+				let searchParams;
+				searchParams = this.trimParam(evt);
+				//发送请求
+			},
+		}
+	})
 
 ### beforedatarequest
 * __Parameters__:
+  * params，`Object`，搜索的参数
 * __详细__:
+  
+	* 发送请求前可用此方法对参数进行组装或校验，发请求前触发
 * __用法__: 
+  ```js
+	Stable.init({
+		//some other config
+		listeners: {
+			beforedatarequest(params) {
+				let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
+				//发送请求
+			},
+		}
+	})
 
 ### dataload
 * __Parameters__:
+	* responseData，`Object`，刚下载的原始数据
 * __详细__:
+  
+	从网络下载一页新数据后触发。此时对数据还没有做任何处理。可以在此对原始数据做一些预处理。
 * __用法__: 
-
-## 实例属性
-### title
-### tip
+  ```js
+	Stable.init({
+		//some other config
+		listeners: {
+			dataload(data) {
+				let name = data.name;
+				if(!name || name.length<10){
+					alert('名字不能为空，且大于10个字符');
+					return false;
+				}
+			},
+		}
+	})
 
 ## 实例方法
 ### refresh
+
+#### __介绍__ :加载完新一页数据后触发，用在listeners中，用于对原始数据做处理。
+```js
+listeners: {
+	refresh(records){
+		//数据刷新之后，可以对数据做一些处理
+		let count = records.length;
+		console.log(`we get ${count} records`);
+	}
+}
+```
 ### layout
-### getSelectedRecords
+
+#### __介绍__ :table数据发生变化影响布局时调用。
+```js
+dataChange(): {
+	//数据发生变化逻辑
+	//调用方式
+	this.layout();
+}
+```
+
+### getSelectRows
+
+#### __介绍__ :获取table表格中选中的行，返回值为数组。
+```js
+getSelectRows(): {
+	//对数组进行操作[records]
+}
+```
 ### getSearchParam
+
+#### __介绍__ :获得当前搜索表单内容，返回值为formData对象，可使用append()方法添加字段（类型可以是 Blob, File）。
+```js
+handleSubmit(target): {
+	let formData = getSearchParam(target);
+	target.append('name','豆豆')
+	console.log(target);
+}
+```
+
 ### setRecords
 
+#### __介绍__ :设置表格数据，无需手动刷新。
+```js
+let dataList;
+//dataList = res.data.list
+this.setRecords(dataList);
+```
 ## column配置
+#### __类型__: `Array|Object`
+* __详细__: 
+
+	表格的列配置。数据中的每一项对应表格中的一列，通过它配置此列的表头、表格内容以及展示样式。
+* __用法__: *表示必填项
+	```js
+	columns: [
+		{
+			header: 'id', //* 每列的title
+			dataIndex:'id', //* 对应数据的字段名
+			width: 100, // 宽度（可不填）
+			locked: true, // 是否锁定，默认左侧锁定 可选值：right
+			sortable: true, // 是否排序
+			render(record){ //对当前行数据处理渲染
+				return record.actors.join(' | ');
+			},
+			buttons: [{ //详细使用方法见buttons
+				text: 'fff', //button文字颜色
+				click(){  //button操作
+					console.log(this);
+				},
+				icon: 'st-iconfont st-icon-eye', //button添加icon
+			}]
+		},
+	]
+	
+	```
+* __参考__: todo
+
+#### __介绍__ :设置表格数据，无需手动刷新。
+```js
+let dataList;
+//dataList = res.data.list
+this.setRecords(dataList);
+```
 
 ## form配置
+* __介绍__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件使用（x-form），也可集成在STable使用，详见demo。
+  
+### __集成在Stable demo__:
 
+<p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="pangcongcong" data-slug-hash="VwZPMgV" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="form">
+  <span>See the Pen <a href="https://codepen.io/pangcongcong/pen/VwZPMgV/">
+  form</a> by ccpang (<a href="https://codepen.io/pangcongcong">@pangcongcong</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+### __表单组件单独使用配置项 demo__:
+
+* __inline__: 默认为纵向布局，当垂直方向空间受限且表单较简单时（比如搜索），可以在一行内放置表单。
+* __size__: 默认值small，可选项small，middle，large。
+* __labelVisible__: 默认值true，是否显示form表单的label。
+* __fieldList__: 表单配置项（json对象）。
+* __submit__: 表单提交发起的请求。
+<p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="cocopang" data-slug-hash="NWKpLrv" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="NWKpLrv">
+  <span>See the Pen <a href="https://codepen.io/cocopang/pen/NWKpLrv/">
+  NWKpLrv</a> by ccpang (<a href="https://codepen.io/cocopang">@cocopang</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 ## button配置
