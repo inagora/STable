@@ -532,6 +532,7 @@ export default {
 	::after{
 		box-sizing: border-box;
 	}
+	border-top: 1px solid #d0d0d0;
 }
 .st-fixed-stable{
 	position: relative;
