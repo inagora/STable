@@ -125,9 +125,9 @@ export default {
 			}
 		},
 		defaultValues: {
-			type: [Array,Boolean],
+			type: Object,
 			default() {
-				return [];
+				return {};
 			}
 		},
 		inline: {
@@ -192,6 +192,10 @@ export default {
 		this.getFormList();
 	},
 	methods: {
+		//兼容老逻辑
+		getFormData(){
+			return this.formConfig.fieldList;
+		},
 		getFormList() {
 			if (this.fieldList && this.fieldList.length > 0) {
 				this.formConfig.fieldList = this.fieldList;
@@ -208,6 +212,8 @@ export default {
 			}
 			let tmpArr = {};
 			for (const item of this.formConfig.fieldList) {
+				this.formConfig.fieldList[item.name] = typeof this.defaultValues[item.name]=='undefined' ? item.value : this.defaultValues[item.name];
+
 				if(item.type != 'button')
 					tmpArr[item.name] = item.value || '';
 				if(item.type == 'date') {

@@ -3,8 +3,10 @@ module.exports = {
 	description: 'A tool focuses on the table',
 	evergreen: true,
 	locales: {
-		'/': {
-			lang: 'en-US'
+		'/en/': {
+			lang: 'en-US',
+			title: 'STable - Focus on table',
+			description: 'A tool focus on the table'
 		},
 		'/zh/': {
 			lang: 'zh-CN',
@@ -19,6 +21,12 @@ module.exports = {
 				sidebar: [
 					'/zh/api/',
 					'/zh/api/com'
+				]
+			},
+			'/en/': {
+				sidebar: [
+					'/en/api/',
+					'/en/api/com'
 				]
 			}
 		}
