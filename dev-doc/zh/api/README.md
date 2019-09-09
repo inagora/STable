@@ -780,26 +780,91 @@ this.setRecords(dataList);
 ## form配置
 * __介绍__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件使用（x-form），也可集成在STable使用，详见demo。
   
-### __集成在Stable demo__:
+### 集成在Stable:
 
-<p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="pangcongcong" data-slug-hash="VwZPMgV" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="form">
-  <span>See the Pen <a href="https://codepen.io/pangcongcong/pen/VwZPMgV/">
-  form</a> by ccpang (<a href="https://codepen.io/pangcongcong">@pangcongcong</a>)
+<p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="cocopang" data-slug-hash="vYBWGZY" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="vYBWGZY">
+  <span>See the Pen <a href="https://codepen.io/cocopang/pen/vYBWGZY/">
+  vYBWGZY</a> by ccpang (<a href="https://codepen.io/cocopang">@cocopang</a>)
   on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
-### __表单组件单独使用配置项 demo__:
+### 单独使用form组件:
 
-* __inline__: 默认为纵向布局，当垂直方向空间受限且表单较简单时（比如搜索），可以在一行内放置表单。
-* __size__: 默认值small，可选项small，middle，large。
-* __labelVisible__: 默认值true，是否显示form表单的label。
-* __fieldList__: 表单配置项（json对象）。
-* __submit__: 表单提交发起的请求。
+* __inline__: 
+  * `Boolean` 默认false 纵向布局，当垂直方向空间受限且表单较简单时（比如搜索）可以设置为true，表示在一行内放置表单。
+	
+* __size__: 
+	* `String` 默认值'small'，可选项'small'，'middle'，'large'。
+
+* __labelVisible__: 
+	* `Boolean` 
+	* 默认值true，是否显示form表单的label。
+
+* __fieldList__: 
+	* `Object` 表单配置项（json对象）。
+
+* __submit__: 
+	* 表单提交发起的请求。
+
 <p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="cocopang" data-slug-hash="NWKpLrv" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="NWKpLrv">
   <span>See the Pen <a href="https://codepen.io/cocopang/pen/NWKpLrv/">
   NWKpLrv</a> by ccpang (<a href="https://codepen.io/cocopang">@cocopang</a>)
   on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
 ## button配置
+
+可在toolbar、column、form表单配置时使用。有以下几个配置项：
+
+### click
+* 类型：Function
+* 详细：
+	按钮点击时触发的函数。函数this指向STable实例。
+
+	1. 用在toolbar时，它有两个参数：
+		* btnConfig，此按钮的配置
+		* event，当前点击事件
+
+	1. 用在column时，它有三个参数：
+		* record，当前行数据原始值
+		* btnConfig，此按钮的配置信息
+		* event，当前点击事件
+
+### cls
+* 类型：String
+* 详细：
+按钮上附加的样式class，用于自定义按钮样式。
+
+### icon
+* 类型：string
+* 详细
+对应font-awsome中的字体图标，比如icon:'plus'，就是在此按钮上显示一个glyphicon-plus图片，即一个加号图标。也支持element ui的icon。
+* 参考：
+	* [font awsome的图标](https://doc.wfxteam.com/html/fa.html)
+	* [element ui的图标](http://element-cn.eleme.io/#/zh-CN/component/icon)
+
+### style
+* 类型：Object
+* 详细：
+按钮上附加的style样式，用于自定按钮样式。
+
+### text
+* 类型：string
+* 详细：
+按钮上显示的文本。
+
+### type
+* 类型：string
+* 默认值：'default'
+* 详细：
+对应bootstrap中对按钮类型的设定，它有 default / primary / success / warning / danger / info / text	。不同类型对应按钮的颜色不一样。
+
+### visible
+* 类型：Boolean|<String,String>|Function
+* 默认值：true
+* 详细：
+是否显示此按钮。仅对行中显示button有效。
+	* 当visible为数组时，数组第一项为dataIndex，第二项为对比值，当某行中，dataIndex对应的数据和对比值一样时，才会显示此按钮。
+	* 当visible为函数时，函数的返回值为true时，显示此按钮；否则不显示
