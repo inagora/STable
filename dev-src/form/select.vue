@@ -32,6 +32,7 @@
 				@keydown.delete="deletePrevTag"
 				@keydown.enter.prevent="handleOption"
 			/>
+			<div class="st-iconfont st-icon-caret-down" :class="{'up-arrow': visible}"></div>
 		</div>
 		<template v-else>
 			<input 
@@ -39,9 +40,15 @@
 				type="text"
 				class="st-select-input"
 			/>
+			<div class="st-iconfont st-icon-caret-down" :class="{'up-arrow': visible}"></div>
 		</template>
     
-		<div v-show="visible" v-clickoutside="handleClose" class="st-select-menu">
+		<div 
+			v-show="visible" 
+			v-clickoutside="handleClose" 
+			class="st-select-menu" 
+			:style="{'min-width':inputW+'px'}"
+		>
 			<template v-if="filterOptions.length == 0">
 				<ul v-show="options.length > 0 && visible">
 					<li 
@@ -74,7 +81,7 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
-import {loadJs,Console} from '../util/util';
+import {loadJs} from '../util/util';
 
 export default {
 	components:{XTag},
@@ -118,12 +125,12 @@ export default {
 			query: '',
 			targetArr: '',
 			filterOptions: [],
+			inputW: 80
 		};
 	},
 	watch: {
 		selected: {
 			handler(val) {
-				Console.log(val);
 				this.selected = val;
 				this.$emit('selectchange', this.selected);
 				this.$emit('validate', this.selected.toString());
@@ -148,6 +155,11 @@ export default {
 				}
 			}
 		}
+	},
+	mounted() {
+		this.$nextTick(()=>{
+			this.inputW = this.$refs.tags.clientWidth + 36;
+		});
 	},
 	created() {
 		if (this.list.length > 0 && this.options.length == 0) {
@@ -306,6 +318,9 @@ export default {
   font-size: 1.4em;
   width: 100%;
 }
+.up-arrow {
+	transform: rotate(180deg);
+}
 .st-select {
   // width: 100%;
   min-height: 3em;
@@ -347,7 +362,7 @@ export default {
     background-color: #fff;
     box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
     box-sizing: border-box;
-    margin: 5px 0;   
+    margin: 5px auto 0 -15px;   
     padding: 6px 0; 
     z-index: 9;
     > ul {

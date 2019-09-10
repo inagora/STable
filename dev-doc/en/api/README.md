@@ -686,14 +686,14 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 		}
 	})
 
-## 实例方法
+## Instance method
 ### refresh
 
-#### __介绍__ :加载完新一页数据后触发, 用在listeners中, 用于对原始数据做处理。
+#### __Introduction__ :Triggered after loading a new page of data, used in listeners, used to process the original data.
 ```js
 listeners: {
 	refresh(records){
-		//数据刷新之后, 可以对数据做一些处理
+		//After the data is refreshed, you can do some processing on the data.
 		let count = records.length;
 		console.log(`we get ${count} records`);
 	}
@@ -701,26 +701,26 @@ listeners: {
 ```
 ### layout
 
-#### __介绍__ :table数据发生变化影响布局时调用。
+#### __Introduction__ :Called when the table data changes affect the layout.
 ```js
 dataChange(): {
-	//数据发生变化逻辑
-	//调用方式
+	//Data change logic
+	//Call method
 	this.layout();
 }
 ```
 
 ### getSelectRows
 
-#### __介绍__ :获取table表格中选中的行, 返回值为数组。
+#### __Introduction__ :Get the selected row in the table table, the return value is an `Array`.
 ```js
 getSelectRows(): {
-	//对数组进行操作[records]
+	//Operation array[records]
 }
 ```
 ### getSearchParam
 
-#### __介绍__ :获得当前搜索表单内容, 返回值为formData对象, 可使用append()方法添加字段（类型可以是 Blob, File）。
+#### __Introduction__ :Get the current search form content, the return value is the formData object, you can use the append() method to add a field (type can be `Blob` or `File`).
 ```js
 handleSubmit(target): {
 	let formData = getSearchParam(target);
@@ -731,7 +731,7 @@ handleSubmit(target): {
 
 ### setRecords
 
-#### __介绍__ :设置表格数据, 无需手动刷新。
+#### __Introduction__ :设置表格数据, 无需手动刷新。
 ```js
 let dataList;
 //dataList = res.data.list
@@ -767,7 +767,7 @@ this.setRecords(dataList);
 	```
 * __example__: todo
 
-#### __介绍__ :设置表格数据, 无需手动刷新。
+#### __Introduction__ :设置表格数据, 无需手动刷新。
 ```js
 let dataList;
 //dataList = res.data.list
@@ -775,7 +775,7 @@ this.setRecords(dataList);
 ```
 
 ## form配置
-* __介绍__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成, 用以收集、校验、提交数据。可以单独作为组件使用（x-form）, 也可集成在STable使用, 详见demo。
+* __Introduction__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成, 用以收集、校验、提交数据。可以单独作为组件使用（x-form）, 也可集成在STable使用, 详见demo。
   
 ### 集成在Stable:
 
