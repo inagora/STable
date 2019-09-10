@@ -14,7 +14,7 @@
 			<div 
 				v-if="labelVisible" 
 				class="st-form-item-label" 
-				:style="{'min-width': labelWidth + 'px'}" 
+				:style="{'min-width': !inline ? labelWidth + 'px' : 'auto'}" 
 				:class="{'st-form-item-label-left': inline}">
 				<label v-text="item.label"></label>
 			</div>

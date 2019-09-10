@@ -633,7 +633,7 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 	Triggered during search, you can process the parameters during the search.
 * __usage__: 
   ::: warning
-	注意, 如果search的触发函数返回了false, 就会中断本次搜索动作
+	If the search trigger function returns false, the search action will be interrupted.
 	:::
   ```js
 	Stable.init({
@@ -642,17 +642,17 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 			search(evt) {
 				let searchParams;
 				searchParams = this.trimParam(evt);
-				//发送请求
+				//send request
 			},
 		}
 	})
 
 ### beforedatarequest
 * __Parameters__:
-  * params, `Object`, 搜索的参数
+  * params, `Object`, Search parameters
 * __details__:
   
-	* 发送请求前可用此方法对参数进行组装或校验, 发请求前触发
+  This method can be used to assemble or verify parameters before sending a request.
 * __usage__: 
   ```js
 	Stable.init({
@@ -660,17 +660,17 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 		listeners: {
 			beforedatarequest(params) {
 				let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
-				//发送请求
+				//send request
 			},
 		}
 	})
 
 ### dataload
 * __Parameters__:
-	* responseData, `Object`, 刚下载的原始数据
+	* responseData, `Object`, Original data just downloaded
 * __details__:
   
-	从网络下载一页新数据后触发。此时对数据还没有做任何处理。可以在此对原始数据做一些预处理。
+	This function is triggered after downloading a new page of data from the network, where some preprocessing can be done on the raw data.
 * __usage__: 
   ```js
 	Stable.init({
@@ -679,7 +679,7 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 			dataload(data) {
 				let name = data.name;
 				if(!name || name.length<10){
-					alert('名字不能为空, 且大于10个字符');
+					alert('The name cannot be empty and is greater than 10 characters!');
 					return false;
 				}
 			},

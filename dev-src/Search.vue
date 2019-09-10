@@ -11,6 +11,7 @@
 			inline
 			:field-list="searchFilter"
 			:size="'small'"
+			inline
 			:label-width="labelWidth"
 			:default-values="defVal"
 			:label-visible="labelVisible"
