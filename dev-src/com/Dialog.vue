@@ -21,11 +21,9 @@
 				></div>
 				<div
 					v-if="closable"
-					class="st-dialog-close"
+					class="st-dialog-close st-iconfont st-icon-close"
 					@click="$emit('close')"
-				>
-					❎
-				</div>
+				></div>
 			</div>
 			<div
 				:class="[bodyCls]"
@@ -66,9 +64,12 @@
 </template>
 
 <script>
+import XButton from './Button.vue';
+
 let docEl = document.documentElement;
 export default {
 	inject: ['dialogConfig'],
+	components: {XButton},
 	data(){
 		let conf = Object.assign({
 			title: '',
@@ -351,7 +352,6 @@ export default {
 	&-doc{
 		z-index: 100;
 		position: fixed;
-		background-color: rgba(255,255,255,0.9);
 		border: 1px solid #d0d0d0;
 		border-radius: 5px;
 		overflow: hidden;
@@ -362,6 +362,7 @@ export default {
 	}
 	&-head{
 		border-bottom: 1px solid #e8eaec;
+		background: #fafafa;
 		display: flex;
 		align-items: center;
 		height: 36px;
@@ -386,10 +387,12 @@ export default {
 	&-close{
 		margin: 0 10px;
 		cursor: pointer;
-		opacity: 0.8;
+		opacity: 0.9;
 	}
 	&-close:hover{
 		opacity: 1;
+		background-color: red;
+		color: #fff;
 	}
 	&-body{
 		flex: 1;

@@ -1,5 +1,5 @@
 module.exports = function(app, server){
-	app.get('/ajaxList', (req, res)=>{
+	app.all('/ajaxList', (req, res)=>{
 		let params = req.query;
 		let allMovies = require('./movies.json');
 		let page = parseInt(params.page||1);

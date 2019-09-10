@@ -9,7 +9,7 @@
 				v-else
 				:key="btnIdx"
 				v-bind="btn"
-				@submit="triggerClick(btn, $event)"
+				@click="triggerClick(btn, $event)"
 			>
 				{{ btn.text }}
 			</x-button>
@@ -36,7 +36,8 @@ export default {
 		'actionMethods',
 		'store',
 		'idIndex',
-		'ajax'
+		'ajax',
+		'locale'
 	],
 	data(){
 		let self = this;
