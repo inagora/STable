@@ -11,9 +11,6 @@
 			inline
 			:field-list="searchFilter"
 			:size="'small'"
-			inline
-			:label-width="labelWidth"
-			:default-values="defVal"
 			:label-visible="labelVisible"
 			@submit="search"
 		>
@@ -50,14 +47,6 @@ export default {
 		'ignoreEmptySearchParam',
 		'locale'
 	],
-	data() {
-		return {
-			defVal: {
-				name: '123' //test
-			},
-			labelWidth: 100
-		};
-	},
 	methods: {
 		search(evt) {
 			let searchParams;
