@@ -8,6 +8,7 @@
 	>
 		<x-form
 			ref="form"
+			inline
 			:field-list="searchFilter"
 			:size="'small'"
 			:label-width="labelWidth"
