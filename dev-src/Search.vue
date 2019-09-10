@@ -9,8 +9,9 @@
 		<x-form
 			ref="form"
 			:field-list="searchFilter"
-			inline
 			:size="'small'"
+			:label-width="labelWidth"
+			:default-values="defVal"
 			:label-visible="labelVisible"
 			@submit="search"
 		>
@@ -33,7 +34,7 @@
 <script>
 import XButton from './com/Button.vue';
 import XForm from './form/form.vue';
-// import {Console} from "./util/util.js";
+
 export default {
 	components:{ XButton, XForm },
 	inject: [
@@ -47,6 +48,14 @@ export default {
 		'ignoreEmptySearchParam',
 		'locale'
 	],
+	data() {
+		return {
+			defVal: {
+				name: '123' //test
+			},
+			labelWidth: 100
+		};
+	},
 	methods: {
 		search(evt) {
 			let searchParams;

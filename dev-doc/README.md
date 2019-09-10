@@ -2,7 +2,7 @@
 home: true
 heroImage: /img/logo.jpg
 actionText: 快速上手 →
-actionLink: /guide/install.html
+actionLink: /zh/guide/install.md
 features:
 - title: 简洁至上
   details: 以最少的配置参数搭建功能强大的后台管理页面。

@@ -307,7 +307,7 @@ export default {
   width: 100%;
 }
 .st-select {
-  width: 100%;
+  // width: 100%;
   min-height: 3em;
   display: inline-block;
   position: relative;

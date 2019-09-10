@@ -11,7 +11,11 @@
 			class="st-form-item"
 			:class="size"
 		>
-			<div v-if="labelVisible" class="st-form-item-label" :class="{'st-form-item-label-left': inline}">
+			<div 
+				v-if="labelVisible" 
+				class="st-form-item-label" 
+				:style="{'min-width': labelWidth + 'px'}" 
+				:class="{'st-form-item-label-left': inline}">
 				<label v-text="item.label"></label>
 			</div>
 			<div class="st-form-item-content">
@@ -125,9 +129,9 @@ export default {
 			}
 		},
 		defaultValues: {
-			type: [Array,Boolean],
+			type: Object,
 			default() {
-				return [];
+				return {};
 			}
 		},
 		inline: {
@@ -147,6 +151,10 @@ export default {
 			default() {
 				return {};
 			}
+		},
+		labelWidth: {
+			type: Number,
+			default: 80
 		}
 	},
 	inject: {
@@ -167,7 +175,7 @@ export default {
 			showErr: false,
 			errMsg: '',
 			dataRange: [],
-			time: new Date(),
+			time: new Date()
 		};
 	},
 	computed: {
@@ -192,6 +200,10 @@ export default {
 		this.getFormList();
 	},
 	methods: {
+		//兼容老逻辑
+		getFormData(){
+			return this.formConfig.fieldList;
+		},
 		getFormList() {
 			if (this.fieldList && this.fieldList.length > 0) {
 				this.formConfig.fieldList = this.fieldList;
@@ -208,8 +220,10 @@ export default {
 			}
 			let tmpArr = {};
 			for (const item of this.formConfig.fieldList) {
+
 				if(item.type != 'button')
-					tmpArr[item.name] = item.value || '';
+					// tmpArr[item.name] = item.value || '';
+					tmpArr[item.name] = typeof this.defaultValues[item.name]=='undefined' ? item.value : this.defaultValues[item.name];
 				if(item.type == 'date') {
 					this.dataRange.push(item);
 				}
@@ -320,7 +334,7 @@ export default {
 			margin-right: 10px;
       
       &-label {
-        text-align: right;
+        text-align: left;
         vertical-align: middle;
         float: left;
         font-size: 1.4em;
