@@ -530,15 +530,13 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 
 ### beforeadd
 * __Parameters__:
-	* data, `Object`, 要添加的数据
+	* data `Object`, The data to be added
 * __details__:
 
-	添加数据前触发。可以在此对要添加的数据在请求发送前做一些处理
+	Triggered before adding data, you can process the data before the request is sent.
 	::: tip
-	如果beforeadd的触发函数返回了false, 就会中断本次添加动作。这个特性可以用来做数据提交前的检查, 一旦发现有问题, 可以用它中断添加动作。
+	If beforeadd's trigger function returns false, this add action will be interrupted.This function can be used to check the data before committing. Once an error is reported, the add action can be interrupted.
 	:::
-* __usage__: 
-	todo, 请梳理代码后重写说明和demo
 	```JS
 	STable.init({
 		//some other config
@@ -546,7 +544,7 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 			beforeadd(data){
 				let name = data.name;
 				if(!name || name.length<10){
-					alert('名字不能为空, 且大于10个字符');
+					alert('The name cannot be empty and is greater than 10 characters!');
 					return false;
 				} else if(data.needFormat){
 					//
@@ -558,12 +556,12 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 
 ### add
 * __Parameters__:
-	* data, `Object`, 要添加的数据
+	* data, `Object`, The data to be added.
 * __details__:
 
-	添加数据时触发。可以在此对要添加的数据在请求发送前做一些处理
+	Triggered when adding data. Here you can do some processing on the data to be added before the request is sent.
 	::: tip
-	如果beforeadd的触发函数返回了false, 就会中断本次添加动作。这个特性可以用来做数据提交前的检查, 一旦发现有问题, 可以用它中断添加动作。
+	If the trigger function of beforeadd returns false, this add action will also be interrupted.
 	:::
 * __usage__: 
 	```JS
@@ -573,7 +571,7 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 			add(data){
 				let name = data.name;
 				if(!name || name.length<10){
-					alert('名字不能为空, 且大于10个字符');
+					alert('The name cannot be empty and is greater than 10 characters!');
 					return false;
 				}
 			}
@@ -582,13 +580,13 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 	```
 ### beforeedit
 * __Parameters__:
-	* data, `Object`, 要编辑的数据
+	* data, `Object`, The data to edit.
 * __details__:
 
-	修改一行数据前触发。可以在此对要编辑的数据在请求发送前做一些处理
+	Triggered before modifying a row of data, where you can do some processing on the data to be edited before the request is sent.
 * __usage__: 
 	::: warning
-	如果beforeedit的触发函数返回了false, 就会中断本次修改动作
+	If the trigger function of beforeedit returns false, the modification action will be interrupted.
 	:::
 	```JS
 	STable.init({
@@ -597,7 +595,7 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 			beforeedit(data){
 				let name = data.name;
 				if(!name || name.length<10){
-					alert('名字不能为空, 且大于10个字符');
+					alert('The name cannot be empty and is greater than 10 characters!');
 					return false;
 				}
 			}
@@ -607,10 +605,10 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 
 ### edit
 * __Parameters__:
-  * data, `Object`, 要编辑的数据
+  * data, `Object`, The data to edit.
 * __details__:
 
-	修改一行数据时触发。在此对要编辑的数据做处理和发送请求
+	Triggered when a row of data is modified, where the data to be edited is processed and sent.
 * __usage__: 
 	```JS
 	STable.init({
@@ -619,7 +617,7 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 			edit(data){
 				let name = data.name;
 				if(!name || name.length<10){
-					alert('名字不能为空, 且大于10个字符');
+					alert('The name cannot be empty and is greater than 10 characters!');
 					return false;
 				}
 			}
@@ -629,10 +627,10 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 
 ### search
 * __Parameters__:
-  * evt, `Object`, 搜索的参数
+  * evt, `Object`, Search request parameters.
 * __details__:
 
-	可以在搜索时对于参数做处理, 在搜索时触发
+	Triggered during search, you can process the parameters during the search.
 * __usage__: 
   ::: warning
 	注意, 如果search的触发函数返回了false, 就会中断本次搜索动作

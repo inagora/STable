@@ -11,7 +11,11 @@
 			class="st-form-item"
 			:class="size"
 		>
-			<div v-if="labelVisible" class="st-form-item-label" :class="{'st-form-item-label-left': inline}">
+			<div 
+				v-if="labelVisible" 
+				class="st-form-item-label" 
+				:style="{'min-width': labelWidth + 'px'}" 
+				:class="{'st-form-item-label-left': inline}">
 				<label v-text="item.label"></label>
 			</div>
 			<div class="st-form-item-content">
@@ -147,6 +151,10 @@ export default {
 			default() {
 				return {};
 			}
+		},
+		labelWidth: {
+			type: Number,
+			default: 80
 		}
 	},
 	inject: {
@@ -167,7 +175,7 @@ export default {
 			showErr: false,
 			errMsg: '',
 			dataRange: [],
-			time: new Date(),
+			time: new Date()
 		};
 	},
 	computed: {
@@ -189,8 +197,6 @@ export default {
 		}
 	},
 	mounted() {
-		Console.log(this.defaultValues);
-		Console.log(this.formConfig.fieldList);
 		this.getFormList();
 	},
 	methods: {
@@ -328,7 +334,7 @@ export default {
 			margin-right: 10px;
       
       &-label {
-        text-align: right;
+        text-align: left;
         vertical-align: middle;
         float: left;
         font-size: 1.4em;

@@ -9,8 +9,8 @@
 		<x-form
 			ref="form"
 			:field-list="searchFilter"
-			inline
 			:size="'small'"
+			:label-width="labelWidth"
 			:default-values="defVal"
 			:label-visible="labelVisible"
 			@submit="search"
@@ -52,7 +52,8 @@ export default {
 		return {
 			defVal: {
 				name: '123' //test
-			}
+			},
+			labelWidth: 100
 		};
 	},
 	methods: {
