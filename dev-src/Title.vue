@@ -13,18 +13,12 @@ export default {
 <style>
 	.st-title{
 		color: #191919;
-		height: 40px;
 		background-color: #f8f8f8;
 		border-bottom: 1px solid #d0d0d0;
-
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		padding: 7px 10px 5px;
 	}
 	.st-title-text{
-		font-size: 16px;
-		padding-left: 10px;
+		font-size: 14px;
 		font-weight: 500;
-		flex: 1;
 	}
 </style>

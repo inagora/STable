@@ -21,7 +21,7 @@ demo需要覆盖所有功能点
 * sort
 * cellWrap
 * visible & show & hide
-* acc, additionalColumnConfig
+* [acc (short for additionalColumnConfig)](https://codepen.io/liupengke/pen/KKPQeQg)
 ## search
 * search
 * search with sort
@@ -56,7 +56,7 @@ demo需要覆盖所有功能点
 * pinyin
 * async list
 ## request&response
-* actionMethods
+* [actionMethods](https://codepen.io/liupengke/pen/pozaKOR?editors=1010)
 * ignoreEmptySearchParam
 * static data
 * default params

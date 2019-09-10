@@ -580,6 +580,8 @@ export default {
 		flex: 1;
 		display: flex;
 		flex-direction: column;
+
+		overflow-y: auto;
 	}
 	.st-table-head-area{
 		overflow-y: scroll;

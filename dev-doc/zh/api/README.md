@@ -13,7 +13,7 @@
 	```js
 	var columns={%$columns|json%}; //模板下发了列配置
 	STable.init({
-		//some other config
+		//...some other config
 		columns,
 		acc: {	//额外增加一些列设置
 			actorName: {
@@ -28,7 +28,8 @@
 		}
 	});
 	```
-* __参考__: todo
+* __参考__:
+	* [demo](https://codepen.io/liupengke/pen/KKPQeQg)
 
 ### actionMethods
 * __类型__: `Object`
@@ -43,24 +44,25 @@
 ```
 * __详细__:
 	
-	不同请求所使用的请求方法，包括列表、添加、修改、删除。
+	不同时机请求所使用的请求方法，包括列表、添加、修改、删除。比如默认拉取列表的接口使用的http方法是 'GET'，但有些系统强制要求列表也要用'POST'方法，就可以此参数指定不同请求使有的方法类型。
 
 * __用法__:
 	``` js
 	STable.init({
-		//some other config
+		//...some other config
 		actionMethods: {
 			read: 'POST'	//把列表请求换成post方式
 		}
 	});
 	```
-* __参考__: todo
+* __参考__:
+	* [demo](https://codepen.io/liupengke/pen/pozaKOR?editors=1010)
 
 ### addUrl
 * __类型__: `String`
 * __详细__:
 
-	添加数据时的提交地址。如果有此参数，会在工具栏toolbar自动显示一个“添加”按钮。
+	添加数据时的提交地址。如果有此参数，会在工具栏toolbar自动显示一个“添加”按钮，点击此按钮出现“添加”面板。它需要和addConfig配合使用。
 
 * __参考__: todo
 
