@@ -189,6 +189,8 @@ export default {
 		}
 	},
 	mounted() {
+		Console.log(this.defaultValues);
+		Console.log(this.formConfig.fieldList);
 		this.getFormList();
 	},
 	methods: {
@@ -212,10 +214,10 @@ export default {
 			}
 			let tmpArr = {};
 			for (const item of this.formConfig.fieldList) {
-				this.formConfig.fieldList[item.name] = typeof this.defaultValues[item.name]=='undefined' ? item.value : this.defaultValues[item.name];
 
 				if(item.type != 'button')
-					tmpArr[item.name] = item.value || '';
+					// tmpArr[item.name] = item.value || '';
+					tmpArr[item.name] = typeof this.defaultValues[item.name]=='undefined' ? item.value : this.defaultValues[item.name];
 				if(item.type == 'date') {
 					this.dataRange.push(item);
 				}

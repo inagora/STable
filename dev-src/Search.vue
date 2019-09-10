@@ -11,7 +11,7 @@
 			:field-list="searchFilter"
 			inline
 			:size="'small'"
-			:default-values="params"
+			:default-values="defVal"
 			:label-visible="labelVisible"
 			@submit="search"
 		>
@@ -34,7 +34,6 @@
 <script>
 import XButton from './com/Button.vue';
 import XForm from './form/form.vue';
-import { Console } from './util/util';
 
 export default {
 	components:{ XButton, XForm },
@@ -49,8 +48,12 @@ export default {
 		'ignoreEmptySearchParam',
 		'locale'
 	],
-	mounted() {
-		Console.log(this.params);
+	data() {
+		return {
+			defVal: {
+				name: '123' //test
+			}
+		};
 	},
 	methods: {
 		search(evt) {
