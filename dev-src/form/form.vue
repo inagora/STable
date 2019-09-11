@@ -15,7 +15,8 @@
 				v-if="labelVisible" 
 				class="st-form-item-label" 
 				:style="{'min-width': !inline ? labelWidth + 'px' : 'auto'}" 
-				:class="{'st-form-item-label-left': inline}">
+				:class="{'st-form-item-label-left': inline}"
+			>
 				<label v-text="item.label"></label>
 			</div>
 			<div class="st-form-item-content">
@@ -70,7 +71,6 @@
 				<template>
 					<div v-if="['date','time','datetime'].includes(item.type)">
 						<x-datetime-picker
-							:value="time"
 							:name="item.name"
 							:format="item.type == 'date' ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss'"
 							@input="dateChangeFn($event, item.name)"
@@ -95,7 +95,6 @@ import XUpload from "./upload.vue";
 import XDatetimePicker from "./datetimepicker.vue";
 import defaultLocale from '../../src/lang/en.js';
 import qtip from '../com/qtip';
-import {Console} from '../util/util';
 
 export default {
 	name: 'XForm',
@@ -173,15 +172,8 @@ export default {
 			formValue: {},
 			checkedValue: [],
 			showErr: false,
-			errMsg: '',
-			dataRange: [],
-			time: new Date()
+			errMsg: ''
 		};
-	},
-	computed: {
-		syncTime(){
-			return new Date();
-		}
 	},
 	watch: {
 		errMsg(val) {
@@ -223,9 +215,9 @@ export default {
 
 				if(item.type != 'button')
 					// tmpArr[item.name] = item.value || '';
-					tmpArr[item.name] = typeof this.defaultValues[item.name]=='undefined' ? item.value : this.defaultValues[item.name];
+					tmpArr[item.name] = typeof this.defaultValues[item.name]=='undefined' ? item.value || '' : this.defaultValues[item.name];
 				if(item.type == 'date') {
-					this.dataRange.push(item);
+					tmpArr[item.name] = this.timeFormat(new Date(),'YYYY-MM-DD');
 				}
 				if (item.type == 'checkbox') {
 					for (const cbx of item.options) {
@@ -239,10 +231,9 @@ export default {
 		},
 		submit() {
 			let data = this.formValue;
-			Console.log(data);
 			this.$emit('submit', data);
 		},
-		changeFn(val,name) {
+		changeFn(val='',name) {
 			this.formValue = Object.assign(this.formValue,{[name]: val});
 		},
 		checkboxFn(param,name) {
@@ -334,7 +325,7 @@ export default {
 			margin-right: 10px;
       
       &-label {
-        text-align: left;
+        text-align: right;
         vertical-align: middle;
         float: left;
         font-size: 1.4em;

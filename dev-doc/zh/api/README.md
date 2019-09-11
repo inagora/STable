@@ -842,10 +842,14 @@ this.setRecords(dataList);
 
 ### icon
 * 类型：string
-* 详细
-对应font-awsome中的字体图标，比如icon:'plus'，就是在此按钮上显示一个glyphicon-plus图片，即一个加号图标。
-* 参考：
-	* [font awsome的图标](https://doc.wfxteam.com/html/fa.html)
+* 详细: 
+	* 老版本：[font-awsome](https://doc.wfxteam.com/html/fa.html)<sup style="color:red">dep</sup>中的字体图标, 比如icon:'plus', 就是在此按钮上显示一个glyphicon-plus图片, 即一个加号图标。
+	* 新版本：不依赖font-awsome，拥有自己的图标库。
+	* demo: 
+  ```html
+	<div class="st-iconfont st-icon-delete">删除</div>
+	```
+  ![stble图标](/img/st-iconfont.png)
 
 ### style
 * 类型：Object

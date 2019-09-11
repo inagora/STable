@@ -3,7 +3,7 @@ home: true
 heroText: STable
 heroImage: /img/logo.jpg
 actionText: GET STARTED →
-actionLink: /en/api/
+actionLink: /en/guide/install.md
 features:
 - title: Simple
   details: Less Parameter Configuration and More Powerful Functions.
