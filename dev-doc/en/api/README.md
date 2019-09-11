@@ -366,7 +366,7 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 	});
 * __example__:
   
-	* [Form configuration](#form配置)
+	* [Form configuration](#Form-Configuration)
 
 ### searchResetable
 * __type__: `Boolean`
@@ -491,7 +491,7 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 	})
 	```
 
-## 事件
+## Event
  This refers to the current STable instance in the listener function for all events. Of course, if you use the arrow function, etc., it is another matter.
 
 ### ready
@@ -686,7 +686,7 @@ For some outdated parameters, We will mark it with<sup style="color:red">dep</su
 		}
 	})
 
-## Instance method
+## Instance Method
 ### refresh
 
 #### __Introduction__ :Triggered after loading a new page of data, used in listeners, used to process the original data.
@@ -724,42 +724,43 @@ getSelectRows(): {
 ```js
 handleSubmit(target): {
 	let formData = getSearchParam(target);
-	target.append('name','豆豆')
+	target.append('name','coco')
 	console.log(target);
 }
 ```
 
 ### setRecords
 
-#### __Introduction__ :设置表格数据, 无需手动刷新。
+#### __Introduction__ :Set the table data and refresh it automatically.
 ```js
 let dataList;
 //dataList = res.data.list
 this.setRecords(dataList);
 ```
-## column配置
-#### __类型__: `Array|Object`
+## Column Configuration
+#### __Type__: `Array|Object`
 * __details__: 
 
-	表格的列配置。数据中的每一项对应表格中的一列, 通过它配置此列的表头、表格内容以及展示样式。
-* __usage__: *表示必填项
+	The column configuration of the table. Each item in the data corresponds to a column in the table, which configures the header, table contents, and presentation style of this column.
+
+* __usage__: * indicates required fields
 	```js
 	columns: [
 		{
-			header: 'id', //* 每列的title
-			dataIndex:'id', //* 对应数据的字段名
-			width: 100, // 宽度（可不填）
-			locked: true, // 是否锁定, 默认左侧锁定 可选值：right
-			sortable: true, // 是否排序
-			render(record){ //对当前行数据处理渲染
+			header: 'id', //* Title of each column
+			dataIndex:'id', //* Field name for each column of data
+			width: 100, // Width (not required)
+			locked: true, // Whether to lock, default left lock Optional value: right
+			sortable: true, // Whether to sort
+			render(record){ // Rendering the current row data processing
 				return record.actors.join(' | ');
 			},
-			buttons: [{ //详细使用方法见buttons
-				text: 'fff', //button文字颜色
-				click(){  //button操作
+			buttons: [{ // buttons configuration
+				text: 'fff', // Text color of button
+				click(){  // Operation function
 					console.log(this);
 				},
-				icon: 'st-iconfont st-icon-eye', //button添加icon
+				icon: 'st-iconfont st-icon-eye', //button with icon
 			}]
 		},
 	]
@@ -774,10 +775,10 @@ let dataList;
 this.setRecords(dataList);
 ```
 
-## form配置
-* __Introduction__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成, 用以收集、校验、提交数据。可以单独作为组件使用（x-form）, 也可集成在STable使用, 详见demo。
+## Form-Configuration
+* __Introduction__: It consists of input/textarea, select, radio, checkbox, switch, file, etc. to collect, verify, and submit data. It can be used as a component (x-form) or integrated in STable. See demo.
   
-### 集成在Stable:
+### Used in Stable:
 
 <p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="cocopang" data-slug-hash="vYBWGZY" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="vYBWGZY">
   <span>See the Pen <a href="https://codepen.io/cocopang/pen/vYBWGZY/">
@@ -786,23 +787,23 @@ this.setRecords(dataList);
 </p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
-### 单独使用form组件:
+### Use the form component alone:
 
 * __inline__: 
-  * `Boolean` 默认false 纵向布局, 当垂直方向空间受限且表单较简单时（比如搜索）可以设置为true, 表示在一行内放置表单。
+  * `Boolean` Default false Vertical layout, when the vertical space is limited and the form is simple (such as search) can be set to true, indicating that the form is placed in a row.。
 	
 * __size__: 
-	* `String` 默认值'small', 可选项'small', 'middle', 'large'。
+	* `String` Defaults 'small', Optional 'small'|'middle'|'large'。
 
 * __labelVisible__: 
 	* `Boolean` 
-	* 默认值true, 是否显示form表单的label。
+	* The default value is true, whether to display the label of the form.
 
 * __fieldList__: 
-	* `Object` 表单配置项（json对象）。
+	* `Object` Form configuration item.
 
 * __submit__: 
-	* 表单提交发起的请求。
+	* A request submitted by a form submission.
 
 <p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="cocopang" data-slug-hash="NWKpLrv" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="NWKpLrv">
   <span>See the Pen <a href="https://codepen.io/cocopang/pen/NWKpLrv/">
@@ -811,230 +812,233 @@ this.setRecords(dataList);
 </p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
-## button配置
+## Button-Configuration
 
-可在toolbar、column、form表单配置时使用。有以下几个配置项：
+Can be used in the configuration of toolbar, column, form form. There are several configuration items:
 
 ### click
-* 类型：Function
-* 详细：
-	按钮点击时触发的函数。函数this指向STable实例。
+* Type: Function
+* Details: 
+	The function that is triggered when the button is clicked, whose this points to the STable instance.
 
-	1. 用在toolbar时, 它有两个参数：
-		* btnConfig, 此按钮的配置
-		* event, 当前点击事件
+	1. When used in the toolbar, it has two parameters:
+		* btnConfig, Configuration of this button
+		* event, Current click event
 
-	1. 用在column时, 它有三个参数：
-		* record, 当前行数据原始值
-		* btnConfig, 此按钮的配置信息
-		* event, 当前点击事件
+	1. When used in column, it has three parameters:
+		* record, Current row data raw value
+		* btnConfig, 此按钮的Configuration of this button配置信息
+		* event, Current click event
 
 ### cls
-* 类型：String
-* 详细：
-按钮上附加的样式class, 用于自定义按钮样式。
+* Type: String
+* Details: 
+A style class attached to the button for custom button styles.
 
 ### icon
-* 类型：string
-* 详细
-对应font-awsome中的字体图标, 比如icon:'plus', 就是在此按钮上显示一个glyphicon-plus图片, 即一个加号图标。
-* 参考：
-	* [font awsome的图标](https://doc.wfxteam.com/html/fa.html)
+* Type: string
+* Details: 
+	* Old version: [font-awsome](https://doc.wfxteam.com/html/fa.html)<sup style="color:red">dep</sup> font icon, such as icon: 'plus', is to display a glyphicon-plus image on this button, which is a plus icon.
+	* New version: Does not rely on font-awesome, has its own icon library.
+	* demo: 
+  ```html
+	<div class="st-iconfont st-icon-delete">DELETE</div>
+	```
+  ![stble图标](/img/st-iconfont.png)
+
 
 ### style
-* 类型：Object
-* 详细：
-按钮上附加的style样式, 用于自定按钮样式。
+* Type: Object
+* Details: 
+A style style attached to the button for custom button styles.
 
 ### text
-* 类型：string
-* 详细：
-按钮上显示的文本。
+* Type: string
+* Details: 
+The text displayed on the button.
 
 ### type
-* 类型：string
-* 默认值：'default'
-* 详细：
-对应bootstrap中对按钮类型的设定, 它有 default / primary / success / warning / danger / info / text	。不同类型对应按钮的颜色不一样。
+* Type: string
+* Defaults: 'default'
+* Details: 
+Corresponding to the button type setting in bootstrap, it has default/primary/success/warning/danger/info/text. The colors of the corresponding buttons of different types are different.
 
 ### visible
-* 类型：Boolean|<String,String>|Function
-* 默认值：true
-* 详细：
-是否显示此按钮。仅对行中显示button有效。
-	* 当visible为数组时, 数组第一项为dataIndex, 第二项为对比值, 当某行中, dataIndex对应的数据和对比值一样时, 才会显示此按钮。
-	* 当visible为函数时, 函数的返回值为true时, 显示此按钮；否则不显示
+* Type: Boolean|<String,String>|Function
+* Defaults: true
+* Details: 
+Whether to display this button. Only valid for displaying the button in the line.
+	* When visible is an array, the first item of the array is dataIndex, and the second item is the comparison value. When the data corresponding to dataIndex is the same as the contrast value in a row, this button is displayed.
+	* This button is displayed when the return value of the function is true when visible is a function; otherwise it is not displayed.
+## dialog Configuration
 
-## dialog配置
-
-* 弹框组件。用Dialog.create方式可生成一个完成的dialog实例, 也可以使用快捷的功能函数alert\confirm\prompt。
+* The dialog component. Use 'Dialog.create()' to generate a completed dialog instance, or use the quick function function alert()\confirm()\prompt().
 
 ### Dialog.qtip(msg[, type[, config]])
-在页面顶部显示一个快速的tip, 类似于toast。
+A quick tip is displayed at the top of the page, similar to toast.
 ![qtip](img/qtip.png)
-qtip有多态形式
+Qtip has a polymorphic form:
 ```js
 Dialog.qtip(msg[, type[, config]]);
 Dialog.qtip(msg[, config]);
 Dialog.qtip(config);
 ```
-[查看demo](/html/demo?demo=dialog)
+[see also](/html/demo?demo=dialog)
 
-_参数_：
+__parameters__:
 * msg
-	* 类型：`String`
-	* 详情：消息文字
+	* Type: `String`
+	* Details: Message text
 * type
-	* 类型：String
-	* 详情：颜色类型, 可选值有 success/warning/info/error
+	* Type: String
+	* Details: Color type, optional values: success/warning/info/error
 * config
-	* 类型：Object
-	* 详情：config下所有可配置的参数：
-		* message, String, 会重写msg参数
-		* type, String, 会重写type参数
-		* duration, Number, 显示时间, 毫秒。默认为3000。
+	* Type: Object
+	* Details: All configurable parameters under config:
+		* message `String`, Will rewrite the 'msg' parameter
+		* type `String`, Will rewrite the 'type' parameter
+		* duration `Number`, Display time(ms). The default is 3000.
 
 ### Dialog.alert(msg[, title[, config]])
-显示一个带消息的警告框。
+A warning box with a message is displayed.
 
-使用方法：
+Instructions:
 ```javascript
-Dialog.alert('这是一个提示');
-Dialog.alert('这是一个提示', '提示');
-Dialog.alert('这是一个提示', {
+Dialog.alert('This is a message');
+Dialog.alert('This is a message', 'title');
+Dialog.alert('This is a message', {
 	fn(){
-		alert('这里是关闭提示时, 做的一些动作');
+		alert('Some actions you do when you close the Dialog.');
 	}
 });
-Dialog.alert('这是一个提示', '提示', {
+Dialog.alert('This is a message', 'title', {
 	fn(){
-		alert('这里是关闭提示时, 做的一些动作');
+		alert('Some actions you do when you close the Dialog.');
 	}
 });
 ```
-_参数_：
+__parameters__:
 * msg
-	* 类型：String
-	* 详情：消息文本
+	* Type: String
+	* Details: This is a message
 * title
-	* 类型：String
-	* 详情：对话框的标题
+	* Type: String
+	* Details: The title of the Dialog.
 * config
-	* 类型：Object
-	*  详情：config下所有可配置的参数：
-		* message, String, 会重写msg参数
-		* title, String, 会重写type参数
-		* fn, Function, 关闭对话框时触发的函数
+	* Type: Object
+	* Details: All configurable parameters under config:
+    * message `String`, Will rewrite the 'msg' parameter
+		* type `String`, Will rewrite the 'type' parameter
+		* fn `Function`, Function triggered when the dialog is closed
 
 ### Dialog.confirm(msg[, title[, config]])
-显示一个带有指定消息和 OK 及取消按钮的对话框。
+A dialog box with the specified message and the OK and Cancel buttons is displayed.
 
-使用方法：
+Instructions:
 ```js
-Dialog.confirm('这是一个提示');
-Dialog.confirm('这是一个提示', '提示');
-Dialog.confirm('这是一个提示', {
+Dialog.confirm('This is a message');
+Dialog.confirm('This is a message', 'title');
+Dialog.confirm('This is a message', {
 	fn(ret){
 		if(ret=='yes')
-			alert('您选择了确定按钮');
+			alert('You have selected the OK button');
 		else
-			alert('您选择了关闭或者取消按钮')
+			alert('You have chosen to close or cancel the button')
 	}
 });
 ```
 
-_参数_：
+__parameters__:
 * msg
-	* 类型：String
-	* 详情：消息文本
+	* Type: String
+	* Details: This is a message
 * title
-	* 类型：String
-	* 详情：对话框的标题
+	* Type: String
+	* Details: The title of the Dialog.
 * config
-	* 类型：Object
-	*  详情：config下所有可配置的参数：
-		* message, String, 会重写msg参数
-		* title, String, 会重写type参数
-		* fn, Function, 关闭对话框或者点击按钮时触发的函数, 参数有：
-			* ret, String, 为'yes'时表明点击了“确定”按钮；为“no”时表明点击了“取消”或“关闭”按钮
+	* Type: Object
+	* Details: All configurable parameters under config:
+    * message `String`, Will rewrite the 'msg' parameter
+		* type `String`, Will rewrite the 'type' parameter
+		* fn `Function`, Function that is triggered when the dialog is closed or when the button is clicked, The parameters are:
+			* ret `String`, "yes" means clicking the "OK" button; "no" means clicking the "Cancel" or "Close" button
 
 ### Dialog.prompt(msg[, title[, config]])
-显示可提示用户进行输入的对话框。
+A dialog box is displayed that prompts the user for input.
 
-使用方法：
+Instructions:
 ```js
-Dialog.confirm('需要您输入内容', {
+Dialog.confirm('Need your input', {
 	fn(ret){
-		alert('您输入的内容是：'+ret);
+		alert('What you typed is:'+ret);
 	}
 });
 ```
 
-_参数_：
+__parameters__:
 * msg
-	* 类型：String
-	* 详情：消息文本
+	* Type: String
+	* Details: This is a message
 * title
-	* 类型：String
-	* 详情：对话框的标题
+	* Type: String
+	* Details: The title of the Dialog.
 * config
-	* 类型：Object
-	*  详情：config下所有可配置的参数：
-		* message, String, 会重写msg参数
-		* title, String, 会重写type参数
-		* fn, Function, 关闭对话框或者点击按钮时触发的函数, 参数有：
-			* ret, String, 用户输入的内容
+	* Type: Object
+	* Details: All configurable parameters under config:
+    * message `String`, Will rewrite the 'msg' parameter
+		* type `String`, Will rewrite the 'type' parameter
+		* fn `Function`, Function that is triggered when the dialog is closed or when the button is clicked, The parameters are:
+			* ret `String`, User input
 
 ### Dialog.create(config)
-标准的窗口组件, 通过config参数来配置不同的窗口。config的参数有：
-`注意, 上面的qtip和对话框都不是真正的窗口组件, 只是挂在Dialog下的快捷使用入口`
-
+Standard Dialog component, configure different windows with config parameters. The parameters of config are:
+  
 * title
-	* 类型：String
-	* 默认值：''
-	* 详细：窗口的标题
+	* Type: String
+	* Defaults: ''
+	* Details: Title of the 'Dialog'
 * bodyCls
-	* 类型：String
-	* 默认值：null
-	* 详细：应用在窗口元素的样式名
+	* Type: String
+	* Defaults: null
+	* Details: 应用在窗口元素的样式名
 * bodyStyle
-	* 类型：Object
-	* 详细：应用在窗口元素上的样式
+	* Type: Object
+	* Details: 应用在窗口元素上的样式
 * contentEl
-	* 类型：dom元素
-	* 详细：窗口内的元素
+	* Type: dom元素
+	* Details: 窗口内的元素
 * html
-	* 类型：String
-	* 详细：窗口内的元素。注意, contentEl和html都是指定窗口内展示的内容, 不过contentEl是dom元素, 可以是页面中已存在的, 也可以是通过document.creatElement创建的；html是html代码字符串
+	* Type: String
+	* Details: 窗口内的元素。注意, contentEl和html都是指定窗口内展示的内容, 不过contentEl是dom元素, 可以是页面中已存在的, 也可以是通过document.creatElement创建的；html是html代码字符串
 * width
-	* 类型：Number/String
-	* 默认值：640
-	* 详细：窗口的宽度。可以是具体的数值, 也是可以百分比, 如'80%'
+	* Type: Number/String
+	* Defaults: 640
+	* Details: 窗口的宽度。可以是具体的数值, 也是可以百分比, 如'80%'
 * height
-	* 类型：Number/String
-	* 默认值：480
-	* 详细：窗口的高度。可以是具体的数值, 也是可以百分比, 如'80%'
+	* Type: Number/String
+	* Defaults: 480
+	* Details: 窗口的高度。可以是具体的数值, 也是可以百分比, 如'80%'
 * autoShow
-	* 类型：Boolean
-	* 默认值：true
-	* 详细：窗口创建好之后, 是不是立即显示出来。如果为false, 就需要程序在合适时机调用show方法显示出来
+	* Type: Boolean
+	* Defaults: true
+	* Details: 窗口创建好之后, 是不是立即显示出来。如果为false, 就需要程序在合适时机调用show方法显示出来
 * closable
-	* 类型：Boolean
-	* 默认值：true
-	* 详细：在标题区域显示一个关闭按钮。注意, 这个参数并不是限制窗口关闭不了, 只是不显示右上角的关闭按钮
+	* Type: Boolean
+	* Defaults: true
+	* Details: 在标题区域显示一个关闭按钮。注意, 这个参数并不是限制窗口关闭不了, 只是不显示右上角的关闭按钮
 * modal
-	* 类型：Boolean
-	* 默认值：true
-	* 详细：窗口是不是模态的。模态窗口会显示一个遮罩层, 遮罩使页面中除了窗口, 其它地方都不可点击
+	* Type: Boolean
+	* Defaults: true
+	* Details: 窗口是不是模态的。模态窗口会显示一个遮罩层, 遮罩使页面中除了窗口, 其它地方都不可点击
 * closeAction
-	* 类型：String
-	* 默认值：'destroy'
-	* 详细：关闭窗口时执行的动作。
+	* Type: String
+	* Defaults: 'destroy'
+	* Details: 关闭窗口时执行的动作。
 		* 'destroy', 关闭窗口后直接销毁它
 		* 'close', 关闭窗口后元素不销毁, 可以再次通过show方法显示出来
 * listeners
-	* 类型：Object
-	* 详细：窗口支持的事件
+	* Type: Object
+	* Details: 窗口支持的事件
 		* ready, 窗口dom元素创建之后触发
 		* beforeshow, 窗口show动作执行前触发
 		* beforehide, 窗口隐藏前触发。注意hide命令只隐藏窗口, 不销毁它
@@ -1042,8 +1046,8 @@ _参数_：
 		* close, 窗口关闭后触发
 		* destroy, 窗口销毁后触发
 * buttons
-	* 类型：Array
-	* 详细：buttons中的每一项是一个按钮的配置
+	* Type: Array
+	* Details: buttons中的每一项是一个按钮的配置
 	* 参考：
 		* [按钮配置](##button配置)
 

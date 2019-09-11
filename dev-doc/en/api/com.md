@@ -1,4 +1,4 @@
-# 常组组件
+# Common components
 ## Dialog
 ## qtip
 ## SidePanel
