@@ -70,9 +70,10 @@
 * __类型__: `String`
 * __详细__: 
 
-	批量删除数据时的提交地址。如果有此参数，会在工具栏toolbar自动显示一个“批量删除”按钮，点此按钮，会把所有选中行删除。需要配合参数selectMode使用。
+	批量删除数据时的提交地址。如果有此参数，会在工具栏toolbar自动显示一个“批量删除”按钮，点此按钮，会把所有选中行删除。需要配合参数selectMode和idIndex使用。
 * __参考__: 
 	* todo
+	* [idIndex](#idIndex)
 	* [行选择模式 selectMode](#selectMode)
 
 ### columns

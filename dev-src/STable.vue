@@ -138,7 +138,7 @@ export default {
 			create: 'POST',
 			read: 'GET',
 			update: 'POST',
-			destroy: 'POST'
+			delete: 'POST'
 		};
 		conf.actionMethods = Object.assign(actionMethods, methods);
 
@@ -485,13 +485,13 @@ export default {
 		 * @member {Function} refresh 刷新表格
 		 */
 		refresh(pno) {
-			return this.$refs.table.refresh(pno);
+			return this.$refs.table[0].refresh(pno);
 		},
 		/**
 		 * @member {Function} getSearchParam 获得当前搜索表单项内容
 		 */
 		getSearchParam(){
-			return this.$refs.search.getParams();
+			return this.$refs.search[0].getParams();
 		},
 		getSelectRows(){
 			return this.getSelected();
@@ -506,19 +506,19 @@ export default {
 		 * @member {Function} getSelected 获得当前所有选中行的数据
 		 */
 		getSelected(){
-			return this.$refs.table.getSelectRows();
+			return this.$refs.table[0].getSelectRows();
 		},
 		/**
 		 * @member {Function} layout 重新布局表格
 		 */
 		layout(){
-			this.$refs.table.layout();
+			this.$refs.table[0].layout();
 		},
 		/**
 		 * @member {Function} setRecords 设置表格数据
 		 */
 		setRecords(list){
-			this.$refs.table.setRecords(list);
+			this.$refs.table[0].setRecords(list);
 		}
 	}
 };
