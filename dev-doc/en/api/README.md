@@ -827,7 +827,7 @@ Can be used in the configuration of toolbar, column, form form. There are severa
 
 	1. When used in column, it has three parameters:
 		* record, Current row data raw value
-		* btnConfig, 此按钮的Configuration of this button配置信息
+		* btnConfig, Configuration of this button
 		* event, Current click event
 
 ### cls
@@ -870,14 +870,14 @@ Corresponding to the button type setting in bootstrap, it has default/primary/su
 Whether to display this button. Only valid for displaying the button in the line.
 	* When visible is an array, the first item of the array is dataIndex, and the second item is the comparison value. When the data corresponding to dataIndex is the same as the contrast value in a row, this button is displayed.
 	* This button is displayed when the return value of the function is true when visible is a function; otherwise it is not displayed.
-## dialog Configuration
+## Dialog Configuration
 
 * The dialog component. Use 'Dialog.create()' to generate a completed dialog instance, or use the quick function function alert()\confirm()\prompt().
 
-### Dialog.qtip(msg[, type[, config]])
-A quick tip is displayed at the top of the page, similar to toast.
-![qtip](img/qtip.png)
-Qtip has a polymorphic form:
+### Dialog.qtip()
+* A quick tip is displayed at the top of the page, similar to toast.
+  
+* Qtip has a polymorphic form:
 ```js
 Dialog.qtip(msg[, type[, config]]);
 Dialog.qtip(msg[, config]);
@@ -899,10 +899,11 @@ __parameters__:
 		* type `String`, Will rewrite the 'type' parameter
 		* duration `Number`, Display time(ms). The default is 3000.
 
-### Dialog.alert(msg[, title[, config]])
+### Dialog.alert()
 A warning box with a message is displayed.
+* __Usage__: Dialog.alert(msg[, title[, config]])
 
-Instructions:
+* __Instructions__:
 ```javascript
 Dialog.alert('This is a message');
 Dialog.alert('This is a message', 'title');
@@ -917,19 +918,19 @@ Dialog.alert('This is a message', 'title', {
 	}
 });
 ```
-__parameters__:
-* msg
-	* Type: String
-	* Details: This is a message
-* title
-	* Type: String
-	* Details: The title of the Dialog.
-* config
-	* Type: Object
-	* Details: All configurable parameters under config:
-    * message `String`, Will rewrite the 'msg' parameter
-		* type `String`, Will rewrite the 'type' parameter
-		* fn `Function`, Function triggered when the dialog is closed
+* __parameters__:
+  * msg
+  	* Type: String
+  	* Details: This is a message
+  * title
+  	* Type: String
+  	* Details: The title of the Dialog.
+  * config
+  	* Type: Object
+  	* Details: All configurable parameters under config:
+      * message `String`, Will rewrite the 'msg' parameter
+  		* type `String`, Will rewrite the 'type' parameter
+  		* fn `Function`, Function triggered when the dialog is closed
 
 ### Dialog.confirm(msg[, title[, config]])
 A dialog box with the specified message and the OK and Cancel buttons is displayed.
@@ -1000,59 +1001,59 @@ Standard Dialog component, configure different windows with config parameters. T
 * bodyCls
 	* Type: String
 	* Defaults: null
-	* Details: 应用在窗口元素的样式名
+	* Details: The class name applied to the 'Dialog'
 * bodyStyle
 	* Type: Object
-	* Details: 应用在窗口元素上的样式
+	* Details: The style applied to the window element
 * contentEl
-	* Type: dom元素
-	* Details: 窗口内的元素
+	* Type: dom element
+	* Details: Elements within the 'Dialog'
 * html
 	* Type: String
-	* Details: 窗口内的元素。注意, contentEl和html都是指定窗口内展示的内容, 不过contentEl是dom元素, 可以是页面中已存在的, 也可以是通过document.creatElement创建的；html是html代码字符串
+	* Details: The elements within the 'Dialog'. Note that both contentEl and html are the contents of the specified window, but contentEl is a dom element, either existing in the page or created by `document.creatElement()`; html is the html code string
 * width
 	* Type: Number/String
 	* Defaults: 640
-	* Details: 窗口的宽度。可以是具体的数值, 也是可以百分比, 如'80%'
+	* Details: The width of the 'Dialog'. Can be a `Number`, but also a `percentage`, such as '80%'
 * height
 	* Type: Number/String
 	* Defaults: 480
-	* Details: 窗口的高度。可以是具体的数值, 也是可以百分比, 如'80%'
+	* Details: The height of the 'Dialog'. Can be a `Number`, but also a `percentage`, such as '80%'
 * autoShow
 	* Type: Boolean
 	* Defaults: true
-	* Details: 窗口创建好之后, 是不是立即显示出来。如果为false, 就需要程序在合适时机调用show方法显示出来
+	* Details: Whether the 'Dialog' is displayed immediately after the 'Dialog' is created. If it is false, you need the program to display the show method at the right time.
 * closable
 	* Type: Boolean
 	* Defaults: true
-	* Details: 在标题区域显示一个关闭按钮。注意, 这个参数并不是限制窗口关闭不了, 只是不显示右上角的关闭按钮
+	* Details: A close button is displayed in the title area. Note that this parameter does not limit the 'Dialog' to close, just does not display the close button in the upper right corner.
 * modal
 	* Type: Boolean
 	* Defaults: true
-	* Details: 窗口是不是模态的。模态窗口会显示一个遮罩层, 遮罩使页面中除了窗口, 其它地方都不可点击
+	* Details: Whether the 'Dialog' is modal. The modal window will display a mask layer, the mask makes the page in addition to the window, other places are not clickable.
 * closeAction
 	* Type: String
 	* Defaults: 'destroy'
-	* Details: 关闭窗口时执行的动作。
-		* 'destroy', 关闭窗口后直接销毁它
-		* 'close', 关闭窗口后元素不销毁, 可以再次通过show方法显示出来
+	* Details: The action taken when the 'Dialog' is closed.
+		* 'destroy', Destroy it directly after closing the window
+		* 'close', After the 'Dialog' is closed, the element is not destroyed, and can be displayed again by the show method.
 * listeners
 	* Type: Object
-	* Details: 窗口支持的事件
-		* ready, 窗口dom元素创建之后触发
-		* beforeshow, 窗口show动作执行前触发
-		* beforehide, 窗口隐藏前触发。注意hide命令只隐藏窗口, 不销毁它
-		* beforeclose, 窗口关闭动作执行前触发
-		* close, 窗口关闭后触发
-		* destroy, 窗口销毁后触发
+	* Details: The events of the 'Dialog' compontent supported.
+		* ready, Triggered after the 'Dialog' dom element is created.
+		* beforeshow, Trigger before the 'Dialog' show function is executed.
+		* beforehide, Triggered before the 'Dialog' is hidden. Note that the hide command only hides the window, does not destroy it.
+		* beforeclose, Trigger before the 'Dialog' close action is executed.
+		* close, Triggered when the 'Dialog' is closed
+		* destroy, Triggered after the 'Dialog' is destroyed
 * buttons
 	* Type: Array
-	* Details: buttons中的每一项是一个按钮的配置
+	* Details: Each item in the 'buttons' is a button configuration
 	* 参考：
-		* [按钮配置](##button配置)
+		* [Button Configuration](#button-configuration)
 
-### Dialog的实例方法
-通过Dialog.create方法创建的Dialog实例, 有一些方法, 控制窗口的行为。
-* show(), 使窗口显示出来
-* hide(), 隐藏窗口, 并且不销毁dom
-* close(), 隐藏窗口, 然后根据closeAction决定是否要销毁窗口dom
+### Dialog's instance method
+The Dialog instance created by the `Dialog.create()` has some methods to control the behavior of the 'Dialog'.
+* show(), Make the 'Dialog' window appear.
+* hide(), Hide the 'Dialog' window, but don't destroy the dom.
+* close(), Hide the 'Dialog' window, then decide whether to destroy the 'Dialog' dom according to the closeAction.
