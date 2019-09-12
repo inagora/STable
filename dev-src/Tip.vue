@@ -1,5 +1,5 @@
 <template>
-	<div v-if="ti" class="st-tip" v-html="tip"></div>
+	<div v-if="tip" class="st-tip" v-html="tip"></div>
 </template>
 
 <script>

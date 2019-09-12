@@ -215,4 +215,16 @@ module.exports = function(app, server){
 			});
 		},Math.round(t));
 	});
+	app.post('/ajaxAdd',(req, res)=>{
+		res.json({
+			errno: 0,
+			errmsg: 'this is just a demo, it will not add a record really'
+		});
+	});
+	app.post('/ajaxBatDel',(req, res)=>{
+		res.json({
+			errno: 0,
+			errmsg: 'this is just a demo, it will not remove some records really'
+		});
+	});
 };

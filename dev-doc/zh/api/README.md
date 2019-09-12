@@ -64,7 +64,8 @@
 
 	添加数据时的提交地址。如果有此参数，会在工具栏toolbar自动显示一个“添加”按钮，点击此按钮出现“添加”面板。它需要和addConfig配合使用。
 
-* __参考__: todo
+* __参考__:
+	* [demo](https://codepen.io/liupengke/pen/VwZQdqR)
 
 ### batDeleteUrl
 * __类型__: `String`
@@ -72,24 +73,55 @@
 
 	批量删除数据时的提交地址。如果有此参数，会在工具栏toolbar自动显示一个“批量删除”按钮，点此按钮，会把所有选中行删除。需要配合参数selectMode和idIndex使用。
 * __参考__: 
-	* todo
-	* [idIndex](#idIndex)
-	* [行选择模式 selectMode](#selectMode)
+	* [demo](https://codepen.io/liupengke/pen/xxKWLpZ?editors=1010#0)
+	* [idIndex](./#idindex)
+	* [行选择模式 selectMode](./#selectmode)
 
 ### columns
-* __类型__: `Array|Object`
+* __类型__: `Array`
 * __详细__: 
 
 	表格的列配置。数据中的每一项对应表格中的一列，通过它配置此列的表头、表格内容以及展示样式。
-* __用法__: todo
-* __参考__: todo
+* __用法__: 
+	如果只是简单的显示列的内容，可以直接写列对应的数据名：
+	```javascript
+	STable.init({
+		//...other configs
+		columns: ['name', 'age', 'gender']
+	});
+	```
+	对于有特殊要求的列，比如宽度、是否锁定，甚至要自己决定渲染内容的，可以用对象配置
+	```javascript
+	STable.init({
+		//...other configs
+		columns: [
+			{
+				dataIndex: 'name', //数据项
+				width: 200,	//列宽度
+				locked: true,	//锁定在左侧
+				visible: true,	//可见
+				resizable: false	//列的宽度不可缩放
+			},
+			{
+				dataIndex: 'age',
+				flex: 1,	//宽度
+				cls: 'hl',	//此类应用的css样式名
+			},
+			{
+				dataIndex: 'gender',
+				//通过render函数，控制展示内容
+				render(record){
+					return record.gender==1?'male':'female';
+				}
+			}
+		]
+	});
+	```
 
-### deleteUrl
-* __类型__: `String`
-* __详细__:
-
-	删除数据时的提交地址。如果有此参数，会在每一行的最后添加一列，此列中有一个“删除”按钮，点此按钮，会删除此行。
-* __参考__: todo
+	更多、更详细的列配置参数，请看 [column config](#columnconfig)
+* __参考__:
+	* [column config](#columnconfig)
+	* [demo](https://codepen.io/liupengke/pen/Rwbyede)
 
 ### componentOrder
 * __类型__: `Array`
@@ -99,11 +131,20 @@
 	STable由几个“部件”构成，分别是：标题(title)、提示(tip)、工具栏(toolbar)、搜索区(search)、表格(table)、分页栏(pagination)。通过componentOrder，我们可以对部件的展示顺序自己调整，比如想把工具栏显示在表格下面，就可以这样设置
 	```js
 	STable.init({
-		//some other config
+		//...other configs
 		componentOrder: ['search', 'table', 'toolbar', 'pagination']
 	})
 	```
 * __参考__: todo
+
+### deleteUrl
+* __类型__: `String`
+* __详细__:
+
+	删除数据时的提交地址。如果有此参数，会在每一行的最后添加一列，此列中有一个“删除”按钮，点此按钮，会删除此行。需要和参数`idIndex`配合使用。
+* __参考__: 
+	* [demo](https://codepen.io/liupengke/pen/xxKjQZY)
+	* [idIndex](#idindex)
 
 ### downloadable
 * __类型__: `Boolean|String`
@@ -427,20 +468,6 @@
 		//some other config
 		//默认排序asc升序，可选值desc降序
 		sortDirection: 'asc',
-	});
-
-### titleVisible
-* __类型__: `Boolean`
-* __默认值__: false
-* __详细__: 
-
-	是否显示标题栏。
-* __用法__: 
-  ```JS
-	STable.init({
-		//some other config
-		//默认false，可选值true
-		titleVisible: false,
 	});
 
 ### toolbar

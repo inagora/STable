@@ -39,10 +39,6 @@ export default {
 			 */
 			title: '',
 			/**
-			 * @param {Boolean} titleVisible 标题栏是否显示
-			 */
-			titleVisible: false,
-			/**
 			 * @param {Boolean} rowNumberVisible 是否显示行号
 			 */
 			rowNumberVisible: false,
