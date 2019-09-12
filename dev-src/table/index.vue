@@ -136,7 +136,7 @@ import qtip from '../com/qtip.js';
 export default {
 	components: {XHead, XBody, XMenu, XFlyman},
 	mixins: [data, drag, resize],
-	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax'],
+	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax', 'deleteUrl', 'updateUrl', 'idIndex'],
 	data() {
 		return {
 			hlRowNum: -1,
@@ -240,11 +240,12 @@ export default {
 				});
 			}
 			if(this.deleteUrl || this.updateUrl) {
+				let btns = this.getOpBtns();
 				rightColumns.push({
 					dataIndex: '_st_aux_op',
 					type: 'button',
-					buttons: this.getOpBtns(),
-					width: 0,
+					buttons: btns,
+					width: btns.length*100,
 					text: '操作'
 				});
 			}
@@ -290,11 +291,15 @@ export default {
 						let ret = confirm('您确定要删除此行数据？');
 						if(ret!==true)
 							return;
+						if(!this.idIndex){
+							alert('请配置参数 idIndex');
+							return;
+						}
 						let id = record[this.idIndex];
 						let data = {};
 						data[this.idIndex] = id;
 						Object.assign(data, this.params);
-						this.ajax.request({url:this.deleteUrl, data, method: this.actionMethods.destroy}).then(res=>{
+						this.ajax.request({url:this.deleteUrl, data, method: this.actionMethods.delete}).then(res=>{
 							if(res.errno==0) {
 								qtip.success('删除成功');
 								this.load('cur');
@@ -349,24 +354,20 @@ export default {
 										if(ret.data)
 											data = ret.data;
 									}
+									if(!self.idIndex){
+										alert('请配置参数 idIndex');
+										return;
+									}
 									data[self.idIndex] = record[self.idIndex];
 									
 									this.ajax.request({ url: updateUrl, data, method: self.actionMethods.update}).then(res=>{
 										if(res.errno==0){
-											this.$message({
-												message: '修改成功',
-												type: 'success'
-											});
+											qtip.success('修改成功');
 											this.close();
 											self.load('cur');
-											
-											if(self.listeners.afteredit)
-												self.listeners.afteredit.call(self.$parent, data);
+											self.store.emit('afteredit', data);
 										} else {
-											this.$message({
-												message: res.errmsg,
-												type: 'error'
-											});
+											qtip.error(res.errmsg);
 										}
 									});
 								}
@@ -389,7 +390,7 @@ export default {
 			const MIN_COLUMN_WIDTH = 100;
 			let boxRect = this.$el.getBoundingClientRect();
 			let boxWidth = boxRect.width;
-
+			
 			//第一遍为指定了width的列计算宽度
 			let flexColumn = [],
 				totalFlex = 0,

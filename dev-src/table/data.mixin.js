@@ -278,9 +278,8 @@ export default {
 		
 		getAllOnNormal() {
 			return new Promise((resolve)=>{
-				let progressbar = Progressbar.create();
-				progressbar.show();
-				progressbar.update(0, '开始下载数据');
+				let pb = new Progressbar();
+				pb.update(0, '开始下载数据');
 				let list = [];
 				let jobList = [];
 				let retryList = [];
@@ -337,7 +336,7 @@ export default {
 							per = 99;
 						else
 							per = Math.floor(per);
-						progressbar.update(per/100, `已下载${loadedCount}页，共${pageCount}页`);
+						pb.update(per/100, `已下载${loadedCount}页，共${pageCount}页`);
 					}, function(){
 						loadTime.push(new Date() - startTime);
 						jobList.splice(jobList.indexOf(job), 1);
@@ -382,7 +381,7 @@ export default {
 					}
 					
 					if(retryList.length<=0 && jobList.length<=0 && pnoIdx>=pageCount) {
-						progressbar.destroy();
+						pb.destroy();
 						let ret = [];
 						for(let i=1;i<=pageCount;i++){
 							if(!list[i])
@@ -390,9 +389,10 @@ export default {
 							ret = ret.concat(list[i]);
 						}
 						ret.forEach((record, idx)=>{
+							record._st_aux = {render:{}};
 							this.columns.forEach(col=>{
 								if(col.type=='render' && col.render) {
-									record['_'+col.dataIndex+'_render_val'] = col.render(record, col, idx);
+									record._st_aux.render[col.dataIndex] = col.render(record, col, idx);
 								}
 							});
 						});
@@ -407,9 +407,8 @@ export default {
 		//因为瀑布流模式下，每一页的id依赖上一个页面，所以没办法并行请求，也不知道总共有多少页
 		getAllOnWaterfall(){
 			return new Promise((resolve, reject)=>{
-				let progressbar = Progressbar.create('infinite');
-				progressbar.show();
-				progressbar.update(0, '数据下载中，请稍候...');
+				let pb = new Progressbar();
+				pb.update(0, '数据下载中，请稍候...');
 				let list = [];
 				let loadedCount = 0;
 				let pageIndex = this.pageIndex;
@@ -436,31 +435,33 @@ export default {
 						} else {
 							if(!res.data.list || res.data.list.length<=0) {
 								list.forEach((record, idx)=>{
+									record._st_aux = {render:{}};
 									this.columns.forEach(col=>{
 										if(col.type=='render' && col.render) {
-											record['_'+col.dataIndex+'_render_val'] = col.render(record, col, idx);
+											record._st_aux.render[col.dataIndex] = col.render(record, col, idx);
 										}
 									});
 								});
 								resolve(list);
-								progressbar.destroy();
+								pb.destroy();
 							} else {
 								list = list.concat(res.data.list);
 								if(res.data.list.length < params.count || this.downloadAllFromJustOnePage) {
 									list.forEach((record, idx)=>{
+										record._st_aux = {render:{}};
 										this.columns.forEach(col=>{
 											if(col.type=='render' && col.render) {
-												record['_'+col.dataIndex+'_render_val'] = col.render(record, col, idx);
+												record._st_aux[col.dataIndex] = col.render(record, col, idx);
 											}
 										});
 									});
 									resolve(list);
-									progressbar.destroy();
+									pb.destroy();
 								} else {
 									id = list[list.length-1][pageIndex];
 									startJob(id);
 									loadedCount++;
-									progressbar.update(0, `已下载 ${loadedCount} 页数据，请继续等待...`);
+									pb.update(0, `已下载 ${loadedCount} 页数据，请继续等待...`);
 								}
 							}
 						}

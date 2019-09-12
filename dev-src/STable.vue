@@ -103,7 +103,15 @@ export default {
 			/**
 			 * @param {String} idIndex 删除、批量删除、修改数据时，用来标识记录的数据
 			 */
-			idIndex: ''
+			idIndex: '',
+			/**
+			 * @param {String} deleteUrl 删除时的提交地址
+			 */
+			deleteUrl: '',
+			/**
+			 * @param {String} updateUrl 更新时的提交地址
+			 */
+			updateUrl: ''
 		}, window.STable && window.STable.default||{}, this.config);
 
 		//国际化
@@ -315,19 +323,19 @@ export default {
 			conf.addConfig = conf.addConfig|| conf.addConf || conf.updateConfig;
 		}
 
-		if(conf.deleteUrl || conf.updateUrl) {
-			columns.push({
-				dataIndex:'_st_column_op',
-				type: 'button',
-				text: '操作',
-				_width: 0,
-				visible: true,
-				locked: 'right',
-				cellWrap: true,
-				_st_ori_idx: columns.length,
-				buttons: []
-			});
-		}
+		// if(conf.deleteUrl || conf.updateUrl) {
+		// 	columns.push({
+		// 		dataIndex:'_st_column_op',
+		// 		type: 'button',
+		// 		text: '操作',
+		// 		_width: 0,
+		// 		visible: true,
+		// 		locked: 'right',
+		// 		cellWrap: true,
+		// 		_st_ori_idx: columns.length,
+		// 		buttons: []
+		// 	});
+		// }
 
 		let selectMode = conf.selectMode.trim().toLowerCase();
 		if(['radio', 'single'].includes(selectMode)){

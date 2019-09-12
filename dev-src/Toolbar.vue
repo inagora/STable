@@ -206,7 +206,7 @@ export default {
 			});
 		},
 		export(records){
-			let table = this.$parent.$refs.table;
+			let table = this.$parent.$refs.table[0];
 			let columns = [].concat(table.leftColumns).concat(table.freeColumns).concat(table.rightColumns);
 			columns = columns.filter(col=>['text','render'].includes(col.type));
 
