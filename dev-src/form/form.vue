@@ -32,7 +32,7 @@
 				<x-select
 					v-if="['select','combobox','multiple'].includes(item.type)"  
 					v-model="item.value" 
-					:options="item.options" 
+					:options="item.options || item.list" 
 					:multiple="item.type == 'multiple'"
 					:filterable="item.type == 'multiple'"
 					@selectchange="changeFn($event,item.name)"
@@ -211,10 +211,43 @@ export default {
 				});
 			}
 			let tmpArr = {};
-			for (const item of this.formConfig.fieldList) {
+			for (let item of this.formConfig.fieldList) {
+				if(typeof item != 'object')
+					item = {name:item};
 
+				if(typeof item.value=='undefined')
+					item.value = '';
+				if(!item.label)
+					item.label = item.name;
+				if(!item.placeholder)
+					item.placeholder = item.label;
+				if(item.options || item.list) {
+					let arr = item.options || item.list;
+					if(!Array.isArray(arr)) {
+						let list = [];
+						for(let name in arr) {
+							list.push({
+								text: arr[name],
+								value: name
+							});
+						}
+						item.options = list;
+					} else {
+						let arr = item.options || item.list;
+						arr = arr.map(item=>{
+							if(typeof item != 'object') {
+								return {
+									text: item,
+									value: item
+								};
+							}
+							return item;
+						});
+					}
+					if(!item.type)
+						item.type = 'select';
+				}
 				if(item.type != 'button')
-					// tmpArr[item.name] = item.value || '';
 					tmpArr[item.name] = typeof this.defaultValues[item.name]=='undefined' ? item.value || '' : this.defaultValues[item.name];
 				if(item.type == 'date') {
 					tmpArr[item.name] = this.timeFormat(new Date(),'YYYY-MM-DD');

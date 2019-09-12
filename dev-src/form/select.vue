@@ -158,7 +158,7 @@ export default {
 	},
 	mounted() {
 		this.$nextTick(()=>{
-			this.inputW = this.$refs.tags.clientWidth + 36;
+			this.inputW =  this.$refs.tags ? this.$refs.tags.clientWidth + 36 : 116;
 		});
 	},
 	created() {
@@ -324,7 +324,7 @@ export default {
 .st-select {
   // width: 100%;
   min-height: 3em;
-  display: inline-block;
+  display: flex;
   position: relative;
 	border: 1px solid #dcdfe6;
 	border-radius: 4px;
@@ -362,7 +362,7 @@ export default {
     background-color: #fff;
     box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
     box-sizing: border-box;
-    margin: 5px auto 0 -15px;   
+    margin: 3.5em auto 0 -15px;   
     padding: 6px 0; 
     z-index: 9;
     > ul {

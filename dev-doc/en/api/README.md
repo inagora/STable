@@ -932,10 +932,11 @@ Dialog.alert('This is a message', 'title', {
   		* type `String`, Will rewrite the 'type' parameter
   		* fn `Function`, Function triggered when the dialog is closed
 
-### Dialog.confirm(msg[, title[, config]])
+### Dialog.confirm()
 A dialog box with the specified message and the OK and Cancel buttons is displayed.
+* __Usage__: Dialog.confirm(msg[, title[, config]])
 
-Instructions:
+* __Instructions__:
 ```js
 Dialog.confirm('This is a message');
 Dialog.confirm('This is a message', 'title');
@@ -949,25 +950,27 @@ Dialog.confirm('This is a message', {
 });
 ```
 
-__parameters__:
-* msg
-	* Type: String
-	* Details: This is a message
-* title
-	* Type: String
-	* Details: The title of the Dialog.
-* config
-	* Type: Object
-	* Details: All configurable parameters under config:
-    * message `String`, Will rewrite the 'msg' parameter
-		* type `String`, Will rewrite the 'type' parameter
-		* fn `Function`, Function that is triggered when the dialog is closed or when the button is clicked, The parameters are:
-			* ret `String`, "yes" means clicking the "OK" button; "no" means clicking the "Cancel" or "Close" button
+* __parameters__:
+  * msg
+  	* Type: String
+  	* Details: This is a message
+  * title
+  	* Type: String
+  	* Details: The title of the Dialog.
+  * config
+  	* Type: Object
+  	* Details: All configurable parameters under config:
+      * message `String`, Will rewrite the 'msg' parameter
+  		* type `String`, Will rewrite the 'type' parameter
+  		* fn `Function`, Function that is triggered when the dialog is closed or when the button is clicked, The parameters are:
+  			* ret `String`, "yes" means clicking the "OK" button; "no" means clicking the "Cancel" or "Close" button
 
-### Dialog.prompt(msg[, title[, config]])
+### Dialog.prompt)
 A dialog box is displayed that prompts the user for input.
+* __Usage__: Dialog.prompt(msg[, title[, config]])
 
-Instructions:
+* __Instructions__:
+
 ```js
 Dialog.confirm('Need your input', {
 	fn(ret){
@@ -976,20 +979,20 @@ Dialog.confirm('Need your input', {
 });
 ```
 
-__parameters__:
-* msg
-	* Type: String
-	* Details: This is a message
-* title
-	* Type: String
-	* Details: The title of the Dialog.
-* config
-	* Type: Object
-	* Details: All configurable parameters under config:
-    * message `String`, Will rewrite the 'msg' parameter
-		* type `String`, Will rewrite the 'type' parameter
-		* fn `Function`, Function that is triggered when the dialog is closed or when the button is clicked, The parameters are:
-			* ret `String`, User input
+* __parameters__:
+  * msg
+  	* Type: String
+  	* Details: This is a message
+  * title
+  	* Type: String
+  	* Details: The title of the Dialog.
+  * config
+  	* Type: Object
+  	* Details: All configurable parameters under config:
+      * message `String`, Will rewrite the 'msg' parameter
+  		* type `String`, Will rewrite the 'type' parameter
+  		* fn `Function`, Function that is triggered when the dialog is closed or when the button is clicked, The parameters are:
+  			* ret `String`, User input
 
 ### Dialog.create(config)
 Standard Dialog component, configure different windows with config parameters. The parameters of config are:
