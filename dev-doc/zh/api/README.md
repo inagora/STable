@@ -191,18 +191,6 @@
 * __参考__:
 	* [demo](https://codepen.io/liupengke/pen/VwZdZzM)
 
-### editConfig
-* __类型__: `Array`
-* __详细__: 
-
-	编辑一行数据时，弹窗中表单的详细设置。需要和参数`updateUrl`配合使用。
-	:::tip
-	如果设置了addUrl参数，但未设置addConfig，会使用editConfig做为添加数据的表单
-	:::
-* __参考__:
-	* todo
-	* form配置
-
 ### el
 * __类型__: `String|HTMLElement`
 * __默认值__: "#stableContainer"
@@ -504,6 +492,18 @@
   on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+### updateConfig
+* __类型__: `Array`
+* __详细__: 
+
+	编辑一行数据时，弹窗中表单的详细设置。需要和参数`updateUrl`配合使用。
+	:::tip
+	如果设置了addUrl参数，但未设置addConfig，会使用editConfig做为添加数据的表单
+	:::
+* __参考__:
+	* todo
+	* form配置
 
 ### updateUrl
 * __类型__: `String`
