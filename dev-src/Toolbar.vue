@@ -244,7 +244,7 @@ export default {
 			}
 
 			let wb = XLSX.utils.book_new();
-			let name = prompt(this.locale.toolbar.confirmFileName,this.title);
+			let name = prompt(this.locale.toolbar.confirmFileName,this.title||'data');
 			name = (name||'stable').trim();
 			if(!name.includes('.')) {
 				name += '.xlsx';

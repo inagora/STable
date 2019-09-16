@@ -297,9 +297,6 @@ export default {
 				 * 这样，随着平均请求时间增多，最大并行数减少，以达到控制请求数目的
 				 */
 				let parallelCount = this.parallelCount;
-				let oriParallelCount = parallelCount;
-				let dynamicParallelCount = this.dynamicParallelCount;
-				let loadTime = [];
 				let loadedCount = 0;
 				let createJob = (pno)=>{
 					let params = Object.assign({}, this.params, this.store.searchParams);
@@ -317,10 +314,8 @@ export default {
 					if(ret && ret.url)
 						ajaxOptions = ret;
 				
-					let startTime = new Date();
 					let job = this.ajax.request(ajaxOptions);
 					job.then(res=>{
-						loadTime.push(new Date() - startTime);
 						list[params.page] = res.data&&res.data.list||[];
 						if(res.data && res.data.page_count)
 							pageCount = res.data.page_count;
@@ -338,7 +333,6 @@ export default {
 							per = Math.floor(per);
 						pb.update(per/100, `已下载${loadedCount}页，共${pageCount}页`);
 					}, function(){
-						loadTime.push(new Date() - startTime);
 						jobList.splice(jobList.indexOf(job), 1);
 						//jobList.push(createJob(pno));
 						retryList.push(pno);
@@ -347,27 +341,6 @@ export default {
 					return job;
 				};
 				let startJob = ()=>{
-					//根据ALT计算最大并行数
-					if(dynamicParallelCount){
-						let lastLoadTime = loadTime.slice(-10);
-						if(lastLoadTime.length<=0) {
-							parallelCount = oriParallelCount;
-						} else {
-							let totalTime = 0;
-							lastLoadTime.forEach(t=> totalTime+=t);
-							let ALT = totalTime/lastLoadTime.length;
-							let count = oriParallelCount*( 1 - (ALT-1000)/10000 );
-							count = Math.round(count);
-							if(count<1)
-								parallelCount = count;
-							else if(count>oriParallelCount)
-								parallelCount = oriParallelCount;
-							else
-								parallelCount = count;
-						}
-					}
-
-
 					if(jobList.length>=parallelCount)
 						return;
 					if(retryList.length>0) {
@@ -397,7 +370,6 @@ export default {
 							});
 						});
 						resolve(ret);
-						return;
 					}
 					
 				};

@@ -79,7 +79,7 @@ export default {
 			/**
 			 * @param {Number} downloadTimeout 全量下载表格时，每页的下载时间
 			 */
-			downloadTimeout: 10000,
+			downloadTimeout: 30000,
 			/**
 			 * @param {Boolean} downloadAllFromJustOnePage 全量下载表格时，所有数据从一页一次性下载
 			 */
@@ -104,6 +104,10 @@ export default {
 			 * @param {String} idIndex 删除、批量删除、修改数据时，用来标识记录的数据
 			 */
 			idIndex: '',
+			/**
+			 * @param {String} addUrl 添加时的提交地址
+			 */
+			addUrl: '',
 			/**
 			 * @param {String} deleteUrl 删除时的提交地址
 			 */
@@ -314,6 +318,8 @@ export default {
 		 */
 		if(conf.updateUrl) {
 			conf.updateConfig = conf.updateConfig||conf.editConfig||conf.editConf||conf.metaEditConf;
+		} else {
+			conf.updateConfig = {};
 		}
 		/**
 		 * @param {String} addUrl 添加行时的提交的url
@@ -321,6 +327,8 @@ export default {
 		 */
 		if(conf.addUrl) {
 			conf.addConfig = conf.addConfig|| conf.addConf || conf.updateConfig;
+		} else {
+			conf.addConfig = {};
 		}
 
 		// if(conf.deleteUrl || conf.updateUrl) {

@@ -136,7 +136,7 @@ import qtip from '../com/qtip.js';
 export default {
 	components: {XHead, XBody, XMenu, XFlyman},
 	mixins: [data, drag, resize],
-	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax', 'deleteUrl', 'updateUrl', 'idIndex'],
+	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax', 'deleteUrl', 'updateUrl','updateConfig', 'idIndex'],
 	data() {
 		return {
 			hlRowNum: -1,
@@ -316,11 +316,12 @@ export default {
 					icon: 'el-icon-edit-outline',
 					click:(record)=> {
 						let self = this;
+						let html = '<x-form id="_st_update_form" size="medium" :field-list="fields" :default-values="params" label-width="100px" :label-width="100" :action-methods="actionMethods" @submit="edit"></x-form>';
 						createDia({
 							title: '编辑',
 							width: 600,
 							height: '62%',
-							// html, //html未定义
+							html, //html未定义
 							buttons: [
 								{
 									text: '确认修改',
@@ -335,16 +336,14 @@ export default {
 								}
 							],
 							data: {
-								fields: this.editConf,
+								fields: this.updateConfig,
 								params: record,
 								actionMethods: this.actionMethods
 							},
 							autoShow: true,
 							methods: {
 								edit(data){
-									let ret = true;
-									if(self.listeners.beforeedit)
-										ret = self.listeners.beforeedit.call(self.$parent, data, record);
+									let ret = self.store.emit('beforeedit', {data, record});
 									if(ret===false)
 										return;
 									let updateUrl = self.updateUrl;
@@ -360,12 +359,12 @@ export default {
 									}
 									data[self.idIndex] = record[self.idIndex];
 									
-									this.ajax.request({ url: updateUrl, data, method: self.actionMethods.update}).then(res=>{
+									self.ajax.request({ url: updateUrl, data, method: self.actionMethods.update}).then(res=>{
 										if(res.errno==0){
 											qtip.success('修改成功');
 											this.close();
 											self.load('cur');
-											self.store.emit('afteredit', data);
+											self.store.emit('afteredit', {data, res});
 										} else {
 											qtip.error(res.errmsg);
 										}

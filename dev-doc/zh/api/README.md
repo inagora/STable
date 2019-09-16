@@ -58,6 +58,20 @@
 * __参考__:
 	* [demo](https://codepen.io/liupengke/pen/pozaKOR?editors=1010)
 
+### addConfig
+* __类型__: `String`
+* __详细__:
+
+	添加数据时，弹窗内的form表单配置。它需要和addUrl配合使用。
+	:::tip
+	如果配置addConfig，STable会尝试使用updateConfig替代它。
+	:::
+
+* __参考__:
+	* [demo](https://codepen.io/liupengke/pen/VwZQdqR)
+	* [addUrl](#addurl)
+	* [form配置](#form)
+
 ### addUrl
 * __类型__: `String`
 * __详细__:
@@ -66,6 +80,7 @@
 
 * __参考__:
 	* [demo](https://codepen.io/liupengke/pen/VwZQdqR)
+	* [addConfig](#addconfig)
 
 ### batDeleteUrl
 * __类型__: `String`
@@ -144,7 +159,7 @@
 
 	删除数据时的提交地址。如果有此参数，会在每一行的最后添加一列，此列中有一个“删除”按钮，点此按钮，会删除此行。需要和参数`idIndex`配合使用。
 * __参考__: 
-	* [demo](https://codepen.io/liupengke/pen/xxKjQZY)
+	* [demo](https://codepen.io/liupengke/pen/WNeJLWg)
 	* [idIndex](#idindex)
 
 ### downloadable
@@ -157,8 +172,8 @@
 	* false，不会显示下载按钮
 	* 'single'，只显示“导出当前页”按钮
 	* 'all'，只显示“导出所有页”按钮
-* __参考__: todo
-
+* __参考__:
+	* [demo](https://codepen.io/liupengke/pen/VwZxgOd)
 
 ### downloadAllFromJustOnePage
 * __类型__: `Boolean`
@@ -166,8 +181,6 @@
 * __详细__: 
 
 	全量下载表格时，会分页把所有数据请求下来。不过有时候分页请求数据反而没有一次性把所有数据导出来快。为了解决这个问题，可以使用这个变量。把它设置为true，全量导出时，只发出一页的请求，并且参数 count 值为 "max"，以标识这次请求希望能把符合要求的所有数据一次数请求到。
-* __参考__: todo
-
 
 ### downloadTimeout
 * __类型__: `Number`
@@ -175,27 +188,20 @@
 * __详细__: 
 
 	超时时间(毫秒)。全量下载所有数据时，会分页面请求数据，可以用此参数指定每个页面请求的超时时间。如果超时，会中断请求，重新发起一个。
-* __参考__: todo
-
-### dynamicParallelCount
-* __类型__: `Boolean`
-* __默认值__: false
-* __详细__: 
-
-	全量下载表格时，根据下载速度，动态调整最大并行数
-* __参考__: todo
-
+* __参考__:
+	* [demo](https://codepen.io/liupengke/pen/VwZdZzM)
 
 ### editConfig
 * __类型__: `Array`
 * __详细__: 
 
-	添加或者编辑一行数据时，弹窗中表单的详细设置。
+	编辑一行数据时，弹窗中表单的详细设置。需要和参数`updateUrl`配合使用。
+	:::tip
+	如果设置了addUrl参数，但未设置addConfig，会使用editConfig做为添加数据的表单
+	:::
 * __参考__:
 	* todo
 	* form配置
-
-
 
 ### el
 * __类型__: `String|HTMLElement`
