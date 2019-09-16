@@ -326,7 +326,7 @@ export default {
 								{
 									text: '确认修改',
 									nativeType: 'submit',
-									form: 'st_edit_form',
+									form: '_st_update_form',
 									type: 'success'
 								},{
 									text: '取消',

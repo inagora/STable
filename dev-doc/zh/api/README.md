@@ -196,23 +196,25 @@
 * __默认值__: "#stableContainer"
 * __详细__: 
 
-	STable在页面中的dom容器，它可以是css选择器，也可是一个dom元素。
-* __参考__: todo
-
+	STable在页面中的容器，它可以是css选择器，也可是一个dom元素。
+* __参考__:
+	[demo](https://codepen.io/liupengke/pen/vYBaMoL)
 
 ### groupBy
 * __类型__: `Array|String`
 * __详细__: 
 
-	根据指定的列进行合并分组。可以是指定多个列，按顺序，先用第一个列的值进行合并；然后对每个合并后的组，使用第二个列进行再次合并；以此类推。
+	根据指定的列进行合并分组。可以是同时指定多个列，然后按顺序，先用第一个列的值进行合并；然后对每个合并后的组，使用第二个列进行再次合并；以此类推。
 * __参考__: todo
 
 ### idIndex
 * __类型__: `String`
 * __详细__: 
 
-	crud操作(增删改查)中，修改或者删除行时，由此参数来唯一标识行数据，并发给服务端。
-* __参考__: todo
+	修改或者删除行时，由此参数来唯一标识行数据，并发给服务端。
+* __参考__:
+	* [updateUrl](#updateurl)
+	* [deleteUrl](#deleteurl)
 
 ### ignoreEmptySearchParam
 * __类型__: `Boolean`
@@ -240,27 +242,6 @@
 	* "expand"，自动伸展模式。STable高度不固定，根据表格区行数不同，自动调整STable的高度。
 * __参考__: 
 
-### locale
-* __类型__: `String|Object`
-* __详细__: 
-
-	STable使用的语言配置。
-* __参考__: todo
-
-### sublistAt
-* __类型__: `Array|String`
-* __详细__: 
-
-	指定列的数据为数组，并且数据中的每一项，在此列以一行展示。
-* __用法__: 
-	```JS
-	STable.init({
-		//sublistAt: ['movieType','movieName']
-		sublistAt: 'movieType'
-	});
-	```
-* __参考__: 
-
 ### listeners
 * __类型__: `Object`
 * __详细__: 
@@ -286,6 +267,13 @@
 	```
 * __参考__: 
 	* [事件](##listeners)
+
+### locale
+* __类型__: `String|Object`
+* __详细__: 
+
+	STable使用的语言配置。
+* __参考__: todo
 
 ### page
 * __类型__: `Number`
@@ -465,6 +453,20 @@
 		sortDirection: 'asc',
 	});
 
+### sublistAt
+* __类型__: `Array|String`
+* __详细__: 
+
+	指定列的数据为数组，并且数据中的每一项，在此列以一行展示。
+* __用法__: 
+	```JS
+	STable.init({
+		//sublistAt: ['movieType','movieName']
+		sublistAt: 'movieType'
+	});
+	```
+* __参考__: 
+
 ### toolbar
 * __类型__: `Array`
 * __详细__: 
@@ -502,8 +504,8 @@
 	如果设置了addUrl参数，但未设置addConfig，会使用editConfig做为添加数据的表单
 	:::
 * __参考__:
-	* todo
-	* form配置
+	* [demo](https://codepen.io/liupengke/pen/xxKJezM)
+	* [form配置](#form)
 
 ### updateUrl
 * __类型__: `String`
@@ -516,6 +518,9 @@
 		updateUrl: '/demo/ajaxUpdate',
 	})
 	```
+# __参考__:
+ * [demo](https://codepen.io/liupengke/pen/xxKJezM)
+ * [updateConfig](#updateconfig)
 
 ### url
 * __类型__: `String`
