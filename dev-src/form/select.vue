@@ -50,9 +50,9 @@
 			:style="{'min-width':inputW+'px'}"
 		>
 			<template v-if="filterOptions.length == 0">
-				<ul v-show="options.length > 0 && visible">
+				<ul v-show="realOptions.length > 0 && visible">
 					<li 
-						v-for="(item,index) in options"
+						v-for="(item,index) in realOptions"
 						:key="getValueKey(item)"
 						class="st-select-menu-item"
 						:class="[{'st-select-menu-item-hover': index == hoverIndex}]"
@@ -123,9 +123,9 @@ export default {
 			visible: false,
 			hoverIndex: -1,
 			query: '',
-			targetArr: '',
 			filterOptions: [],
-			inputW: 80
+			inputW: 80,
+			realOptions: [],
 		};
 	},
 	watch: {
@@ -162,22 +162,33 @@ export default {
 		});
 	},
 	created() {
+		let tmpList = this.options ? this.options : this.list;
+		this.realOptions = this.options;
+		
 		if (this.list.length > 0 && this.options.length == 0) {
-			this.options = this.list;
+			this.realOptions = this.list;
 		}
-		let targetArr = [];
-		this.options.map(item=>{
-			targetArr.push(item.label);
-		});
-		this.targetArr = targetArr;
+		if (!this.type && (this.list.length > 0 || this.options.length > 0) && !tmpList[0].label) {
+			let arr  = [];
+			tmpList.map(item=>{
+				if (typeof item != 'object') {
+					arr.push({
+						label: item,
+						value: item
+					});
+				}
+			});
+			tmpList = arr;
+		}
+		this.realOptions = tmpList;
 	},
 	methods: {
 		handleOption() {
 			if (!this.visible) {
 				this.showMenu();
 			} else {
-				if (this.filterOptions.length == 0 && this.options[this.hoverIndex]) {
-					this.setSelected(this.hoverIndex, this.options[this.hoverIndex]);
+				if (this.filterOptions.length == 0 && this.realOptions[this.hoverIndex]) {
+					this.setSelected(this.hoverIndex, this.realOptions[this.hoverIndex]);
 				}
 				if (this.filterOptions.length > 0 && this.filterOptions[this.hoverIndex]) {
 					this.setSelected(this.hoverIndex, this.filterOptions[this.hoverIndex]);
@@ -243,7 +254,7 @@ export default {
 		},
 		handleQueryChange(event) {
 			this.query = event.target.value;
-			this.searchQuery(this.options,this.query);
+			this.searchQuery(this.realOptions,this.query);
 		},
 		searchQuery(options) {
 			function joinText(arr){
@@ -293,7 +304,7 @@ export default {
 			} else if (direction === 'prev') {
 				this.hoverIndex--;
 				if (this.hoverIndex < 0) {
-					this.hoverIndex = this.options.length - 1;
+					this.hoverIndex = this.realOptions.length - 1;
 				}
 			}
 		},
@@ -329,10 +340,12 @@ export default {
 	border: 1px solid #dcdfe6;
 	border-radius: 4px;
 	padding: 0 15px;
+	background: #fff;
 
   &-input {
     border: none;
 		font-size: 1em;
+		color: #606266;
   }
   &-input:focus {
     outline: none;
