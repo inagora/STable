@@ -168,6 +168,19 @@ export default {
 	},
 	data() {
 		let fields = this.formatField(this.fieldList ? this.fieldList : this.formConfig.fieldList);
+		if (fields && fields.length > 0) {
+			this.formConfig.fieldList = this.fields;
+		} else {
+			let getParam = this.formConfig.getConfig;
+			let data = getParam ? getParam.data : {};
+			return this.ajax.request({url: getParam.url, data, method: getParam.read}).then(res=>{
+				if(res.errno==0 || res.code==0) {
+					fields = res.data;
+				} else {
+					qtip.error(res.msg);
+				}
+			});
+		}
 		this.ajax = new Ajax(Object.assign({}, (window.STable && window.STable.default||{}).ajaxSetting, this.ajaxSetting));
 		return {
 			fields,
@@ -199,15 +212,29 @@ export default {
 				let arr = [];
 				for (let key in fieldArr) {
 					let item = fieldArr[key];
-					if(typeof item != 'object'){
-						item = {label: item};
+					
+					if (key != 'list' && key != 'options') {
+						item.name = key;
+						arr.push(item);
+
+						let obj = item.options || item.list;
+						if (obj && typeof obj == 'object') {
+							if(!item.type)
+								item.type = 'select';
+							let tmparr = [];
+							for (let childkey in item.list) {
+								let childitem = item.list[childkey];
+								// childitem = {value: childitem};
+								// childitem.text = childkey;
+								tmparr.push(childitem);
+							}
+							item.list = tmparr;
+						}
 					}
-					item.name = key;
-					arr.push(item);
+					
 				}
 				fieldArr = arr;
 			}
-
 			return fieldArr;
 		},
 		//兼容老逻辑
@@ -215,21 +242,8 @@ export default {
 			return this.formConfig.fieldList;
 		},
 		getFormList() {
-			if (this.fieldList && this.fieldList.length > 0) {
-				this.formConfig.fieldList = this.fieldList;
-			} else {
-				let getParam = this.formConfig.getConfig;
-				let data = getParam ? getParam.data : {};
-				return this.ajax.request({url: getParam.url, data, method: getParam.read}).then(res=>{
-					if(res.errno==0 || res.code==0) {
-						this.formConfig.fieldList = res.data;
-					} else {
-						qtip.error(res.msg);
-					}
-				});
-			}
 			let tmpArr = {};
-			for (let item of this.formConfig.fieldList) {
+			for (let item of this.fields) {
 				if(typeof item != 'object')
 					item = {name:item};
 
@@ -239,32 +253,6 @@ export default {
 					item.label = item.name;
 				if(!item.placeholder)
 					item.placeholder = item.label;
-				if(item.options || item.list) {
-					let arr = item.options || item.list;
-					if(!Array.isArray(arr)) {
-						let list = [];
-						for(let name in arr) {
-							list.push({
-								text: arr[name],
-								value: name
-							});
-						}
-						item.options = list;
-					} else {
-						let arr = item.options || item.list;
-						arr = arr.map(item=>{
-							if(typeof item != 'object') {
-								return {
-									text: item,
-									value: item
-								};
-							}
-							return item;
-						});
-					}
-					if(!item.type)
-						item.type = 'select';
-				}
 				if(item.type != 'button')
 					tmpArr[item.name] = typeof this.defaultValues[item.name]=='undefined' ? item.value || '' : this.defaultValues[item.name];
 				if(item.type == 'date') {
