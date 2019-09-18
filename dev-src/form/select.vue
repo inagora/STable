@@ -101,13 +101,13 @@ export default {
 			default: false,
 		},
 		options: {
-			type: Array,
+			type: [Array,Object],
 			default() {
 				return [];
 			}
 		},
 		list: {
-			type: Array,
+			type: [Array,Object],
 			default() {
 				return [];
 			}
