@@ -200,13 +200,6 @@
 * __参考__:
 	[demo](https://codepen.io/liupengke/pen/vYBaMoL)
 
-### groupBy
-* __类型__: `Array|String`
-* __详细__: 
-
-	根据指定的列进行合并分组。可以是同时指定多个列，然后按顺序，先用第一个列的值进行合并；然后对每个合并后的组，使用第二个列进行再次合并；以此类推。
-* __参考__: todo
-
 ### idIndex
 * __类型__: `String`
 * __详细__: 
@@ -222,7 +215,8 @@
 * __详细__: 
 
 	忽略搜索条件中空字符串的项，在请求页数据时，不带上它们
-* __参考__: todo
+* __参考__: 
+	* [demo](https://codepen.io/stablejs/pen/eYOPNLX?editors=1010#0)
 
 ### labelVisible
 * __类型__: `Boolean`
@@ -231,6 +225,7 @@
 
 	搜索区的表单的标签是否显示。当搜索项太多时，把此参数设为false，可以让搜索区显得更为紧凑。
 * __参考__: 
+	* [demo](https://codepen.io/stablejs/pen/PoYyqvO?editors=1010#0)
 
 ### layoutMode
 * __类型__: `String`
@@ -241,6 +236,9 @@
 	* "fixed"，固定高度模式。STable所在区域高度固定，会根据总体高度、工具栏、搜索区和分页区，决定表格区的高度
 	* "expand"，自动伸展模式。STable高度不固定，根据表格区行数不同，自动调整STable的高度。
 * __参考__: 
+	* [demo: 指定绝对高度](https://codepen.io/stablejs/pen/PoYyPoE?editors=1010#0)
+	* [demo: 通过flex设置高度](https://codepen.io/stablejs/pen/MWgPaWd)
+	* [demo: 高度不限制](https://codepen.io/stablejs/pen/jONeWWb?editors=1010#0)
 
 ### listeners
 * __类型__: `Object`
@@ -266,7 +264,7 @@
 	});
 	```
 * __参考__: 
-	* [事件](##listeners)
+	* [事件](#listeners)
 
 ### locale
 * __类型__: `String|Object`

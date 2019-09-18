@@ -26,19 +26,23 @@ import XForm from './form/form.vue';
 
 export default {
 	components: {XButton},
-	inject: [
-		'title',
-		'toolbar',
-		'addUrl',
-		'addConfig',
-		'batDeleteUrl',
-		'downloadable',
-		'actionMethods',
-		'store',
-		'idIndex',
-		'ajax',
-		'locale'
-	],
+	inject: {
+		title: 'title',
+		toolbar: {
+			default: []
+		},
+		addUrl: 'addUrl',
+		addConfig: 'addConfig',
+		batDeleteUrl: {
+			default: ''
+		},
+		downloadable: 'downloadable',
+		actionMethods: 'actionMethods',
+		store: 'store',
+		idIndex: 'idIndex',
+		ajax: 'ajax',
+		locale: 'locale'
+	},
 	data(){
 		let self = this;
 		let tb = [];
@@ -51,7 +55,7 @@ export default {
 			if(this.downloadable=='all' || this.downloadable===true) {
 				tb.unshift({
 					type: 'primary',
-					text: '下载所有页',
+					text: this.locale.toolbar.exportAllBtnText,
 					icon: 'st-iconfont st-icon-download',
 					click(){
 						self.downloadAll();
@@ -61,7 +65,7 @@ export default {
 			if(this.downloadable=='single' || this.downloadable===true) {
 				tb.unshift({
 					type: 'primary',
-					text: '下载当前页',
+					text: this.locale.toolbar.exportBtnText,
 					icon: 'st-iconfont st-icon-download',
 					click(){
 						self.download();

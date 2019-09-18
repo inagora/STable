@@ -36,7 +36,6 @@
 					<td
 						v-for="(col, colIdx) of columns"
 						:key="colIdx"
-						:rowspan="record._st_aux.merges[col.dataIndex]"
 						class="st-table-body-td"
 						:class="[
 							col.cls,

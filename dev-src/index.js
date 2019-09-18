@@ -20,7 +20,7 @@ export function init(config, Vue) {
 	}
 
 	if(!(el instanceof HTMLElement)) {
-		Console.error('STable的容器dom不正确，请检查!');
+		Console.error('The container is not a dom, please check!');
 		return null;
 	}
 	el.innerHTML='<x-stable ref="stable" :config="config"></x-stable>';
@@ -28,7 +28,7 @@ export function init(config, Vue) {
 		Vue = window.Vue;
 	}
 	if(!Vue || !Vue.version || Vue.version<'2') {
-		Console.error('请检查Vue是否安装');
+		Console.error('Please ensure Vue is installed.');
 		return null;
 	}
 	let app = new Vue({

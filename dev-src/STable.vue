@@ -115,7 +115,19 @@ export default {
 			/**
 			 * @param {String} updateUrl 更新时的提交地址
 			 */
-			updateUrl: ''
+			updateUrl: '',
+			/**
+			 * @param {String} tip 顶部显示的提示
+			 */
+			tip: '',
+			/**
+			 * @param {Boolean} downloadable 显示下载按钮
+			 */
+			downloadable: false,
+			/**
+			 * @param {Array} searchFilter 搜索表单配置
+			 */
+			searchFilter: false,
 		}, window.STable && window.STable.default||{}, this.config);
 
 		//国际化
@@ -132,9 +144,6 @@ export default {
 
 		if(conf.layoutMode != 'expand')
 			conf.layoutMode == 'fixed';
-		if(typeof conf.hideTitle != 'undefined') {
-			conf.titleVisible = !conf.hideTitle;
-		}
 		/**
 		 * @param {Object} actionMethods STable在不同时机发请求时所用的方法
 		 */
@@ -150,15 +159,6 @@ export default {
 		};
 		conf.actionMethods = Object.assign(actionMethods, methods);
 
-		/**
-		 * @param {String|String[]} groupBy 行数据分组
-		 */
-		if(conf.groupBy){
-			if(!Array.isArray(conf.groupBy))
-				conf.groupBy = [conf.groupBy];
-		} else {
-			conf.groupBy = [];
-		}
 		/**
 		 * @param {String|String[]} sublistAt 行内容分多子表
 		 */
