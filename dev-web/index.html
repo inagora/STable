@@ -43,8 +43,17 @@
 	<script>
 	STable.init({
 		el: '#box',
+		url: '/ajaxList',
+		columns: ['name','locationName','year','movieType'],
+		groupBy: ['locationName','year']
+	})
+	</script>
+	<!-- <script>
+	STable.init({
+		el: '#box',
 		title: '测试用例',
 		titleVisible: true,
+		tip: '此数据来自时光网',
 		url: '/ajaxList',
 		rowNumberVisible: true,
 		selectMode: 'single',
@@ -235,18 +244,21 @@
 			{text:'测试', type: 'warning', icon:'st-iconfont st-icon-lock'},
 			{text:'测试', type: 'link'}
 		],
-		addUrl: '/',
+		updateUrl: '/',
 		batDeleteUrl: '/',
+		idIndex: 'id',
+		deleteUrl: '/ajaxDel',
 		downloadable: true,
-		addConfig: [
+		editConfig: [
 			{
-				name: 'move_name',
+				name: 'name',
 				label: 'name'
 			},
 			{
 				name: 'type',
 				label: '影片类型',
-				list: ['动作', '喜剧']
+				list: ['动作', '喜剧'],
+				type: 'multiple'
 			}
 		],
 		params: {
@@ -254,9 +266,9 @@
 		},
 		
 		componentOrder: [
-			'title','toolbar', 'search', 'table','pagination'
+			'title','tip','toolbar', 'search', 'table','pagination'
 		]
 	});
-	</script>
+	</script> -->
 </body>
 </html>

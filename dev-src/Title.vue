@@ -1,12 +1,12 @@
 <template>
-	<div v-if="titleVisible" class="st-title">
+	<div v-if="title" class="st-title">
 		<div class="st-title-text" v-text="title"></div>
 	</div>
 </template>
 
 <script>
 export default {
-	inject: ['title', 'titleVisible']
+	inject: ['title']
 };
 </script>
 

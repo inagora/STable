@@ -10,7 +10,7 @@
 			ref="form"
 			inline
 			:field-list="searchFilter"
-			:size="'small'"
+			size="small"
 			:label-visible="labelVisible"
 			@submit="search"
 		>

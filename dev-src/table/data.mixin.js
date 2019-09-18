@@ -1,6 +1,6 @@
 import Progressbar from '../com/Progressbar';
 export default {
-	inject: ['store', 'records', 'params', 'url', 'actionMethods',  'pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','groupBy','sublistAt', 'ajax'],
+	inject: ['store', 'records', 'params', 'url', 'actionMethods',  'pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','sublistAt', 'ajax'],
 	data() {
 		return {
 			flymanVisible: false,
@@ -186,10 +186,6 @@ export default {
 			records.forEach((r,idx)=>{
 				//每一行的辅助数据
 				r._st_aux = {
-					//这一行有哪些列会开启跨行，跨多少行
-					merges: {},
-					//哪些列不需要渲染dom。有跨行时，可能不需要渲染td
-					ignoreRenders: [],
 					//这一行的行号是多少
 					rownumber: idx+1,
 					render: {},
@@ -197,50 +193,7 @@ export default {
 					option: {}
 				};
 			});
-			if(this.groupBy && this.groupBy.length>0) {
-				let recordGroup = [records];
-				for(let dataIndex of this.groupBy) {
-					for(let groupIdx=recordGroup.length-1;groupIdx>=0;groupIdx--){
-						let group = recordGroup[groupIdx],
-							sortRet = {},
-							valueList = [];
-						
-						for(let rec of group) {
-							let v = rec[dataIndex];
-							if(typeof v == 'undefined')
-								v = '';
-							if(!sortRet[v]) {
-								valueList.push(v);
-								sortRet[v] = [rec];
-							} else {
-								sortRet[v].push(rec);
-							}
-						}
-						let ret = [];
-						for(let v of valueList) {
-							sortRet[v][0]._st_aux.merges[dataIndex] = sortRet[v].length;
-							for(let i=1,len=sortRet[v].length;i<len;i++){
-								sortRet[v][i]._st_aux.ignoreRenders.push(dataIndex);
-							}
-							ret.push(sortRet[v]);
-						}
-						
-						ret.unshift(1);
-						ret.unshift(groupIdx);
-						Array.prototype.splice.apply(recordGroup, ret);
-					}
-				}
-
-				
-				records = [];
-				recordGroup.forEach(group=>{
-					records = records.concat(group);
-				});
-
-				this.store.emit('refresh', records);
-			} else {
-				this.store.emit('refresh', records);
-			}
+			this.store.emit('refresh', records);
 
 			records.forEach((record, idx)=>{
 				this.columns.forEach(col=>{
@@ -278,9 +231,8 @@ export default {
 		
 		getAllOnNormal() {
 			return new Promise((resolve)=>{
-				let progressbar = Progressbar.create();
-				progressbar.show();
-				progressbar.update(0, '开始下载数据');
+				let pb = new Progressbar();
+				pb.update(0, '开始下载数据');
 				let list = [];
 				let jobList = [];
 				let retryList = [];
@@ -298,9 +250,6 @@ export default {
 				 * 这样，随着平均请求时间增多，最大并行数减少，以达到控制请求数目的
 				 */
 				let parallelCount = this.parallelCount;
-				let oriParallelCount = parallelCount;
-				let dynamicParallelCount = this.dynamicParallelCount;
-				let loadTime = [];
 				let loadedCount = 0;
 				let createJob = (pno)=>{
 					let params = Object.assign({}, this.params, this.store.searchParams);
@@ -318,10 +267,8 @@ export default {
 					if(ret && ret.url)
 						ajaxOptions = ret;
 				
-					let startTime = new Date();
 					let job = this.ajax.request(ajaxOptions);
 					job.then(res=>{
-						loadTime.push(new Date() - startTime);
 						list[params.page] = res.data&&res.data.list||[];
 						if(res.data && res.data.page_count)
 							pageCount = res.data.page_count;
@@ -337,9 +284,8 @@ export default {
 							per = 99;
 						else
 							per = Math.floor(per);
-						progressbar.update(per/100, `已下载${loadedCount}页，共${pageCount}页`);
+						pb.update(per/100, `已下载${loadedCount}页，共${pageCount}页`);
 					}, function(){
-						loadTime.push(new Date() - startTime);
 						jobList.splice(jobList.indexOf(job), 1);
 						//jobList.push(createJob(pno));
 						retryList.push(pno);
@@ -348,27 +294,6 @@ export default {
 					return job;
 				};
 				let startJob = ()=>{
-					//根据ALT计算最大并行数
-					if(dynamicParallelCount){
-						let lastLoadTime = loadTime.slice(-10);
-						if(lastLoadTime.length<=0) {
-							parallelCount = oriParallelCount;
-						} else {
-							let totalTime = 0;
-							lastLoadTime.forEach(t=> totalTime+=t);
-							let ALT = totalTime/lastLoadTime.length;
-							let count = oriParallelCount*( 1 - (ALT-1000)/10000 );
-							count = Math.round(count);
-							if(count<1)
-								parallelCount = count;
-							else if(count>oriParallelCount)
-								parallelCount = oriParallelCount;
-							else
-								parallelCount = count;
-						}
-					}
-
-
 					if(jobList.length>=parallelCount)
 						return;
 					if(retryList.length>0) {
@@ -382,7 +307,7 @@ export default {
 					}
 					
 					if(retryList.length<=0 && jobList.length<=0 && pnoIdx>=pageCount) {
-						progressbar.destroy();
+						pb.destroy();
 						let ret = [];
 						for(let i=1;i<=pageCount;i++){
 							if(!list[i])
@@ -390,14 +315,14 @@ export default {
 							ret = ret.concat(list[i]);
 						}
 						ret.forEach((record, idx)=>{
+							record._st_aux = {render:{}};
 							this.columns.forEach(col=>{
 								if(col.type=='render' && col.render) {
-									record['_'+col.dataIndex+'_render_val'] = col.render(record, col, idx);
+									record._st_aux.render[col.dataIndex] = col.render(record, col, idx);
 								}
 							});
 						});
 						resolve(ret);
-						return;
 					}
 					
 				};
@@ -407,9 +332,8 @@ export default {
 		//因为瀑布流模式下，每一页的id依赖上一个页面，所以没办法并行请求，也不知道总共有多少页
 		getAllOnWaterfall(){
 			return new Promise((resolve, reject)=>{
-				let progressbar = Progressbar.create('infinite');
-				progressbar.show();
-				progressbar.update(0, '数据下载中，请稍候...');
+				let pb = new Progressbar();
+				pb.update(0, '数据下载中，请稍候...');
 				let list = [];
 				let loadedCount = 0;
 				let pageIndex = this.pageIndex;
@@ -436,31 +360,33 @@ export default {
 						} else {
 							if(!res.data.list || res.data.list.length<=0) {
 								list.forEach((record, idx)=>{
+									record._st_aux = {render:{}};
 									this.columns.forEach(col=>{
 										if(col.type=='render' && col.render) {
-											record['_'+col.dataIndex+'_render_val'] = col.render(record, col, idx);
+											record._st_aux.render[col.dataIndex] = col.render(record, col, idx);
 										}
 									});
 								});
 								resolve(list);
-								progressbar.destroy();
+								pb.destroy();
 							} else {
 								list = list.concat(res.data.list);
 								if(res.data.list.length < params.count || this.downloadAllFromJustOnePage) {
 									list.forEach((record, idx)=>{
+										record._st_aux = {render:{}};
 										this.columns.forEach(col=>{
 											if(col.type=='render' && col.render) {
-												record['_'+col.dataIndex+'_render_val'] = col.render(record, col, idx);
+												record._st_aux[col.dataIndex] = col.render(record, col, idx);
 											}
 										});
 									});
 									resolve(list);
-									progressbar.destroy();
+									pb.destroy();
 								} else {
 									id = list[list.length-1][pageIndex];
 									startJob(id);
 									loadedCount++;
-									progressbar.update(0, `已下载 ${loadedCount} 页数据，请继续等待...`);
+									pb.update(0, `已下载 ${loadedCount} 页数据，请继续等待...`);
 								}
 							}
 						}

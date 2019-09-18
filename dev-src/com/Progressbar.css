@@ -1,0 +1,28 @@
+.x-pb-box{
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	background-color: rgba(0,0,0,0.6);
+	z-index: 99;
+}
+.x-pb-body{
+	width: 62%;
+	max-width: 1200px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #fff;
+	box-shadow: 0 0 16px 0px rgba(0,0,0,0.6);
+	border-radius: 5px;
+	border: 10px solid #fff;
+	text-align: center;
+}
+.x-pb{
+	width: 100%;
+}
+.x-pb::-webkit-progress-value{
+	transition: width 0.2s ease;
+}

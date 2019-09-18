@@ -136,7 +136,7 @@ import qtip from '../com/qtip.js';
 export default {
 	components: {XHead, XBody, XMenu, XFlyman},
 	mixins: [data, drag, resize],
-	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax'],
+	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax', 'deleteUrl', 'updateUrl','updateConfig', 'idIndex'],
 	data() {
 		return {
 			hlRowNum: -1,
@@ -240,11 +240,12 @@ export default {
 				});
 			}
 			if(this.deleteUrl || this.updateUrl) {
+				let btns = this.getOpBtns();
 				rightColumns.push({
 					dataIndex: '_st_aux_op',
 					type: 'button',
-					buttons: this.getOpBtns(),
-					width: 0,
+					buttons: btns,
+					width: btns.length*100,
 					text: '操作'
 				});
 			}
@@ -290,11 +291,15 @@ export default {
 						let ret = confirm('您确定要删除此行数据？');
 						if(ret!==true)
 							return;
+						if(!this.idIndex){
+							alert('请配置参数 idIndex');
+							return;
+						}
 						let id = record[this.idIndex];
 						let data = {};
 						data[this.idIndex] = id;
 						Object.assign(data, this.params);
-						this.ajax.request({url:this.deleteUrl, data, method: this.actionMethods.destroy}).then(res=>{
+						this.ajax.request({url:this.deleteUrl, data, method: this.actionMethods.delete}).then(res=>{
 							if(res.errno==0) {
 								qtip.success('删除成功');
 								this.load('cur');
@@ -311,16 +316,17 @@ export default {
 					icon: 'el-icon-edit-outline',
 					click:(record)=> {
 						let self = this;
+						let html = '<x-form id="_st_update_form" size="medium" :field-list="fields" :default-values="params" label-width="100px" :label-width="100" :action-methods="actionMethods" @submit="edit"></x-form>';
 						createDia({
 							title: '编辑',
 							width: 600,
 							height: '62%',
-							// html, //html未定义
+							html, //html未定义
 							buttons: [
 								{
 									text: '确认修改',
 									nativeType: 'submit',
-									form: 'st_edit_form',
+									form: '_st_update_form',
 									type: 'success'
 								},{
 									text: '取消',
@@ -330,16 +336,14 @@ export default {
 								}
 							],
 							data: {
-								fields: this.editConf,
+								fields: this.updateConfig,
 								params: record,
 								actionMethods: this.actionMethods
 							},
 							autoShow: true,
 							methods: {
 								edit(data){
-									let ret = true;
-									if(self.listeners.beforeedit)
-										ret = self.listeners.beforeedit.call(self.$parent, data, record);
+									let ret = self.store.emit('beforeedit', {data, record});
 									if(ret===false)
 										return;
 									let updateUrl = self.updateUrl;
@@ -349,24 +353,20 @@ export default {
 										if(ret.data)
 											data = ret.data;
 									}
+									if(!self.idIndex){
+										alert('请配置参数 idIndex');
+										return;
+									}
 									data[self.idIndex] = record[self.idIndex];
 									
-									this.ajax.request({ url: updateUrl, data, method: self.actionMethods.update}).then(res=>{
+									self.ajax.request({ url: updateUrl, data, method: self.actionMethods.update}).then(res=>{
 										if(res.errno==0){
-											this.$message({
-												message: '修改成功',
-												type: 'success'
-											});
+											qtip.success('修改成功');
 											this.close();
 											self.load('cur');
-											
-											if(self.listeners.afteredit)
-												self.listeners.afteredit.call(self.$parent, data);
+											self.store.emit('afteredit', {data, res});
 										} else {
-											this.$message({
-												message: res.errmsg,
-												type: 'error'
-											});
+											qtip.error(res.errmsg);
 										}
 									});
 								}
@@ -389,7 +389,7 @@ export default {
 			const MIN_COLUMN_WIDTH = 100;
 			let boxRect = this.$el.getBoundingClientRect();
 			let boxWidth = boxRect.width;
-
+			
 			//第一遍为指定了width的列计算宽度
 			let flexColumn = [],
 				totalFlex = 0,

@@ -39,10 +39,6 @@ export default {
 			 */
 			title: '',
 			/**
-			 * @param {Boolean} titleVisible 标题栏是否显示
-			 */
-			titleVisible: false,
-			/**
 			 * @param {Boolean} rowNumberVisible 是否显示行号
 			 */
 			rowNumberVisible: false,
@@ -83,7 +79,7 @@ export default {
 			/**
 			 * @param {Number} downloadTimeout 全量下载表格时，每页的下载时间
 			 */
-			downloadTimeout: 10000,
+			downloadTimeout: 30000,
 			/**
 			 * @param {Boolean} downloadAllFromJustOnePage 全量下载表格时，所有数据从一页一次性下载
 			 */
@@ -107,7 +103,31 @@ export default {
 			/**
 			 * @param {String} idIndex 删除、批量删除、修改数据时，用来标识记录的数据
 			 */
-			idIndex: ''
+			idIndex: '',
+			/**
+			 * @param {String} addUrl 添加时的提交地址
+			 */
+			addUrl: '',
+			/**
+			 * @param {String} deleteUrl 删除时的提交地址
+			 */
+			deleteUrl: '',
+			/**
+			 * @param {String} updateUrl 更新时的提交地址
+			 */
+			updateUrl: '',
+			/**
+			 * @param {String} tip 顶部显示的提示
+			 */
+			tip: '',
+			/**
+			 * @param {Boolean} downloadable 显示下载按钮
+			 */
+			downloadable: false,
+			/**
+			 * @param {Array} searchFilter 搜索表单配置
+			 */
+			searchFilter: false,
 		}, window.STable && window.STable.default||{}, this.config);
 
 		//国际化
@@ -124,9 +144,6 @@ export default {
 
 		if(conf.layoutMode != 'expand')
 			conf.layoutMode == 'fixed';
-		if(typeof conf.hideTitle != 'undefined') {
-			conf.titleVisible = !conf.hideTitle;
-		}
 		/**
 		 * @param {Object} actionMethods STable在不同时机发请求时所用的方法
 		 */
@@ -138,19 +155,10 @@ export default {
 			create: 'POST',
 			read: 'GET',
 			update: 'POST',
-			destroy: 'POST'
+			delete: 'POST'
 		};
 		conf.actionMethods = Object.assign(actionMethods, methods);
 
-		/**
-		 * @param {String|String[]} groupBy 行数据分组
-		 */
-		if(conf.groupBy){
-			if(!Array.isArray(conf.groupBy))
-				conf.groupBy = [conf.groupBy];
-		} else {
-			conf.groupBy = [];
-		}
 		/**
 		 * @param {String|String[]} sublistAt 行内容分多子表
 		 */
@@ -310,6 +318,8 @@ export default {
 		 */
 		if(conf.updateUrl) {
 			conf.updateConfig = conf.updateConfig||conf.editConfig||conf.editConf||conf.metaEditConf;
+		} else {
+			conf.updateConfig = {};
 		}
 		/**
 		 * @param {String} addUrl 添加行时的提交的url
@@ -317,21 +327,23 @@ export default {
 		 */
 		if(conf.addUrl) {
 			conf.addConfig = conf.addConfig|| conf.addConf || conf.updateConfig;
+		} else {
+			conf.addConfig = {};
 		}
 
-		if(conf.deleteUrl || conf.updateUrl) {
-			columns.push({
-				dataIndex:'_st_column_op',
-				type: 'button',
-				text: '操作',
-				_width: 0,
-				visible: true,
-				locked: 'right',
-				cellWrap: true,
-				_st_ori_idx: columns.length,
-				buttons: []
-			});
-		}
+		// if(conf.deleteUrl || conf.updateUrl) {
+		// 	columns.push({
+		// 		dataIndex:'_st_column_op',
+		// 		type: 'button',
+		// 		text: '操作',
+		// 		_width: 0,
+		// 		visible: true,
+		// 		locked: 'right',
+		// 		cellWrap: true,
+		// 		_st_ori_idx: columns.length,
+		// 		buttons: []
+		// 	});
+		// }
 
 		let selectMode = conf.selectMode.trim().toLowerCase();
 		if(['radio', 'single'].includes(selectMode)){
@@ -485,13 +497,13 @@ export default {
 		 * @member {Function} refresh 刷新表格
 		 */
 		refresh(pno) {
-			return this.$refs.table.refresh(pno);
+			return this.$refs.table[0].refresh(pno);
 		},
 		/**
 		 * @member {Function} getSearchParam 获得当前搜索表单项内容
 		 */
 		getSearchParam(){
-			return this.$refs.search.getParams();
+			return this.$refs.search[0].getParams();
 		},
 		getSelectRows(){
 			return this.getSelected();
@@ -506,19 +518,19 @@ export default {
 		 * @member {Function} getSelected 获得当前所有选中行的数据
 		 */
 		getSelected(){
-			return this.$refs.table.getSelectRows();
+			return this.$refs.table[0].getSelectRows();
 		},
 		/**
 		 * @member {Function} layout 重新布局表格
 		 */
 		layout(){
-			this.$refs.table.layout();
+			this.$refs.table[0].layout();
 		},
 		/**
 		 * @member {Function} setRecords 设置表格数据
 		 */
 		setRecords(list){
-			this.$refs.table.setRecords(list);
+			this.$refs.table[0].setRecords(list);
 		}
 	}
 };

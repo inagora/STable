@@ -26,19 +26,23 @@ import XForm from './form/form.vue';
 
 export default {
 	components: {XButton},
-	inject: [
-		'title',
-		'toolbar',
-		'addUrl',
-		'addConfig',
-		'batDeleteUrl',
-		'downloadable',
-		'actionMethods',
-		'store',
-		'idIndex',
-		'ajax',
-		'locale'
-	],
+	inject: {
+		title: 'title',
+		toolbar: {
+			default: []
+		},
+		addUrl: 'addUrl',
+		addConfig: 'addConfig',
+		batDeleteUrl: {
+			default: ''
+		},
+		downloadable: 'downloadable',
+		actionMethods: 'actionMethods',
+		store: 'store',
+		idIndex: 'idIndex',
+		ajax: 'ajax',
+		locale: 'locale'
+	},
 	data(){
 		let self = this;
 		let tb = [];
@@ -51,20 +55,20 @@ export default {
 			if(this.downloadable=='all' || this.downloadable===true) {
 				tb.unshift({
 					type: 'primary',
-					text: '下载所有页',
+					text: this.locale.toolbar.exportAllBtnText,
 					icon: 'st-iconfont st-icon-download',
 					click(){
-						toolbar.downloadAll();
+						self.downloadAll();
 					}
 				});
 			}
 			if(this.downloadable=='single' || this.downloadable===true) {
 				tb.unshift({
 					type: 'primary',
-					text: '下载当前页',
+					text: this.locale.toolbar.exportBtnText,
 					icon: 'st-iconfont st-icon-download',
 					click(){
-						toolbar.download();
+						self.download();
 					}
 				});
 			}
@@ -103,7 +107,8 @@ export default {
 			btn.click&&btn.click.call(this.$parent, evt);
 		},
 		add(){
-			let html = '<x-form id="_st_add_form" size="medium" :field-list="fields" :default-values="params" label-width="100px" :action-methods="actionMethods" @submit="create"></x-form>';
+			let toolbar = this;
+			let html = '<x-form id="_st_add_form" size="medium" :field-list="fields" :default-values="params" label-width="100px" :label-width="100" :action-methods="actionMethods" @submit="create"></x-form>';
 			create({
 				title: this.locale.add,
 				width: 600,
@@ -143,7 +148,7 @@ export default {
 							if(ret.data)
 								data = ret.data;
 						}
-						this.ajax.request({url: addUrl, data, method:toolbar.actionMethods.create}).then(res=>{
+						toolbar.ajax.request({url: addUrl, data, method:toolbar.actionMethods.create}).then(res=>{
 							if(res.errno==0){
 								qtip.success(toolbar.locale.toolbar.addSuccessMsg);
 								this.destroy();
@@ -158,7 +163,7 @@ export default {
 			});
 		},
 		batDelete(){
-			let records = this.getSelected();
+			let records = this.$parent.getSelected();
 			if(!records || records.length<=0){
 				qtip.error('请选择要删除的行');
 				return;
@@ -205,7 +210,7 @@ export default {
 			});
 		},
 		export(records){
-			let table = this.$parent.$refs.table;
+			let table = this.$parent.$refs.table[0];
 			let columns = [].concat(table.leftColumns).concat(table.freeColumns).concat(table.rightColumns);
 			columns = columns.filter(col=>['text','render'].includes(col.type));
 
@@ -243,7 +248,7 @@ export default {
 			}
 
 			let wb = XLSX.utils.book_new();
-			let name = prompt(this.locale.toolbar.confirmFileName,this.title);
+			let name = prompt(this.locale.toolbar.confirmFileName,this.title||'data');
 			name = (name||'stable').trim();
 			if(!name.includes('.')) {
 				name += '.xlsx';
