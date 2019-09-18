@@ -116,6 +116,12 @@ export default {
 			type: String,
 			default: 'value'
 		},
+		defaultValues: {
+			type: Array,
+			default() {
+				return [];
+			}
+		}
 	},
 	data(){
 		return {
@@ -181,6 +187,7 @@ export default {
 			tmpList = arr;
 		}
 		this.realOptions = tmpList;
+		this.selected = this.defaultValues;
 	},
 	methods: {
 		handleOption() {

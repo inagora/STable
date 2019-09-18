@@ -22,7 +22,7 @@
 			<div class="st-form-item-content">
 				<x-input
 					v-if="item.type == 'text' || item.type == 'input' || item.type == 'textarea' || (!item.type && !item.list && !item.options)" 
-					v-model="formValue[item.name]" 
+					v-model="formValue[item.name]"
 					:type="item.type" 
 					:placeholder="item.placeholder || locale.inputMsg + item.label" 
 					:name="item.name"
@@ -32,6 +32,7 @@
 				<x-select
 					v-if="['select','combobox','multiple'].includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))"  
 					v-model="item.value" 
+					:default-values="item.defaultValues"
 					:options="item.options || item.list" 
 					:multiple="item.type == 'multiple'"
 					:filterable="item.type == 'multiple'"
