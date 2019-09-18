@@ -6,7 +6,7 @@
 		@reset="resetFields"
 	>
 		<div 
-			v-for="(item, index) in formConfig.fieldList || fieldList" 
+			v-for="(item, index) in fields" 
 			:key="index"
 			class="st-form-item"
 			:class="size"
@@ -114,7 +114,7 @@ export default {
 			}
 		},
 		fieldList: {
-			type: [Array],
+			type: [Array,Object],
 			default() {
 				return [];
 			}
@@ -167,8 +167,10 @@ export default {
 		};
 	},
 	data() {
+		let fields = this.formatField(this.fieldList ? this.fieldList : this.formConfig.fieldList);
 		this.ajax = new Ajax(Object.assign({}, (window.STable && window.STable.default||{}).ajaxSetting, this.ajaxSetting));
 		return {
+			fields,
 			formValue: {},
 			checkedValue: [],
 			showErr: false,
@@ -192,6 +194,22 @@ export default {
 		this.getFormList();
 	},
 	methods: {
+		formatField(fieldArr) {
+			if (!Array.isArray(fieldArr)) {
+				let arr = [];
+				for (let key in fieldArr) {
+					let item = fieldArr[key];
+					if(typeof item != 'object'){
+						item = {label: item};
+					}
+					item.name = key;
+					arr.push(item);
+				}
+				fieldArr = arr;
+			}
+
+			return fieldArr;
+		},
 		//兼容老逻辑
 		getFormData(){
 			return this.formConfig.fieldList;
