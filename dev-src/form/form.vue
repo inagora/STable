@@ -32,7 +32,7 @@
 				<x-select
 					v-if="['select','combobox','multiple'].includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))"  
 					v-model="item.value" 
-					:default-values="item.defaultValues"
+					:default-value="item.defaultValue"
 					:options="item.options || item.list" 
 					:multiple="item.type == 'multiple'"
 					:filterable="item.type == 'multiple'"
@@ -128,10 +128,10 @@ export default {
 				};
 			}
 		},
-		defaultValues: {
-			type: Object,
+		defaultValue: {
+			type: [Array,Object,String],
 			default() {
-				return {};
+				return [];
 			}
 		},
 		inline: {
@@ -254,8 +254,31 @@ export default {
 					item.label = item.name;
 				if(!item.placeholder)
 					item.placeholder = item.label;
+				//select组件处理 default_val/default_value
+				if (['select','combobox','multiple'].includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))) {
+					if (typeof item.default_val != 'undefined' || typeof item.default_value != 'undefined') {
+						let tmp_default;
+						let tmp_arr = [];
+						if (typeof item.default_val != 'undefined') {
+							tmp_default = item.default_val;
+						} else {
+							tmp_default = item.default_value;
+						}
+						
+						if (typeof tmp_default == 'string') {
+							tmp_arr.push(tmp_default);
+							item.defaultValue = tmp_arr;
+						} else {
+							for (let tmpkey in tmp_default) {
+								tmp_arr.push(tmp_default[tmpkey]);
+							}
+							item.defaultValue = tmp_arr;
+						}
+					}
+				}
+				
 				if(item.type != 'button')
-					tmpArr[item.name] = typeof this.defaultValues[item.name]=='undefined' ? item.value || '' : this.defaultValues[item.name];
+					tmpArr[item.name] = typeof this.defaultValue[item.name]=='undefined' ? item.value || '' : this.defaultValue[item.name];
 				if(item.type == 'date') {
 					tmpArr[item.name] = this.timeFormat(new Date(),'YYYY-MM-DD');
 				}
