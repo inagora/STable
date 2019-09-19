@@ -387,8 +387,8 @@ export default {
 		layout(){
 			if(!this.$el) return;
 			const MIN_COLUMN_WIDTH = 100;
-			let boxRect = this.$el.getBoundingClientRect();
-			let boxWidth = boxRect.width;
+			let boxWidth = this.$el.querySelector('.st-table-body-area').clientWidth;
+			//let boxWidth = boxRect.width;
 			
 			//第一遍为指定了width的列计算宽度
 			let flexColumn = [],
@@ -526,6 +526,7 @@ export default {
 
 	&-body-panel{
 		display: flex;
+		min-height: 100%;
 	}
 	&-firefox &-body-panel{
 		position: absolute;
