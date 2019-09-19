@@ -60,9 +60,9 @@ function isPlainObject(obj) {
 	return isObject(obj) && Object.getPrototypeOf(obj) == Object.prototype;
 }
 
-let FormData = window.FormData;
-let USP = window.URLSearchParams;
-
+// let FormData = window.FormData;
+// let USP = window.URLSearchParams;
+/*
 function serialize(params, obj, scope) {
 	if(Array.isArray(obj)) {
 		obj.forEach(item=>serialize(params, item, `${scope}[]`));
@@ -74,7 +74,8 @@ function serialize(params, obj, scope) {
 	} else {
 		params.append(scope, obj);
 	}
-}
+}*/
+/*
 function getFormData(data) {
 	if(data instanceof FormData) {
 		return data;
@@ -109,5 +110,6 @@ function mergeFormData(target, ...fdList) {
 	}
 	return target;
 }
+*/
 
-export {$type, isObject, isPlainObject, getFormData, mergeFormData};
+export {$type, isObject, isPlainObject};

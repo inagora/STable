@@ -271,14 +271,16 @@
 * __详细__: 
 
 	STable使用的语言配置。
-* __参考__: todo
+* __参考__: 
+	* [demo](https://codepen.io/stablejs/pen/rNBqxzG?editors=1010#0)
+	* [local词典明细](https://github.com/inagora/STable/tree/master/src/lang)
 
 ### page
 * __类型__: `Number`
 * __默认值__: 1
 * __详细__: 
   
-	初始加载的页号。
+	初始加载的页号。注意：计数从1开始。
 * __用法__: 
 	```JS
 	STable.init({
@@ -287,6 +289,8 @@
 		page: 1,
 	});
 	```
+* __参考__:
+	* [demo](https://codepen.io/stablejs/pen/oNvaBXz)
 
 ### pageMode
 * __类型__: `String`
@@ -303,34 +307,43 @@
 		//pageMode: ‘waterfall’
 		pageMode: 'normal',
 	});
-	
+* __参考__:
+	* [demo - 瀑布流模式](https://codepen.io/stablejs/pen/BaBqpjx?editors=1010#0)
+	* [pageIndex](#pageindex)
 
 ### pageIndex
 * __类型__: `String` 
 * __默认值__: "id"
 * __详细__: 
 
-	如果分页模式是瀑布模式(waterfall)，需要指定由哪个数据字段决定分页，默认是id
+	如果分页模式是瀑布模式(waterfall)，需要指定由哪个数据字段决定分页
 * __用法__: 
   ```JS
 	STable.init({
-		//some other config
-		//pageIndex要求唯一性。
-		pageIndex: 'id',
+		//...other configs
+		pageIndex: 'goods_id',
 	});
+* __参考__:
+	* [pageMode](#pagemode)
 
 ### parallelCount
 * __类型__: `Number` 
 * __默认值__: 6
 * __详细__: 
 
-	全量下载表格时，并行请求数
+	全量下载表格时，并行请求数。因为当前浏览器一个域名的并行请求数一般为6个，所以设置的值超过6，并没有太大的意义。
+	:::tip
+	一般并行数越高，下载速度越快。但是，并行数越高，对服务器处理并发的能力越强；如果服务器并发能力不够，可能会导致请求一直不返回，甚至超时；超时后会重新发起这个页面的数据请求，请求可能又会超时，如此往复，可能会引起雪崩。如果某个接口的服务承载能力不强，建议把这个值设置的小一些。
+	:::
 * __用法__: 
   ```JS
 	STable.init({
-		//some other config
-		parallelCount: 6,
+		//...other configs
+		parallelCount: 4
 	});
+* __参考__:
+	* [demo](https://codepen.io/stablejs/pen/OJLBdVM?editors=1010#0)
+	* [downloadable](#downloadable)
 
 ### params
 * __类型__: `Object`
@@ -342,13 +355,18 @@
 	```
 * __详细__: 
 
-	从服务端拉取每页数据时，params中的值也会当做参数一起发送过去。使用这个字段，可以让开发者自定义一些参数，发给列表接口。比如，可以设置
-	```json
-	params: {
-		//让每页请求100条数据，而不是默认的20条。
-		count: 100
-	}
+	从服务器加载每页数据时，params中的值也会当做参数一起发送过去。使用这个配置，可以让开发者自定义一些参数，发给列表接口。比如，可以设置每页请求100行数据，而不是默认20行，同时带上一个额外参数color
+	```javascript
+	STable.init({
+		//...other configs
+		params: {
+			count: 100,
+			color: 'red'
+		}
+	});
 	```
+* __参考__:
+	* [demo]()
 
 ### records
 * __类型__: `Array` 

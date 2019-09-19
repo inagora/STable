@@ -10,6 +10,7 @@
 			ref="form"
 			inline
 			:field-list="searchFilter"
+			:default-values="urlSearchParams"
 			size="small"
 			:label-visible="labelVisible"
 			@submit="search"
@@ -42,19 +43,27 @@ export default {
 		'labelVisible',
 		'listeners',
 		'actionMethods',
+		'urlSearchParams',
 		'params',
 		'store',
 		'ignoreEmptySearchParam',
 		'locale'
 	],
+	mounted(){
+		//加载完毕后，设置默认搜索参数。因为刚打开页面时，首页也需要这些参数
+		let searchParams = Object.assign({}, this.urlSearchParams, this.$refs.form.formValue);
+		if(this.ignoreEmptySearchParam) {
+			searchParams = this.trimParam(searchParams);
+		}
+		this.store.searchParams = searchParams;
+	},
 	methods: {
 		search(evt) {
-			let searchParams;
+			let searchParams = Object.assign({}, this.urlSearchParams, evt);
 			if(this.ignoreEmptySearchParam) {
-				searchParams = this.trimParam(evt);
+				searchParams = this.trimParam(searchParams);
 				
-			} else 
-				searchParams = evt;
+			}
 			
 			let ret = this.store.emit('search', evt);
 			if(ret===false)

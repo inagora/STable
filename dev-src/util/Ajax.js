@@ -1,4 +1,4 @@
-import {getFormData, mergeFormData} from './util';
+import {$type, isPlainObject} from './util';
 let empty = function(){};
 let ajaxSettings = {
 	method: 'GET',
@@ -13,19 +13,36 @@ let ajaxSettings = {
 };
 
 function appendQuery(url, query) {
+	if(!query) return url;
 	return url+(url.includes('?')?'&':'?')+query;
 }
-
+function serialize(params, obj, scope) {
+	if(Array.isArray(obj)) {
+		obj.forEach(item=>serialize(params, item, `${scope}[]`));
+	} else if(isPlainObject(obj)) {
+		if(scope)
+			Object.keys(obj).forEach(key=>serialize(params, obj[key], `${scope}[${key}]`));
+		else
+			Object.keys(obj).forEach(key=>serialize(params, obj[key], key));
+	} else {
+		params.append(scope, obj);
+	}
+}
+function getSearchParams(data){
+	let sp = new window.URLSearchParams();
+	serialize(sp, data);
+	return sp.toString();
+}
 export default class Ajax{
 	constructor(setting) {
 		this.setting = Object.assign({}, ajaxSettings, setting);
-		this.setting.data = getFormData(this.setting.data);
 	}
 
 	request(options) {
 		return new Promise((resolve, reject)=>{
-			let data = getFormData();
-			mergeFormData(data, this.setting.data, options.data);
+			//注意，data这里只允许字符串(如a=12&b=h)、plainObject(如 {a:12, b:'12'})和formData三种数据类型
+			let data = options.data||null;
+			delete options.data;
 
 			let setting = Object.assign({}, this.setting, options || {}),
 				hashIndex = setting.url.indexOf('#');
@@ -35,11 +52,7 @@ export default class Ajax{
 			
 			setting.method = setting.method.toUpperCase();
 			if(['GET', 'HEAD'].includes(setting.method)) {
-				let sp = new window.URLSearchParams();
-				for(let p of data) {
-					sp.append(p[0], p[1]);
-				}
-				setting.url = appendQuery(setting.url, sp.toString());
+				setting.url = appendQuery(setting.url, getSearchParams(data));
 				data = null;
 			}
 	
@@ -114,6 +127,11 @@ export default class Ajax{
 				}, setting.timeout);
 	
 			// avoid sending empty string (#319)
+			if(data){
+				if(!(data instanceof window.FormData) && $type(data)!='string'){
+					data = getSearchParams(data);
+				}
+			}
 			xhr.send(data);
 		});
 	}
