@@ -10,6 +10,7 @@
 			ref="form"
 			inline
 			:field-list="searchFilter"
+			:default-values="urlSearchParams"
 			size="small"
 			:label-visible="labelVisible"
 			@submit="search"
@@ -42,6 +43,7 @@ export default {
 		'labelVisible',
 		'listeners',
 		'actionMethods',
+		'urlSearchParams',
 		'params',
 		'store',
 		'ignoreEmptySearchParam',

@@ -75,6 +75,7 @@ function serialize(params, obj, scope) {
 		params.append(scope, obj);
 	}
 }
+
 function getFormData(data) {
 	if(data instanceof FormData) {
 		return data;

@@ -63,12 +63,6 @@ export default {
 			 */
 			ignoreEmptySearchParam: true,
 			/**
-			 * @param {Object} params 额外的搜索条件，每次请求页数据时，都会带上
-			 */
-			params: {
-				count: 20
-			},
-			/**
 			 * @param {Number} parallelCount 全量下载表格时，并行请求数
 			 */
 			parallelCount: 6,
@@ -298,12 +292,37 @@ export default {
 			return item;
 		});
 
-		conf.params = mergeFormData(conf.params, conf.postParam, conf.postData);
+		/**
+		 * @param {Object} params 额外的搜索条件，每次请求页数据时，都会带上
+		 */
+		conf.params = mergeFormData(
+			{
+				count: 20
+			}, 
+			conf.params,
+			//向前兼容，postParam、postData是之前版本使用过的名称
+			conf.postParam,
+			conf.postData
+		);
+		conf.urlSearchParams = {};
 		if(stableCount==0 && window.location.search.includes('stable=on')) {
 			let searchParams = getFormData(window.location.search);
 			if(searchParams.get('stable')=='on'){
 				searchParams.delete('stable');
-				conf.params = mergeFormData(conf.params, searchParams);
+				let sp = {};
+				for(let p of searchParams){
+					if(/(.+)\[\]$/.test(p[0])){
+						let key = RegExp.$1;
+						if(!sp[key]) {
+							sp[key] = [p[1]];
+						} else {
+							sp[key].push(p[1]);
+						}
+					} else {
+						sp[p[0]] = p[1];
+					}
+				}
+				conf.urlSearchParams = sp;
 			}
 		}
 
@@ -330,20 +349,6 @@ export default {
 		} else {
 			conf.addConfig = {};
 		}
-
-		// if(conf.deleteUrl || conf.updateUrl) {
-		// 	columns.push({
-		// 		dataIndex:'_st_column_op',
-		// 		type: 'button',
-		// 		text: '操作',
-		// 		_width: 0,
-		// 		visible: true,
-		// 		locked: 'right',
-		// 		cellWrap: true,
-		// 		_st_ori_idx: columns.length,
-		// 		buttons: []
-		// 	});
-		// }
 
 		let selectMode = conf.selectMode.trim().toLowerCase();
 		if(['radio', 'single'].includes(selectMode)){
