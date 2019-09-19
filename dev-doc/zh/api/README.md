@@ -271,14 +271,16 @@
 * __详细__: 
 
 	STable使用的语言配置。
-* __参考__: todo
+* __参考__: 
+	* [demo](https://codepen.io/stablejs/pen/rNBqxzG?editors=1010#0)
+	* [local词典明细](https://github.com/inagora/STable/tree/master/src/lang)
 
 ### page
 * __类型__: `Number`
 * __默认值__: 1
 * __详细__: 
   
-	初始加载的页号。
+	初始加载的页号。注意：计数从1开始。
 * __用法__: 
 	```JS
 	STable.init({
@@ -287,6 +289,8 @@
 		page: 1,
 	});
 	```
+* __参考__:
+	* [demo](https://codepen.io/stablejs/pen/oNvaBXz)
 
 ### pageMode
 * __类型__: `String`
@@ -303,7 +307,9 @@
 		//pageMode: ‘waterfall’
 		pageMode: 'normal',
 	});
-	
+* __参考__:
+	* [demo - 瀑布流模式](https://codepen.io/stablejs/pen/BaBqpjx?editors=1010#0)
+	* [pageIndex](#pageindex)
 
 ### pageIndex
 * __类型__: `String` 
@@ -316,8 +322,10 @@
 	STable.init({
 		//some other config
 		//pageIndex要求唯一性。
-		pageIndex: 'id',
+		pageIndex: 'goods_id',
 	});
+* __参考__:
+	* [pageMode](#pagemode)
 
 ### parallelCount
 * __类型__: `Number` 

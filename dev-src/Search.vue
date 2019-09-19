@@ -47,6 +47,14 @@ export default {
 		'ignoreEmptySearchParam',
 		'locale'
 	],
+	mounted(){
+		//加载完毕后，设置默认搜索参数。因为刚打开页面时，首页也需要这些参数
+		let searchParams = this.$refs.form.formValue;
+		if(this.ignoreEmptySearchParam) {
+			searchParams = this.trimParam(searchParams);
+		}
+		this.store.searchParams = searchParams;
+	},
 	methods: {
 		search(evt) {
 			let searchParams;
