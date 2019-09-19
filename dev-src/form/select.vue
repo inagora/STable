@@ -117,7 +117,7 @@ export default {
 			default: 'value'
 		},
 		defaultValue: {
-			type: Array,
+			type: [Array,String],
 			default() {
 				return [];
 			}
@@ -188,7 +188,11 @@ export default {
 		}
 		this.realOptions = tmpList;
 		this.$nextTick(()=>{
-			this.selected = this.defaultValue;
+			if (!this.multiple) {
+				this.selected = this.defaultValue[0];
+			} else {
+				this.selected = this.defaultValue;
+			}
 		});
 	},
 	methods: {
@@ -219,9 +223,9 @@ export default {
 		},
 		setSelected(index,option) {
 			if(!this.multiple) {
-				let arr = [];
-				arr.push(option.label);
-				this.selected = arr;
+				// let arr = [];
+				// arr.push(option.label);
+				this.selected = option.label;
 				this.visible = false;
 			} else {
 				const arr = (this.selected || []).slice();
