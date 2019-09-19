@@ -51,7 +51,7 @@ export default {
 	],
 	mounted(){
 		//加载完毕后，设置默认搜索参数。因为刚打开页面时，首页也需要这些参数
-		let searchParams = this.$refs.form.formValue;
+		let searchParams = Object.assign({}, this.urlSearchParams, this.$refs.form.formValue);
 		if(this.ignoreEmptySearchParam) {
 			searchParams = this.trimParam(searchParams);
 		}
@@ -59,12 +59,11 @@ export default {
 	},
 	methods: {
 		search(evt) {
-			let searchParams;
+			let searchParams = Object.assign({}, this.urlSearchParams, evt);
 			if(this.ignoreEmptySearchParam) {
-				searchParams = this.trimParam(evt);
+				searchParams = this.trimParam(searchParams);
 				
-			} else 
-				searchParams = evt;
+			}
 			
 			let ret = this.store.emit('search', evt);
 			if(ret===false)

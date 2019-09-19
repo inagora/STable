@@ -130,23 +130,24 @@ export default {
 					alert(res.errmsg||res.msg);
 				} else {
 					if(this.pageMode=='waterfall'){
+						let count = params.count;
 						if(!this.clean && (!res.data.list || res.data.list.length<=0)) {
-							alert((params.count>0?'后面':'前面')+'已没有更多数据了');
-							if(params.count>0)
+							alert((count>0?'后面':'前面')+'已没有更多数据了');
+							if(count>0)
 								this.store.hasNextPage = false;
 							else
 								this.store.hasPrePage = false;
 						} else {
 							this.clean = false;
 							this.setRecords(res.data.list);
-							if(res.data.list.length < Math.abs(params.count)) {
-								if(params.count > 0)
+							if(res.data.list.length < Math.abs(count)) {
+								if(count > 0)
 									this.store.hasNextPage = false;
 								else
 									this.store.hasPrePage = false;
 							}
 
-							if(params.count<0)	//向上翻页的时候
+							if(count<0)	//向上翻页的时候
 								this.store.hasNextPage = true;
 							else if(params[this.pageIndex])	//向下翻页，并且当前不是第一页
 								this.store.hasPrePage = true;

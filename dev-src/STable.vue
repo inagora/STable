@@ -22,7 +22,7 @@ import XSearch from './Search.vue';
 import XTable from './table/index.vue';
 import XPagination from './Pagination.vue';
 import defaultLang from './lang/en.js';
-import {hashCode, Console, getFormData, mergeFormData} from "./util/util.js";
+import {hashCode, Console} from "./util/util.js";
 import Ajax from './util/Ajax.js';
 let stableCount = 0;
 export default {
@@ -295,7 +295,7 @@ export default {
 		/**
 		 * @param {Object} params 额外的搜索条件，每次请求页数据时，都会带上
 		 */
-		conf.params = mergeFormData(
+		conf.params = Object.assign(
 			{
 				count: 20
 			}, 
@@ -306,7 +306,7 @@ export default {
 		);
 		conf.urlSearchParams = {};
 		if(stableCount==0 && window.location.search.includes('stable=on')) {
-			let searchParams = getFormData(window.location.search);
+			let searchParams = new window.URLSearchParams(window.location.search);
 			if(searchParams.get('stable')=='on'){
 				searchParams.delete('stable');
 				let sp = {};
