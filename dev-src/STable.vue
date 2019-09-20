@@ -496,6 +496,14 @@ export default {
 			this.config.listeners.ready.call(this);
 		}
 		stableCount++;
+
+		setTimeout(()=>{
+			if(this.config.searchFilter){
+				this.$refs.search[0].$el.querySelector('[type=submit]').click();
+			} else {
+				this.$refs.table[0].load();
+			}
+		}, 0);
 	},
 	methods: {
 		/**

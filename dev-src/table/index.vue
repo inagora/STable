@@ -67,7 +67,7 @@
 
 		<div v-show="fakeVisible" class="st-fake-scrollbar">
 			<div
-				v-if="leftColumns.length>0"
+				v-show="leftColumns.length>0"
 				class="st-fake-left"
 			>
 				<div
@@ -86,7 +86,7 @@
 				></div>
 			</div>
 			<div
-				v-if="rightColumns.length>0"
+				v-show="rightColumns.length>0"
 				class="st-fake-right"
 			>
 				<div

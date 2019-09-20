@@ -61,7 +61,7 @@ export default {
 			this.htmlTag,
 			{
 				'class': ['st-btn', 'st-btn-'+this.type, 'st-btn-'+size],
-				type: this.nativeType,
+				attrs: {type: this.nativeType},
 				on: {
 					click(evt){
 						// evt.preventDefault();

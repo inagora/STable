@@ -55,9 +55,9 @@ export default {
 			else
 				return this.getAllOnNormal();
 		};
-		setTimeout(()=>{
-			this.load();
-		}, 0);
+		// setTimeout(()=>{
+		// 	this.load();
+		// }, 0);
 	},
 	methods: {
 		reset(){
