@@ -1,5 +1,5 @@
 const fs = require('fs');
-let text = fs.readFileSync('./iconfont.css', 'utf8');
+let text = fs.readFileSync('./src/iconfont.css', 'utf8');
 
 text = text
 	.replace(/@font-face\s*\{(?:.|\n)+?(url\('data:application.+?format\('woff2'\))(?:.|\n)*?\}\s*((?:.|\n)+)/, (_,_1,_2)=>{

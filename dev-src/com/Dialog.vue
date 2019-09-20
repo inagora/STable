@@ -174,8 +174,18 @@ export default {
 			if(!this.resizable)
 				return;
 			let type = '';
+			let posCls = {
+				n: 'st-dialog-n',
+				e: 'st-dialog-e',
+				s: 'st-dialog-s',
+				w: 'st-dialog-w',
+				nw: 'st-dialog-nw',
+				ne: 'st-dialog-ne',
+				se: 'st-dialog-se',
+				sw: 'st-dialog-sw'
+			};
 			for(let t of ['n','e','s','w', 'nw', 'ne', 'se', 'sw']){
-				if(evt.target.classList.contains('st-dialog-'+t)){
+				if(evt.target.classList.contains(posCls[t])){
 					type = t;
 					break;
 				}

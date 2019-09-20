@@ -1,4 +1,4 @@
-.x-pb-box{
+.st-pb-box{
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -7,7 +7,7 @@
 	background-color: rgba(0,0,0,0.6);
 	z-index: 99;
 }
-.x-pb-body{
+.st-pb-body{
 	width: 62%;
 	max-width: 1200px;
 	position: absolute;
@@ -20,9 +20,9 @@
 	border: 10px solid #fff;
 	text-align: center;
 }
-.x-pb{
+.st-pb{
 	width: 100%;
 }
-.x-pb::-webkit-progress-value{
+.st-pb::-webkit-progress-value{
 	transition: width 0.2s ease;
 }
