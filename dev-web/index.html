@@ -44,8 +44,20 @@
 	STable.init({
 		el: '#box',
 		url: '/ajaxList',
-		columns: ['name','locationName','year','movieType'],
-		groupBy: ['locationName','year']
+		columns: [
+    {
+      dataIndex: 'name',
+      text: 'name',
+      sortable: true
+    },
+    'movieType',
+    {
+      dataIndex: 'year',
+      text: 'year',
+      sortable: true
+    }
+  ],
+  sortKey: 'year'
 	})
 	</script>
 	<!-- <script>

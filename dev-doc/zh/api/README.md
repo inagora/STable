@@ -366,31 +366,51 @@
 	});
 	```
 * __参考__:
-	* [demo]()
+	* [demo](https://codepen.io/stablejs/pen/ZEzmXao?editors=1010#0)
 
 ### records
 * __类型__: `Array` 
 * __详细__: 
 
-	静态化数据，设置了它后，就不会动态加载页面数据了。直接展示它定义的表格数据
+	静态化数据，设置了它后，就不会动态加载页面数据了。直接渲染它定义的表格数据
 * __用法__: 
-  ```json
-	//静态数据
-	records: [],
+  ```javascript
+	STable.init({
+		//...other configs
+		//静态数据
+		records: [
+			{
+				id: 1,
+				name: '鳄鱼',
+				movieType: '记录片',
+				year: '2010'
+			},
+			{
+				id: 2,
+				name: '终结者2018',
+				movieType: '科幻',
+				year: '2018'
+			}
+		]
+	});
 	```
+*__参考__
+	* [demo](https://codepen.io/stablejs/pen/pozQWap?editors=1010#0)
 
 ### rowNumberVisible
 * __类型__: `Boolean`
 * __默认值__: false
 * __详细__: 
 
-	是否在行首显示行号。
+	是否在行首显示行号。注意，只是当前页的行号，并不是所有页的总体序号。
 * __用法__: 
   ```JS
 	STable.init({
-		//some other config
+		//...other configs
 		rowNumberVisible: true,
 	});
+*__参考__:
+	* [demo](https://codepen.io/stablejs/pen/WNeYZzO?editors=1010#0)
 
 ### searchFilter
 * __类型__: `array|Object`
@@ -405,25 +425,27 @@
 				label: '名字',
 				name: 'name'
 			}
-			//some other config
-		],
+		]
+		//...other configs
 	});
 * __参考__:
-  
-	* [form表单配置](#form配置)
+	* [form表单配置](#form)
+	* [demo](https://codepen.io/stablejs/pen/QWLJqrq?editors=1010#0)
 
 ### searchResetable
 * __类型__: `Boolean`
 * __默认值__: false
 * __详细__: 
 
-	在搜索区是否显示“重置”按钮
+	在搜索区是否显示“重置”按钮，点击后重置表单项为默认值
 * __用法__: 
   ```JS
 	STable.init({
-		//some other config
+		//...other configs
 		searchResetable: false,
 	});
+*__参考__
+	* [demo](https://codepen.io/stablejs/pen/PoYxJBG?editors=1010#0)
 
 ### selectMode
 * __类型__: `String`
@@ -437,10 +459,13 @@
 * __用法__: 
   ```JS
 	STable.init({
-		//some other config
-		//默认none。单选single，多选multiple
-		selectMode: 'none',
-	}); 
+		//...other configs
+
+		selectMode: 'single'
+	});
+* __参考__:
+	* [demo-single](https://codepen.io/stablejs/pen/zYOMEye?editors=1010#0)
+	* [demo-multiple](https://codepen.io/stablejs/pen/WNeYZPX?editors=1010#0)
 
 ### sortKey
 * __类型__: `String`
@@ -450,7 +475,7 @@
 * __用法__: 
   ```JS
 	STable.init({
-		//some other config
+		//...other configs
 		//按哪个字段值排序
 		selectMode: 'id',
 	}); 
@@ -464,7 +489,7 @@
 * __用法__: 
   ```JS
 	STable.init({
-		//some other config
+		//...other configs
 		//默认排序asc升序，可选值desc降序
 		sortDirection: 'asc',
 	});

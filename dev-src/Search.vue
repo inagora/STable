@@ -23,6 +23,7 @@
 			</x-button>
 			<x-button
 				v-if="searchResetable"
+				class="st-search-reset-btn"
 				@click.prevent="reset"
 			>
 				{{ locale.reset }}
@@ -87,5 +88,9 @@ export default {
 .st-search{
 	border-bottom: 1px solid #d0d0d0;
 	padding: 10px 0 0 10px;
+
+	&-reset-btn{
+		margin-left: 10px;
+	}
 }
 </style>

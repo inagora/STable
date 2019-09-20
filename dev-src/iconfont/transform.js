@@ -11,6 +11,6 @@ text = text
 })
 	.replace('font-family: "iconfont"', 'font-family: "st-iconfont"')
 	.replace('.iconfont', '.st-iconfont')
-	.replace(/\.(icon-)/g, '.st-$1');
+	.replace(/^\.icon(.+)/gm, '.st-icon-$1');
 
 fs.writeFileSync('./iconfont.css', text, 'utf8');

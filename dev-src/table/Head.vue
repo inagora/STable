@@ -65,12 +65,13 @@
 								@mouseup="$emit('drop', {
 									column:col, evt:$event
 								})"
+								@click="sort(col)"
 							>
 								<div class="st-table-head-text st-table-cell-wrap" v-text="col.text||'&nbsp;'"></div>
 								<div
 									v-if="col.sortable"
 									class="st-table-head-sort-icon st-iconfont"
-									:class="[store.sortKey==col.dataIndex?(store.sortDirection=='asc'?'st-icon-sort-ascending':'st-icon-sort-descending'):'st-icon-swap']"
+									:class="[store.sortKey==col.dataIndex?(store.sortDirection=='asc'?'st-icon-arrowdown st-table-head-sorting':'st-icon-arrowdown st-table-head-sorting-desc'):'st-icon-swap']"
 								></div>
 							</div>
 							<div
@@ -118,7 +119,18 @@ export default {
 			}
 		}
 	},
-	inject: ['store']
+	inject: ['store', 'sortDirection'],
+	methods: {
+		sort(col){
+			if(!col.sortable) return;
+			if(this.store.sortKey == col.dataIndex){
+				this.store.sortDirection = this.store.sortDirection=='asc'?'desc':'asc';
+			} else {
+				this.store.sortKey = col.dataIndex;
+				this.store.sortDirection = this.sortDirection;
+			}
+		}
+	}
 };
 </script>
 
@@ -161,7 +173,7 @@ export default {
 	&-sortable{
 		cursor: pointer;
 	}
-	& &-sort-icon{
+	&-sort-icon{
 		font-size: 14px;
 		opacity: 0.6;
 		margin-left: 5px;
@@ -171,6 +183,16 @@ export default {
 			transform: rotate(90deg);
 		}
 	}
+	&-sorting,
+	&-sorting-desc{
+		opacity: 1;
+		font-weight: bold;
+		color: #1890ff;
+	}
+	&-sorting-desc{
+		transform: rotate(180deg);
+	}
+
 
 	&-menu-btn{
 		opacity: 0;

@@ -8,7 +8,7 @@
 				:title="locale.previousPage"
 			/>
 			<x-button
-				icon="st-iconfont st-icon-right"
+				icon="st-iconfont st-icon-left st-pn-right"
 				size="small"
 				:disabled="!store.hasNextPage"
 				:title="locale.nextPage"
@@ -32,7 +32,7 @@
 				{{ item.text||item.pno }}
 			</x-button>
 			<x-button
-				icon="st-iconfont st-icon-right"
+				icon="st-iconfont st-icon-left st-pn-right"
 				size="small"
 				:disabled="store.page>=store.pageCount"
 				:title="locale.nextPage"
@@ -183,6 +183,10 @@ export default {
 	&-size{
 		font-size: 12px;
 		margin-right: 14px;
+	}
+
+	&-right{
+		transform: rotate(180deg);
 	}
 }
 </style>
