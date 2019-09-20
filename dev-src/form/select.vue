@@ -137,9 +137,11 @@ export default {
 	watch: {
 		selected: {
 			handler(val) {
-				this.selected = val;
-				this.$emit('selectchange', this.selected);
-				this.$emit('validate', this.selected.toString());
+				if (val) {
+					this.selected = val;
+					this.$emit('selectchange', this.selected);
+					this.$emit('validate', this.selected.toString());
+				}
 			}
 		},
 		visible: {
