@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="st-select"
-		:class="{'focus': visible}"
+		:class="{'st-select-focus': visible}"
 		@click.stop="showMenu"
 	>
 		<div
@@ -32,7 +32,7 @@
 				@keydown.delete="deletePrevTag"
 				@keydown.enter.prevent="handleOption"
 			/>
-			<div class="st-iconfont st-icon-caret-down" :class="{'up-arrow': visible}"></div>
+			<div class="st-iconfont st-icon-caret-down" :class="{'st-select-input-uparrow': visible}"></div>
 		</div>
 		<template v-else>
 			<input 
@@ -40,7 +40,7 @@
 				type="text"
 				class="st-select-input"
 			/>
-			<div class="st-iconfont st-icon-caret-down" :class="{'up-arrow': visible}"></div>
+			<div class="st-iconfont st-icon-caret-down" :class="{'st-select-input-uparrow': visible}"></div>
 		</template>
     
 		<div 
@@ -60,6 +60,9 @@
 						v-text="item.label"
 					></li>
 				</ul>
+				<div v-show="realOptions.length == 0 && visible" class="st-select-menu-none">
+					暂无数据
+				</div>
 			</template>
 			<template v-if="filterOptions.length > 0">
 				<ul v-show="visible">
@@ -137,8 +140,8 @@ export default {
 	watch: {
 		selected: {
 			handler(val) {
-				if (val) {
-					this.selected = val;
+				this.selected = val;
+				if (this.selected) {
 					this.$emit('selectchange', this.selected);
 					this.$emit('validate', this.selected.toString());
 				}
@@ -213,6 +216,7 @@ export default {
 		showMenu() {
 			if(!this.visible)
 				this.visible = true;
+			this.$emit('showmenu', this.visible);
 		},
 		deleteTag(event, tag) {
 			let index = this.selected.indexOf(tag);
@@ -333,7 +337,7 @@ export default {
 		},
 		handleClose() {
 			this.visible = false;
-		}
+		},
 	}
 };
 </script>
@@ -343,9 +347,9 @@ export default {
   position: relative;
   font-size: 1.4em;
   width: 100%;
-}
-.up-arrow {
-	transform: rotate(180deg);
+	&-uparrow {
+		transform: rotate(180deg);
+	}
 }
 .st-select {
   // width: 100%;
@@ -413,12 +417,17 @@ export default {
         background: #f5f7fa;
       }
     }
+		&-none {
+			height: 20px;
+			line-height: 20px;
+			text-align: center;
+		}
   }
-}
-.focus {
-	border-color: #409eff;
-	-webkit-box-shadow: 0 0 5px rgba(59, 180, 242, .3);
-	box-shadow: 0 0 5px rgba(59, 180, 242, .3);
+	&-focus {
+		border-color: #409eff;
+		-webkit-box-shadow: 0 0 5px rgba(59, 180, 242, .3);
+		box-shadow: 0 0 5px rgba(59, 180, 242, .3);
+	}
 }
 </style>
 
