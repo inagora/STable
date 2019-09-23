@@ -39,11 +39,9 @@
 				<x-button
 					v-for="(btn, btnIdx) of buttons"
 					:key="btnIdx"
-					v-bind="btn"
+					:conf="btn"
 					@click="btnClick(btnIdx)"
-				>
-					{{ btn.text }}
-				</x-button>
+				/>
 			</div>
 			<div
 				v-if="resizable"

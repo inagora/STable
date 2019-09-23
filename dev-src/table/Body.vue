@@ -93,13 +93,9 @@
 								<x-button
 									v-if="record._st_aux.btnsVisible[col.dataIndex][btnIdx]"
 									:key="btnIdx"
-									:type="btn.type"
-									:size="btn.size"
-									:icon="btn.icon"
+									:conf="btn"
 									@click="btnClick(btn, record, $event)"
-								>
-									{{ btn.text }}
-								</x-button>
+								/>
 							</template>
 						</div>
 						<div

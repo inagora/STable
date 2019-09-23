@@ -1,90 +1,93 @@
+<template>
+	<button
+		:class="['st-btn', themeCls, sizeCls, cls]"
+		:type="nativeType"
+		:disabled="disabled"
+		v-bind="otherConf"
+		@click="$emit('click', $event)"
+	>
+		<i v-if="icon" :class="['st-btn-icon', iconCls]"></i>
+		<span v-if="text" class="st-btn-text">{{ btnText }}</span>
+	</button>
+</template>
+
 <script>
 const rxTwoCNChar = /^[\u4e00-\u9fa5]{2}$/;
 export default {
 	props: {
-		size: {
-			type: String,
-			default: 'medium'
-		},
-		type: {
-			type: String,
-			default: 'default'
-		},
-		icon: {
-			type: String,
-			default: ''
-		},
-		nativeType: {
-			type: String,
-			default: 'button' //button/submit/reset
-		},
-		htmlTag: {
-			type: String,
-			default: 'button'	//button/a/div/span之类的
-		}
-	},
-	render(createElement) {
-		let children = [];
-		let vnodes = this.$slots.default;
-		if(vnodes && vnodes.length>0) {
-			if(vnodes.length > 1 || vnodes[0].tag) {
-				children = vnodes;
-			} else {
-				let text = (vnodes[0].text||'').trim();
-				if(rxTwoCNChar.test(text) && !this.icon) {
-					text = text.split('').join(' ');
-				}
-				children.push(createElement(
-					'span',
-					{
-						'class': 'st-btn-text'
-					},
-					text
-				));
+		conf: {
+			type: Object,
+			default(){
+				return {};
 			}
 		}
-		if(this.icon){
-			children.unshift(createElement(
-				'i',
-				{
-					'class': 'st-btn-icon '+this.icon
-				}
-			));
+	},
+	data(){
+		let otherConf = {};
+		for(let k in this.conf){
+			if(!['text','type','nativeType', 'icon', 'size', 'disabled', 'cls', 'click'].includes(k)){
+				otherConf[k] = this.conf[k];
+			}
 		}
-		let size = 'md';
-		if(this.size=='large')
-			size = 'lg';
-		else if(this.size=='small')
-			size = 'sm';
-		let self = this;
-		let typeCls = {
-			default: 'st-btn-default',
-			primary: 'st-btn-primary',
-			success: 'st-btn-success',
-			danger: 'st-btn-danger',
-			warning: 'st-btn-warning',
-			info: 'st-btn-info',
-			link: 'st-btn-link'
+		return {
+			text: this.conf.text||'',
+			type: this.conf.type||'default',
+			nativeType: this.conf.nativeType||'button',
+			icon: this.conf.icon||'',
+			size: this.conf.size||'medium',
+			disabled: this.conf.disabled||false,
+			cls: this.conf.cls||'',
+			otherConf
 		};
-		let sizeCls = {
-			lg: 'st-btn-lg',
-			md: 'st-btn-md',
-			sm: 'st-btn-sm'
-		};
-		return createElement(
-			this.htmlTag,
-			{
-				'class': ['st-btn', typeCls[this.type], sizeCls[size]],
-				attrs: {type: this.nativeType},
-				on: {
-					click(evt){
-						// evt.preventDefault();
-						self.$emit('click', evt);
-					}
-				},
-			},
-			children
-		);
+	},
+	computed: {
+		btnText(){
+			let text = String(this.text||'').trim();
+			if(rxTwoCNChar.test(text) && !this.icon) {
+				text = text.split('').join(' ');
+			}
+			return text;
+		},
+		iconCls(){
+			let cls = '';
+			if(this.icon){
+				cls = 'st-btn-icon '+this.icon;
+			}
+			return cls;
+		},
+		themeCls(){
+			let classes = {
+				default: 'st-btn-default',
+				primary: 'st-btn-primary',
+				success: 'st-btn-success',
+				danger: 'st-btn-danger',
+				warning: 'st-btn-warning',
+				info: 'st-btn-info',
+				link: 'st-btn-link'
+			};
+			let cls = classes[this.type];
+			if(!cls)
+				cls = 'st-btn-default';
+			return cls;
+		},
+		sizeCls(){
+			let classes = {
+				lg: 'st-btn-lg',
+				md: 'st-btn-md',
+				sm: 'st-btn-sm'
+			};
+			let size = 'md';
+			if(this.size=='large')
+				size = 'lg';
+			else if(this.size=='small')
+				size = 'sm';
+			return classes[size];
+		}
+	},
+	watch: {
+		'conf.disabled'(val){
+			this.disabled = val;
+		}
 	}
 };
 </script>

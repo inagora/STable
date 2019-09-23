@@ -2,40 +2,49 @@
 	<div class="st-toolbar st-pn">
 		<div v-if="pageMode=='waterfall'" class="st-pn-waterfall">
 			<x-button
-				icon="st-iconfont st-icon-left"
-				size="small"
-				:disabled="!store.hasPrePage"
-				:title="locale.previousPage"
+				:conf="{
+					icon: 'st-iconfont st-icon-left',
+					size: 'small',
+					disabled: !store.hasPrePage,
+					title: locale.previousPage
+				}"
 			/>
 			<x-button
-				icon="st-iconfont st-icon-left st-pn-right"
-				size="small"
-				:disabled="!store.hasNextPage"
-				:title="locale.nextPage"
+				:conf="{
+					icon: 'st-iconfont st-icon-left st-pn-right',
+					size: 'small',
+					disabled: !store.hasNextPage,
+					title: locale.nextPage
+				}"
 			/>
 		</div>
 		<div v-else class="st-pn-normal">
 			<x-button
-				icon="st-iconfont st-icon-left"
-				size="small"
-				:disabled="store.page<=1"
-				:title="locale.previousPage"
+				:conf="{
+					icon: 'st-iconfont st-icon-left',
+					size: 'small',
+					disabled: store.page<=1,
+					title: locale.previousPage
+				}"
 				@click="jumpTo(store.page-1)"
 			/>
 			<x-button
 				v-for="(item,idx) of pnoList"
 				:key="idx"
-				:class="{'st-pn-active': store.page==item.pno}"
-				size="small"
+				:conf="{
+					cls: {'st-pn-active': store.page==item.pno},
+					size: 'small',
+					text: item.text||item.pno
+				}"
 				@click="jumpTo(item.pno)"
-			>
-				{{ item.text||item.pno }}
-			</x-button>
+			/>
 			<x-button
-				icon="st-iconfont st-icon-left st-pn-right"
-				size="small"
-				:disabled="store.page>=store.pageCount"
-				:title="locale.nextPage"
+				:conf="{
+					icon: 'st-iconfont st-icon-left st-pn-right',
+					size: 'small',
+					disabled: store.page>=store.pageCount,
+					title:locale.nextPage
+				}"
 				@click="jumpTo(store.page+1)"
 			/>
 		</div>
@@ -55,9 +64,11 @@
 			&nbsp;
 		</div>
 		<x-button
-			icon="st-iconfont st-icon-sync"
-			size="small"
-			:title="locale.refresh"
+			:conf="{
+				icon: 'st-iconfont st-icon-sync',
+				size: 'small',
+				title: locale.refresh
+			}"
 			@click="refresh"
 		/>
 		<div class="st-flex-padding"></div>

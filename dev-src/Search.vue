@@ -15,19 +15,22 @@
 			:label-visible="labelVisible"
 			@submit="search"
 		>
-			<x-button 
-				native-type="submit" 
-				type="primary"
-			>
-				{{ locale.search }}
-			</x-button>
+			<x-button
+				:conf="{
+					nativeType: 'submit',
+					type: 'primary',
+					icon: 'st-iconfont st-icon-search',
+					text: locale.search
+				}"
+			/>
 			<x-button
 				v-if="searchResetable"
-				class="st-search-reset-btn"
+				:conf="{
+					cls: 'st-search-reset-btn',
+					text: locale.reset
+				}"
 				@click.prevent="reset"
-			>
-				{{ locale.reset }}
-			</x-button>
+			/>
 		</x-form>
 	</div>
 </template>

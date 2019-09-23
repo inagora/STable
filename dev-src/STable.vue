@@ -22,7 +22,7 @@ import XSearch from './Search.vue';
 import XTable from './table/index.vue';
 import XPagination from './Pagination.vue';
 import defaultLang from './lang/en.js';
-import {hashCode, Console} from "./util/util.js";
+import {hashCode, Console, $type} from "./util/util.js";
 import Ajax from './util/Ajax.js';
 let stableCount = 0;
 export default {
@@ -544,6 +544,23 @@ export default {
 		 */
 		setRecords(list){
 			this.$refs.table[0].setRecords(list);
+		},
+		/**
+		 * @member {Function} getToolbarBtn
+		 * @param {Number|String} idx 要获取的按钮的序号，或者配置的id
+		 */
+		getToolbarBtn(idx){
+			let tb = this.$refs.toolbar;
+			if(!tb || !tb[0] || !tb[0].$refs || !tb[0].$refs.btn){
+				return;
+			}
+			let btns = tb[0].$refs.btn;
+			if($type(idx)=='string'){
+				btns = btns.filter(b=>b.conf.id==idx);
+				return btns[0];
+			} else {
+				return btns[idx];
+			}
 		}
 	}
 };

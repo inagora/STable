@@ -52,7 +52,17 @@
 				text: 'actors'
 			}
 		],
-		sublistAt: ['actors']
+		sublistAt: ['actors'],
+		downloadable: true,
+		toolbar: [
+			{
+				text:'hoho',
+				id: 'e12',
+				click(){
+					console.log(this.getToolbarBtn('e12'));
+				}
+			}
+		]
 	});
 	</script>
 	<!-- <script>

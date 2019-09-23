@@ -14,9 +14,14 @@
 				</div>
 				<div class="st-upload-file-icon st-icon-close" @click.prevent="delUploadFiles(index)"></div>
 			</div>
-			<x-button class="st-form-btn-item" type="primary" @click.prevent="click">
-				上传
-			</x-button>
+			<x-button
+				:conf="{
+					cls: 'st-form-btn-item',
+					type: 'primary',
+					text: '上传'
+				}"
+				@click.prevent="click"
+			/>
 		</div>
 	</div>
 </template>

@@ -8,7 +8,8 @@
 			<x-button
 				v-else
 				:key="btnIdx"
-				v-bind="btn"
+				ref="btn"
+				:conf="btn"
 				@click="triggerClick(btn, $event)"
 			>
 				{{ btn.text }}
