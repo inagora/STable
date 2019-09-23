@@ -8,6 +8,7 @@
 					disabled: !store.hasPrePage,
 					title: locale.previousPage
 				}"
+				@click="store.loadAction='loadPrePage'"
 			/>
 			<x-button
 				:conf="{
@@ -16,6 +17,7 @@
 					disabled: !store.hasNextPage,
 					title: locale.nextPage
 				}"
+				@click="store.loadAction='loadNextPage'"
 			/>
 		</div>
 		<div v-else class="st-pn-normal">
@@ -159,7 +161,7 @@ export default {
 			this.pnoList = list;
 		},
 		refresh(){
-			this.$parent.$refs.table.refresh();
+			this.$parent.$refs.table[0].refresh();
 		}
 	}
 };

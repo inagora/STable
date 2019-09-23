@@ -11,9 +11,7 @@
 				ref="btn"
 				:conf="btn"
 				@click="triggerClick(btn, $event)"
-			>
-				{{ btn.text }}
-			</x-button>
+			/>
 		</template>
 	</div>
 </template>
