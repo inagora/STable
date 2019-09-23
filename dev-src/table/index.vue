@@ -343,7 +343,7 @@ export default {
 							autoShow: true,
 							methods: {
 								edit(data){
-									let ret = self.store.emit('beforeedit', {data, record});
+									let ret = self.store.emit('beforeedit', data, record);
 									if(ret===false)
 										return;
 									let updateUrl = self.updateUrl;
@@ -364,7 +364,7 @@ export default {
 											qtip.success('修改成功');
 											this.close();
 											self.load('cur');
-											self.store.emit('afteredit', {data, res});
+											self.store.emit('afteredit', res, data);
 										} else {
 											qtip.error(res.errmsg);
 										}

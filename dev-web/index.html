@@ -45,20 +45,15 @@
 		el: '#box',
 		url: '/ajaxList',
 		columns: [
-    {
-      dataIndex: 'name',
-      text: 'name',
-      sortable: true
-    },
-    'movieType',
-    {
-      dataIndex: 'year',
-      text: 'year',
-      sortable: true
-    }
-  ],
-  sortKey: 'year'
-	})
+			'name',
+			'movieType',
+			{
+				dataIndex: 'actors',
+				text: 'actors'
+			}
+		],
+		sublistAt: ['actors']
+	});
 	</script>
 	<!-- <script>
 	STable.init({
