@@ -366,31 +366,51 @@
 	});
 	```
 * __参考__:
-	* [demo]()
+	* [demo](https://codepen.io/stablejs/pen/ZEzmXao?editors=1010#0)
 
 ### records
 * __类型__: `Array` 
 * __详细__: 
 
-	静态化数据，设置了它后，就不会动态加载页面数据了。直接展示它定义的表格数据
+	静态化数据，设置了它后，就不会动态加载页面数据了。直接渲染它定义的表格数据
 * __用法__: 
-  ```json
-	//静态数据
-	records: [],
+  ```javascript
+	STable.init({
+		//...other configs
+		//静态数据
+		records: [
+			{
+				id: 1,
+				name: '鳄鱼',
+				movieType: '记录片',
+				year: '2010'
+			},
+			{
+				id: 2,
+				name: '终结者2018',
+				movieType: '科幻',
+				year: '2018'
+			}
+		]
+	});
 	```
+*__参考__
+	* [demo](https://codepen.io/stablejs/pen/pozQWap?editors=1010#0)
 
 ### rowNumberVisible
 * __类型__: `Boolean`
 * __默认值__: false
 * __详细__: 
 
-	是否在行首显示行号。
+	是否在行首显示行号。注意，只是当前页的行号，并不是所有页的总体序号。
 * __用法__: 
   ```JS
 	STable.init({
-		//some other config
+		//...other configs
 		rowNumberVisible: true,
 	});
+*__参考__:
+	* [demo](https://codepen.io/stablejs/pen/WNeYZzO?editors=1010#0)
 
 ### searchFilter
 * __类型__: `array|Object`
@@ -405,25 +425,27 @@
 				label: '名字',
 				name: 'name'
 			}
-			//some other config
-		],
+		]
+		//...other configs
 	});
 * __参考__:
-  
-	* [form表单配置](#form配置)
+	* [form表单配置](#form)
+	* [demo](https://codepen.io/stablejs/pen/QWLJqrq?editors=1010#0)
 
 ### searchResetable
 * __类型__: `Boolean`
 * __默认值__: false
 * __详细__: 
 
-	在搜索区是否显示“重置”按钮
+	在搜索区是否显示“重置”按钮，点击后重置表单项为默认值
 * __用法__: 
   ```JS
 	STable.init({
-		//some other config
+		//...other configs
 		searchResetable: false,
 	});
+*__参考__
+	* [demo](https://codepen.io/stablejs/pen/PoYxJBG?editors=1010#0)
 
 ### selectMode
 * __类型__: `String`
@@ -437,10 +459,13 @@
 * __用法__: 
   ```JS
 	STable.init({
-		//some other config
-		//默认none。单选single，多选multiple
-		selectMode: 'none',
-	}); 
+		//...other configs
+
+		selectMode: 'single'
+	});
+* __参考__:
+	* [demo-single](https://codepen.io/stablejs/pen/zYOMEye?editors=1010#0)
+	* [demo-multiple](https://codepen.io/stablejs/pen/WNeYZPX?editors=1010#0)
 
 ### sortKey
 * __类型__: `String`
@@ -450,38 +475,51 @@
 * __用法__: 
   ```JS
 	STable.init({
-		//some other config
+		//...other configs
 		//按哪个字段值排序
 		selectMode: 'id',
-	}); 
+	});
+# __参考__:
+	* [demo](https://codepen.io/stablejs/pen/RwbENqq?editors=1010#0)
+	* [sortDirection](#sortdirection)
 
 ### sortDirection
 * __类型__: `String`
 * __默认值__:  "asc"
 * __详细__: 
 
-	同sortKey，sortDirection决定了默认排序方向
+	同sortKey，sortDirection决定了默认排序方向。
+	可选的值有：
+	* 'asc'，正序
+	* 'desc'，倒序
 * __用法__: 
   ```JS
 	STable.init({
-		//some other config
-		//默认排序asc升序，可选值desc降序
+		//...other configs
+		//设置默认排序方向
 		sortDirection: 'asc',
 	});
+# __参考__:
+	* [demo](https://codepen.io/stablejs/pen/BaBvyvX?editors=1010#0)
 
 ### sublistAt
 * __类型__: `Array|String`
 * __详细__: 
 
-	指定列的数据为数组，并且数据中的每一项，在此列以一行展示。
+	把指定列的每个单元格显示为多行。
+	:::tip
+	指定列的数据需要为一维数组，数组中的每一项在单元格中渲染为一行。
+	:::
 * __用法__: 
 	```JS
 	STable.init({
-		//sublistAt: ['movieType','movieName']
+		//...other configs
+		//设置子列表
 		sublistAt: 'movieType'
 	});
 	```
 * __参考__: 
+	* [demo](https://codepen.io/stablejs/pen/RwbENOv)
 
 ### toolbar
 * __类型__: `Array`
@@ -557,10 +595,14 @@
 * __详细__:
 
 	在STable初始化之后触发。适合作一些准备工作，如事件绑定、数据准备，类似于浏览器的domready
+	:::warning
+	ready事件中，STable的初化工作完成，但数据不一定准备好了。
+	:::
 * __用法__: 
-	```JS
+	```javascript
 	STable.init({
 		//some other config
+		//设置stable初始化完毕后做的事情
 		listeners: {
 			ready(){
 				console.log('窗口初始化完毕');
@@ -568,90 +610,102 @@
 		}
 	});
 	```
+* __参考__:
+	* [demo](https://codepen.io/stablejs/pen/QWLzbwN?editors=1010#0)
 
 ### refresh
-* __Parameters__:
+* __参数__:
 	* records，`Array`，刷新后页面的数据 
 * __详细__:
 
-	加载完新一页数据后触发。可以对原始数据做一些处理。
+	加载完新一页数据后触发。可以真正渲染前，对原始数据做一些处理。
 * __用法__: 
 	```JS
 	STable.init({
-		//some other config
+		//...other configs
+		//设置刷新数据后，渲染前先对数据做的处理
 		listeners: {
 			refresh(records){
 				console.log(`当前页共有${records.length}行`);
+				records.forEach(r=>{
+					//名字中的空白都换成下划线
+					r.name = r.name.replace(/\s/g, '_');
+				});
 			}
 		}
 	});
 	```
+* __参考__:
+	* [demo](https://codepen.io/stablejs/pen/jONXvQE)
 
 ### beforeadd
 * __Parameters__:
 	* data，`Object`，要添加的数据
 * __详细__:
 
-	添加数据前触发。可以在此对要添加的数据在请求发送前做一些处理
+	添加数据前触发。可以在此时，对要添加的数据在请求发送前做一些处理，比如数据校验
 	::: tip
 	如果beforeadd的触发函数返回了false，就会中断本次添加动作。这个特性可以用来做数据提交前的检查，一旦发现有问题，可以用它中断添加动作。
 	:::
 * __用法__: 
-	todo，请梳理代码后重写说明和demo
-	```JS
+	```javascript
 	STable.init({
-		//some other config
+		//...other configs
+
 		listeners: {
 			beforeadd(data){
 				let name = data.name;
 				if(!name || name.length<10){
 					alert('名字不能为空，且大于10个字符');
 					return false;
-				} else if(data.needFormat){
-					//
 				}
 			}
 		}
 	})
 	```
+* __参考__:
+	* [demo](https://codepen.io/stablejs/pen/MWgZqLe)
 
 ### add
 * __Parameters__:
-	* data，`Object`，要添加的数据
+	* response，`Object`，本次请求的返回内容
+	* data，`Object`，已添加的数据
 * __详细__:
 
-	添加数据时触发。可以在此对要添加的数据在请求发送前做一些处理
-	::: tip
-	如果beforeadd的触发函数返回了false，就会中断本次添加动作。这个特性可以用来做数据提交前的检查，一旦发现有问题，可以用它中断添加动作。
-	:::
+	添加数据后触发。此时可以拿到服务端返回的数据，然后对数据做一些处理
 * __用法__: 
 	```JS
 	STable.init({
-		//some other config
+		//...other configs
+
 		listeners: {
-			add(data){
-				let name = data.name;
-				if(!name || name.length<10){
-					alert('名字不能为空，且大于10个字符');
-					return false;
+			add(response, data){
+				if(response.errno==0){
+					console.log(`adding record successed!`);
+				} else {
+					console.log('adding record failed!');
 				}
 			}
 		}
 	})
 	```
+* __参考__:
+	* [demo](https://codepen.io/stablejs/pen/jONXvJP?editors=1010#0)
+
 ### beforeedit
 * __Parameters__:
 	* data，`Object`，要编辑的数据
 * __详细__:
 
-	修改一行数据前触发。可以在此对要编辑的数据在请求发送前做一些处理
-* __用法__: 
-	::: warning
+	修改一行数据前触发。可以在此对要编辑的数据在请求发送前做一些处理，比如数据调整或校验。
+	::: tip
 	如果beforeedit的触发函数返回了false，就会中断本次修改动作
 	:::
+* __用法__: 
 	```JS
 	STable.init({
-		//some other config
+		//...other configs
+
 		listeners: {
 			beforeedit(data){
 				let name = data.name;
@@ -659,6 +713,8 @@
 					alert('名字不能为空，且大于10个字符');
 					return false;
 				}
+				//名字中的空格换成下划线
+				data.name = data.name.replace(/\s/g,'_');
 			}
 		}
 	})
@@ -749,8 +805,9 @@
 
 ## 实例方法
 ### refresh
+* __详细__:
 
-#### __介绍__ :加载完新一页数据后触发，用在listeners中，用于对原始数据做处理。
+加载完新一页数据后触发，用在listeners中，用于对原始数据做处理。
 ```js
 listeners: {
 	refresh(records){
@@ -761,8 +818,8 @@ listeners: {
 }
 ```
 ### layout
-
-#### __介绍__ :table数据发生变化影响布局时调用。
+* __详细__:
+table数据发生变化影响布局时调用。
 ```js
 dataChange(): {
 	//数据发生变化逻辑
@@ -772,16 +829,16 @@ dataChange(): {
 ```
 
 ### getSelectRows
-
-#### __介绍__ :获取table表格中选中的行，返回值为数组。
+* __详细__:
+获取table表格中选中的行，返回值为数组。
 ```js
 getSelectRows(): {
 	//对数组进行操作[records]
 }
 ```
 ### getSearchParam
-
-#### __介绍__ :获得当前搜索表单内容，返回值为formData对象，可使用append()方法添加字段（类型可以是 Blob, File）。
+* __详细__:
+获得当前搜索表单内容，返回值为formData对象，可使用append()方法添加字段（类型可以是 Blob, File）。
 ```js
 handleSubmit(target): {
 	let formData = getSearchParam(target);
@@ -791,18 +848,16 @@ handleSubmit(target): {
 ```
 
 ### setRecords
-
-#### __介绍__ :设置表格数据，无需手动刷新。
+* __详细__:
+设置表格数据，无需手动刷新。
 ```js
 let dataList;
 //dataList = res.data.list
 this.setRecords(dataList);
 ```
-## column配置
-#### __类型__: `Array|Object`
-* __详细__: 
 
-	表格的列配置。数据中的每一项对应表格中的一列，通过它配置此列的表头、表格内容以及展示样式。
+# column
+表格的列配置。数据中的每一项对应表格中的一列，通过它配置此列的表头、表格内容以及展示样式。
 * __用法__: *表示必填项
 	```js
 	columns: [

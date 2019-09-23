@@ -13,18 +13,26 @@ function show(type, msg, duration, onclose){
 	if(typeof duration=='undefined')
 		duration = 3;
 	let icon = {
-		success: 'check-circle-fill',
-		error: 'close-circle-fill',
-		info: 'info-circle-fill',
-		warning: 'warning-circle-fill',
-		warn: 'warning-circle-fill',
-		loading: 'sync'
+		success: 'st-icon-check-circle-fill',
+		error: 'st-icon-close-circle-fill',
+		info: 'st-icon-info-circle-fill',
+		warning: 'st-icon-warning-circle-fill',
+		warn: 'st-icon-warning-circle-fill',
+		loading: 'st-icon-sync'
+	};
+	let typeCls = {
+		success: 'st-qtip-success',
+		error: 'st-qtip-error',
+		info: 'st-qtip-info',
+		warning: 'st-qtip-warning',
+		warn: 'st-qtip-warn',
+		loading: 'st-qtip-loading'
 	};
 	let el = document.createElement('div');
-	el.className = 'st-qtip st-qtip-'+type;
+	el.className = `st-qtip ${typeCls[type]}`;
 	el.innerHTML = `
 		<div class="st-qtip-body">
-			<i class="st-qtip-icon st-iconfont st-icon-${icon[type]}"></i>
+			<i class="st-qtip-icon st-iconfont ${icon[type]}"></i>
 			<span>${msg||''}</span>
 		</div>
 	`;

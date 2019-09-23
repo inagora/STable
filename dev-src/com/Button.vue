@@ -57,11 +57,25 @@ export default {
 		else if(this.size=='small')
 			size = 'sm';
 		let self = this;
+		let typeCls = {
+			default: 'st-btn-default',
+			primary: 'st-btn-primary',
+			success: 'st-btn-success',
+			danger: 'st-btn-danger',
+			warning: 'st-btn-warning',
+			info: 'st-btn-info',
+			link: 'st-btn-link'
+		};
+		let sizeCls = {
+			lg: 'st-btn-lg',
+			md: 'st-btn-md',
+			sm: 'st-btn-sm'
+		};
 		return createElement(
 			this.htmlTag,
 			{
-				'class': ['st-btn', 'st-btn-'+this.type, 'st-btn-'+size],
-				type: this.nativeType,
+				'class': ['st-btn', typeCls[this.type], sizeCls[size]],
+				attrs: {type: this.nativeType},
 				on: {
 					click(evt){
 						// evt.preventDefault();
@@ -181,10 +195,10 @@ export default {
 		background-color: #17a2b8;
 		border-color: #17a2b8;
 	}
-	&-info {
+	&-info:hover {
 		color: #fff;
-		background-color: #17a2b8;
-		border-color: #17a2b8;
+		background-color: #138496;
+		border-color: #117a8b;
 	}
 	&-link {
 		font-weight: 400;

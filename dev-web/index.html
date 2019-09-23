@@ -44,9 +44,16 @@
 	STable.init({
 		el: '#box',
 		url: '/ajaxList',
-		columns: ['name','locationName','year','movieType'],
-		groupBy: ['locationName','year']
-	})
+		columns: [
+			'name',
+			'movieType',
+			{
+				dataIndex: 'actors',
+				text: 'actors'
+			}
+		],
+		sublistAt: ['actors']
+	});
 	</script>
 	<!-- <script>
 	STable.init({

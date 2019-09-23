@@ -55,7 +55,7 @@
 				<i
 					class="st-iconfont"
 					:class="{
-						'st-icon-check-square': list[curIdx].locked=='left',
+						'st-icon-check-square st-table-menu-selected': list[curIdx].locked=='left',
 						'st-icon-border': list[curIdx].locked!='left'
 					}"
 				></i>
@@ -68,7 +68,7 @@
 				<i
 					class="st-iconfont"
 					:class="{
-						'st-icon-check-square': list[curIdx].locked=='right',
+						'st-icon-check-square st-table-menu-selected': list[curIdx].locked=='right',
 						'st-icon-border': list[curIdx].locked!='right'
 					}"
 				></i>
@@ -81,7 +81,7 @@
 				<i
 					class="st-iconfont"
 					:class="{
-						'st-icon-check-square': !list[curIdx].locked,
+						'st-icon-check-square st-table-menu-selected': !list[curIdx].locked,
 						'st-icon-border': list[curIdx].locked
 					}"
 				></i>
@@ -98,7 +98,7 @@
 			>
 				<i
 					class="st-iconfont"
-					:class="[item.visible?'st-icon-check-square':'st-icon-border']"
+					:class="[item.visible?'st-icon-check-square st-table-menu-selected':'st-icon-border']"
 				></i>
 				<span v-text="item.text"></span>
 			</div>
@@ -252,6 +252,14 @@ export default {
 .st-table-menu-item-hover,
 .st-table-menu-item:hover{
 	background-color: #187ce8;
+	color: #fff;
+}
+.st-table-menu-selected{
+	color: #1890ff;
+	font-weight: bold;
+}
+.st-table-menu-item-hover .st-table-menu-selected,
+.st-table-menu-item:hover .st-table-menu-selected{
 	color: #fff;
 }
 .st-table-menu-item>span{

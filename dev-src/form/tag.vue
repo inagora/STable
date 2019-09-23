@@ -36,10 +36,20 @@ export default {
 	},
 	render() {
 		const { type, tagSize } = this;
+		let typeCls = {
+			info: 'st-tag-info',
+			success: 'st-tag-success',
+			warning: 'st-tag-warning',
+			danger: 'st-tag-danger'
+		};
+		let sizeCls = {
+			normal: 'st-tag-normal',
+			small: 'st-tag-small'
+		};
 		const classes = [
 			'st-tag',
-			type ? `st-tag_${type}` : '',
-			tagSize ? `st-tag_${tagSize}` : '',
+			type ? typeCls[type] : '',
+			tagSize ? sizeCls[tagSize] : '',
 		];
 		return (
 			<span
@@ -70,22 +80,22 @@ export default {
   white-space: nowrap;
   margin-left: 10px;
 
-  &_info {
+  &-info {
     background-color: #f4f4f5;
     border-color: #e9e9eb;
     color: #909399;
   }
-  &_success {
+  &-success {
     background-color: #f0f9eb;
     border-color: #e1f3d8;
     color: #67c23a;
   }
-  &_warning {
+  &-warning {
     background-color: #fdf6ec;
     border-color: #faecd8;
     color: #e6a23c;
   }
-  &_danger {
+  &-danger {
     background-color: #fef0f0;
     border-color: #fde2e2;
     color: #f56c6c;
@@ -94,7 +104,7 @@ export default {
     font-size: 12px;
     margin-left: 5px;
   }
-  &_small{
+  &-small{
     height: 20px;
     padding: 0 5px;
     line-height: 19px;

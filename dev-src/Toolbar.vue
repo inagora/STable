@@ -153,7 +153,7 @@ export default {
 								qtip.success(toolbar.locale.toolbar.addSuccessMsg);
 								this.destroy();
 								toolbar.store.$emit('load');
-								toolbar.store.emit('add', res.data);
+								toolbar.store.emit('add', res, data);
 							} else {
 								qtip.error(res.errmsg);
 							}

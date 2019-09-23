@@ -67,7 +67,7 @@
 
 		<div v-show="fakeVisible" class="st-fake-scrollbar">
 			<div
-				v-if="leftColumns.length>0"
+				v-show="leftColumns.length>0"
 				class="st-fake-left"
 			>
 				<div
@@ -86,7 +86,7 @@
 				></div>
 			</div>
 			<div
-				v-if="rightColumns.length>0"
+				v-show="rightColumns.length>0"
 				class="st-fake-right"
 			>
 				<div
@@ -343,7 +343,7 @@ export default {
 							autoShow: true,
 							methods: {
 								edit(data){
-									let ret = self.store.emit('beforeedit', {data, record});
+									let ret = self.store.emit('beforeedit', data, record);
 									if(ret===false)
 										return;
 									let updateUrl = self.updateUrl;
@@ -364,7 +364,7 @@ export default {
 											qtip.success('修改成功');
 											this.close();
 											self.load('cur');
-											self.store.emit('afteredit', {data, res});
+											self.store.emit('afteredit', res, data);
 										} else {
 											qtip.error(res.errmsg);
 										}
@@ -387,8 +387,8 @@ export default {
 		layout(){
 			if(!this.$el) return;
 			const MIN_COLUMN_WIDTH = 100;
-			let boxRect = this.$el.getBoundingClientRect();
-			let boxWidth = boxRect.width;
+			let boxWidth = this.$el.querySelector('.st-table-body-area').clientWidth;
+			//let boxWidth = boxRect.width;
 			
 			//第一遍为指定了width的列计算宽度
 			let flexColumn = [],
@@ -526,6 +526,7 @@ export default {
 
 	&-body-panel{
 		display: flex;
+		min-height: 100%;
 	}
 	&-firefox &-body-panel{
 		position: absolute;
