@@ -240,7 +240,7 @@ export default {
 		},
 		//兼容老逻辑
 		getFormData(){
-			return this.formConfig.fieldList;
+			return this.formValue;
 		},
 		getFormList() {
 			let tmpArr = {};

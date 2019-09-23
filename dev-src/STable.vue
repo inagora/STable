@@ -516,7 +516,7 @@ export default {
 		 * @member {Function} getSearchParam 获得当前搜索表单项内容
 		 */
 		getSearchParam(){
-			return this.$refs.search[0].getParams();
+			return this.$refs.search[0].$refs.form.getFormData();
 		},
 		getSelectRows(){
 			return this.getSelected();
