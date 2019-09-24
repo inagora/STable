@@ -34,8 +34,15 @@ export default {
 		},
 		resizeEnd(){
 			this.clearResize();
-			this.columns[this._resizeColumnIdx].width = this.endResizePos - this.startResizePos;
-			this.layout();
+			let resizingIdx = this.columns[this._resizeColumnIdx]._st_idx;
+			let cs = this.store.columns.map(col=>{
+				if(col._st_idx == resizingIdx){
+					col.width = this.endResizePos - this.startResizePos;
+				}
+				return col;
+			});
+			this.store.columns = cs;
+			this._syncHeight();
 		},
 		clearResize(){
 			this.resizing = false;

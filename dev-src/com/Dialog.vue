@@ -40,7 +40,7 @@
 					v-for="(btn, btnIdx) of buttons"
 					:key="btnIdx"
 					:conf="btn"
-					@click="btnClick(btnIdx)"
+					@click="btnClick(btnIdx, $event)"
 				/>
 			</div>
 			<div
@@ -117,9 +117,9 @@ export default {
 		});
 	},
 	methods: {
-		btnClick(idx){
+		btnClick(idx, evt){
 			if(this.buttons[idx].click)
-				this.buttons[idx].click.call(this.$root);
+				this.buttons[idx].click.call(this.$root, this.buttons[idx],evt);
 		},
 		prepareDrag(evt){
 			if(!this.draggable)

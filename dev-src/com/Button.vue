@@ -1,6 +1,8 @@
 <template>
 	<button
+		v-show="visible"
 		:class="['st-btn', themeCls, sizeCls, cls]"
+		:style="style"
 		:type="nativeType"
 		:disabled="disabled"
 		v-bind="otherConf"
@@ -25,7 +27,7 @@ export default {
 	data(){
 		let otherConf = {};
 		for(let k in this.conf){
-			if(!['text','type','nativeType', 'icon', 'size', 'disabled', 'cls', 'click'].includes(k)){
+			if(!['text','type','nativeType', 'icon', 'size', 'disabled', 'cls', 'click', 'visible'].includes(k)){
 				otherConf[k] = this.conf[k];
 			}
 		}
@@ -37,6 +39,8 @@ export default {
 			size: this.conf.size||'medium',
 			disabled: this.conf.disabled||false,
 			cls: this.conf.cls||'',
+			visible: this.conf.visible||false,
+			style: this.conf.style||null,
 			otherConf
 		};
 	},
@@ -87,6 +91,9 @@ export default {
 	watch: {
 		'conf.disabled'(val){
 			this.disabled = val;
+		},
+		'conf.visible'(val){
+			this.visible = val;
 		}
 	}
 };

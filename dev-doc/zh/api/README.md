@@ -43,7 +43,7 @@
 }
 ```
 * __详细__:
-	
+
 	不同时机请求所使用的请求方法，包括列表、添加、修改、删除。比如默认拉取列表的接口使用的http方法是 'GET'，但有些系统强制要求列表也要用'POST'方法，就可以此参数指定不同请求使有的方法类型。
 
 * __用法__:
@@ -394,7 +394,7 @@
 		]
 	});
 	```
-*__参考__
+* __参考__
 	* [demo](https://codepen.io/stablejs/pen/pozQWap?editors=1010#0)
 
 ### rowNumberVisible
@@ -409,7 +409,7 @@
 		//...other configs
 		rowNumberVisible: true,
 	});
-*__参考__:
+* __参考__:
 	* [demo](https://codepen.io/stablejs/pen/WNeYZzO?editors=1010#0)
 
 ### searchFilter
@@ -444,7 +444,7 @@
 		//...other configs
 		searchResetable: false,
 	});
-*__参考__
+* __参考__
 	* [demo](https://codepen.io/stablejs/pen/PoYxJBG?editors=1010#0)
 
 ### selectMode
@@ -473,13 +473,13 @@
 
 	默认按哪个列排序，它决定请求页数据时，sort_key字段的值。
 * __用法__: 
-  ```JS
+	```JS
 	STable.init({
 		//...other configs
 		//按哪个字段值排序
 		selectMode: 'id',
 	});
-# __参考__:
+* __参考__:
 	* [demo](https://codepen.io/stablejs/pen/RwbENqq?editors=1010#0)
 	* [sortDirection](#sortdirection)
 
@@ -493,13 +493,13 @@
 	* 'asc'，正序
 	* 'desc'，倒序
 * __用法__: 
-  ```JS
+	```JS
 	STable.init({
 		//...other configs
 		//设置默认排序方向
 		sortDirection: 'asc',
 	});
-# __参考__:
+* __参考__:
 	* [demo](https://codepen.io/stablejs/pen/BaBvyvX?editors=1010#0)
 
 ### sublistAt
@@ -567,14 +567,14 @@
 
 	修改行数据时的提交地址。如果有此参数，会在每一行的最后添加一列，此列中有一个“修改”按钮，点此按钮，会显示修改窗口。
 * __用法__: 
-  ```js
+	```js
 	Stable.init({
 		updateUrl: '/demo/ajaxUpdate',
 	})
 	```
-# __参考__:
- * [demo](https://codepen.io/liupengke/pen/xxKJezM)
- * [updateConfig](#updateconfig)
+* __参考__:
+	* [demo](https://codepen.io/liupengke/pen/xxKJezM)
+	* [updateConfig](#updateconfig)
 
 ### url
 * __类型__: `String`
@@ -890,7 +890,7 @@ let dataList;
 this.setRecords(dataList);
 ```
 
-## form配置
+## form
 * __介绍__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件使用（x-form），也可集成在STable使用，详见demo。
   
 ### 集成在Stable:
@@ -927,65 +927,117 @@ this.setRecords(dataList);
 </p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
-## button配置
+## button
 
-可在toolbar、column、form表单配置时使用。有以下几个配置项：
-
+在toolbar、表格展示、form表单、dialog窗口配置时，经常会用到按钮。它有以下几个配置项：
 ### click
-* 类型：Function
-* 详细：
-	按钮点击时触发的函数。函数this指向STable实例。
+* __类型__: `Function`
+* __详细__: 
 
-	1. 用在toolbar时，它有两个参数：
-		* btnConfig，此按钮的配置
-		* event，当前点击事件
-
-	1. 用在column时，它有三个参数：
-		* record，当前行数据原始值
-		* btnConfig，此按钮的配置信息
-		* event，当前点击事件
+	按钮点击时触发的函数。在以下几个场景，它有明确的参数的scope（`this`指向变量）：
+	1. 在toolbar中使用：
+		* 参数：
+			* btnConfig，此按钮的配置
+			* event，当前点击事件
+		* scope: 当前STable对象
+	2. 在表格行中使用：
+		* 参数
+			* record，当前行的原始数据
+			* btnConfig，此按钮的配置信息
+			* event，当前点击事件
+		* scope: 当前STable对象
+	3. 在dialog的buttons中使用：
+		* 参数
+			* btnConfig，此按钮的配置
+			* event，当前点击事件
+		* scope: 当前Dialog实例对象
 
 ### cls
-* 类型：String
-* 详细：
-按钮上附加的样式class，用于自定义按钮样式。
+* __类型__：`String`
+* __详细__：
+
+	按钮上附加的样式class，用于自定义按钮样式。
+
+### disabled
+* __类型__: `Boolean`
+* __默认值__: false
+* __详细__:
+
+	按钮是否可用。当diabled为true时，按钮显示成灰色，并且点击无效。
 
 ### icon
-* 类型：string
-* 详细: 
-	* 老版本：[font-awsome](https://doc.wfxteam.com/html/fa.html)<sup style="color:red">dep</sup>中的字体图标, 比如icon:'plus', 就是在此按钮上显示一个glyphicon-plus图片, 即一个加号图标。
-	* 新版本：不依赖font-awsome，拥有自己的图标库。
-	* demo: 
-  ```html
-	<div class="st-iconfont st-icon-delete">删除</div>
+* __类型__：`String`
+* __详细__：
+
+	在不同的容器页面，可能已经加载了不同的字体样式。比如：bootstrap 3.x、elementui、font-awsome，它们都可以用做图标
+	```javascript
+	buttons: [
+		{
+			text: '添加资料',
+			//bootstrap 3.x
+			icon: 'glyphicon glyphicon-plus',
+			//elementui
+			icon: 'el-icon-plus',
+			//font-awsome
+			icon: 'fa fa-plus'
+			click(){
+				//do something
+			}
+		}
+	]
 	```
-  ![stble图标](/img/st-iconfont.png)
+	当然STable自身也带了几个图标，使用方式
+	```
+	icon: "st-iconfont st-icon-[icon type]"
+	```
+	比如，删除的icon就是 `st-iconfont st-icon-delete`。icon列表见下图
+  ![stble图标](/img/icon.gif)
+* __参考__:
+	* [bootstrap的icon](https://getbootstrap.com/docs/3.4/components/#glyphicons)
+	* [elementui的icon](https://element.eleme.io/#/zh-CN/component/icon)
+	* [fontawsome的icon](https://fontawesome.com/v4.7.0/cheatsheet/)
+
+### size
+* __类型__: `String`
+* __默认值__: 'medium'
+* __详情__:
+
+	按钮的尺寸，可选值有：
+	* large，大尺寸
+	* medium，中等尺寸
+	* small，小尺寸
+* __参考__:
+	* [demo](https://codepen.io/stablejs/pen/GRKzvLY?editors=1010#0)
 
 ### style
-* 类型：Object
-* 详细：
-按钮上附加的style样式，用于自定按钮样式。
+* __类型__：`Object`
+* __详细__：
+
+	按钮上附加的style样式，用于自定按钮样式。
 
 ### text
-* 类型：string
-* 详细：
-按钮上显示的文本。
+* __类型__：`String`
+* __详细__：
+
+	按钮上显示的文本。
 
 ### type
-* 类型：string
-* 默认值：'default'
-* 详细：
-对应bootstrap中对按钮类型的设定，它有 default / primary / success / warning / danger / info / text	。不同类型对应按钮的颜色不一样。
+* __类型__：`String`
+* __默认值__：'default'
+* __详细__：
+
+	对应bootstrap中对按钮类型的设定，它有 default / primary / success / warning / danger / info / text	。不同类型对应按钮的颜色不一样。
+* __参考__:
+	* [demo](https://codepen.io/stablejs/pen/BaBMdvM?editors=1010#0)
 
 ### visible
-* 类型：Boolean|<String,String>|Function
-* 默认值：true
-* 详细：
-是否显示此按钮。仅对行中显示button有效。
-	* 当visible为数组时，数组第一项为dataIndex，第二项为对比值，当某行中，dataIndex对应的数据和对比值一样时，才会显示此按钮。
-	* 当visible为函数时，函数的返回值为true时，显示此按钮；否则不显示
+* __类型__：`Boolean`
+* __默认值__：true
+* __详细__：
 
-## dialog配置
+	是否显示此按钮。注意，隐藏状态下，button的dom还是存在的。
+
+## dialog
 
 * 弹框组件。用Dialog.create方式可生成一个完成的dialog实例，也可以使用快捷的功能函数alert\confirm\prompt。
 

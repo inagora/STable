@@ -235,8 +235,8 @@ export default {
 	&-resizer{
 		position: absolute;
 		top: 0;
-		right: 0;
-		width: 3px;
+		right: -4px;
+		width: 7px;
 		height: 100%;
 		overflow: hidden;
 		z-index: 2;
