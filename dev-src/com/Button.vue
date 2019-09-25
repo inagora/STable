@@ -26,23 +26,26 @@ export default {
 	},
 	data(){
 		let otherConf = {};
+		let conf = {};
 		for(let k in this.conf){
-			if(!['text','type','nativeType', 'icon', 'size', 'disabled', 'cls', 'click', 'visible'].includes(k)){
+			if(['text','type','nativeType', 'icon', 'size', 'disabled', 'cls', 'click', 'visible'].includes(k)){
+				conf[k] = this.conf[k];
+			}else{
 				otherConf[k] = this.conf[k];
 			}
 		}
-		return {
-			text: this.conf.text||'',
-			type: this.conf.type||'default',
-			nativeType: this.conf.nativeType||'button',
-			icon: this.conf.icon||'',
-			size: this.conf.size||'medium',
-			disabled: this.conf.disabled||false,
-			cls: this.conf.cls||'',
-			visible: this.conf.visible||false,
-			style: this.conf.style||null,
+		return Object.assign({
+			text: '',
+			type: 'default',
+			nativeType: 'button',
+			icon: '',
+			size: 'medium',
+			disabled: false,
+			cls: '',
+			visible: true,
+			style: null,
 			otherConf
-		};
+		}, conf);
 	},
 	computed: {
 		btnText(){

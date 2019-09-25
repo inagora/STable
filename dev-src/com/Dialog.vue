@@ -105,18 +105,29 @@ export default {
 		conf.visible = conf.autoShow;
 		return conf;
 	},
+	watch: {
+		visible(val){
+			if(val)
+				this.show();
+		}
+	},
 	mounted(){
 		if(this.dialogConfig.contentEl) {
 			this.$el.querySelector('.st-dialog-body').appendChild(this.dialogConfig.contentEl);
 		}
-		this.$nextTick(()=>{
-			let doc = this.$el.querySelector('.st-dialog-doc');
-			let rect = doc.getBoundingClientRect();
-			this.left = Math.ceil((docEl.clientWidth - rect.width)/2) + 'px';
-			this.top = Math.ceil((docEl.clientHeight - rect.height)/2) + 'px';
-		});
+		if(this.visible){
+			this.show();
+		}
 	},
 	methods: {
+		show(){
+			this.$nextTick(()=>{
+				let doc = this.$el.querySelector('.st-dialog-doc');
+				let rect = doc.getBoundingClientRect();
+				this.left = Math.ceil((docEl.clientWidth - rect.width)/2) + 'px';
+				this.top = Math.ceil((docEl.clientHeight - rect.height)/2) + 'px';
+			});
+		},
 		btnClick(idx, evt){
 			if(this.buttons[idx].click)
 				this.buttons[idx].click.call(this.$root, this.buttons[idx],evt);

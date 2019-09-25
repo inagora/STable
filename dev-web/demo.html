@@ -4,47 +4,25 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
-	<style>
-	html,body,div{
-		padding: 0;
-		margin: 0;
-	}
-	#box{
-		width: 80%;
-		height: 600px;
-		margin: 10px;
-		border: 1px solid #aaa;
-		position: relative;
-		overflow: auto;
-	}
-	#content{
-		background: url(https://ossimg.wandougongzhu.cn/e2a00d6cc98817c8d8b0128cd8f9977d.gif) repeat;
-		width: 2400px;
-		height: 3000px;
-	}
-	#left{
-		position: -webkit-sticky;
-		position: sticky;
-		left:0;
-		width: 400px;
-		height: 3000px;
-		background: url(https://ossimg.wandougongzhu.cn/99c81b81871c54d2d2d8c2d6cba826b8.jpg@1242w_666h_1l_1wh_1pr.jpg) repeat;
-	}
-	#right{
-		width: 300px;
-		height: 3000px;
-		background: url(https://ossimg.wandougongzhu.cn/35cce2c566f547f7907db611f7b81831.png@1242w_666h_1l_1wh_1pr.jpg) repeat;
-		position: -webkit-sticky;
-		position: sticky;
-		right:0;
-	}
-	</style>
+	<link rel="stylesheet" href="/STable.min.css">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+<script src="/STable.min.js"></script>
 </head>
 <body>
-	<div id="box">
-		<div id="content"></div>
-		<div id="left"></div>
-		<div id="right"></div>
-	</div>
+	<button onclick="dia.show()">显示窗口</button>
+	<script>
+	var dia = STable.createDialog({
+	title: 'demo窗口',
+	autoShow: false,
+	html: '测试用的内容',
+	buttons: [
+		{
+			text: 'close',
+			click(){
+				this.close();
+			}
+		}
+	]
+})</script>
 </body>
 </html>
