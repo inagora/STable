@@ -424,7 +424,15 @@
 						data[field.name] = this.formData[field.name];
 					}
 				}
-				this.$emit('submit', data);
+				//this.$emit('submit', data);
+				this.$refs.form.validate((valid) => {
+					if (valid) {
+						this.$emit('submit', data);
+					} else {
+						console.log('error submit!!');
+						return false;
+					}
+				});
 			},
 			reset(){
 				this.$refs.form.resetFields();
