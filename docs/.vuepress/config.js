@@ -23,14 +23,11 @@ module.exports = {
 					'/zh/api'
 				]
 			},
-			// '/en/': {
-			// 	sidebar: [
-			// 		'/en/api'
-			// 	]
-			// }
+			'/en/': {
+				sidebar: [
+					'/en/api'
+				]
+			}
 		}
-	},
-	plugins: [
-		require('./patch_code.js')
-	]
+	}
 };
