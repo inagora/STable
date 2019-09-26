@@ -7,7 +7,8 @@
     "start": "webpack-dev-server --mode=development --usehmr --config=./build/webpack.config.js",
     "dev": "webpack --mode=development --config=./build/webpack.config.js",
     "prod": "webpack --mode=production --no-progress --hide-modules --config=./build/webpack.config.js; node ./build/csscompress.js",
-    "lang": "webpack --mode=production --no-progress --hide-modules --config=./build/webpack-lang.config.js"
+    "lang": "webpack --mode=production --no-progress --hide-modules --config=./build/webpack-lang.config.js",
+    "docs:build": "vuepress build docs"
   },
   "author": "poker, ccpang",
   "license": "ISC",
