@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server --mode=development --usehmr --config=./build/webpack.config.js",
     "dev": "webpack --mode=development --config=./build/webpack.config.js",
-    "prod": "webpack --mode=production --no-progress --hide-modules --config=./build/webpack.config.js; node ./build/csscompress.js"
+    "prod": "webpack --mode=production --no-progress --hide-modules --config=./build/webpack.config.js; node ./build/csscompress.js",
+    "lang": "webpack --mode=production --no-progress --hide-modules --config=./build/webpack-lang.config.js"
   },
   "author": "poker, ccpang",
   "license": "ISC",
@@ -15,6 +16,7 @@
     "@babel/parser": "^7.4.5",
     "@babel/preset-env": "^7.4.4",
     "babel-loader": "^8.0.5",
+    "babel-minify-webpack-plugin": "^0.3.1",
     "css-loader": "^2.1.1",
     "eslint": "^6.0.1",
     "eslint-loader": "^2.2.1",

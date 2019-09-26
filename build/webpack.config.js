@@ -46,12 +46,12 @@ module.exports = function(env, argv) {
 	//热替换
 	let devServer = {};
 	if(argv.usehmr) {
-		let dServer = require('../dev-web/devServer');
+		let dServer = require('../web/devServer');
 		Object.assign(devServer, {
 			hot: true,
 			hotOnly:true,
 			open: true,
-			contentBase: path.resolve(__dirname, '../dev-web'),
+			contentBase: path.resolve(__dirname, '../web'),
 			before: function(app, server) {
 				dServer(app, server);
 			}
@@ -62,7 +62,7 @@ module.exports = function(env, argv) {
 
 	let config = {
 		entry: {
-			STable: './dev-src/index'
+			STable: './src/index'
 		},
 		devServer,
 		mode,
@@ -71,7 +71,7 @@ module.exports = function(env, argv) {
 		resolve: {
 			extensions: [".js", ".vue", ".json"],
 			modules: [
-				path.resolve(__dirname, '../dev-src'),
+				path.resolve(__dirname, '../src'),
 				path.resolve(__dirname, '../node_modules')
 			]
 		},

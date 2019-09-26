@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 module.exports = function(options, args) {
-	let files = fs.readdirSync(path.resolve(__dirname, 'src/lang'));
+	let files = fs.readdirSync(path.resolve(__dirname, '../src/lang'));
 	let entry = {};
 	for(let file of files) {
 		let fname = path.basename(file, '.js');
@@ -12,7 +12,7 @@ module.exports = function(options, args) {
 		entry,
 		output: {
 			filename: '[name].js',
-			path: path.resolve(__dirname, 'dist/lang'),
+			path: path.resolve(__dirname, '../dist/lang'),
 			publicPath: '/resource/module/STable/lang',
 			library: ["STable", 'lang', "[name]"],
 			libraryTarget: "umd"
