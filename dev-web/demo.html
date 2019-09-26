@@ -1,28 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-	<link rel="stylesheet" href="/STable.min.css">
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
-<script src="/STable.min.js"></script>
+	<title>demo</title>
+	<style>
+		a{
+			display: inline-block;
+			margin: 5px;
+		}
+	</style>
 </head>
 <body>
-	<button onclick="dia.show()">显示窗口</button>
+	<div></div>
 	<script>
-	var dia = STable.createDialog({
-	title: 'demo窗口',
-	autoShow: false,
-	html: '测试用的内容',
-	buttons: [
-		{
-			text: 'close',
-			click(){
-				this.close();
-			}
-		}
-	]
-})</script>
+		var demoList = `
+			acc
+			url
+		`;
+		var params = demoList.split(/\s/).filter(item=>!!item.trim());
+		document.querySelector('div').innerHTML = params.map(name=>`<a href="demo-viewer.html?name=${name}">${name}</a>`).join('');
+	</script>
 </body>
 </html>

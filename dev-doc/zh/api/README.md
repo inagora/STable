@@ -11,7 +11,7 @@
 	是additionalColumnConfig的缩写。有时候列配置columns是从服务端下发的，但在页面里还需要用js做一些额外配置，就可以用这个参数配置。它是一个对象，每个key值对应一个列的dataIndex，value是对此列增加的配置。
 * __用法__:
 	```js
-	var columns={%$columns|json%}; //模板下发了列配置
+	var columns={%$columns|json%}; //模板下发 了列配置
 	STable.init({
 		//...some other config
 		columns,

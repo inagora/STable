@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>demo viewer</title>
+</head>
+<body>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+	<script src="/STable.min.js"></script>
+	<script>
+		var sp = new URLSearchParams(location.search);
+		fetch(`demo/${sp.get('name')}.vue`).then(res=>res.text()).then(str=>{
+			if(/<template>((?:.|\n)*?)<script>((?:.|\n)*?)<style>((?:.|\n)*?)<\/style>/.test(str)){
+				let html = RegExp.$1,
+					js = RegExp.$2,
+					css = RegExp.$3;
+				html = html.trim().replace(/<\/template>$/, '');
+				js = js.trim().replace(/<\/script>$/, '');
+				css = css.trim();
+
+				var cssEl = document.createElement('style');
+				document.body.appendChild(cssEl);
+				cssEl.innerText = css;
+
+				var htmlEl = document.createElement('div');
+				htmlEl.innerHTML = html;
+				document.body.appendChild(htmlEl);
+
+				var scriptEl = document.createElement('script');
+				document.body.appendChild(scriptEl);
+				scriptEl.innerText = js;
+			}
+		});
+	</script>
+</body>
+</html>
