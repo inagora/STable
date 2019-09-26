@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>demo</title>
+	<style>
+		a{
+			display: inline-block;
+			margin: 5px;
+		}
+	</style>
+</head>
+<body>
+	<div></div>
+	<script>
+		var demoList = `
+			acc
+			url
+		`;
+		var params = demoList.split(/\s/).filter(item=>!!item.trim());
+		document.querySelector('div').innerHTML = params.map(name=>`<a href="demo-viewer.html?name=${name}">${name}</a>`).join('');
+	</script>
+</body>
+</html>

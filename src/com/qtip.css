@@ -1,0 +1,64 @@
+.st-qtip-box{
+	font-size: 14px;
+	line-height: 1.5;
+	color: rgba(0,0,0,0.65);
+	box-sizing: border-box;
+	position: fixed;
+	z-index: 100;
+	width: 100%;
+	top: 16px;
+	left: 0;
+	pointer-events: none;
+	text-align: center;
+}
+.st-qtip{
+	opacity: 0;
+	margin-top: -16px;
+	transition: opacity 0.3s ease, margin-top 0.3s ease;
+}
+.st-qtip-body{
+	pointer-events: all;
+	display: inline-block;
+	padding: 8px 16px;
+	border-radius: 4px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	background: #fff;
+}
+.st-qtip-icon{
+	margin-right: 8px;
+	font-size: 16px;
+	top: 1px;
+	position: relative;
+}
+.st-qtip-info .st-qtip-icon{
+	color: #1890ff;
+}
+.st-qtip-success .st-qtip-icon{
+	color: #52c41a;
+}
+.st-qtip-error .st-qtip-icon{
+	color: #f5222d;
+}
+.st-qtip-warn .st-qtip-icon{
+	color: #faad14;
+}
+.st-qtip-warning .st-qtip-icon{
+	color: #faad14;
+}
+@keyframes stQtipLoading {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+.st-qtip-loading .st-qtip-icon{
+	color: #1890ff;
+	
+}
+.st-qtip-loading .st-qtip-icon:before{
+	animation: stQtipLoading 1s infinite linear;
+	display: inline-block;
+}
+.st-qtip-visible{
+	opacity: 1;
+	margin-top: 8px;
+}
