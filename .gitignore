@@ -5,3 +5,4 @@ web/public/tmp/
 web/public/doc/
 web/public/resource/module/STable/
 _book
+docs/.vuepress/dist

@@ -30,6 +30,7 @@
 	```
 * __参考__:
 	* [demo](https://codepen.io/liupengke/pen/KKPQeQg)
+	* -->demo:acc<--
 
 ### actionMethods
 * __类型__: `Object`

@@ -5,12 +5,12 @@ module.exports = {
 	base: '/STable/',
 	locales: {
 		'/en/': {
-			lang: 'English',
+			lang: 'en-US',
 			title: 'STable - Focus on table',
 			description: 'A tool focus on the table'
 		},
 		'/zh/': {
-			lang: '中文',
+			lang: 'zh-CN',
 			title: 'STable - 专注于表格',
 			description: '一个专注于web表格展示的工具'
 		}
