@@ -29,7 +29,6 @@
 	});
 	```
 * __参考__:
-	* [demo](https://codepen.io/liupengke/pen/KKPQeQg)
 	* <DemoViewer demo="acc" />
 
 ### actionMethods
