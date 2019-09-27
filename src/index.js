@@ -8,7 +8,7 @@ export {default as qtip} from './com/qtip.js';
 Vue.component('x-stable', STable);
 Vue.component('x-form', XForm);
 
-Console.log('%cSTable doc：https://stable.wfxteam.com/',"color:#191919;font-size:14px");
+Console.log('%c👩‍💻STable docs: https://inagora.github.io/STable/',"font-size:14px");
 
 export var version = '2.0.0';
 export function init(config, Vue) {
