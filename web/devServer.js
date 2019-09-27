@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 module.exports = function(app, server){
 	app.all('/ajaxList', (req, res)=>{
 		let params = req.query;
@@ -238,5 +240,13 @@ module.exports = function(app, server){
 			errno: 0,
 			errmsg: 'this is just a demo, it will not remove some records really'
 		});
+	});
+	app.get('/demoViewer', (req, res)=>{
+		let params = req.query;
+		let code = fs.readFileSync(path.resolve(__dirname,`./demo/${params.demo}.html`), 'utf8');
+		code = code.replace(/https:\/\/dc\.wfxteam\.com/g, '');
+		let html = fs.readFileSync(path.resolve(__dirname,`./demo-viewer.html`), 'utf8');
+		html = html.replace(/\{\{demo\}\}/, code);
+		res.send(html);
 	});
 };

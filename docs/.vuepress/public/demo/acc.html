@@ -1,0 +1,41 @@
+
+<style>
+#box{
+	height: 300px;
+}
+</style>
+<div id="box"></div>
+<script>
+	//比如下面columns变量是服务端下发的数据
+	var columns = [
+		{
+			dataIndex: 'name',
+			header: 'move name'
+		},
+		{
+			dataIndex: 'movieType',
+			header: 'type'
+		},
+		{
+			dataIndex: 'img',
+			header: 'poster'
+		}
+	];
+
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns,
+		//通过acc对列设置进行补充
+		acc: {
+			movieType: {
+				width: 200
+			},
+			img: {
+				render(record){
+					return `<img style="max-height:50px" src="${record.img}"/>`
+				}
+			}
+		}
+	});
+</script>

@@ -18,7 +18,7 @@
 			url
 		`;
 		var params = demoList.split(/\s/).filter(item=>!!item.trim());
-		document.querySelector('div').innerHTML = params.map(name=>`<a href="demo-viewer.html?name=${name}">${name}</a>`).join('');
+		document.querySelector('div').innerHTML = params.map(name=>`<a href="/demoViewer?demo=${name}">${name}</a>`).join('');
 	</script>
 </body>
 </html>
