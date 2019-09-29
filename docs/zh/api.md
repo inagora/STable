@@ -14,8 +14,8 @@
 	
 	STable.init({
 		//...some other config
-		columns,
-		acc: {	//额外增加一些列设置
+		//额外增加一些列设置
+		acc: {
 			actorName: {
 				width: 200	//设置列actorName的宽度为200
 			},
@@ -50,13 +50,14 @@
 	``` js
 	STable.init({
 		//...some other config
+		//把列表请求换成post方式
 		actionMethods: {
-			read: 'POST'	//把列表请求换成post方式
+			read: 'POST'
 		}
 	});
 	```
 * __参考__:
-	* [demo](https://codepen.io/liupengke/pen/pozaKOR?editors=1010)
+	* <DemoViewer demo="actionMethods" />
 
 ### addConfig
 * __类型__: `String`
@@ -68,7 +69,7 @@
 	:::
 
 * __参考__:
-	* [demo](https://codepen.io/liupengke/pen/VwZQdqR)
+	* <DemoViewer demo="addConfig" />
 	* [addUrl](#addurl)
 	* [form配置](#form)
 
@@ -79,7 +80,7 @@
 	添加数据时的提交地址。如果有此参数，会在工具栏toolbar自动显示一个“添加”按钮，点击此按钮出现“添加”面板。它需要和addConfig配合使用。
 
 * __参考__:
-	* [demo](https://codepen.io/liupengke/pen/VwZQdqR)
+	* <DemoViewer demo="addConfig" />
 	* [addConfig](#addconfig)
 
 ### batDeleteUrl
@@ -88,9 +89,9 @@
 
 	批量删除数据时的提交地址。如果有此参数，会在工具栏toolbar自动显示一个“批量删除”按钮，点此按钮，会把所有选中行删除。需要配合参数selectMode和idIndex使用。
 * __参考__: 
-	* [demo](https://codepen.io/liupengke/pen/xxKWLpZ?editors=1010#0)
-	* [idIndex](./#idindex)
-	* [行选择模式 selectMode](./#selectmode)
+	* <DemoViewer demo="batDeleteUrl" />
+	* [idIndex](#idindex)
+	* [selectMode](#selectmode)
 
 ### columns
 * __类型__: `Array`
@@ -100,43 +101,37 @@
 * __用法__: 
 	如果只是简单的显示列的内容，可以直接写列对应的数据名：
 	```javascript
-	STable.init({
-		//...other configs
-		columns: ['name', 'age', 'gender']
-	});
+	columns: ['name', 'age', 'gender']
 	```
 	对于有特殊要求的列，比如宽度、是否锁定，甚至要自己决定渲染内容的，可以用对象配置
 	```javascript
-	STable.init({
-		//...other configs
-		columns: [
-			{
-				dataIndex: 'name', //数据项
-				width: 200,	//列宽度
-				locked: true,	//锁定在左侧
-				visible: true,	//可见
-				resizable: false	//列的宽度不可缩放
-			},
-			{
-				dataIndex: 'age',
-				flex: 1,	//宽度
-				cls: 'hl',	//此类应用的css样式名
-			},
-			{
-				dataIndex: 'gender',
-				//通过render函数，控制展示内容
-				render(record){
-					return record.gender==1?'male':'female';
-				}
+	columns: [
+		{
+			dataIndex: 'name', //数据项
+			width: 200,	//列宽度
+			locked: true,	//锁定在左侧
+			visible: true,	//可见
+			resizable: false	//列的宽度不可缩放
+		},
+		{
+			dataIndex: 'age',
+			flex: 1,	//宽度
+			cls: 'hl',	//此类应用的css样式名
+		},
+		{
+			dataIndex: 'gender',
+			//通过render函数，控制展示内容
+			render(record){
+				return record.gender==1?'male':'female';
 			}
-		]
-	});
+		}
+	]
 	```
 
 	更多、更详细的列配置参数，请看 [column config](#columnconfig)
 * __参考__:
 	* [column config](#columnconfig)
-	* [demo](https://codepen.io/liupengke/pen/Rwbyede)
+	* <DemoViewer demo="columns" />
 
 ### componentOrder
 * __类型__: `Array`
@@ -145,13 +140,10 @@
 
 	STable由几个“部件”构成，分别是：标题(title)、提示(tip)、工具栏(toolbar)、搜索区(search)、表格(table)、分页栏(pagination)。通过componentOrder，我们可以对部件的展示顺序自己调整，比如想把工具栏显示在表格下面，就可以这样设置
 	```js
-	STable.init({
-		//...other configs
-		componentOrder: ['search', 'table', 'toolbar', 'pagination']
-	})
+	componentOrder: ['search', 'table', 'toolbar', 'pagination']
 	```
 * __参考__:
-	* [demo](https://codepen.io/liupengke/pen/xxKjQZY)
+	* <DemoViewer demo="componentOrder" />
 
 ### deleteUrl
 * __类型__: `String`
@@ -159,7 +151,7 @@
 
 	删除数据时的提交地址。如果有此参数，会在每一行的最后添加一列，此列中有一个“删除”按钮，点此按钮，会删除此行。需要和参数`idIndex`配合使用。
 * __参考__: 
-	* [demo](https://codepen.io/liupengke/pen/WNeJLWg)
+	* <DemoViewer demo="deleteUrl" />
 	* [idIndex](#idindex)
 
 ### downloadable
@@ -173,7 +165,7 @@
 	* 'single'，只显示“导出当前页”按钮
 	* 'all'，只显示“导出所有页”按钮
 * __参考__:
-	* [demo](https://codepen.io/liupengke/pen/VwZxgOd)
+	* <DemoViewer demo="downloadable" />
 
 ### downloadAllFromJustOnePage
 * __类型__: `Boolean`
@@ -189,7 +181,7 @@
 
 	超时时间(毫秒)。全量下载所有数据时，会分页面请求数据，可以用此参数指定每个页面请求的超时时间。如果超时，会中断请求，重新发起一个。
 * __参考__:
-	* [demo](https://codepen.io/liupengke/pen/VwZdZzM)
+	* <DemoViewer demo="downloadTimeout" />
 
 ### el
 * __类型__: `String|HTMLElement`
@@ -198,7 +190,7 @@
 
 	STable在页面中的容器，它可以是css选择器，也可是一个dom元素。
 * __参考__:
-	[demo](https://codepen.io/liupengke/pen/vYBaMoL)
+	* <DemoViewer demo="el" />
 
 ### idIndex
 * __类型__: `String`
@@ -216,7 +208,7 @@
 
 	忽略搜索条件中空字符串的项，在请求页数据时，不带上它们
 * __参考__: 
-	* [demo](https://codepen.io/stablejs/pen/eYOPNLX?editors=1010#0)
+	* <DemoViewer demo="ignoreEmptySearchParam" />
 
 ### labelVisible
 * __类型__: `Boolean`
@@ -225,7 +217,7 @@
 
 	搜索区的表单的标签是否显示。当搜索项太多时，把此参数设为false，可以让搜索区显得更为紧凑。
 * __参考__: 
-	* [demo](https://codepen.io/stablejs/pen/PoYyqvO?editors=1010#0)
+	* <DemoViewer demo="labelVisible" />
 
 ### layoutMode
 * __类型__: `String`
@@ -236,9 +228,9 @@
 	* "fixed"，固定高度模式。STable所在区域高度固定，会根据总体高度、工具栏、搜索区和分页区，决定表格区的高度
 	* "expand"，自动伸展模式。STable高度不固定，根据表格区行数不同，自动调整STable的高度。
 * __参考__: 
-	* [demo: 指定绝对高度](https://codepen.io/stablejs/pen/PoYyPoE?editors=1010#0)
-	* [demo: 通过flex设置高度](https://codepen.io/stablejs/pen/MWgPaWd)
-	* [demo: 高度不限制](https://codepen.io/stablejs/pen/jONeWWb?editors=1010#0)
+	* <DemoViewer demo="layoutMode-absolute" />
+	* <DemoViewer demo="layoutMode-flex" />
+	* <DemoViewer demo="layoutMode-expand" />
 
 ### listeners
 * __类型__: `Object`
@@ -246,25 +238,22 @@
 
 	STable在不时机触发一些钩子函数，开发者可以在这些时机做一些自己的功能。
 * __用法__: 
-	```JS
-	STable.init({
-		//some other config
-		listeners: {
-			ready(){
-				$.get('/log/stableCreate').then(()=>{
-					//在STable初始化之后，向服务端打点
-				});
-			},
-			refresh(records){
-				//数据刷新之后，可以对数据做一些处理
-				let count = records.length;
-				console.log(`we get ${count} records`);
-			}
-		}
-	});
-	```
+```javascript
+listeners: {
+	ready(){
+		$.get('/log/stableCreate').then(()=>{
+			//在STable初始化之后，向服务端打点
+		});
+	},
+	refresh(records){
+		//数据刷新之后，可以对数据做一些处理
+		let count = records.length;
+		console.log(`we get ${count} records`);
+	}
+}
+```
 * __参考__: 
-	* [事件](#listeners)
+	* [事件](#事件)
 
 ### locale
 * __类型__: `String|Object`
@@ -272,8 +261,8 @@
 
 	STable使用的语言配置。
 * __参考__: 
-	* [demo](https://codepen.io/stablejs/pen/rNBqxzG?editors=1010#0)
-	* [local词典明细](https://github.com/inagora/STable/tree/master/src/lang)
+	* <DemoViewer demo="locale" />
+	* [local词典](https://github.com/inagora/STable/tree/master/src/lang)
 
 ### page
 * __类型__: `Number`

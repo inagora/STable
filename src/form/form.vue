@@ -94,7 +94,7 @@ import XRadio from "./radio.vue";
 import XSwitch from "./switch.vue";
 import XUpload from "./upload.vue";
 import XDatetimePicker from "./datetimepicker.vue";
-import defaultLocale from '../../src/lang/en.js';
+var defaultLocale = require('../../src/lang/en.js');
 import qtip from '../com/qtip';
 
 export default {

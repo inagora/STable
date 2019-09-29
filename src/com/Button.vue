@@ -8,7 +8,7 @@
 		v-bind="otherConf"
 		@click="$emit('click', $event)"
 	>
-		<i v-if="icon" :class="['st-btn-icon', iconCls]"></i>
+		<i v-if="icon" :class="['st-btn-icon',icon]"></i>
 		<span v-if="text" class="st-btn-text">{{ btnText }}</span>
 	</button>
 </template>
@@ -54,13 +54,6 @@ export default {
 				text = text.split('').join(' ');
 			}
 			return text;
-		},
-		iconCls(){
-			let cls = '';
-			if(this.icon){
-				cls = 'st-btn-icon '+this.icon;
-			}
-			return cls;
 		},
 		themeCls(){
 			let classes = {

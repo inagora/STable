@@ -1,4 +1,4 @@
-export default {
+module.exports= {
 	lang: 'en',
 	confirm: 'confirm',
 	cancel: 'cancel',

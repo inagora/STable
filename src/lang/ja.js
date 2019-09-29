@@ -1,4 +1,4 @@
-export default {
+module.exports = {
 	lang: 'ja',
 	confirm: '確認',
 	cancel: 'キャンセル',

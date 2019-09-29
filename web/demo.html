@@ -15,7 +15,13 @@
 	<script>
 		var demoList = `
 			acc
-			url
+			actionMethods
+			addConfig
+			batDeleteUrl
+			columns
+			componentOrder
+			downloadable
+			locale
 		`;
 		var params = demoList.split(/\s/).filter(item=>!!item.trim());
 		document.querySelector('div').innerHTML = params.map(name=>`<a href="/demoViewer?demo=${name}">${name}</a>`).join('');

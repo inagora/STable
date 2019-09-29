@@ -21,9 +21,10 @@ import XToolbar from './Toolbar.vue';
 import XSearch from './Search.vue';
 import XTable from './table/index.vue';
 import XPagination from './Pagination.vue';
-import defaultLang from './lang/en.js';
 import {hashCode, Console, $type} from "./util/util.js";
 import Ajax from './util/Ajax.js';
+
+var defaultLang = require('./lang/en.js');
 let stableCount = 0;
 export default {
 	props: {

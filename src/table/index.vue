@@ -285,7 +285,7 @@ export default {
 			if(this.deleteUrl) {
 				buttons.push({
 					text: '删除',
-					icon: 'el-icon-close',
+					icon: 'st-iconfont st-icon-close',
 					type: 'danger',
 					click: (record)=>{
 						let ret = confirm('您确定要删除此行数据？');
@@ -518,6 +518,7 @@ export default {
 		position: relative;
 		border-bottom: 1px solid #d0d0d0;
 		display: flex;
+		overflow-x: hidden;
 	}
 
 	&-body-area{
