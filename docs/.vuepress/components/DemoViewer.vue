@@ -86,12 +86,14 @@ export default {
 	padding-left: 10px;
 	height: 30px;
 }
+.st-demo-name{
+	width: 300px;
+}
 .st-demo-label{
 	color: #3eaf7c;
 	font-weight: 500;
 }
 .st-demo-sign{
-	margin-left: 100px;
 	font-size: 0;
 	line-height: 0;
 	overflow: hidden;

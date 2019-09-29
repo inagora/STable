@@ -1069,10 +1069,10 @@ Dialog的配置参数有：
 * __类型__：`HTMLElement`
 * __详细__：
 
-	窗口内的元素。它可以是页面中已存在的dom元素，也可以document.createElement但也建在内存中的元素。
+	窗口内的元素。它可以是页面中已存在的dom元素，也可以document.createElement 建在内存中的元素。
 * __参考__:
 	* [html](#html)
-	* [demo]()
+	* <DemoViewer demo="dialog-contentEl" />
 
 ### height
 * __类型__：`Number|String`
@@ -1080,30 +1080,51 @@ Dialog的配置参数有：
 * __详细__：
 
 	窗口的高度。可以是具体的数值，也是可以百分比，如'80%'
+* __参考__:
+	* <DemoViewer demo="dialog-height-width" />
 
 ### html
 * __类型__：`String`
 * __详细__：
 	
-	窗口内的元素。
+	窗口内的html内容。
 	::: tip
 	contentEl和html都是指定窗口内展示的内容，不过contentEl是dom元素，可以是页面中已存在的，也可以是通过document.creatElement创建的；html是html代码字符串。
 	contentEl和html不会同时生效。
 	:::
 * __参考__:
-	* [demo]()
+	* [contentEl](#contentel)
+	* <DemoViewer demo="dialog-html" />
 
 ### listeners
 * __类型__：`Object`
 * __详细__：
 
-	窗口支持的事件
+	窗口支持的事件:
 	* ready，窗口dom元素创建之后触发
 	* beforeshow，窗口show动作执行前触发
+	* show
 	* beforehide，窗口隐藏前触发。注意hide命令只隐藏窗口，不销毁它
+	* hide
 	* beforeclose，窗口关闭动作执行前触发
 	* close，窗口关闭后触发
+	* beforedestroy
 	* destroy，窗口销毁后触发
+
+	在不同条件和动作下，事件发生的时序：
+	* dialog初始化完，发生事件：`ready`
+	* 通过show()方法让dialog显示，发生事件：`beforeshow`->`show`
+	* 通过hide()方法隐藏窗口，发生事件：`beforehide`->`hide`
+	* 通过destroy()方法销毁窗口，发生事件：`beforedestroy`->`destroy`
+	* closeAction为'hide'时，通过关闭按钮或者close()方法关闭窗口，发生事件：`beforeclose`->`beforehide`->`hide`->`close`
+	* closeAction为'destroy'时，通过关闭按钮或者close()方法关闭窗口，发生事件：`beforeclose`->`beforehide`->`hide`->`beforedestroy`->`destroy`->`close`
+
+	::: tip
+	`beforeshow`、`beforehide`、`beforeclose`、`beforedestroy`这四个事件的响应函数，如果返回`false`，会阻止对应动作的发生。如果处于某个事件时序，也会阻止以后的事件发生。
+	:::
+* __参考__:
+	* <DemoViewer demo="dialog-listeners" />
+	* <DemoViewer demo="dialog-listeners-stop" />
 
 ### modal
 * __类型__：`Boolean`
@@ -1111,6 +1132,12 @@ Dialog的配置参数有：
 * __详细__：
 
 	窗口是不是模态的。模态窗口会显示一个遮罩层，遮罩使页面中除了窗口，其它地方都不可点击
+	```javascript
+	//显示一个不带遮罩的窗口
+	modal: false
+	```
+* __参考__:
+	* <DemoViewer demo="dialog-modal" />
 
 ### title
 * __类型__：`String`

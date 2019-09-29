@@ -26,27 +26,6 @@ export function create(config) {
 		}
 	});
 	let methods = {
-		prop(...args){
-			if(args.length<=0) return {};
-			let data;
-			if(args.length==1) {
-				if(typeof args[0]=='string')
-					return this.$refs.dialog[args[0]];
-				else {
-					data = args[0];
-				}
-			} else if(args.length>=2) {
-				if(typeof args[0]=='string') {
-					data = {};
-					data[args[0]] = args[1];
-				}
-			}
-			if(data) {
-				for(let key in data) {
-					this.$refs.dialog[key] = data[key];
-				}
-			}
-		},
 		_trigger(evtName){
 			let listeners = dialogConfig.listeners||{};
 			if(listeners[evtName]) {
@@ -89,6 +68,8 @@ export function create(config) {
 				if(this.$refs.dialog.closeAction != 'hide')
 					ret = this.destroy();
 			}
+			if(ret !== false)
+				this._trigger('close');
 			return ret;
 		}
 	};
@@ -100,6 +81,11 @@ export function create(config) {
 			return null;
 		}
 		config.methods[name] = methods[name];
+	}
+	if(!config.mounted){
+		config.mounted = function(){
+			this._trigger('ready');
+		};
 	}
 	let dia = new Vue(Object.assign(config, {
 		provide: {dialogConfig},
