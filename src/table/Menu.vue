@@ -16,7 +16,7 @@
 					@mouseenter="showSubmenu('')"
 				>
 					<i
-						class="st-iconfont"
+						class="st-icon"
 						:class="[list[curIdx].visible?'st-icon-eye':'st-icon-eye-close']"
 					></i>
 					<span v-text="list[curIdx].text"></span>
@@ -28,9 +28,9 @@
 					}"
 					@mouseenter="showSubmenu('lock', $event)"
 				>
-					<i class="st-iconfont st-icon-lock"></i>
+					<i class="st-icon st-icon-lock"></i>
 					<span>列锁定</span>
-					<i class="st-iconfont st-icon-caret-down st-table-menu-more"></i>
+					<i class="st-icon st-icon-caret-down st-table-menu-more"></i>
 				</div>
 			</template>
 
@@ -41,9 +41,9 @@
 				}"
 				@mouseenter="showSubmenu('column', $event)"
 			>
-				<i class="st-iconfont st-icon-filter"></i>
+				<i class="st-icon st-icon-filter"></i>
 				<span>列筛选</span>
-				<i class="st-iconfont st-icon-caret-down st-table-menu-more"></i>
+				<i class="st-icon st-icon-caret-down st-table-menu-more"></i>
 			</div>
 		</div>
 
@@ -53,7 +53,7 @@
 				@click="lock('left')"
 			>
 				<i
-					class="st-iconfont"
+					class="st-icon"
 					:class="{
 						'st-icon-check-square st-table-menu-selected': list[curIdx].locked=='left',
 						'st-icon-border': list[curIdx].locked!='left'
@@ -66,7 +66,7 @@
 				@click="lock('right')"
 			>
 				<i
-					class="st-iconfont"
+					class="st-icon"
 					:class="{
 						'st-icon-check-square st-table-menu-selected': list[curIdx].locked=='right',
 						'st-icon-border': list[curIdx].locked!='right'
@@ -79,7 +79,7 @@
 				@click="lock(false)"
 			>
 				<i
-					class="st-iconfont"
+					class="st-icon"
 					:class="{
 						'st-icon-check-square st-table-menu-selected': !list[curIdx].locked,
 						'st-icon-border': list[curIdx].locked
@@ -97,7 +97,7 @@
 				@click="toggleVisible(itemIdx)"
 			>
 				<i
-					class="st-iconfont"
+					class="st-icon"
 					:class="[item.visible?'st-icon-check-square st-table-menu-selected':'st-icon-border']"
 				></i>
 				<span v-text="item.text"></span>

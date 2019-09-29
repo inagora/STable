@@ -1,5 +1,5 @@
 <template>
-	<div class="datepicker st-iconfont st-icon-calendar" :class="{'datepicker-range':range,'datepicker__clearable':clearable&&text&&!disabled}">
+	<div class="datepicker st-icon st-icon-calendar" :class="{'datepicker-range':range,'datepicker__clearable':clearable&&text&&!disabled}">
 		<input
 			v-if="type!=='inline'"
 			readonly
@@ -9,7 +9,7 @@
 			:placeholder="placeholder"
 			:name="name"
 		/>
-		<a class="datepicker-close st-iconfont st-icon-close" @click.stop="cls" />
+		<a class="datepicker-close st-icon st-icon-close" @click.stop="cls" />
 		<transition name="datepicker-anim">
 			<div
 				v-if="show||type==='inline'"

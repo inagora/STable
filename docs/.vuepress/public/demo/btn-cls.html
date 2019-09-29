@@ -1,0 +1,23 @@
+<style>
+	#box{
+		height: 300px;
+	}
+	.app-btn{
+		color: red;
+		font-weight: bold;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		toolbar: [
+			{
+				text: 'btn',
+				cls: 'app-btn'
+			}
+		],
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year']
+	})
+</script>

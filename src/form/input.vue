@@ -22,7 +22,7 @@
 				<!-- 后置元素 -->
 				<i
 					v-show="showClear"
-					class="st-iconfont st-icon-close st-input-wrap-clear"
+					class="st-icon st-icon-close st-input-wrap-clear"
 					@click="clear"
 				/>
 			</div>

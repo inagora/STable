@@ -1,0 +1,21 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: [
+			'name',
+			'movieType',
+			{
+				dataIndex: 'actors',
+				text: 'actors'
+			}
+		],
+		sublistAt: ['actors']
+	});
+</script>

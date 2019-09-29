@@ -97,12 +97,12 @@ export default {
 
 <style lang="scss">
 .st-btn{
-	display: inline-block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	font-weight: 400;
 	line-height: 1.499;
 	color: #212529;
-	text-align: center;
-	vertical-align: middle;
 	-webkit-user-select: none;
 	user-select: none;
 	background-color: transparent;
@@ -219,11 +219,11 @@ export default {
 	}
 
 	&-icon + &-text{
-		margin-left: 8px;
+		margin-left: 5px;
 	}
 
 	&-sm > &-icon + &-text{
-		margin-left: 4px;
+		margin-left: 3px;
 	}
 
 }

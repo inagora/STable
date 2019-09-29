@@ -32,7 +32,7 @@
 				@keydown.delete="deletePrevTag"
 				@keydown.enter.prevent="handleOption"
 			/>
-			<div class="st-iconfont st-icon-caret-down" :class="{'st-select-input-uparrow': visible}"></div>
+			<div class="st-icon st-icon-caret-down" :class="{'st-select-input-uparrow': visible}"></div>
 		</div>
 		<template v-else>
 			<input 
@@ -40,7 +40,7 @@
 				type="text"
 				class="st-select-input"
 			/>
-			<div class="st-iconfont st-icon-caret-down" :class="{'st-select-input-uparrow': visible}"></div>
+			<div class="st-icon st-icon-caret-down" :class="{'st-select-input-uparrow': visible}"></div>
 		</template>
     
 		<div 

@@ -55,7 +55,7 @@ export default {
 				tb.unshift({
 					type: 'primary',
 					text: this.locale.toolbar.exportAllBtnText,
-					icon: 'st-iconfont st-icon-download',
+					icon: 'st-icon st-icon-download',
 					click(){
 						self.downloadAll();
 					}
@@ -65,7 +65,7 @@ export default {
 				tb.unshift({
 					type: 'primary',
 					text: this.locale.toolbar.exportBtnText,
-					icon: 'st-iconfont st-icon-download',
+					icon: 'st-icon st-icon-download',
 					click(){
 						self.download();
 					}
@@ -75,7 +75,7 @@ export default {
 				tb.unshift({
 					type: 'danger',
 					text: '批量删除',
-					icon: 'st-iconfont st-icon-delete',
+					icon: 'st-icon st-icon-delete',
 					click(){
 						self.batDelete();
 					}
@@ -85,7 +85,7 @@ export default {
 				tb.unshift({
 					type: 'success',
 					text: '添加',
-					icon: 'st-iconfont st-icon-plus',
+					icon: 'st-icon st-icon-plus',
 					click(){
 						self.add();
 					}
@@ -103,7 +103,7 @@ export default {
 	},
 	methods: {
 		triggerClick(btn, evt){
-			btn.click&&btn.click.call(this.$parent, evt);
+			btn.click&&btn.click.call(this.$parent, btn, evt);
 		},
 		add(){
 			let toolbar = this;
@@ -276,6 +276,9 @@ export default {
 		margin-right: 8px;
 		margin-bottom: 10px;
 		background-color: #d0d0d0;
+	}
+	&-space{
+		width: 10px;
 	}
 
 	.st-btn{

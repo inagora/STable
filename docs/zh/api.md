@@ -238,20 +238,20 @@
 
 	STable在不时机触发一些钩子函数，开发者可以在这些时机做一些自己的功能。
 * __用法__: 
-```javascript
-listeners: {
-	ready(){
-		$.get('/log/stableCreate').then(()=>{
-			//在STable初始化之后，向服务端打点
-		});
-	},
-	refresh(records){
-		//数据刷新之后，可以对数据做一些处理
-		let count = records.length;
-		console.log(`we get ${count} records`);
+	```javascript
+	listeners: {
+		ready(){
+			$.get('/log/stableCreate').then(()=>{
+				//在STable初始化之后，向服务端打点
+			});
+		},
+		refresh(records){
+			//数据刷新之后，可以对数据做一些处理
+			let count = records.length;
+			console.log(`we get ${count} records`);
+		}
 	}
-}
-```
+	```
 * __参考__: 
 	* [事件](#事件)
 
@@ -262,24 +262,21 @@ listeners: {
 	STable使用的语言配置。
 * __参考__: 
 	* <DemoViewer demo="locale" />
-	* [local词典](https://github.com/inagora/STable/tree/master/src/lang)
+	* [locale词典](https://github.com/inagora/STable/tree/master/src/lang)
 
 ### page
 * __类型__: `Number`
 * __默认值__: 1
 * __详细__: 
   
-	初始加载的页号。注意：计数从1开始。
+	初始加载的页号。注意：`计数从1开始`。
 * __用法__: 
 	```JS
-	STable.init({
-		//some other config
-		//注意 页号从1开始
-		page: 1,
-	});
+	//STable直接加载第10页
+	page: 10
 	```
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/oNvaBXz)
+	* <DemoViewer demo="page" />
 
 ### pageMode
 * __类型__: `String`
@@ -291,13 +288,11 @@ listeners: {
 	* waterfall：瀑布流模式，需要根据当前页的第一行的pageIndex向前找上一页或者最后一行数据的pageIndex向后找一页的数据。
 * __用法__: 
   ```JS
-	STable.init({
-		//some other config
-		//pageMode: ‘waterfall’
-		pageMode: 'normal',
-	});
+	//瀑布流模式
+	pageMode: ‘waterfall’
+	```
 * __参考__:
-	* [demo - 瀑布流模式](https://codepen.io/stablejs/pen/BaBqpjx?editors=1010#0)
+	* <DemoViewer demo="pageMode-waterfall" />
 	* [pageIndex](#pageindex)
 
 ### pageIndex
@@ -308,10 +303,9 @@ listeners: {
 	如果分页模式是瀑布模式(waterfall)，需要指定由哪个数据字段决定分页
 * __用法__: 
   ```JS
-	STable.init({
-		//...other configs
-		pageIndex: 'goods_id',
-	});
+	//指定按page_id分页
+	pageIndex: 'goods_id'
+	```
 * __参考__:
 	* [pageMode](#pagemode)
 
@@ -320,18 +314,17 @@ listeners: {
 * __默认值__: 6
 * __详细__: 
 
-	全量下载表格时，并行请求数。因为当前浏览器一个域名的并行请求数一般为6个，所以设置的值超过6，并没有太大的意义。
-	:::tip
-	一般并行数越高，下载速度越快。但是，并行数越高，对服务器处理并发的能力越强；如果服务器并发能力不够，可能会导致请求一直不返回，甚至超时；超时后会重新发起这个页面的数据请求，请求可能又会超时，如此往复，可能会引起雪崩。如果某个接口的服务承载能力不强，建议把这个值设置的小一些。
+	全量下载表格时的并行请求数。因为目前浏览器一个域名的并行请求数一般为6个，所以设置的值超过6，并没有太大的意义。
+	::: warning
+	一般并行数越高，下载速度越快。但是，并行数越高，对服务器处理并发的能力要求就越高；如果服务器并发能力不够，可能会导致请求一直不返回，甚至超时；超时后会重新发起这个页面的数据请求，请求可能又会超时，如此往复，可能会引起雪崩。如果某个接口的服务承载能力不强，建议把这个值设置的小一些。
 	:::
 * __用法__: 
   ```JS
-	STable.init({
-		//...other configs
-		parallelCount: 4
-	});
+	//设置并行下载数为 3
+	parallelCount: 3
+	```
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/OJLBdVM?editors=1010#0)
+	* <DemoViewer demo="parallelCount" />
 	* [downloadable](#downloadable)
 
 ### params
@@ -346,16 +339,13 @@ listeners: {
 
 	从服务器加载每页数据时，params中的值也会当做参数一起发送过去。使用这个配置，可以让开发者自定义一些参数，发给列表接口。比如，可以设置每页请求100行数据，而不是默认20行，同时带上一个额外参数color
 	```javascript
-	STable.init({
-		//...other configs
-		params: {
-			count: 100,
-			color: 'red'
-		}
-	});
+	params: {
+		count: 100,
+		color: 'red'
+	}
 	```
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/ZEzmXao?editors=1010#0)
+	* <DemoViewer demo="params" />
 
 ### records
 * __类型__: `Array` 
@@ -364,27 +354,24 @@ listeners: {
 	静态化数据，设置了它后，就不会动态加载页面数据了。直接渲染它定义的表格数据
 * __用法__: 
   ```javascript
-	STable.init({
-		//...other configs
-		//静态数据
-		records: [
-			{
-				id: 1,
-				name: '鳄鱼',
-				movieType: '记录片',
-				year: '2010'
-			},
-			{
-				id: 2,
-				name: '终结者2018',
-				movieType: '科幻',
-				year: '2018'
-			}
-		]
-	});
+	//静态数据
+	records: [
+		{
+			id: 1,
+			name: '鳄鱼',
+			movieType: '记录片',
+			year: '2010'
+		},
+		{
+			id: 2,
+			name: '终结者2018',
+			movieType: '科幻',
+			year: '2018'
+		}
+	]
 	```
 * __参考__
-	* [demo](https://codepen.io/stablejs/pen/pozQWap?editors=1010#0)
+	* <DemoViewer demo="records" />
 
 ### rowNumberVisible
 * __类型__: `Boolean`
@@ -394,12 +381,10 @@ listeners: {
 	是否在行首显示行号。注意，只是当前页的行号，并不是所有页的总体序号。
 * __用法__: 
   ```JS
-	STable.init({
-		//...other configs
-		rowNumberVisible: true,
-	});
+	rowNumberVisible: true,
+	```
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/WNeYZzO?editors=1010#0)
+	* <DemoViewer demo="rowNumberVisible" />
 
 ### searchFilter
 * __类型__: `array|Object`
@@ -419,7 +404,7 @@ listeners: {
 	});
 * __参考__:
 	* [form表单配置](#form)
-	* [demo](https://codepen.io/stablejs/pen/QWLJqrq?editors=1010#0)
+	* <DemoViewer demo="searchFilter" />
 
 ### searchResetable
 * __类型__: `Boolean`
@@ -429,32 +414,29 @@ listeners: {
 	在搜索区是否显示“重置”按钮，点击后重置表单项为默认值
 * __用法__: 
   ```JS
-	STable.init({
-		//...other configs
-		searchResetable: false,
-	});
+	//显示重置按钮
+	searchResetable: true
+	```
 * __参考__
-	* [demo](https://codepen.io/stablejs/pen/PoYxJBG?editors=1010#0)
+	* <DemoViewer demo="searchResetable" />
 
 ### selectMode
 * __类型__: `String`
 * __默认值__: "none"
 * __详细__: 
 
-	行的选择模式。在单选框或复选框选择行之后，可以通过STable的getSelectedRows接口获取所有选中的行。有以下三种模式：
+	行的选择模式。在单选框或复选框选择行之后，可以通过STable的getSelected接口获取所有选中的行。有以下三种模式：
 	* 'none'，在表格行前面不显示选择按钮
 	* 'single'，单选模式，在表格行前显示单选按钮
 	* 'multiple'，多选模式，在表格行前显示多选按钮
 * __用法__: 
   ```JS
-	STable.init({
-		//...other configs
-
-		selectMode: 'single'
-	});
+	//设置为单选模式
+	selectMode: 'single'
+	```
 * __参考__:
-	* [demo-single](https://codepen.io/stablejs/pen/zYOMEye?editors=1010#0)
-	* [demo-multiple](https://codepen.io/stablejs/pen/WNeYZPX?editors=1010#0)
+	* <DemoViewer demo="selectMode-single" />
+	* <DemoViewer demo="selectMode-multiple" />
 
 ### sortKey
 * __类型__: `String`
@@ -469,7 +451,7 @@ listeners: {
 		selectMode: 'id',
 	});
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/RwbENqq?editors=1010#0)
+	* <DemoViewer demo="sortKey" />
 	* [sortDirection](#sortdirection)
 
 ### sortDirection
@@ -482,61 +464,56 @@ listeners: {
 	* 'asc'，正序
 	* 'desc'，倒序
 * __用法__: 
-	```JS
-	STable.init({
-		//...other configs
-		//设置默认排序方向
-		sortDirection: 'asc',
-	});
+	```JS//设置默认排序方向
+	sortDirection: 'asc'
+	```
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/BaBvyvX?editors=1010#0)
+	* <DemoViewer demo="sortDirection" />
 
 ### sublistAt
 * __类型__: `Array|String`
 * __详细__: 
 
 	把指定列的每个单元格显示为多行。
-	:::tip
+	::: tip
 	指定列的数据需要为一维数组，数组中的每一项在单元格中渲染为一行。
 	:::
 * __用法__: 
 	```JS
-	STable.init({
-		//...other configs
-		//设置子列表
-		sublistAt: 'movieType'
-	});
+	//设置子列表
+	sublistAt: 'movieType'
 	```
 * __参考__: 
-	* [demo](https://codepen.io/stablejs/pen/RwbENOv)
+	* <DemoViewer demo="sublistAt" />
 
 ### toolbar
 * __类型__: `Array`
 * __详细__: 
 
-	表格的工具栏，它里面是按钮或分割符。
+	表格的工具栏，它里面是可以是按钮或分割符。目前支持的分割符有：
+	* '|'，显示一个竖线分割
+	* ' '，显示一个空白分割
 * __用法__: 
   ```js
-	Stable.init({
-		toolbar: [
-			{
-				text: '删除',
-				icon: 'close',
-				type: 'danger',
-				click(){
-					console.log(this.getSelectedRows())
-				}
+	toolbar: [
+		//增加一个普通按钮
+		{
+			text: '删除',
+			icon: 'st-iconfont st-icon-close',
+			type: 'danger',
+			click(){
+				console.log(this.getSelectedRows())
 			}
-		]
-	})
+		},
+		//增加一个分割线
+		'|',
+		//增加一个空白
+		' ',
+	]
 	```
 * __参考__: 
-<p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="cocopang" data-slug-hash="XWreYEo" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="toolbar">
-  <span>See the Pen <a href="https://codepen.io/cocopang/pen/XWreYEo/">
-  toolbar</a> by ccpang (<a href="https://codepen.io/cocopang">@cocopang</a>)
-  on <a href="https://codepen.io">CodePen</a>.</span>
-</p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+	* [button api](#button)
+	* <DemoViewer demo="toolbar" />
 
 ### updateConfig
 * __类型__: `Array`
@@ -547,8 +524,9 @@ listeners: {
 	如果设置了addUrl参数，但未设置addConfig，会使用editConfig做为添加数据的表单
 	:::
 * __参考__:
-	* [demo](https://codepen.io/liupengke/pen/xxKJezM)
-	* [form配置](#form)
+	* [form api](#form)
+	* [updateUrl](#updateurl)
+	* <DemoViewer demo="updateConfig" />
 
 ### updateUrl
 * __类型__: `String`
@@ -557,13 +535,11 @@ listeners: {
 	修改行数据时的提交地址。如果有此参数，会在每一行的最后添加一列，此列中有一个“修改”按钮，点此按钮，会显示修改窗口。
 * __用法__: 
 	```js
-	Stable.init({
-		updateUrl: '/demo/ajaxUpdate',
-	})
+	updateUrl: '/demo/ajaxUpdate'
 	```
 * __参考__:
-	* [demo](https://codepen.io/liupengke/pen/xxKJezM)
 	* [updateConfig](#updateconfig)
+	* <DemoViewer demo="updateConfig" />
 
 ### url
 * __类型__: `String`
@@ -572,12 +548,10 @@ listeners: {
 	请求每页数据的异步接口。
 * __用法__: 
   ```js
-	Stable.init({
-		url: '/demo/ajaxList',
-	})
+	url: '/demo/ajaxList'
 	```
 
-## 事件
+## 事件 todo
 所有事件的监听函数中this都指向当前STable实例。当然，如果你用箭头函数等方式，就另当别论了。
 
 ### ready
@@ -589,18 +563,15 @@ listeners: {
 	:::
 * __用法__: 
 	```javascript
-	STable.init({
-		//some other config
-		//设置stable初始化完毕后做的事情
-		listeners: {
-			ready(){
-				console.log('窗口初始化完毕');
-			}
+	//设置stable初始化完毕后做的事情
+	listeners: {
+		ready(){
+			console.log('窗口初始化完毕');
 		}
-	});
+	}
 	```
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/QWLzbwN?editors=1010#0)
+	* <DemoViewer demo="ready" />
 
 ### refresh
 * __参数__:
@@ -610,25 +581,22 @@ listeners: {
 	加载完新一页数据后触发。可以真正渲染前，对原始数据做一些处理。
 * __用法__: 
 	```JS
-	STable.init({
-		//...other configs
-		//设置刷新数据后，渲染前先对数据做的处理
-		listeners: {
-			refresh(records){
-				console.log(`当前页共有${records.length}行`);
-				records.forEach(r=>{
-					//名字中的空白都换成下划线
-					r.name = r.name.replace(/\s/g, '_');
-				});
-			}
+	//设置刷新数据后，渲染前先对数据做的处理
+	listeners: {
+		refresh(records){
+			console.log(`当前页共有${records.length}行`);
+			records.forEach(r=>{
+				//名字中的空白都换成下划线
+				r.name = r.name.replace(/\s/g, '_');
+			});
 		}
-	});
+	}
 	```
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/jONXvQE)
+	* <DemoViewer demo="listener-refresh" />
 
 ### beforeadd
-* __Parameters__:
+* __参数__:
 	* data，`Object`，要添加的数据
 * __详细__:
 
@@ -638,25 +606,21 @@ listeners: {
 	:::
 * __用法__: 
 	```javascript
-	STable.init({
-		//...other configs
-
-		listeners: {
-			beforeadd(data){
-				let name = data.name;
-				if(!name || name.length<10){
-					alert('名字不能为空，且大于10个字符');
-					return false;
-				}
+	listeners: {
+		beforeadd(data){
+			let name = data.name;
+			if(!name || name.length<10){
+				alert('名字不能为空，且大于10个字符');
+				return false;
 			}
 		}
-	})
+	}
 	```
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/MWgZqLe)
+	* <DemoViewer demo="beforeadd" />
 
 ### add
-* __Parameters__:
+* __参数__:
 	* response，`Object`，本次请求的返回内容
 	* data，`Object`，已添加的数据
 * __详细__:
@@ -664,25 +628,21 @@ listeners: {
 	添加数据后触发。此时可以拿到服务端返回的数据，然后对数据做一些处理
 * __用法__: 
 	```JS
-	STable.init({
-		//...other configs
-
-		listeners: {
-			add(response, data){
-				if(response.errno==0){
-					console.log(`adding record successed!`);
-				} else {
-					console.log('adding record failed!');
-				}
+	listeners: {
+		add(response, data){
+			if(response.errno==0){
+				console.log(`adding record successed!`);
+			} else {
+				console.log('adding record failed!');
 			}
 		}
-	})
+	}
 	```
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/jONXvJP?editors=1010#0)
+	* <DemoViewer demo="listener-add" />
 
 ### beforeedit
-* __Parameters__:
+* __参数__:
 	* data，`Object`，要编辑的数据
 * __详细__:
 
@@ -692,120 +652,108 @@ listeners: {
 	:::
 * __用法__: 
 	```JS
-	STable.init({
-		//...other configs
-
-		listeners: {
-			beforeedit(data){
-				let name = data.name;
-				if(!name || name.length<10){
-					alert('名字不能为空，且大于10个字符');
-					return false;
-				}
-				//名字中的空格换成下划线
-				data.name = data.name.replace(/\s/g,'_');
+	listeners: {
+		beforeedit(data){
+			let name = data.name;
+			if(!name || name.length<10){
+				alert('名字不能为空，且大于10个字符');
+				return false;
 			}
+			//名字中的空格换成下划线
+			data.name = data.name.replace(/\s/g,'_');
 		}
-	})
+	}
 	```
 
 ### edit
-* __Parameters__:
+* __参数__:
   * data，`Object`，要编辑的数据
 * __详细__:
 
 	修改一行数据时触发。在此对要编辑的数据做处理和发送请求
 * __用法__: 
 	```JS
-	STable.init({
-		//some other config
-		listeners: {
-			edit(data){
-				let name = data.name;
-				if(!name || name.length<10){
-					alert('名字不能为空，且大于10个字符');
-					return false;
-				}
+	listeners: {
+		edit(data){
+			let name = data.name;
+			if(!name || name.length<10){
+				alert('名字不能为空，且大于10个字符');
+				return false;
 			}
 		}
-	})
+	}
 	```
 
 ### search
-* __Parameters__:
+* __参数__:
   * evt，`Object`，搜索的参数
 * __详细__:
 
 	可以在搜索时对于参数做处理，在搜索时触发
-* __用法__: 
   ::: warning
 	注意，如果search的触发函数返回了false，就会中断本次搜索动作
 	:::
+* __用法__: 
   ```js
-	Stable.init({
-		//some other config
-		listeners: {
-			search(evt) {
-				let searchParams;
-				searchParams = this.trimParam(evt);
-				//发送请求
-			},
-		}
-	})
+	listeners: {
+		search(evt) {
+			let searchParams;
+			searchParams = this.trimParam(evt);
+			//发送请求
+		},
+	}
+	```
 
 ### beforedatarequest
-* __Parameters__:
+* __参数__:
   * params，`Object`，搜索的参数
 * __详细__:
   
-	* 发送请求前可用此方法对参数进行组装或校验，发请求前触发
+	发送请求前可用此方法对参数进行组装或校验，发请求前触发
 * __用法__: 
   ```js
-	Stable.init({
-		//some other config
-		listeners: {
-			beforedatarequest(params) {
-				let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
-				//发送请求
-			},
-		}
-	})
+	listeners: {
+		beforedatarequest(params) {
+			let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
+			//发送请求
+		},
+	}
+	```
 
 ### dataload
-* __Parameters__:
+* __参数__:
 	* responseData，`Object`，刚下载的原始数据
 * __详细__:
   
 	从网络下载一页新数据后触发。此时对数据还没有做任何处理。可以在此对原始数据做一些预处理。
 * __用法__: 
   ```js
-	Stable.init({
-		//some other config
-		listeners: {
-			dataload(data) {
-				let name = data.name;
-				if(!name || name.length<10){
-					alert('名字不能为空，且大于10个字符');
-					return false;
-				}
-			},
-		}
-	})
+	listeners: {
+		dataload(data) {
+			let name = data.name;
+			if(!name || name.length<10){
+				alert('名字不能为空，且大于10个字符');
+				return false;
+			}
+		},
+	}
+	```
 
-## 实例方法
+## 实例方法 todo
+
 ### refresh
 * __详细__:
 
-加载完新一页数据后触发，用在listeners中，用于对原始数据做处理。
-```js
-listeners: {
-	refresh(records){
-		//数据刷新之后，可以对数据做一些处理
-		let count = records.length;
-		console.log(`we get ${count} records`);
+	加载完新一页数据后触发，用在listeners中，用于对原始数据做处理。
+	```js
+	listeners: {
+		refresh(records){
+			//数据刷新之后，可以对数据做一些处理
+			let count = records.length;
+			console.log(`we get ${count} records`);
+		}
 	}
-}
-```
+	```
 ### layout
 * __详细__:
 table数据发生变化影响布局时调用。
@@ -845,7 +793,7 @@ let dataList;
 this.setRecords(dataList);
 ```
 
-# column
+## column todo
 表格的列配置。数据中的每一项对应表格中的一列，通过它配置此列的表头、表格内容以及展示样式。
 * __用法__: *表示必填项
 	```js
@@ -940,12 +888,23 @@ this.setRecords(dataList);
 			* btnConfig，此按钮的配置
 			* event，当前点击事件
 		* scope: 当前Dialog实例对象
+* __参考__:
+	* <DemoViewer demo="btn-click" />
 
 ### cls
 * __类型__：`String`
 * __详细__：
 
 	按钮上附加的样式class，用于自定义按钮样式。
+	```javascript
+	buttons: [
+		{
+			cls: 'app-btn'
+		}
+	]
+	```
+* __参考__:
+	* <DemoViewer demo="btn-cls" />
 
 ### disabled
 * __类型__: `Boolean`
@@ -953,6 +912,8 @@ this.setRecords(dataList);
 * __详细__:
 
 	按钮是否可用。当diabled为true时，按钮显示成灰色，并且点击无效。
+* __参考__:
+	* <DemoViewer demo="btn-disabled" />
 
 ### icon
 * __类型__：`String`
@@ -962,16 +923,12 @@ this.setRecords(dataList);
 	```javascript
 	buttons: [
 		{
-			text: '添加资料',
 			//bootstrap 3.x
 			icon: 'glyphicon glyphicon-plus',
 			//elementui
 			icon: 'el-icon-plus',
 			//font-awsome
 			icon: 'fa fa-plus'
-			click(){
-				//do something
-			}
 		}
 	]
 	```
@@ -985,6 +942,7 @@ this.setRecords(dataList);
 	* [bootstrap的icon](https://getbootstrap.com/docs/3.4/components/#glyphicons)
 	* [elementui的icon](https://element.eleme.io/#/zh-CN/component/icon)
 	* [fontawsome的icon](https://fontawesome.com/v4.7.0/cheatsheet/)
+	* <DemoViewer demo="btn-icon" />
 
 ### size
 * __类型__: `String`

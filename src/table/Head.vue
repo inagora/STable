@@ -70,12 +70,12 @@
 								<div class="st-table-head-text st-table-cell-wrap" v-text="col.text||'&nbsp;'"></div>
 								<div
 									v-if="col.sortable"
-									class="st-table-head-sort-icon st-iconfont"
+									class="st-table-head-sort-icon st-icon"
 									:class="[store.sortKey==col.dataIndex?(store.sortDirection=='asc'?'st-icon-arrowdown st-table-head-sorting':'st-icon-arrowdown st-table-head-sorting-desc'):'st-icon-swap']"
 								></div>
 							</div>
 							<div
-								class="st-iconfont st-icon-caret-down st-table-head-menu-btn"
+								class="st-icon st-icon-caret-down st-table-head-menu-btn"
 								@click="$emit('menushow', {
 									column:col, evt:$event
 								})"

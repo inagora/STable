@@ -21,7 +21,7 @@
 				></div>
 				<div
 					v-if="closable"
-					class="st-dialog-close st-iconfont st-icon-close"
+					class="st-dialog-close st-icon st-icon-close"
 					@click="$emit('close')"
 				></div>
 			</div>

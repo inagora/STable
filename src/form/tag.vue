@@ -57,7 +57,7 @@ export default {
 				style={{ backgroundColor: this.color }}>
 				{ this.$slots.default }
 				{
-					this.closable && <i class="st-iconfont st-icon-close st-tag-close" on-click={ this.handleClose }></i>
+					this.closable && <i class="st-icon st-icon-close st-tag-close" on-click={ this.handleClose }></i>
 				}
 			</span>
 		);

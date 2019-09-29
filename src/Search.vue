@@ -19,7 +19,7 @@
 				:conf="{
 					nativeType: 'submit',
 					type: 'primary',
-					icon: 'st-iconfont st-icon-search',
+					icon: 'st-icon st-icon-search',
 					text: locale.search
 				}"
 			/>

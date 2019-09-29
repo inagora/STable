@@ -3,7 +3,7 @@
 		<div v-if="pageMode=='waterfall'" class="st-pn-waterfall">
 			<x-button
 				:conf="{
-					icon: 'st-iconfont st-icon-left',
+					icon: 'st-icon st-icon-left',
 					size: 'small',
 					disabled: !store.hasPrePage,
 					title: locale.previousPage
@@ -12,7 +12,7 @@
 			/>
 			<x-button
 				:conf="{
-					icon: 'st-iconfont st-icon-left st-pn-right',
+					icon: 'st-icon st-icon-left st-pn-right',
 					size: 'small',
 					disabled: !store.hasNextPage,
 					title: locale.nextPage
@@ -23,7 +23,7 @@
 		<div v-else class="st-pn-normal">
 			<x-button
 				:conf="{
-					icon: 'st-iconfont st-icon-left',
+					icon: 'st-icon st-icon-left',
 					size: 'small',
 					disabled: store.page<=1,
 					title: locale.previousPage
@@ -42,7 +42,7 @@
 			/>
 			<x-button
 				:conf="{
-					icon: 'st-iconfont st-icon-left st-pn-right',
+					icon: 'st-icon st-icon-left st-pn-right',
 					size: 'small',
 					disabled: store.page>=store.pageCount,
 					title:locale.nextPage
@@ -67,7 +67,7 @@
 		</div>
 		<x-button
 			:conf="{
-				icon: 'st-iconfont st-icon-sync',
+				icon: 'st-icon st-icon-sync',
 				size: 'small',
 				title: locale.refresh
 			}"
@@ -173,6 +173,10 @@ export default {
 	padding-bottom: 10px;
 	align-items: center;
 
+	&-waterfall,
+	&-normal{
+		display: flex;
+	}
 	.st-btn{
 		border-color: transparent;
 		margin-bottom: 0;

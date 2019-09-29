@@ -32,7 +32,7 @@ function show(type, msg, duration, onclose){
 	el.className = `st-qtip ${typeCls[type]}`;
 	el.innerHTML = `
 		<div class="st-qtip-body">
-			<i class="st-qtip-icon st-iconfont ${icon[type]}"></i>
+			<i class="st-qtip-icon st-icon ${icon[type]}"></i>
 			<span>${msg||''}</span>
 		</div>
 	`;

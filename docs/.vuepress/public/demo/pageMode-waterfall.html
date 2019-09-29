@@ -1,0 +1,15 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		pageMode: 'waterfall',
+		pageIndex: 'id',
+		url: 'https://dc.wfxteam.com/ajaxWaterfall',
+		columns: ['name','movieType','year']
+	});
+</script>

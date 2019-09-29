@@ -1,0 +1,22 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year'],
+		listeners: {
+			refresh(records){
+				console.log(`there are ${records.length} records in this page`);
+				records.forEach(r=>{
+					r.name = r.name.replace(/\s/g, '_');
+					r.movieType = r.movieType.replace(/\|/g, '、');
+				});
+			}
+		}
+	});
+</script>

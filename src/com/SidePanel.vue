@@ -4,7 +4,7 @@
 		<div class="st-sp-doc">
 			<div class="st-sp-head">
 				<div class="st-sp-close">
-					<i class="st-iconfont st-icon-arrowdown" @click="$emit('close')"></i>
+					<i class="st-icon st-icon-arrowdown" @click="$emit('close')"></i>
 				</div>
 				<span class="st-sp-title" v-text="title"></span>
 			</div>

@@ -1,0 +1,16 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		title: '下载时，同时下载3个页面，以加速下载',
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year'],
+		downloadable: 'all',
+		parallelCount: 3
+	});
+</script>
