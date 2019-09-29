@@ -423,7 +423,8 @@ export default {
 		border-top: 1px solid #e8eaec;
 		background-color: #fafafa;
 		padding: 7px 20px 8px;
-		text-align: right;
+		display: flex;
+		justify-content: flex-end;
 	}
 	&-foot>button{
 		margin-left: 10px;

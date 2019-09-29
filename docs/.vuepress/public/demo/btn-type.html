@@ -1,0 +1,44 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		title: 'STable有7种按钮样式可选：',
+		toolbar: [
+			{
+				text: 'default',
+				type: 'default'
+			},
+			{
+				text: 'primary',
+				type: 'primary'
+			},
+			{
+				text: 'success',
+				type: 'success'
+			},
+			{
+				text: 'warning',
+				type: 'warning'
+			},
+			{
+				text: 'danger',
+				type: 'danger'
+			},
+			{
+				text: 'info',
+				type: 'info'
+			},
+			{
+				text: 'text',
+				type: 'link'
+			}
+		],
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year']
+	});
+</script>

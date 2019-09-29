@@ -22,6 +22,7 @@
 			componentOrder
 			downloadable
 			locale
+			btn-style
 		`;
 		var params = demoList.split(/\s/).filter(item=>!!item.trim());
 		document.querySelector('div').innerHTML = params.map(name=>`<a href="/demoViewer?demo=${name}">${name}</a>`).join('');

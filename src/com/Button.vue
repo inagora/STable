@@ -28,7 +28,7 @@ export default {
 		let otherConf = {};
 		let conf = {};
 		for(let k in this.conf){
-			if(['text','type','nativeType', 'icon', 'size', 'disabled', 'cls', 'click', 'visible'].includes(k)){
+			if(['text','type','nativeType', 'icon', 'size', 'disabled', 'cls', 'style', 'click', 'visible'].includes(k)){
 				conf[k] = this.conf[k];
 			}else{
 				otherConf[k] = this.conf[k];

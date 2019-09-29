@@ -934,9 +934,9 @@ this.setRecords(dataList);
 	```
 	当然STable自身也带了几个图标，使用方式
 	```
-	icon: "st-iconfont st-icon-[icon type]"
+	icon: "st-icon st-icon-[icon type]"
 	```
-	比如，删除的icon就是 `st-iconfont st-icon-delete`。icon列表见下图
+	比如，删除的icon就是 `st-icon st-icon-delete`。icon列表见下图
   ![stble图标](/img/icon.gif)
 * __参考__:
 	* [bootstrap的icon](https://getbootstrap.com/docs/3.4/components/#glyphicons)
@@ -954,13 +954,15 @@ this.setRecords(dataList);
 	* medium，中等尺寸
 	* small，小尺寸
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/GRKzvLY?editors=1010#0)
+	* <DemoViewer demo="btn-size" />
 
 ### style
 * __类型__：`Object`
 * __详细__：
 
 	按钮上附加的style样式，用于自定按钮样式。
+* __参考__:
+	* <DemoViewer demo="btn-style" />
 
 ### text
 * __类型__：`String`
@@ -973,9 +975,9 @@ this.setRecords(dataList);
 * __默认值__：'default'
 * __详细__：
 
-	对应bootstrap中对按钮类型的设定，它有 default / primary / success / warning / danger / info / text	。不同类型对应按钮的颜色不一样。
+	对应bootstrap中对按钮类型的设定，它有 default / primary / success / warning / danger / info / link	。不同类型对应按钮的颜色不一样。
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/BaBMdvM?editors=1010#0)
+	* <DemoViewer demo="btn-type" />
 
 ### visible
 * __类型__：`Boolean`
@@ -983,6 +985,8 @@ this.setRecords(dataList);
 * __详细__：
 
 	是否显示此按钮。注意，隐藏状态下，button的dom还是存在的。
+* __参考__:
+	* <DemoViewer demo="btn-visible" />
 
 
 ## Dialog
@@ -1014,7 +1018,7 @@ Dialog的配置参数有：
 
 	窗口创建好之后，是不是立即显示出来。如果为false，就需要程序在合适时机调用show方法显示出来
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/bGbzKPe?editors=1010#0)
+	* <DemoViewer demo="dialog-autoShow" />
 
 ### bodyCls
 * __类型__：`String`
@@ -1022,15 +1026,15 @@ Dialog的配置参数有：
 
 	应用在窗口元素的样式名，比如`app-dialog app-dialog-new`
 * __参考__：
-	* [demo](https://codepen.io/stablejs/pen/OJLdwzp?editors=1010#0)
+	* <DemoViewer demo="dialog-bodyCls" />
 
 ### bodyStyle
 * __类型__：`Object`
 * __详细__：
 
 	应用在窗口元素上的样式
-* __参考__:
-	* [demo](https://codepen.io/stablejs/pen/MWgLBVB?editors=0010#0)
+* __参考__：
+	* <DemoViewer demo="dialog-bodyStyle" />
 
 ### buttons
 * __类型__：`Array`
@@ -1038,8 +1042,8 @@ Dialog的配置参数有：
 
 	buttons中的每一项是一个按钮的配置
 * __参考__：
-	* [按钮配置](#button)
-	* [demo](https://codepen.io/stablejs/pen/eYOxjKQ?editors=0010#0)
+	* [button api](#button)
+	* <DemoViewer demo="dialog-buttons" />
 
 ### closable
 * __类型__：Boolean
@@ -1048,7 +1052,7 @@ Dialog的配置参数有：
 
 	是否在标题区域显示一个关闭按钮。注意，这个参数并不是限制窗口关闭不了，只是不显示右上角的关闭按钮。
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/JjPxBwj?editors=0010#0)
+	* <DemoViewer demo="dialog-closable" />
 
 ### closeAction
 * __类型__：`String`
@@ -1059,7 +1063,7 @@ Dialog的配置参数有：
 	* 'destroy'，关闭窗口后直接销毁它
 	* 'hide'，关闭窗口后元素不销毁，可以再次通过show方法显示出来
 * __参考__:
-	* [demo](https://codepen.io/stablejs/pen/QWLYBYr?editors=1010)
+	* <DemoViewer demo="dialog-closeAction" />
 
 ### contentEl
 * __类型__：`HTMLElement`

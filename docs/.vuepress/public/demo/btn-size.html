@@ -1,0 +1,31 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		title: 'STable有三种按钮尺寸',
+		toolbar: [
+			{
+				text: 'large',
+				size: 'large',
+				type: 'primary'
+			},
+			{
+				text: 'medium',
+				size: 'medium',
+				type: 'primary'
+			},
+			{
+				text: 'small',
+				size: 'small',
+				type: 'primary'
+			}
+		],
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year']
+	});
+</script>
