@@ -195,7 +195,7 @@ export default {
 
   &-item {
     width: 100%;
-    height: 3em;
+    height: 32px;
     line-height: 1;
     border: 1px solid #dcdfe6;
     font-size: inherit;

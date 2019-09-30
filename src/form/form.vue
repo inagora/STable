@@ -404,13 +404,13 @@ export default {
 
       &-content {
 				display: flex;
-        line-height: 3em;
+        line-height: 32px;
         position: relative;
 				font-size: 1.4em;
 				color: #666;
 				
 				>input {
-					height: 3em;
+					height: 32px;
 				}
       }
     }

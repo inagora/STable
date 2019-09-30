@@ -353,7 +353,7 @@ export default {
 }
 .st-select {
   // width: 100%;
-  min-height: 3em;
+  min-height: 32px;
   display: flex;
   position: relative;
 	border: 1px solid #dcdfe6;
@@ -377,7 +377,7 @@ export default {
     flex-wrap: wrap;
     display: flex;
     align-items: center;
-    min-height: 3em;
+    min-height: 32px;
     &-item {
       height: 2em;
       padding: 0 8px;

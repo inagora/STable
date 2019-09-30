@@ -46,6 +46,28 @@
 		el: '#box',
 		title: 'form测试用例',
 		titleVisible: true,
+    searchFilter: [
+			{
+				label: '电影名',
+				name: 'name'
+			},
+			{
+				label: '类型',
+				name: 'type',
+				list: ['动作', '喜剧', '爱情', '记录片']
+			},
+			{
+				label: '类型2',
+				name: 'type2',
+				type: 'select'
+			},
+			{
+				label: '上映年份',
+				name: 'year',
+				type: 'date',
+				format: 'YYYY'
+			}
+		],
 		url: '/ajaxList',
 		rowNumberVisible: true,
 		selectMode: 'single',
@@ -143,7 +165,6 @@
 			{text:'测试', type: 'warning', icon:'st-iconfont st-icon-lock'},
 			{text:'测试', type: 'link'}
     ],
-    form: {},
 		addUrl: '/',
 		batDeleteUrl: '/',
 		downloadable: true,

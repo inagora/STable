@@ -271,7 +271,7 @@ export default {
   color: #666;
   transition: all 200ms ease;
   border: 1px solid #e5e5e5;
-  height: 3em;
+  height: 32px;
   box-sizing: border-box;
   outline: none;
 	padding: 0 3em 0 1em;
