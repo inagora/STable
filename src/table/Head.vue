@@ -81,6 +81,7 @@
 								})"
 							></div>
 							<div
+								v-if="col.resizable"
 								class="st-table-head-resizer"
 								@mousedown="$emit('resizestart', {
 									column:col, evt:$event

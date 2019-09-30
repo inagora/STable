@@ -32,6 +32,7 @@
 					:style="{height:recordsHeight[idx]}"
 					@mouseenter="store.hlRowNum=idx"
 					@mousedown="store.focusRowNum=idx"
+					@click="store.emit('rowclick', record, $event)"
 				>
 					<td
 						v-for="(col, colIdx) of columns"
@@ -44,6 +45,7 @@
 							}
 						]"
 						:style="col.style"
+						@click="cellClick(record, col, $event);store.emit('cellclick', record, col, $event)"
 					>
 						<label v-if="col.type=='radio'" class="st-table-label-cell st-table-cell">
 							<input v-model="store.radioVal" :value="idx" type="radio" />
@@ -75,19 +77,6 @@
 							:class="{'st-table-cell-nowrap':!col.cellWrap}"
 							v-html="record._st_aux.render[col.dataIndex]"
 						></div>
-						<template v-else-if="col.type=='image'">
-							<template v-if="sublistAt.includes(col.dataIndex)">
-								<div
-									v-for="(_src,_srcIdx) of record[col.dataIndex]"
-									:key="_srcIdx"
-								>
-									<img :src="_src" :style="col.imgStyle" />
-								</div>
-							</template>
-							<div v-else>
-								<img :src="record[col.dataIndex]" :style="col.imgStyle" />
-							</div>
-						</template>
 						<div v-else-if="col.type=='button'" class="st-table-btn-box st-table-cell">
 							<template v-for="(btn, btnIdx) of col.buttons">
 								<x-button
@@ -152,6 +141,10 @@ export default {
 			if(evt.target.classList.contains('st-table-body-box')){
 				this.store.focusRowNum = -1;
 			}
+		},
+		cellClick(record, col, evt){
+			if(col.click)
+				col.click.call(this.$parent.$parent, record, col, evt);
 		}
 	}
 };
@@ -194,6 +187,13 @@ export default {
 }
 .st-table-btn-box.st-table-cell{
 	padding-bottom: 0;
+	display: flex;
+	flex-wrap: wrap;
+}
+.st-table-cell-nowrap{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .st-table-btn-box .st-btn{
 	margin-right: 10px;

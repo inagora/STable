@@ -11,22 +11,18 @@
 	是additionalColumnConfig的缩写。有时候列配置columns是从服务端下发的，但在页面里还需要用js做一些额外配置，就可以用这个参数配置。它是一个对象，每个key值对应一个列的dataIndex，value是对此列增加的配置。
 * __用法__:
 	```js
-	
-	STable.init({
-		//...some other config
-		//额外增加一些列设置
-		acc: {
-			actorName: {
-				width: 200	//设置列actorName的宽度为200
-			},
-			avatar: {
-				//列avatar增加render函数，展示一个图片
-				render(record){
-					return `<a href="/avatar/big/${record.id}" target="_blank"><img src="${record.avatar}"></a>`;
-				}
+	//额外增加一些列设置
+	acc: {
+		actorName: {
+			width: 200	//设置列actorName的宽度为200
+		},
+		avatar: {
+			//列avatar增加render函数，展示一个图片
+			render(record){
+				return `<a href="/avatar/big/${record.id}" target="_blank"><img src="${record.avatar}"></a>`;
 			}
 		}
-	});
+	}
 	```
 * __参考__:
 	* <DemoViewer demo="acc" />
@@ -48,13 +44,10 @@
 
 * __用法__:
 	``` js
-	STable.init({
-		//...some other config
-		//把列表请求换成post方式
-		actionMethods: {
-			read: 'POST'
-		}
-	});
+	//把列表请求换成post方式
+	actionMethods: {
+		read: 'POST'
+	}
 	```
 * __参考__:
 	* <DemoViewer demo="actionMethods" />
@@ -130,7 +123,7 @@
 
 	更多、更详细的列配置参数，请看 [column config](#columnconfig)
 * __参考__:
-	* [column config](#columnconfig)
+	* [column api](#column)
 	* <DemoViewer demo="columns" />
 
 ### componentOrder
@@ -392,16 +385,14 @@
 
 	搜索区域的配置。因为搜索区域本质上是一个form表单，搜索配置其实是表单项的配置。
 * __用法__: 
-  ```JS
-	STable.init({
-		searchFilter: [
-			{
-				label: '名字',
-				name: 'name'
-			}
-		]
-		//...other configs
-	});
+  ```javascript
+	searchFilter: [
+		{
+			label: '名字',
+			name: 'name'
+		}
+	]
+	```
 * __参考__:
 	* [form表单配置](#form)
 	* <DemoViewer demo="searchFilter" />
@@ -793,39 +784,299 @@ let dataList;
 this.setRecords(dataList);
 ```
 
-## column todo
-表格的列配置。数据中的每一项对应表格中的一列，通过它配置此列的表头、表格内容以及展示样式。
-* __用法__: *表示必填项
-	```js
+## column
+表格的列配置。通过它配置此列的表头、表格内容以及展示样式。一般情况下，它的配置如下：
+```javascript
+columns: [
+	{
+		text: '电影名',
+		dataIndex: 'name'
+	},
+	{
+		text: 'year',
+		dataIndex: 'year'
+	},
+	{
+		buttons: [
+			{
+				text: '删除',
+				click(record){
+					//删除操作
+				}
+			}
+		]
+	}
+]
+```
+有时候，text和dataIndex一样的时候，可以采用简写方式
+```javascript
+columns: [
+	'name', //等同于 { text: 'name', dataIndex: 'name' }
+	'year', //等同于 { text: 'year', dataIndex: 'year' }
+	{
+		buttons: [
+			{
+				text: '删除',
+				click(record){
+					//删除操作
+				}
+			}
+		]
+	}
+]
+```
+
+### buttons
+* __类型__: `Array`
+* __详细__:
+
+	buttons中的每一项是一个按钮的配置。
+	```javascript
+	//比如下面配置了两列，第一列显示名字，第二列显示两个按钮
 	columns: [
 		{
-			header: 'id', //* 每列的title
-			dataIndex:'id', //* 对应数据的字段名
-			width: 100, // 宽度（可不填）
-			locked: true, // 是否锁定，默认左侧锁定 可选值：right
-			sortable: true, // 是否排序
-			render(record){ //对当前行数据处理渲染
-				return record.actors.join(' | ');
-			},
-			buttons: [{ //详细使用方法见buttons
-				text: 'fff', //button文字颜色
-				click(){  //button操作
-					console.log(this);
-				},
-				icon: 'st-iconfont st-icon-eye', //button添加icon
-			}]
+			text: '名字',
+			dataIndex: 'name'
 		},
+		{
+			buttons: [
+				{
+					text: '删除',
+					type: 'danger',
+					click(){
+						//delete this record
+					}
+				},
+				{
+					text: '提交',
+					type: 'primary',
+					click(){
+						//submit this record
+					}
+				}
+			]
+		}
 	]
-	
 	```
-* __参考__: todo
+	列配置中的按钮也有visible属性，但它设置与普通按钮不一样。这里visible的取值有两种类型：
+	* `Array`，数组中有两项，第一项为`dataIndex`，第二项为要比较的值。如果此行数据中，`dataIndex`对应的数据与第二项相等，此按钮才显示。
+	* `Function`，函数有一个参数record(此行的原始数据)，此函数返回true时此按钮显示。
+	```javascript
+	columns: [
+		{
+			buttons: [
+				{
+					text: '删除',
+					//'2012'年上映的电影，'删除'按钮才显示
+					visible: ['year', '2012']
+				},
+				{
+					text: '提交',
+					//'2012'年后的电影，'提交'按钮才显示
+					visible(record){
+						return parseInt(record.year||0)>2012;
+					}
+				}
+			]
+		}
+	]
+	```
+* __参考__：
+	* [button api](#button)
+	* <DemoViewer demo="column-buttons" />
+	* <DemoViewer demo="column-buttons-visible" />
 
-#### __介绍__ :设置表格数据，无需手动刷新。
-```js
-let dataList;
-//dataList = res.data.list
-this.setRecords(dataList);
-```
+### cellWrap
+* __类型__: `Boolean`
+* __默认值__: true
+* __详细__:
+
+	单元格中的内容是不是自动换行。如果cellWrap为false，当内容超过单元格宽度时，自动截断，显示省略号
+* __参考__:
+	* <DemoViewer demo="column-buttons-visible" />
+
+### click
+* __类型__: `Function`
+* __详细__:
+
+	此列的单元格被点击时，触发的函数。函数的参数有：
+	* `record`，此行的原始数据
+	* `columnConfig`，此列的配置
+	* `event`，点击事件
+* __参考__:
+	* <DemoViewer demo="column-click" />
+
+### cls
+* __类型__: `String`
+* __详细__:
+
+	此列的单元格应用的样式。
+	::: tip
+	有时候，只要表格体应用这个样式，表头不需要，可以通过在样式选择器上加上表格体样式(.st-table-body)来限制，只要表体内样式生效。
+	```css
+	.st-table-body .name-cell{
+		color: red;
+	}
+	```
+	:::
+* __参考__:
+	* <DemoViewer demo="column-cls" />
+
+### dataIndex
+* __类型__:	`String`
+* __详细__:
+
+	dataIndex有两个作用：
+	1. 指明单元格中要显示的内容，它做为key取此行数据的内容；
+	2. 做为列的唯一标识，所以dataIndex的值不能重复
+	::: tip
+	有时候我们并不会指定列的dataIndex参数，比如设置了列的buttons或者render参数后，`dataIndex`就不是必须的了。这时候STable其实还是会自动生成一个dataIndex，供内容使用。
+	:::
+
+### defaultOption
+* __类型__: `String`
+* __详细__:
+
+	如果设置了options参数，当没有对应的可选项时，默认显示的内容。
+* __参考__:
+	* [options](#options)
+	* <DemoViewer demo="column-options" />
+
+### flex
+* __类型__:	`Number`
+* __详细__:
+
+	以权重比例的方式设置此列的宽度。比如有三列A、B、C，它们的flex值分别是1、4、5，那么A列的宽度就是10%，B列40%，C列50%。
+	::: tip
+	如果有些列设置了width（绝对宽度），有些列设置了flex（比例宽度），那么flex计算时 `flex列总宽度`=`STable宽度`-`绝对列总宽度`。flex列按权重分flex列的总宽度
+	:::
+* __参考__:
+	* [width](#width)
+	* <DemoViewer demo="column-flex" />
+
+### locked
+* __类型__:	`Boolean|String`
+* __默认值__:	false
+* __详细__:
+
+	设置此列是否固定，以及固定在左边还是右边。固定后此列就不会随着横向滚动条左右滑动。可取的值有：
+	* true，此列固定在左侧
+	* false，此列不固定
+	* 'left'，固定在左侧
+	* 'right'，固定在右侧
+* __参考__:
+	* <DemoViewer demo="column-locked" />
+
+### options
+* __类型__: `Object`
+* __详细__:
+
+	有时候我们并不想直接显示dataIndex指定的内容，而是想显示一个映射的内容。比如 `dataIndex: 'status'`，status对应的是一个数字，我们想让用户看到这个数字表示的文字描述，比如10表时已删除，20表示审核中。就可以用options实现这个功能。
+	```javascript
+	columns: [
+		{
+			text: '订单状态',
+			dataIndex: 'status',
+			options: {
+				'10': '已删除',
+				'20': '审核中',
+				'30': '订单完成'
+			}
+		}
+	]
+	```
+* __参考__:
+	* [defaultOption](#defaultOption)
+	* <DemoViewer demo="column-options" />
+
+### render
+* __类型__: `Function`
+* __参数__:
+	* `record`，此行的原始数据
+	* `colConfig`，此列的配置
+	* `recordIndex`，此行的行号，从0开始
+* __详细__:
+
+	一般情况下，通过`dataIndex`指定的数据就满足展示的需求了。但是，特殊情况下，需要对内容加工，比如，需要把内容做为一个url，赋值给一个img元素。render函数就是满足这种自定义展示内容需求的。
+	```javascript
+	columns: [
+		{
+			dataIndex: 'url',
+			render(record){
+				return `<img class="avatar" src="${record.url}" />`;
+			}
+		}
+	]
+	```
+* __参考__:
+	* <DemoViewer demo="column-render" />
+
+### resizable
+* __类型__:	`Boolean`
+* __默认值__: true
+* __详细__:
+
+	设置此列在表头区域是否能拖动缩放。
+* __参考__:
+	* <DemoViewer demo="column-resizable" />
+
+### sortable
+* __类型__: `Boolean`
+* __默认值__: false
+* __详细__:
+
+	设置点击此列头时，能否按此列数据对表格进行排序。`注意`，STable并不会直接排序，而是重新发起数据请求，加载第一页的数据。请求数据时，会带上sort_key、sort_order参数，以表明按哪列、哪个方向排序。其中sort_key为当前列的`dataIndex`值。
+* __参考__:
+	* <DemoViewer demo="column-sortable" />
+
+### style
+* __类型__:	`Object`
+* __详细__:
+
+	应用在此列上的样式。
+	```javascript
+	columns: [
+		{
+			text: '电影名',
+			dataIndex: 'name',
+			style: {
+				color: 'red',
+				fontWeight: 'bold'
+			}
+		}
+	]
+	```
+* __参考__:
+	* <DemoViewer demo="column-style" />
+
+### text
+* __类型__:	`String`
+* __详细__:
+
+	列头显示的名字。如果没有指定此项，但指定了`dataIndex`，会用dataIndex做为text的值。
+	::: tip
+	在之前的版本中，我们使用参数`header`来配置列名
+	:::
+* __参考__:
+	* <DemoViewer demo="column-text" />
+
+### visible
+* __类型__:	`Boolean`
+* __默认值__:	true
+* __详细__:
+
+	设置打开时此列是否可见。可以通过列头的设置菜单，手动调整哪些列可见。
+* __参考__:
+	* <DemoViewer demo="column-visible" />
+
+### width
+* __类型__:	`Number`
+* __详细__:
+
+	以绝对值设置此列的宽度。
+* __参考__:
+	* [flex](#flex)
+	* <DemoViewer demo="column-flex" />
 
 ## form
 * __介绍__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件使用（x-form），也可集成在STable使用，详见demo。
@@ -1151,9 +1402,12 @@ Dialog的配置参数有：
 * __详细__：
 
 	窗口的宽度。可以是具体的数值，也是可以百分比，如'80%'
+* __参考__:
+	* <DemoViewer demo="dialog-height-width" />
 
 ### Dialog的实例方法
 通过Dialog.create方法创建的Dialog实例，有一些方法，控制窗口的行为。
 * show()，使窗口显示出来
-* hide()，隐藏窗口，并且不销毁dom
+* hide()，隐藏窗口，但不销毁dom
+* destroy()，直接销毁dom
 * close()，隐藏窗口，然后根据closeAction决定是否要销毁窗口dom

@@ -1,0 +1,39 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: [
+			{
+				dataIndex: 'id',
+				locked: true,
+				width: 200
+			},
+			{
+				dataIndex: 'name',
+				locked: 'left',
+				width: 200
+			},
+			{
+				dataIndex: 'nameEn',
+				locked: 'right',
+				width: 400
+			},
+			{
+				dataIndex: 'movieType',
+				width: 300
+			},
+			{
+				dataIndex: 'locationName',
+				width: 300
+			},
+			'year',
+			'rating'
+		]
+	})
+</script>

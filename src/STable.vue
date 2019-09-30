@@ -199,6 +199,9 @@ export default {
 				item.text = item.header;
 			}
 
+			if(!item.text)
+				item.text = item.dataIndex||'-';
+
 			/**
 			 * @param {String[]|Object} column.options 此列显示的时候，不显示行数据dataIndex指定的值，也是从options找到对应的映射显示
 			 */
@@ -287,8 +290,6 @@ export default {
 			} else {
 				item.locked = false;
 			}
-			if(!item.text)
-				item.text = '-';
 			
 			return item;
 		});

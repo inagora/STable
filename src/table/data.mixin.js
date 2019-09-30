@@ -216,10 +216,7 @@ export default {
 					} else if (col.type=='option') {
 						let val = col.options[record[col.dataIndex]+''];
 						if(typeof val=='undefined') {
-							if(typeof col.defaultOption!='undefined') {
-								val = col.defaultOption!='undefined';
-							} else 
-								val = '';
+							val = (typeof col.defaultOption=='undefined')?'':col.defaultOption;
 						}
 						record._st_aux.option[col.dataIndex] = val;
 					}
