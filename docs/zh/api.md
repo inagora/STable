@@ -542,13 +542,15 @@
 	url: '/demo/ajaxList'
 	```
 
-## 事件 todo
-所有事件的监听函数中this都指向当前STable实例。当然，如果你用箭头函数等方式，就另当别论了。
-
+## 事件
+在STable操作的不同时机，会有各种事件触发。监听这些事件，可以特定时机完成一些特殊的工作。
+::: tip
+所有事件的监听函数中，`this`都指向当前STable实例。当然，如果你用箭头函数等方式，就另当别论了。
+:::
 ### ready
 * __详细__:
 
-	在STable初始化之后触发。适合作一些准备工作，如事件绑定、数据准备，类似于浏览器的domready
+	在STable初始化之后触发。适合作一些准备工作，如事件绑定、数据准备，类似于浏览器的`DOMContentLoaded`事件。
 	:::warning
 	ready事件中，STable的初化工作完成，但数据不一定准备好了。
 	:::
@@ -608,6 +610,8 @@
 	}
 	```
 * __参考__:
+	* [addUrl](#addurl)
+	* [addConfig](#addconfig)
 	* <DemoViewer demo="beforeadd" />
 
 ### add
@@ -630,6 +634,8 @@
 	}
 	```
 * __参考__:
+	* [addUrl](#addurl)
+	* [addConfig](#addconfig)
 	* <DemoViewer demo="listener-add" />
 
 ### beforeedit
@@ -655,80 +661,186 @@
 		}
 	}
 	```
+* __参考__:
+	* [updateUrl](#updateurl)
+	* [updateConfig](#updateconfig)
+	* <DemoViewer demo="listener-beforeedit" />
+
+
 
 ### edit
 * __参数__:
-  * data，`Object`，要编辑的数据
+  * response，`Object`，本次请求的返回内容
+	* data，`Object`，编辑的数据
 * __详细__:
 
 	修改一行数据时触发。在此对要编辑的数据做处理和发送请求
 * __用法__: 
 	```JS
 	listeners: {
-		edit(data){
-			let name = data.name;
-			if(!name || name.length<10){
-				alert('名字不能为空，且大于10个字符');
-				return false;
+		edit(res, data){
+			if(res.errno){
+				alert(res.errmsg);
+			} else {
+				alert(`the new name is ${data.name}`);
 			}
 		}
 	}
 	```
+* __参考__:
+	* [updateUrl](#updateurl)
+	* [updateConfig](#updateconfig)
+	* <DemoViewer demo="listener-beforeedit" />
+
+### beforebatdelete
+* __参数__:
+	* records, `Array`, 被选中的数据行
+* __详细__:
+	点击批量删除按钮时触发。如果返回`false`，会阻止删除动作。
+* __参考__:
+	* <DemoViewer demo="listener-batdelete" />
+
+### batdelete
+* __参数__:
+	* response, `Object`, 删除请求的返回内容
+	* records, `Array`, 被选中的数据行
+* __详细__:
+	批量删除后触发。
+* __参考__:
+	* <DemoViewer demo="listener-batdelete" />
+
+### beforedownload
+* __参数__:
+	* records, `Array`，要生成excel文件的数据
+* __详细__:
+	在导出数据时触发。注意，此时已经请服务端把所有数据都下载成功了，在beforeexport触发函数里，可以对数据进行预加工。
+	::: tip
+	如果触发函数返回false，就会阻止数据导出
+	:::
+* __参考__:
+	* <DemoViewer demo="listener-download" />
 
 ### search
 * __参数__:
-  * evt，`Object`，搜索的参数
+  * data，`Object`，搜索的参数
 * __详细__:
 
-	可以在搜索时对于参数做处理，在搜索时触发
+	在搜索u前触发，可在此时对参数做处理。
   ::: warning
 	注意，如果search的触发函数返回了false，就会中断本次搜索动作
 	:::
 * __用法__: 
   ```js
 	listeners: {
-		search(evt) {
-			let searchParams;
-			searchParams = this.trimParam(evt);
-			//发送请求
-		},
+		search(data) {
+			//对参数ids做处理
+			if(data.ids) {
+				data.ids = data.ids
+					//根据空格、逗号和竖线分割
+					.split(/[ ,|]/)
+					//去掉空白字符
+					.map(item=>item.trim())
+					//只留下由数字组成的字符串
+					.filter(item=>/^\d+$/.test(item));
+				//如果处理后没有合格的id了，就阻止本次搜索
+				if(data.ids.length<=0) {
+					alert('请填写正确的id');
+					return false;
+				} else {
+					//把合格的id用竖线拼接，提交给服务端
+					data.ids = data.ids.join('|');
+				}
+			}
+		}
 	}
 	```
+* __参考__:
+	* <DemoViewer demo="listener-search" />
 
 ### beforedatarequest
 * __参数__:
-  * params，`Object`，搜索的参数
+	* requestOption，`Object`，包括请求的url地址、请求参数和方法：
+		* url，`String`，请求地址
+		* data，`Object`，请求参数
+		* method，`String`，请求方法，如"GET"、"POST"
+		* timeout，`Number`，请求超时的毫秒数，默认30000（30秒）。
 * __详细__:
-  
-	发送请求前可用此方法对参数进行组装或校验，发请求前触发
-* __用法__: 
-  ```js
+
+	发送请求前可用此方法对参数进行校验和处理。比如修改请求地址
+	```javascript
 	listeners: {
-		beforedatarequest(params) {
-			let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
-			//发送请求
-		},
+		beforedatarequest(req) {
+			let {url, data, method} = req;
+			//处理url
+			req.url = url+'?type=1';
+			//如果请求的count大于100，阻止本次请求
+			if(data.count>100)
+				return false;
+			data.name = '天空';
+			req.data = data;
+		}
 	}
 	```
+	可以修改原始请求对象，也可以直接拼装一个请求对象，然后返回
+	```javascript
+	listeners: {
+		beforedatarequest(req) {
+			if(req.data.type=='test'){
+				return {
+					url: '/ajaxTest',
+					data: {
+						type: 'test',
+						count: 10
+					},
+					method: 'post'
+				}
+			}
+		}
+	}
+	```
+	::: tip 
+	如果事件函数返回了`false`，会阻止本次请求。
+	:::
+* __参考__: 
+	* <DemoViewer demo="listener-beforedatarequest" />
 
 ### dataload
 * __参数__:
-	* responseData，`Object`，刚下载的原始数据
+	* response，`Object`，刚下载的原始数据
 * __详细__:
   
 	从网络下载一页新数据后触发。此时对数据还没有做任何处理。可以在此对原始数据做一些预处理。
 * __用法__: 
   ```js
 	listeners: {
-		dataload(data) {
-			let name = data.name;
-			if(!name || name.length<10){
-				alert('名字不能为空，且大于10个字符');
-				return false;
-			}
+		dataload(res) {
+			res.data.list.forEach(record=>{
+				record.name = record.replace(/ /g, '-');
+			});
 		},
 	}
 	```
+* __参考__: 
+	* <DemoViewer demo="listener-dataload" />
+
+### rowclick
+* __参数__:
+	* record, `Object`，被点击的行数据
+	* event，`MouseEvent`，点击事件
+* __详细__:
+	当表格某一行被点击时触发。
+* __参考__: 
+	* <DemoViewer demo="listener-rowclick" />
+
+### cellclick
+* __参数__:
+	* record, `Object`，被点击的行数据
+	* colConfig, `Object`，被点击列的配置
+	* event，`MouseEvent`，点击事件
+* __详细__:
+	当表格单元被点击时触发。
+* __参考__: 
+	* <DemoViewer demo="listener-cellclick" />
 
 ## 实例方法 todo
 
@@ -1188,7 +1300,7 @@ columns: [
 	icon: "st-icon st-icon-[icon type]"
 	```
 	比如，删除的icon就是 `st-icon st-icon-delete`。icon列表见下图
-  ![stble图标](/img/icon.gif)
+  ![stble图标](/STable/img/icon.gif)
 * __参考__:
 	* [bootstrap的icon](https://getbootstrap.com/docs/3.4/components/#glyphicons)
 	* [elementui的icon](https://element.eleme.io/#/zh-CN/component/icon)

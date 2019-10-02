@@ -60,8 +60,7 @@ export default {
 				searchParams = this.trimParam(searchParams);
 				
 			}
-			
-			let ret = this.store.emit('search', evt);
+			let ret = this.store.emit('search', searchParams);
 			if(ret===false)
 				return;
 			this.store.searchParams = searchParams;

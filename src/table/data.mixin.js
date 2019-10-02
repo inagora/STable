@@ -111,6 +111,8 @@ export default {
 			let ajaxOptions = {url:this.url, data: params, method:this.actionMethods.read};
 			
 			let ret = this.store.emit('beforedatarequest', ajaxOptions);
+			if(ret===false)
+				return false;
 			if(ret && ret.url)
 				ajaxOptions = ret;
 			
@@ -262,11 +264,17 @@ export default {
 					let ajaxOptions = {url:this.url, data: params, method:this.actionMethods.read, timeout: this.downloadTimeout};
 					
 					let ret = this.store.emit('beforedatarequest', ajaxOptions);
+					if(ret===false)
+						return false;
 					if(ret && ret.url)
 						ajaxOptions = ret;
 				
 					let job = this.ajax.request(ajaxOptions);
 					job.then(res=>{
+						let ret = this.store.emit('dataload', res);
+						if(ret)
+							res = ret;
+
 						list[params.page] = res.data&&res.data.list||[];
 						if(res.data && res.data.page_count)
 							pageCount = res.data.page_count;
@@ -345,13 +353,19 @@ export default {
 					if(this.downloadAllFromJustOnePage) {
 						params.count = 'max';
 					}
-					let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
+					let ajaxOptions = {url:this.url, data: params, method:this.actionMethods.read, timeout: this.downloadTimeout};
 					
 					let ret = this.store.emit('beforedatarequest', ajaxOptions);
+					if(ret===false)
+						return false;
 					if(ret && ret.url)
 						ajaxOptions = ret;
 					
 					this.ajax.request(ajaxOptions).then(res=>{
+						let ret = this.store.emit('dataload', res);
+						if(ret)
+							res = ret;
+							
 						if(res.errno){
 							alert(res.errmsg);
 							reject(res);

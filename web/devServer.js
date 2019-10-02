@@ -10,6 +10,10 @@ module.exports = function(app, server){
 			let name = params.name.toLocaleLowerCase();
 			allMovies = allMovies.filter(item=>item.name.toLocaleLowerCase().includes(name));
 		}
+		if(params.ids) {
+			let ids = params.ids.split('|').map(item=>parseInt(item||0));
+			allMovies = allMovies.filter(item=>ids.includes(item.id));
+		}
 		if(params.movieType){
 			let movieType = params.movieType.toLocaleLowerCase();
 			allMovies = allMovies.filter(item=>{

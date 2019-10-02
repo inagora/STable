@@ -364,7 +364,7 @@ export default {
 											qtip.success('修改成功');
 											this.close();
 											self.load('cur');
-											self.store.emit('afteredit', res, data);
+											self.store.emit('edit', res, data);
 										} else {
 											qtip.error(res.errmsg);
 										}
