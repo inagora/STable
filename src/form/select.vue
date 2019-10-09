@@ -354,7 +354,7 @@ export default {
   min-height: 32px;
   display: flex;
 	flex-wrap: nowrap;
-	max-width: 240px;
+	max-width: 320px;
   position: relative;
 	border: 1px solid #dcdfe6;
 	border-radius: 4px;
