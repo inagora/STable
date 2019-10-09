@@ -313,7 +313,7 @@ export default {
 			if(this.updateUrl) {
 				buttons.push({
 					text: '编辑',
-					icon: 'el-icon-edit-outline',
+					icon: 'st-icon st-icon-edit-square',
 					click:(record)=> {
 						let self = this;
 						let html = '<x-form id="_st_update_form" size="medium" :field-list="fields" :default-values="params" label-width="100px" :label-width="100" :action-methods="actionMethods" @submit="edit"></x-form>';

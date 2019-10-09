@@ -34,6 +34,13 @@
       "unicode_decimal": 59279
     },
     {
+      "icon_id": "4765957",
+      "name": "edit-square",
+      "font_class": "edit-square",
+      "unicode": "e791",
+      "unicode_decimal": 59281
+    },
+    {
       "icon_id": "4766253",
       "name": "check-square",
       "font_class": "check-square",
