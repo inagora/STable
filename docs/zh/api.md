@@ -25,7 +25,7 @@
 	}
 	```
 * __参考__:
-	* <DemoViewer demo="acc" />
+	* <DemoViewer demo="api-acc" />
 
 ### actionMethods
 * __类型__: `Object`
@@ -62,7 +62,7 @@
 	:::
 
 * __参考__:
-	* <DemoViewer demo="addConfig" />
+	* <DemoViewer demo="api-addConfig" />
 	* [addUrl](#addurl)
 	* [form配置](#form)
 
@@ -73,7 +73,7 @@
 	添加数据时的提交地址。如果有此参数，会在工具栏toolbar自动显示一个“添加”按钮，点击此按钮出现“添加”面板。它需要和addConfig配合使用。
 
 * __参考__:
-	* <DemoViewer demo="addConfig" />
+	* <DemoViewer demo="api-addConfig" />
 	* [addConfig](#addconfig)
 
 ### batDeleteUrl
@@ -82,7 +82,7 @@
 
 	批量删除数据时的提交地址。如果有此参数，会在工具栏toolbar自动显示一个“批量删除”按钮，点此按钮，会把所有选中行删除。需要配合参数selectMode和idIndex使用。
 * __参考__: 
-	* <DemoViewer demo="batDeleteUrl" />
+	* <DemoViewer demo="api-batDeleteUrl" />
 	* [idIndex](#idindex)
 	* [selectMode](#selectmode)
 
@@ -124,7 +124,7 @@
 	更多、更详细的列配置参数，请看 [column config](#columnconfig)
 * __参考__:
 	* [column api](#column)
-	* <DemoViewer demo="columns" />
+	* <DemoViewer demo="api-columns" />
 
 ### componentOrder
 * __类型__: `Array`
@@ -136,7 +136,7 @@
 	componentOrder: ['search', 'table', 'toolbar', 'pagination']
 	```
 * __参考__:
-	* <DemoViewer demo="componentOrder" />
+	* <DemoViewer demo="api-componentOrder" />
 
 ### deleteUrl
 * __类型__: `String`
@@ -144,7 +144,7 @@
 
 	删除数据时的提交地址。如果有此参数，会在每一行的最后添加一列，此列中有一个“删除”按钮，点此按钮，会删除此行。需要和参数`idIndex`配合使用。
 * __参考__: 
-	* <DemoViewer demo="deleteUrl" />
+	* <DemoViewer demo="api-deleteUrl" />
 	* [idIndex](#idindex)
 
 ### downloadable
@@ -158,7 +158,7 @@
 	* 'single'，只显示“导出当前页”按钮
 	* 'all'，只显示“导出所有页”按钮
 * __参考__:
-	* <DemoViewer demo="downloadable" />
+	* <DemoViewer demo="api-downloadable" />
 
 ### downloadAllFromJustOnePage
 * __类型__: `Boolean`
@@ -174,7 +174,7 @@
 
 	超时时间(毫秒)。全量下载所有数据时，会分页面请求数据，可以用此参数指定每个页面请求的超时时间。如果超时，会中断请求，重新发起一个。
 * __参考__:
-	* <DemoViewer demo="downloadTimeout" />
+	* <DemoViewer demo="api-downloadTimeout" />
 
 ### el
 * __类型__: `String|HTMLElement`
@@ -183,7 +183,7 @@
 
 	STable在页面中的容器，它可以是css选择器，也可是一个dom元素。
 * __参考__:
-	* <DemoViewer demo="el" />
+	* <DemoViewer demo="api-el" />
 
 ### idIndex
 * __类型__: `String`
@@ -201,7 +201,7 @@
 
 	忽略搜索条件中空字符串的项，在请求页数据时，不带上它们
 * __参考__: 
-	* <DemoViewer demo="ignoreEmptySearchParam" />
+	* <DemoViewer demo="api-ignoreEmptySearchParam" />
 
 ### labelVisible
 * __类型__: `Boolean`
@@ -210,7 +210,7 @@
 
 	搜索区的表单的标签是否显示。当搜索项太多时，把此参数设为false，可以让搜索区显得更为紧凑。
 * __参考__: 
-	* <DemoViewer demo="labelVisible" />
+	* <DemoViewer demo="api-labelVisible" />
 
 ### layoutMode
 * __类型__: `String`
@@ -221,9 +221,9 @@
 	* "fixed"，固定高度模式。STable所在区域高度固定，会根据总体高度、工具栏、搜索区和分页区，决定表格区的高度
 	* "expand"，自动伸展模式。STable高度不固定，根据表格区行数不同，自动调整STable的高度。
 * __参考__: 
-	* <DemoViewer demo="layoutMode-absolute" />
-	* <DemoViewer demo="layoutMode-flex" />
-	* <DemoViewer demo="layoutMode-expand" />
+	* <DemoViewer demo="api-layoutMode-absolute" />
+	* <DemoViewer demo="api-layoutMode-flex" />
+	* <DemoViewer demo="api-layoutMode-expand" />
 
 ### listeners
 * __类型__: `Object`
@@ -254,7 +254,7 @@
 
 	STable使用的语言配置。
 * __参考__: 
-	* <DemoViewer demo="locale" />
+	* <DemoViewer demo="api-locale" />
 	* [locale词典](https://github.com/inagora/STable/tree/master/src/lang)
 
 ### page
@@ -269,7 +269,7 @@
 	page: 10
 	```
 * __参考__:
-	* <DemoViewer demo="page" />
+	* <DemoViewer demo="api-page" />
 
 ### pageMode
 * __类型__: `String`
@@ -285,7 +285,7 @@
 	pageMode: ‘waterfall’
 	```
 * __参考__:
-	* <DemoViewer demo="pageMode-waterfall" />
+	* <DemoViewer demo="api-pageMode-waterfall" />
 	* [pageIndex](#pageindex)
 
 ### pageIndex
@@ -317,7 +317,7 @@
 	parallelCount: 3
 	```
 * __参考__:
-	* <DemoViewer demo="parallelCount" />
+	* <DemoViewer demo="api-parallelCount" />
 	* [downloadable](#downloadable)
 
 ### params
@@ -338,7 +338,7 @@
 	}
 	```
 * __参考__:
-	* <DemoViewer demo="params" />
+	* <DemoViewer demo="api-params" />
 
 ### records
 * __类型__: `Array` 
@@ -364,7 +364,7 @@
 	]
 	```
 * __参考__
-	* <DemoViewer demo="records" />
+	* <DemoViewer demo="api-records" />
 
 ### rowNumberVisible
 * __类型__: `Boolean`
@@ -377,7 +377,7 @@
 	rowNumberVisible: true,
 	```
 * __参考__:
-	* <DemoViewer demo="rowNumberVisible" />
+	* <DemoViewer demo="api-rowNumberVisible" />
 
 ### searchFilter
 * __类型__: `array|Object`
@@ -395,7 +395,7 @@
 	```
 * __参考__:
 	* [form表单配置](#form)
-	* <DemoViewer demo="searchFilter" />
+	* <DemoViewer demo="api-searchFilter" />
 
 ### searchResetable
 * __类型__: `Boolean`
@@ -409,7 +409,7 @@
 	searchResetable: true
 	```
 * __参考__
-	* <DemoViewer demo="searchResetable" />
+	* <DemoViewer demo="api-searchResetable" />
 
 ### selectMode
 * __类型__: `String`
@@ -426,8 +426,8 @@
 	selectMode: 'single'
 	```
 * __参考__:
-	* <DemoViewer demo="selectMode-single" />
-	* <DemoViewer demo="selectMode-multiple" />
+	* <DemoViewer demo="api-selectMode-single" />
+	* <DemoViewer demo="api-selectMode-multiple" />
 
 ### sortKey
 * __类型__: `String`
@@ -442,7 +442,7 @@
 		selectMode: 'id',
 	});
 * __参考__:
-	* <DemoViewer demo="sortKey" />
+	* <DemoViewer demo="api-sortKey" />
 	* [sortDirection](#sortdirection)
 
 ### sortDirection
@@ -459,7 +459,7 @@
 	sortDirection: 'asc'
 	```
 * __参考__:
-	* <DemoViewer demo="sortDirection" />
+	* <DemoViewer demo="api-sortDirection" />
 
 ### sublistAt
 * __类型__: `Array|String`
@@ -475,7 +475,7 @@
 	sublistAt: 'movieType'
 	```
 * __参考__: 
-	* <DemoViewer demo="sublistAt" />
+	* <DemoViewer demo="api-sublistAt" />
 
 ### toolbar
 * __类型__: `Array`
@@ -504,7 +504,7 @@
 	```
 * __参考__: 
 	* [button api](#button)
-	* <DemoViewer demo="toolbar" />
+	* <DemoViewer demo="api-toolbar" />
 
 ### updateConfig
 * __类型__: `Array`
@@ -517,7 +517,7 @@
 * __参考__:
 	* [form api](#form)
 	* [updateUrl](#updateurl)
-	* <DemoViewer demo="updateConfig" />
+	* <DemoViewer demo="api-updateConfig" />
 
 ### updateUrl
 * __类型__: `String`
@@ -530,7 +530,7 @@
 	```
 * __参考__:
 	* [updateConfig](#updateconfig)
-	* <DemoViewer demo="updateConfig" />
+	* <DemoViewer demo="api-updateConfig" />
 
 ### url
 * __类型__: `String`
@@ -542,13 +542,15 @@
 	url: '/demo/ajaxList'
 	```
 
-## 事件 todo
-所有事件的监听函数中this都指向当前STable实例。当然，如果你用箭头函数等方式，就另当别论了。
-
+## 事件
+在STable操作的不同时机，会有各种事件触发。监听这些事件，可以特定时机完成一些特殊的工作。
+::: tip
+所有事件的监听函数中，`this`都指向当前STable实例。当然，如果你用箭头函数等方式，就另当别论了。
+:::
 ### ready
 * __详细__:
 
-	在STable初始化之后触发。适合作一些准备工作，如事件绑定、数据准备，类似于浏览器的domready
+	在STable初始化之后触发。适合作一些准备工作，如事件绑定、数据准备，类似于浏览器的`DOMContentLoaded`事件。
 	:::warning
 	ready事件中，STable的初化工作完成，但数据不一定准备好了。
 	:::
@@ -562,7 +564,7 @@
 	}
 	```
 * __参考__:
-	* <DemoViewer demo="ready" />
+	* <DemoViewer demo="listener-ready" />
 
 ### refresh
 * __参数__:
@@ -608,7 +610,9 @@
 	}
 	```
 * __参考__:
-	* <DemoViewer demo="beforeadd" />
+	* [addUrl](#addurl)
+	* [addConfig](#addconfig)
+	* <DemoViewer demo="listener-beforeadd" />
 
 ### add
 * __参数__:
@@ -630,6 +634,8 @@
 	}
 	```
 * __参考__:
+	* [addUrl](#addurl)
+	* [addConfig](#addconfig)
 	* <DemoViewer demo="listener-add" />
 
 ### beforeedit
@@ -655,134 +661,240 @@
 		}
 	}
 	```
+* __参考__:
+	* [updateUrl](#updateurl)
+	* [updateConfig](#updateconfig)
+	* <DemoViewer demo="listener-beforeedit" />
+
+
 
 ### edit
 * __参数__:
-  * data，`Object`，要编辑的数据
+  * response，`Object`，本次请求的返回内容
+	* data，`Object`，编辑的数据
 * __详细__:
 
 	修改一行数据时触发。在此对要编辑的数据做处理和发送请求
 * __用法__: 
 	```JS
 	listeners: {
-		edit(data){
-			let name = data.name;
-			if(!name || name.length<10){
-				alert('名字不能为空，且大于10个字符');
-				return false;
+		edit(res, data){
+			if(res.errno){
+				alert(res.errmsg);
+			} else {
+				alert(`the new name is ${data.name}`);
 			}
 		}
 	}
 	```
+* __参考__:
+	* [updateUrl](#updateurl)
+	* [updateConfig](#updateconfig)
+	* <DemoViewer demo="listener-beforeedit" />
+
+### beforebatdelete
+* __参数__:
+	* records, `Array`, 被选中的数据行
+* __详细__:
+	点击批量删除按钮时触发。如果返回`false`，会阻止删除动作。
+* __参考__:
+	* <DemoViewer demo="listener-batdelete" />
+
+### batdelete
+* __参数__:
+	* response, `Object`, 删除请求的返回内容
+	* records, `Array`, 被选中的数据行
+* __详细__:
+	批量删除后触发。
+* __参考__:
+	* <DemoViewer demo="listener-batdelete" />
+
+### beforedownload
+* __参数__:
+	* records, `Array`，要生成excel文件的数据
+* __详细__:
+	在导出数据时触发。注意，此时已经请服务端把所有数据都下载成功了，在beforeexport触发函数里，可以对数据进行预加工。
+	::: tip
+	如果触发函数返回false，就会阻止数据导出
+	:::
+* __参考__:
+	* <DemoViewer demo="listener-download" />
 
 ### search
 * __参数__:
-  * evt，`Object`，搜索的参数
+  * data，`Object`，搜索的参数
 * __详细__:
 
-	可以在搜索时对于参数做处理，在搜索时触发
+	在搜索u前触发，可在此时对参数做处理。
   ::: warning
 	注意，如果search的触发函数返回了false，就会中断本次搜索动作
 	:::
 * __用法__: 
   ```js
 	listeners: {
-		search(evt) {
-			let searchParams;
-			searchParams = this.trimParam(evt);
-			//发送请求
-		},
+		search(data) {
+			//对参数ids做处理
+			if(data.ids) {
+				data.ids = data.ids
+					//根据空格、逗号和竖线分割
+					.split(/[ ,|]/)
+					//去掉空白字符
+					.map(item=>item.trim())
+					//只留下由数字组成的字符串
+					.filter(item=>/^\d+$/.test(item));
+				//如果处理后没有合格的id了，就阻止本次搜索
+				if(data.ids.length<=0) {
+					alert('请填写正确的id');
+					return false;
+				} else {
+					//把合格的id用竖线拼接，提交给服务端
+					data.ids = data.ids.join('|');
+				}
+			}
+		}
 	}
 	```
+* __参考__:
+	* <DemoViewer demo="listener-search" />
 
 ### beforedatarequest
 * __参数__:
-  * params，`Object`，搜索的参数
+	* requestOption，`Object`，包括请求的url地址、请求参数和方法：
+		* url，`String`，请求地址
+		* data，`Object`，请求参数
+		* method，`String`，请求方法，如"GET"、"POST"
+		* timeout，`Number`，请求超时的毫秒数，默认30000（30秒）。
 * __详细__:
-  
-	发送请求前可用此方法对参数进行组装或校验，发请求前触发
-* __用法__: 
-  ```js
+
+	发送请求前可用此方法对参数进行校验和处理。比如修改请求地址
+	```javascript
 	listeners: {
-		beforedatarequest(params) {
-			let ajaxOptions = {url:this.url, data: params, type:this.actionMethods.read, timeout: this.downloadTimeout};
-			//发送请求
-		},
+		beforedatarequest(req) {
+			let {url, data, method} = req;
+			//处理url
+			req.url = url+'?type=1';
+			//如果请求的count大于100，阻止本次请求
+			if(data.count>100)
+				return false;
+			data.name = '天空';
+			req.data = data;
+		}
 	}
 	```
+	可以修改原始请求对象，也可以直接拼装一个请求对象，然后返回
+	```javascript
+	listeners: {
+		beforedatarequest(req) {
+			if(req.data.type=='test'){
+				return {
+					url: '/ajaxTest',
+					data: {
+						type: 'test',
+						count: 10
+					},
+					method: 'post'
+				}
+			}
+		}
+	}
+	```
+	::: tip 
+	如果事件函数返回了`false`，会阻止本次请求。
+	:::
+* __参考__: 
+	* <DemoViewer demo="listener-beforedatarequest" />
 
 ### dataload
 * __参数__:
-	* responseData，`Object`，刚下载的原始数据
+	* response，`Object`，刚下载的原始数据
 * __详细__:
   
 	从网络下载一页新数据后触发。此时对数据还没有做任何处理。可以在此对原始数据做一些预处理。
 * __用法__: 
   ```js
 	listeners: {
-		dataload(data) {
-			let name = data.name;
-			if(!name || name.length<10){
-				alert('名字不能为空，且大于10个字符');
-				return false;
-			}
+		dataload(res) {
+			res.data.list.forEach(record=>{
+				record.name = record.replace(/ /g, '-');
+			});
 		},
 	}
 	```
+* __参考__: 
+	* <DemoViewer demo="listener-dataload" />
 
-## 实例方法 todo
+### rowclick
+* __参数__:
+	* record, `Object`，被点击的行数据
+	* event，`MouseEvent`，点击事件
+* __详细__:
+	当表格某一行被点击时触发。
+* __参考__: 
+	* <DemoViewer demo="listener-rowclick" />
+
+### cellclick
+* __参数__:
+	* record, `Object`，被点击的行数据
+	* colConfig, `Object`，被点击列的配置
+	* event，`MouseEvent`，点击事件
+* __详细__:
+	当表格单元被点击时触发。
+* __参考__: 
+	* <DemoViewer demo="listener-cellclick" />
+
+## 实例方法
 
 ### refresh
+* __参数__:
+	* pageNo，`Number`，要刷新到的页号。如果没有指定`pageNo`，就刷新当前页
 * __详细__:
 
-	加载完新一页数据后触发，用在listeners中，用于对原始数据做处理。
-	```js
-	listeners: {
-		refresh(records){
-			//数据刷新之后，可以对数据做一些处理
-			let count = records.length;
-			console.log(`we get ${count} records`);
-		}
-	}
-	```
+	刷新表格。当对数据做了改动，或者想主动刷新表格，可以调用refresh方法。
+* __参考__: 
+	* <DemoViewer demo="method-refresh" />
+
 ### layout
 * __详细__:
-table数据发生变化影响布局时调用。
-```js
-dataChange(): {
-	//数据发生变化逻辑
-	//调用方式
-	this.layout();
-}
-```
 
-### getSelectRows
+	重新刷新布局。比如浏览器窗口大小有变化，需要STable同步变化时，可以调用这个接口
+
+* __参考__: 
+	* <DemoViewer demo="method-layout" />
+
+### getSelected
 * __详细__:
-获取table表格中选中的行，返回值为数组。
-```js
-getSelectRows(): {
-	//对数组进行操作[records]
-}
-```
+
+	获取table表格中选中的行，返回值为数组。
+* __参考__: 
+	* <DemoViewer demo="btn-click" />
+	* <DemoViewer demo="api-selectMode-multiple" />
+	* <DemoViewer demo="api-toolbar" />
+
 ### getSearchParam
 * __详细__:
-获得当前搜索表单内容，返回值为formData对象，可使用append()方法添加字段（类型可以是 Blob, File）。
-```js
-handleSubmit(target): {
-	let formData = getSearchParam(target);
-	target.append('name','豆豆')
-	console.log(target);
-}
-```
+
+	获得当前搜索表单内容。
+* __参考__: 
+	* <DemoViewer demo="method-getSearchParam" />
 
 ### setRecords
+* __参数__:
+	* records, `Array`，要设置的数据数组。
 * __详细__:
-设置表格数据，无需手动刷新。
-```js
-let dataList;
-//dataList = res.data.list
-this.setRecords(dataList);
-```
+
+	设置表格数据。一般情况下，我们的数据都是从服务端拉取的；但可以通过这个接口，用程序设置数据，让STable的更新更灵活。
+* __参考__: 
+	* <DemoViewer demo="method-setRecords" />
+
+
+### getToolbarBtn
+* __参数__:
+	* idx, `String|Number|null`，要获得的按钮id或者序号。如果没传此参数，返回所有按钮
+* __详细__:
+
+	获得当前工具栏的按钮。
+* __参考__: 
+	* <DemoViewer demo="btn-visible" />
 
 ## column
 表格的列配置。通过它配置此列的表头、表格内容以及展示样式。一般情况下，它的配置如下：
@@ -1188,7 +1300,7 @@ columns: [
 	icon: "st-icon st-icon-[icon type]"
 	```
 	比如，删除的icon就是 `st-icon st-icon-delete`。icon列表见下图
-  ![stble图标](/img/icon.gif)
+  ![stble图标](/STable/img/icon.gif)
 * __参考__:
 	* [bootstrap的icon](https://getbootstrap.com/docs/3.4/components/#glyphicons)
 	* [elementui的icon](https://element.eleme.io/#/zh-CN/component/icon)

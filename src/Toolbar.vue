@@ -187,13 +187,15 @@ export default {
 					qtip.error(res.errmsg);
 				} else {
 					qtip.success('删除成功');
-					this.store.emit('batdelete');
+					this.store.emit('batdelete', res, records);
 				}
 			});
 		},
 		download(){
 			let records = this.store.getCurrentPage();
 			let ret = this.store.emit('beforeexport', records);
+			if(ret===false)
+				return;
 			if(Array.isArray(ret)) {
 				records = ret;
 			}
@@ -202,6 +204,8 @@ export default {
 		downloadAll(){
 			this.store.getAllPages().then(records=>{
 				let ret = this.store.emit('beforeexport', records);
+				if(ret===false)
+					return;
 				if(Array.isArray(ret)) {
 					records = ret;
 				}

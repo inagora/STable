@@ -40,6 +40,10 @@ export default {
 			 */
 			title: '',
 			/**
+			 * @param {String} url 
+			 */
+			url: '',
+			/**
 			 * @param {Boolean} rowNumberVisible 是否显示行号
 			 */
 			rowNumberVisible: false,
@@ -518,7 +522,10 @@ export default {
 		 * @member {Function} getSearchParam 获得当前搜索表单项内容
 		 */
 		getSearchParam(){
-			return this.$refs.search[0].$refs.form.getFormData();
+			return Object.assign(
+				{},
+				this.$refs.search[0].$refs.form.getFormData()
+			);
 		},
 		getSelectRows(){
 			return this.getSelected();
@@ -540,6 +547,7 @@ export default {
 		 */
 		layout(){
 			this.$refs.table[0].layout();
+			this.$refs.table[0].syncHeight();
 		},
 		/**
 		 * @member {Function} setRecords 设置表格数据
@@ -557,7 +565,9 @@ export default {
 				return;
 			}
 			let btns = tb[0].$refs.btn;
-			if($type(idx)=='string'){
+			if(typeof idx == 'undefined'){
+				return btns;
+			}else if($type(idx)=='string'){
 				btns = btns.filter(b=>b.conf.id==idx);
 				return btns[0];
 			} else {
