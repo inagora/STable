@@ -114,7 +114,7 @@ export default {
 	data () {
 		const time = this.get(this.value);
 		return {
-			pre: 'calendar',
+			pre: 'st-calendar',
 			m: 'D',
 			showYears: false,
 			showMonths: false,
@@ -306,25 +306,25 @@ export default {
 </script>
 
 <style>
-.calendar {
+.st-calendar {
   float: left;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
 }
-.calendar+.calendar{
+.st-calendar+.st-calendar{
   border-left: solid 1px #eaeaea;
   margin-left: 5px;
   padding-left: 5px;
 }
-.calendar-head {
+.st-calendar-head {
   line-height: 34px;
   height: 34px;
   text-align: center;
   position: relative;
 }
-.calendar-head a {
+.st-calendar-head a {
   color: #666;
   font-weight: bold;
   cursor: pointer;
@@ -334,40 +334,40 @@ export default {
   padding: 0 5px;
   font-size: 16px;
 }
-.calendar-head a:hover {
+.st-calendar-head a:hover {
   color: #1284e7;
 }
-.calendar-head .calendar-year-select,
-.calendar-head .calendar-month-select {
+.st-calendar-head .st-calendar-year-select,
+.st-calendar-head .st-calendar-month-select {
   font-size: 12px;
   padding: 0 2px;
   position: relative;
 }
-.calendar-prev-decade-btn,
-.calendar-prev-year-btn {
+.st-calendar-prev-decade-btn,
+.st-calendar-prev-year-btn {
   left: 6px;
 }
-.calendar-prev-month-btn {
+.st-calendar-prev-month-btn {
   left: 24px;
 }
-.calendar-next-decade-btn,
-.calendar-next-year-btn {
+.st-calendar-next-decade-btn,
+.st-calendar-next-year-btn {
   right: 6px;
 }
-.calendar-next-month-btn {
+.st-calendar-next-month-btn {
   right: 24px;
 }
-.calendar-body {
+.st-calendar-body {
   position: relative;
   width: 196px;
   height: 196px;
 }
-.calendar-days {
+.st-calendar-days {
   width: 100%;
   height: 100%;
 }
-.calendar-week,
-.calendar-date {
+.st-calendar-week,
+.st-calendar-date {
   font-weight: normal;
   width: 14.28%;
   height: 14.28%;
@@ -376,56 +376,56 @@ export default {
   overflow: hidden;
   float: left;
 }
-.calendar-week:before,
-.calendar-date:before {
+.st-calendar-week:before,
+.st-calendar-date:before {
   content: "";
   display: inline-block;
   height: 100%;
   vertical-align: middle;
 }
-.calendar-date {
+.st-calendar-date {
   cursor: pointer;
 }
-.calendar-date-out {
+.st-calendar-date-out {
   color: #ccc;
 }
-.calendar-date:hover,
-.calendar-date-on {
+.st-calendar-date:hover,
+.st-calendar-date-on {
   background: #eaf8fe;
 }
-.calendar-date-selected,
-.calendar-date-selected:hover {
+.st-calendar-date-selected,
+.st-calendar-date-selected:hover {
   color: #fff;
   font-weight: bold;
   background: #1284e7;
 }
-.calendar-date-disabled {
+.st-calendar-date-disabled {
   cursor: not-allowed !important;
   color: #bcbcbc !important;
   background: #f3f3f3 !important;
 }
-.calendar-foot {
+.st-calendar-foot {
   margin-top: 5px;
 }
-.calendar-hour {
+.st-calendar-hour {
   display: inline-block;
   border: 1px solid #e6e5e5;
   color: #9e9e9e;
 }
-.calendar-hour a {
+.st-calendar-hour a {
   display: inline-block;
   padding: 2px 4px;
   cursor: pointer;
 }
-.calendar-hour a:hover,
-.calendar-hour a.on {
+.st-calendar-hour a:hover,
+.st-calendar-hour a.on {
   color: #1284e7;
 }
-.calendar-years,
-.calendar-months,
-.calendar-hours,
-.calendar-minutes,
-.calendar-seconds {
+.st-calendar-years,
+.st-calendar-months,
+.st-calendar-hours,
+.st-calendar-minutes,
+.st-calendar-seconds {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -433,24 +433,24 @@ export default {
   left: 0;
   top: 0;
 }
-.calendar-months a {
+.st-calendar-months a {
   width: 33.33%;
   height: 25%;
 }
-.calendar-years a {
+.st-calendar-years a {
   width: 33.33%;
   height: 25%;
 }
-.calendar-hours a {
+.st-calendar-hours a {
   width: 20%;
   height: 20%;
 }
-.calendar-minutes a,
-.calendar-seconds a {
+.st-calendar-minutes a,
+.st-calendar-seconds a {
   width: 16.66%;
   height: 10%;
 }
-.calendar-title {
+.st-calendar-title {
   margin-top: -30px;
   height: 30px;
   line-height: 30px;

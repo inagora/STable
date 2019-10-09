@@ -1,5 +1,6 @@
 <template>
 	<div
+		v-clickoutside="handleClose"
 		class="st-select"
 		:class="{'st-select-focus': visible}"
 		@click.stop="showMenu"
@@ -45,7 +46,6 @@
     
 		<div 
 			v-show="visible" 
-			v-clickoutside="handleClose" 
 			class="st-select-menu" 
 			:style="{'min-width':inputW+'px'}"
 		>
@@ -84,6 +84,7 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
+// import eventBus from './formEvtBus';
 import {loadJs} from '../util/util';
 
 export default {
@@ -193,11 +194,7 @@ export default {
 		}
 		this.realOptions = tmpList;
 		this.$nextTick(()=>{
-			if (!this.multiple) {
-				this.selected = this.defaultValue[0];
-			} else {
-				this.selected = this.defaultValue;
-			}
+			this.selected = this.defaultValue;
 		});
 	},
 	methods: {
@@ -237,10 +234,8 @@ export default {
 				const arr = (this.selected || []).slice();
 				const optionIndex = this.getValueIndex(arr, option.label);
 				if (optionIndex > -1) {
-					//值已选中则删除
 					arr.splice(optionIndex, 1);
 				} else {
-					//未选中 push
 					arr.push(option.label);
 				}
 				this.selected = arr;
@@ -338,6 +333,9 @@ export default {
 		handleClose() {
 			this.visible = false;
 		},
+		reset() { 
+			this.selected = this.defaultValue || '';
+		}
 	}
 };
 </script>
@@ -355,6 +353,8 @@ export default {
   // width: 100%;
   min-height: 32px;
   display: flex;
+	flex-wrap: nowrap;
+	max-width: 240px;
   position: relative;
 	border: 1px solid #dcdfe6;
 	border-radius: 4px;
@@ -387,7 +387,9 @@ export default {
   }
 
   &-menu {
-    min-width: 240px;
+    width: 100%;
+		max-height: 300px;
+    overflow-y: scroll;
     position: absolute;
     border: 1px solid #e4e7ed; 
     border-radius: 4px;

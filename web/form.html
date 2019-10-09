@@ -49,17 +49,21 @@
     searchFilter: [
 			{
 				label: '电影名',
-				name: 'name'
+				name: 'name',
 			},
 			{
 				label: '类型',
 				name: 'type',
-				list: ['动作', '喜剧', '爱情', '记录片']
+				type: 'multiple',
+				defaultValue: ['喜剧','爱情'],
+				list: ['动作', '喜剧', '爱情', '记录片','环境','科幻','主旋律','亲情','成长','青春']
 			},
 			{
 				label: '类型2',
 				name: 'type2',
-				type: 'select'
+				type: 'select',
+				defaultValue: '爱情',
+				list: ['动作', '喜剧', '爱情', '记录片','环境','科幻','主旋律','亲情','成长','青春']
 			},
 			{
 				label: '上映年份',
@@ -68,6 +72,7 @@
 				format: 'YYYY'
 			}
 		],
+		searchResetable: true,
 		url: '/ajaxList',
 		rowNumberVisible: true,
 		selectMode: 'single',
@@ -168,7 +173,6 @@
 		addUrl: '/',
 		batDeleteUrl: '/',
 		downloadable: true,
-		
 		componentOrder: [
 			'form','title','toolbar', 'table', 'search'
 		]

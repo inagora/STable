@@ -9,7 +9,7 @@
 					ref="input"
 					class="st-input-wrap-item"
 					v-bind="$attrs"
-					:class="[{'st-input-wrap-disabled': disabled,'focus': focused}]"
+					:class="[{'st-input-wrap-disabled': disabled,'st-input-wrap-focus': focused}]"
 					:type="showPassword ? 'password' : type"
 					:disabled="disabled"
 					:placeholder="placeholder"
@@ -91,8 +91,7 @@ export default {
 		showWordLimit: {
 			type: Boolean,
 			default: false
-		},
-
+		}
 	},
 	data(){
 		return {
@@ -205,7 +204,7 @@ export default {
     border-radius: 4px;
     position: relative;
 	}
-	.focus {
+	&-focus {
 		border-color: #409eff;
 		-webkit-box-shadow: 0 0 5px rgba(59, 180, 242, .3);
 		box-shadow: 0 0 5px rgba(59, 180, 242, .3);

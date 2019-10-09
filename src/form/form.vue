@@ -3,7 +3,7 @@
 		class="st-form" 
 		:class="{'st-form-inline': inline}" 
 		@submit.prevent="submit"
-		@reset="resetFields"
+		@reset="reset()"
 	>
 		<div 
 			v-for="(item, index) in fields" 
@@ -30,7 +30,8 @@
 					@validate="fieldListFn($event,item.name)"
 				/>
 				<x-select
-					v-if="['select','combobox','multiple'].includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))"  
+					v-if="['select','combobox','multiple'].includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))" 
+					ref="select" 
 					v-model="item.value" 
 					:default-value="item.defaultValue"
 					:options="item.options || item.list" 
@@ -329,13 +330,19 @@ export default {
 				fieldlist[name].validator(fieldlist[name], val, callback);
 			}
 		},
-		resetFields(fields){
-			let tmpFields = fields.split(',');
-			if (tmpFields && tmpFields.length > 0) {
-				for (const item of tmpFields) {
-					this.formValue[item] = '';
+		reset(){
+			let tmpFields = this.fields;
+			if (this.fields && tmpFields.length > 0) {
+				for (const item of this.fields) {
+					if (['select','combobox','multiple'].includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))) {
+						item.value = item.defaultValue ? item.defaultValue : [];
+					}
 				}
 			}
+			this.fields = tmpFields;
+			this.$refs.select.map(item=>{
+				item.reset();
+			});
 		},
 		timeFormat (time, format) {
 			const year = time.getFullYear();

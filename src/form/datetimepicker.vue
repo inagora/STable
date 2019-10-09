@@ -1,20 +1,20 @@
 <template>
-	<div class="datepicker st-icon st-icon-calendar" :class="{'datepicker-range':range,'datepicker__clearable':clearable&&text&&!disabled}">
+	<div class="st-datepicker st-icon st-icon-calendar" :class="{'st-datepicker-range':range,'st-datepicker-clearable':clearable&&text&&!disabled}">
 		<input
 			v-if="type!=='inline'"
 			readonly
 			:value="text"
-			:class="[show ? 'focus' : '', inputClass]"
+			:class="[show ? 'st-datepicker-input-focus' : '', inputClass]"
 			:disabled="disabled"
 			:placeholder="placeholder"
 			:name="name"
 		/>
-		<a class="datepicker-close st-icon st-icon-close" @click.stop="cls" />
-		<transition name="datepicker-anim">
+		<a class="st-datepicker-close st-icon st-icon-close" @click.stop="cls" />
+		<transition name="st-datepicker-anim">
 			<div
 				v-if="show||type==='inline'"
-				class="datepicker-popup"
-				:class="[popupClass,{'datepicker-inline':type==='inline'}]"
+				class="st-datepicker-popup"
+				:class="[popupClass,{'st-datepicker-inline':type==='inline'}]"
 				tabindex="-1"
 			>
 				<template v-if="range">
@@ -24,11 +24,11 @@
 				<template v-else>
 					<x-calendar v-model="dates[0]" />
 				</template>
-				<div v-if="showButtons" class="datepicker__buttons">
-					<button class="datepicker__button-cancel" @click.prevent.stop="cancel">
+				<div v-if="showButtons" class="st-datepicker-buttons">
+					<button class="st-datepicker-button-select" @click.prevent.stop="cancel">
 						{{ local.cancelTip }}
 					</button>
-					<button class="datepicker__button-select" @click.prevent.stop="submit">
+					<button class="st-datepicker-button-select" @click.prevent.stop="submit">
 						{{ local.submitTip }}
 					</button>
 				</div>
@@ -219,13 +219,136 @@ export default {
 };
 </script>
 
-<style>
-.datepicker {
+<style lang='scss' scoped>
+.st-datepicker {
   display: inline-block;
 	position: relative;
 	font-size: inherit !important;
+
+	&-close {
+		display: none;
+		position: absolute;
+		width: 3em;
+		height: 100%;
+		top: 0;
+		right: 0;
+		cursor: pointer;
+	}
+	&-close:before {
+		display: block;
+		content: '';
+		position: absolute;
+		width: 16px;
+		height: 16px;
+		left: 50%;
+		top: 50%;
+		margin-left: -8px;
+		margin-top: -8px;
+		text-align: center;
+		background: #ccc;
+		color: #fff;
+		border-radius: 50%;
+	}
+	&-clearable:hover:before {
+		display: none;
+	}
+	&-clearable:hover &-close{
+		display: block;
+	}
+	&-close:hover:before{
+		background-color: #afafaf;
+	}
+	&-input-focus {
+		border-color: #409eff;
+		-webkit-box-shadow: 0 0 5px rgba(59, 180, 242, .3);
+		box-shadow: 0 0 5px rgba(59, 180, 242, .3);
+	}
+	>input {
+		color: #666;
+		transition: all 200ms ease;
+		border: 1px solid #e5e5e5;
+		height: 32px;
+		box-sizing: border-box;
+		outline: none;
+		padding: 0 3em 0 1em;
+		font-size: 1em;
+		width: 100%;
+		border-radius: 4px;
+		user-select: none;
+	}
+	>input:disabled {
+		cursor: not-allowed;
+		background-color: #ebebe4;
+		border-color: #e5e5e5;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+	&-popup {
+		position: absolute;
+		transition: all 200ms ease;
+		opacity: 1;
+		transform: scaleY(1);
+		transform-origin: center top;
+		font-size: 12px;
+		background: #fff;
+		border: 1px solid #d9d9d9;
+		box-shadow: 0 1px 6px rgba(99, 99, 99, 0.2);
+		margin-top: 2px;
+		outline: 0;
+		padding: 5px;
+		overflow: hidden;
+		z-index: 999
+	}
+	&-inline{
+		position: relative;
+		margin-top: 0;
+	}
+	&-range {
+		min-width: 355px
+	}
+	&-range &-popup{
+		width: auto;
+		display: flex;
+	}
+	&-bottom {
+		float: left;
+		width: 100%;
+		text-align: right;
+	}
+	&-btn {
+		padding: 5px 10px;
+		background: #1284e7;
+		color: #fff;
+		border-radius: 2px;
+		display: inline-block;
+		cursor: pointer;
+	}
+	&-anim-enter-active {
+		transform-origin: 0 0;
+		animation: datepicker-anim-in .2s cubic-bezier(.23, 1, .32, 1)
+	}
+	&-anim-leave-active {
+		transform-origin: 0 0;
+		animation: datepicker-anim-out .2s cubic-bezier(.755, .05, .855, .06)
+	}
+	&-buttons {
+		display: block;
+		text-align: right;
+	}
+	&-buttons button {
+		display: inline-block;
+		font-size: 13px;
+		border: none;
+		cursor: pointer;
+		margin: 10px 0 0 5px;
+		padding: 5px 15px;
+		color: #ffffff;
+	}
+	&-button-select {
+		background: #1284e7;
+	}
 }
-.datepicker:before {
+.st-datepicker:before {
   content: '';
   display: block;
   position: absolute;
@@ -234,131 +357,7 @@ export default {
   top: 0;
   right: 0;
 }
-.datepicker-close {
-  display: none;
-  position: absolute;
-  width: 3em;
-  height: 100%;
-  top: 0;
-  right: 0;
-  cursor: pointer;
-}
-.datepicker-close:before {
-  display: block;
-  content: '';
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  left: 50%;
-  top: 50%;
-  margin-left: -8px;
-  margin-top: -8px;
-  text-align: center;
-  background: #ccc;
-  color: #fff;
-  border-radius: 50%;
-}
-.datepicker__clearable:hover:before {
-  display: none;
-}
-.datepicker__clearable:hover .datepicker-close{
-  display: block;
-}
-.datepicker-close:hover:before{
-  background-color: #afafaf;
-}
-.datepicker>input {
-  color: #666;
-  transition: all 200ms ease;
-  border: 1px solid #e5e5e5;
-  height: 32px;
-  box-sizing: border-box;
-  outline: none;
-	padding: 0 3em 0 1em;
-	font-size: 1em;
-  /* font-size: 14px; */
-	width: 100%;
-	border-radius: 4px;
-  user-select: none;
-}
-.datepicker>input.focus {
-  border-color: #409eff;
-  -webkit-box-shadow: 0 0 5px rgba(59, 180, 242, .3);
-  box-shadow: 0 0 5px rgba(59, 180, 242, .3);
-}
-.datepicker>input:disabled {
-  cursor: not-allowed;
-  background-color: #ebebe4;
-  border-color: #e5e5e5;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-.datepicker-popup {
-  position: absolute;
-  transition: all 200ms ease;
-  opacity: 1;
-  transform: scaleY(1);
-  transform-origin: center top;
-  font-size: 12px;
-  background: #fff;
-  border: 1px solid #d9d9d9;
-  box-shadow: 0 1px 6px rgba(99, 99, 99, 0.2);
-  margin-top: 2px;
-  outline: 0;
-  padding: 5px;
-  overflow: hidden;
-  z-index: 999
-}
-.datepicker-inline{
-  position: relative;
-  margin-top: 0;
-}
-.datepicker-range {
-  min-width: 355px
-}
-.datepicker-range .datepicker-popup{
-  /* width: 403px; */
-	width: auto;
-	display: flex;
-}
-.datepicker-bottom {
-  float: left;
-  width: 100%;
-  text-align: right;
-}
-.datepicker-btn {
-  padding: 5px 10px;
-  background: #1284e7;
-  color: #fff;
-  border-radius: 2px;
-  display: inline-block;
-  cursor: pointer;
-}
-.datepicker-anim-enter-active {
-    transform-origin: 0 0;
-    animation: datepicker-anim-in .2s cubic-bezier(.23, 1, .32, 1)
-}
-.datepicker-anim-leave-active {
-    transform-origin: 0 0;
-    animation: datepicker-anim-out .2s cubic-bezier(.755, .05, .855, .06)
-}
-.datepicker__buttons {
-  display: block;
-  text-align: right;
-}
-.datepicker__buttons button {
-  display: inline-block;
-  font-size: 13px;
-  border: none;
-  cursor: pointer;
-  margin: 10px 0 0 5px;
-  padding: 5px 15px;
-  color: #ffffff;
-}
-.datepicker__buttons .datepicker__button-select {
-  background: #1284e7;
-}
-.datepicker__buttons .datepicker__button-cancel {
+.st-datepicker-button-select {
   background: #666;
 }
 @keyframes datepicker-anim-in {

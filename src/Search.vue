@@ -68,7 +68,7 @@ export default {
 			this.store.$emit('load', {reset: true});
 		},
 		reset() {
-			this.$refs.form.resetFields();
+			this.$refs.form.reset();
 		},
 		trimParam(data){
 			let params = {};
