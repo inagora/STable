@@ -25,7 +25,7 @@
 	}
 	```
 * __参考__:
-	* <DemoViewer demo="acc" />
+	* <DemoViewer demo="api-acc" />
 
 ### actionMethods
 * __类型__: `Object`
@@ -62,7 +62,7 @@
 	:::
 
 * __参考__:
-	* <DemoViewer demo="addConfig" />
+	* <DemoViewer demo="api-addConfig" />
 	* [addUrl](#addurl)
 	* [form配置](#form)
 
@@ -73,7 +73,7 @@
 	添加数据时的提交地址。如果有此参数，会在工具栏toolbar自动显示一个“添加”按钮，点击此按钮出现“添加”面板。它需要和addConfig配合使用。
 
 * __参考__:
-	* <DemoViewer demo="addConfig" />
+	* <DemoViewer demo="api-addConfig" />
 	* [addConfig](#addconfig)
 
 ### batDeleteUrl
@@ -82,7 +82,7 @@
 
 	批量删除数据时的提交地址。如果有此参数，会在工具栏toolbar自动显示一个“批量删除”按钮，点此按钮，会把所有选中行删除。需要配合参数selectMode和idIndex使用。
 * __参考__: 
-	* <DemoViewer demo="batDeleteUrl" />
+	* <DemoViewer demo="api-batDeleteUrl" />
 	* [idIndex](#idindex)
 	* [selectMode](#selectmode)
 
@@ -124,7 +124,7 @@
 	更多、更详细的列配置参数，请看 [column config](#columnconfig)
 * __参考__:
 	* [column api](#column)
-	* <DemoViewer demo="columns" />
+	* <DemoViewer demo="api-columns" />
 
 ### componentOrder
 * __类型__: `Array`
@@ -136,7 +136,7 @@
 	componentOrder: ['search', 'table', 'toolbar', 'pagination']
 	```
 * __参考__:
-	* <DemoViewer demo="componentOrder" />
+	* <DemoViewer demo="api-componentOrder" />
 
 ### deleteUrl
 * __类型__: `String`
@@ -144,7 +144,7 @@
 
 	删除数据时的提交地址。如果有此参数，会在每一行的最后添加一列，此列中有一个“删除”按钮，点此按钮，会删除此行。需要和参数`idIndex`配合使用。
 * __参考__: 
-	* <DemoViewer demo="deleteUrl" />
+	* <DemoViewer demo="api-deleteUrl" />
 	* [idIndex](#idindex)
 
 ### downloadable
@@ -158,7 +158,7 @@
 	* 'single'，只显示“导出当前页”按钮
 	* 'all'，只显示“导出所有页”按钮
 * __参考__:
-	* <DemoViewer demo="downloadable" />
+	* <DemoViewer demo="api-downloadable" />
 
 ### downloadAllFromJustOnePage
 * __类型__: `Boolean`
@@ -174,7 +174,7 @@
 
 	超时时间(毫秒)。全量下载所有数据时，会分页面请求数据，可以用此参数指定每个页面请求的超时时间。如果超时，会中断请求，重新发起一个。
 * __参考__:
-	* <DemoViewer demo="downloadTimeout" />
+	* <DemoViewer demo="api-downloadTimeout" />
 
 ### el
 * __类型__: `String|HTMLElement`
@@ -183,7 +183,7 @@
 
 	STable在页面中的容器，它可以是css选择器，也可是一个dom元素。
 * __参考__:
-	* <DemoViewer demo="el" />
+	* <DemoViewer demo="api-el" />
 
 ### idIndex
 * __类型__: `String`
@@ -201,7 +201,7 @@
 
 	忽略搜索条件中空字符串的项，在请求页数据时，不带上它们
 * __参考__: 
-	* <DemoViewer demo="ignoreEmptySearchParam" />
+	* <DemoViewer demo="api-ignoreEmptySearchParam" />
 
 ### labelVisible
 * __类型__: `Boolean`
@@ -210,7 +210,7 @@
 
 	搜索区的表单的标签是否显示。当搜索项太多时，把此参数设为false，可以让搜索区显得更为紧凑。
 * __参考__: 
-	* <DemoViewer demo="labelVisible" />
+	* <DemoViewer demo="api-labelVisible" />
 
 ### layoutMode
 * __类型__: `String`
@@ -221,9 +221,9 @@
 	* "fixed"，固定高度模式。STable所在区域高度固定，会根据总体高度、工具栏、搜索区和分页区，决定表格区的高度
 	* "expand"，自动伸展模式。STable高度不固定，根据表格区行数不同，自动调整STable的高度。
 * __参考__: 
-	* <DemoViewer demo="layoutMode-absolute" />
-	* <DemoViewer demo="layoutMode-flex" />
-	* <DemoViewer demo="layoutMode-expand" />
+	* <DemoViewer demo="api-layoutMode-absolute" />
+	* <DemoViewer demo="api-layoutMode-flex" />
+	* <DemoViewer demo="api-layoutMode-expand" />
 
 ### listeners
 * __类型__: `Object`
@@ -254,7 +254,7 @@
 
 	STable使用的语言配置。
 * __参考__: 
-	* <DemoViewer demo="locale" />
+	* <DemoViewer demo="api-locale" />
 	* [locale词典](https://github.com/inagora/STable/tree/master/src/lang)
 
 ### page
@@ -269,7 +269,7 @@
 	page: 10
 	```
 * __参考__:
-	* <DemoViewer demo="page" />
+	* <DemoViewer demo="api-page" />
 
 ### pageMode
 * __类型__: `String`
@@ -285,7 +285,7 @@
 	pageMode: ‘waterfall’
 	```
 * __参考__:
-	* <DemoViewer demo="pageMode-waterfall" />
+	* <DemoViewer demo="api-pageMode-waterfall" />
 	* [pageIndex](#pageindex)
 
 ### pageIndex
@@ -317,7 +317,7 @@
 	parallelCount: 3
 	```
 * __参考__:
-	* <DemoViewer demo="parallelCount" />
+	* <DemoViewer demo="api-parallelCount" />
 	* [downloadable](#downloadable)
 
 ### params
@@ -338,7 +338,7 @@
 	}
 	```
 * __参考__:
-	* <DemoViewer demo="params" />
+	* <DemoViewer demo="api-params" />
 
 ### records
 * __类型__: `Array` 
@@ -364,7 +364,7 @@
 	]
 	```
 * __参考__
-	* <DemoViewer demo="records" />
+	* <DemoViewer demo="api-records" />
 
 ### rowNumberVisible
 * __类型__: `Boolean`
@@ -377,7 +377,7 @@
 	rowNumberVisible: true,
 	```
 * __参考__:
-	* <DemoViewer demo="rowNumberVisible" />
+	* <DemoViewer demo="api-rowNumberVisible" />
 
 ### searchFilter
 * __类型__: `array|Object`
@@ -395,7 +395,7 @@
 	```
 * __参考__:
 	* [form表单配置](#form)
-	* <DemoViewer demo="searchFilter" />
+	* <DemoViewer demo="api-searchFilter" />
 
 ### searchResetable
 * __类型__: `Boolean`
@@ -409,7 +409,7 @@
 	searchResetable: true
 	```
 * __参考__
-	* <DemoViewer demo="searchResetable" />
+	* <DemoViewer demo="api-searchResetable" />
 
 ### selectMode
 * __类型__: `String`
@@ -426,8 +426,8 @@
 	selectMode: 'single'
 	```
 * __参考__:
-	* <DemoViewer demo="selectMode-single" />
-	* <DemoViewer demo="selectMode-multiple" />
+	* <DemoViewer demo="api-selectMode-single" />
+	* <DemoViewer demo="api-selectMode-multiple" />
 
 ### sortKey
 * __类型__: `String`
@@ -442,7 +442,7 @@
 		selectMode: 'id',
 	});
 * __参考__:
-	* <DemoViewer demo="sortKey" />
+	* <DemoViewer demo="api-sortKey" />
 	* [sortDirection](#sortdirection)
 
 ### sortDirection
@@ -459,7 +459,7 @@
 	sortDirection: 'asc'
 	```
 * __参考__:
-	* <DemoViewer demo="sortDirection" />
+	* <DemoViewer demo="api-sortDirection" />
 
 ### sublistAt
 * __类型__: `Array|String`
@@ -475,7 +475,7 @@
 	sublistAt: 'movieType'
 	```
 * __参考__: 
-	* <DemoViewer demo="sublistAt" />
+	* <DemoViewer demo="api-sublistAt" />
 
 ### toolbar
 * __类型__: `Array`
@@ -504,7 +504,7 @@
 	```
 * __参考__: 
 	* [button api](#button)
-	* <DemoViewer demo="toolbar" />
+	* <DemoViewer demo="api-toolbar" />
 
 ### updateConfig
 * __类型__: `Array`
@@ -517,7 +517,7 @@
 * __参考__:
 	* [form api](#form)
 	* [updateUrl](#updateurl)
-	* <DemoViewer demo="updateConfig" />
+	* <DemoViewer demo="api-updateConfig" />
 
 ### updateUrl
 * __类型__: `String`
@@ -530,7 +530,7 @@
 	```
 * __参考__:
 	* [updateConfig](#updateconfig)
-	* <DemoViewer demo="updateConfig" />
+	* <DemoViewer demo="api-updateConfig" />
 
 ### url
 * __类型__: `String`
@@ -564,7 +564,7 @@
 	}
 	```
 * __参考__:
-	* <DemoViewer demo="ready" />
+	* <DemoViewer demo="listener-ready" />
 
 ### refresh
 * __参数__:
@@ -612,7 +612,7 @@
 * __参考__:
 	* [addUrl](#addurl)
 	* [addConfig](#addconfig)
-	* <DemoViewer demo="beforeadd" />
+	* <DemoViewer demo="listener-beforeadd" />
 
 ### add
 * __参数__:
@@ -867,8 +867,8 @@
 	获取table表格中选中的行，返回值为数组。
 * __参考__: 
 	* <DemoViewer demo="btn-click" />
-	* <DemoViewer demo="selectMode-multiple" />
-	* <DemoViewer demo="toolbar" />
+	* <DemoViewer demo="api-selectMode-multiple" />
+	* <DemoViewer demo="api-toolbar" />
 
 ### getSearchParam
 * __详细__:
