@@ -33,8 +33,9 @@
 			<x-button
 				v-for="(item,idx) of pnoList"
 				:key="idx"
+				:pno="store.page"
 				:conf="{
-					cls: {'st-pn-active': store.page==item.pno},
+					cls: store.page==item.pno?'st-pn-active':'',
 					size: 'small',
 					text: item.text||item.pno
 				}"

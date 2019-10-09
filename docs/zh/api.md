@@ -842,59 +842,59 @@
 * __参考__: 
 	* <DemoViewer demo="listener-cellclick" />
 
-## 实例方法 todo
+## 实例方法
 
 ### refresh
+* __参数__:
+	* pageNo，`Number`，要刷新到的页号。如果没有指定`pageNo`，就刷新当前页
 * __详细__:
 
-	加载完新一页数据后触发，用在listeners中，用于对原始数据做处理。
-	```js
-	listeners: {
-		refresh(records){
-			//数据刷新之后，可以对数据做一些处理
-			let count = records.length;
-			console.log(`we get ${count} records`);
-		}
-	}
-	```
+	刷新表格。当对数据做了改动，或者想主动刷新表格，可以调用refresh方法。
+* __参考__: 
+	* <DemoViewer demo="method-refresh" />
+
 ### layout
 * __详细__:
-table数据发生变化影响布局时调用。
-```js
-dataChange(): {
-	//数据发生变化逻辑
-	//调用方式
-	this.layout();
-}
-```
 
-### getSelectRows
+	重新刷新布局。比如浏览器窗口大小有变化，需要STable同步变化时，可以调用这个接口
+
+* __参考__: 
+	* <DemoViewer demo="method-layout" />
+
+### getSelected
 * __详细__:
-获取table表格中选中的行，返回值为数组。
-```js
-getSelectRows(): {
-	//对数组进行操作[records]
-}
-```
+
+	获取table表格中选中的行，返回值为数组。
+* __参考__: 
+	* <DemoViewer demo="btn-click" />
+	* <DemoViewer demo="selectMode-multiple" />
+	* <DemoViewer demo="toolbar" />
+
 ### getSearchParam
 * __详细__:
-获得当前搜索表单内容，返回值为formData对象，可使用append()方法添加字段（类型可以是 Blob, File）。
-```js
-handleSubmit(target): {
-	let formData = getSearchParam(target);
-	target.append('name','豆豆')
-	console.log(target);
-}
-```
+
+	获得当前搜索表单内容。
+* __参考__: 
+	* <DemoViewer demo="method-getSearchParam" />
 
 ### setRecords
+* __参数__:
+	* records, `Array`，要设置的数据数组。
 * __详细__:
-设置表格数据，无需手动刷新。
-```js
-let dataList;
-//dataList = res.data.list
-this.setRecords(dataList);
-```
+
+	设置表格数据。一般情况下，我们的数据都是从服务端拉取的；但可以通过这个接口，用程序设置数据，让STable的更新更灵活。
+* __参考__: 
+	* <DemoViewer demo="method-setRecords" />
+
+
+### getToolbarBtn
+* __参数__:
+	* idx, `String|Number|null`，要获得的按钮id或者序号。如果没传此参数，返回所有按钮
+* __详细__:
+
+	获得当前工具栏的按钮。
+* __参考__: 
+	* <DemoViewer demo="btn-visible" />
 
 ## column
 表格的列配置。通过它配置此列的表头、表格内容以及展示样式。一般情况下，它的配置如下：
