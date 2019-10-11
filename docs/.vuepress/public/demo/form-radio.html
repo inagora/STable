@@ -1,0 +1,48 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box">
+	<x-form 
+		ref="form"
+		inline
+		:field-list="formList"
+		size="small"
+		:label-visible="labelVisible"
+		@submit="submit">
+	</x-form>
+</div>
+
+<script>
+	new Vue({
+		el: '#box',
+		data() {
+			return {
+				formList: [
+				{
+					label: '是否提名',
+					type: 'radio',
+					name: 'movie_nomination',
+					options: [{
+						label: 'yes',
+						value: true
+					},{
+						label: 'no',
+						value: false
+					}]
+				},
+				],
+				labelVisible: true,
+			}
+		},
+		methods: {
+			submit(formdata) {
+				console.log(formdata);
+			},
+			reset() {
+				this.$refs.form.reset();
+			},
+		}
+	})
+</script>

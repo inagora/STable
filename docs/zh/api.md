@@ -1191,41 +1191,272 @@ columns: [
 	* <DemoViewer demo="column-flex" />
 
 ## form
-* __介绍__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件使用（x-form），也可集成在STable使用，详见demo。
+* __介绍__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件（无需注册）在vue中使用（x-form），也可集成在STable使用，一般情况下，它的配置如下：
+  * inline：`Boolean`是否内联方式布局，默认false（无需配置），如需所有表单项展示在一行(如搜索)，请设置为`true`或配置此项。
+  * field-list： `Array`表单项列表，是一个大数组详细配置见demo。
+  * size：`String`表单尺寸 `small|medium|large`，默认small。
+  * label-visible：`Boolean`是否展示label标签，默认`true`。
+  * submit：`Function`提交表单触发的方法，可在此方法内进行表单验证和发起请求。
+  * reset：`Function`重置表单为初始值方法，若表单项有默认值则重置为默认值，若无默认值则重置为空。
+  * action-methods：`Function`获取表单配置项方法，可发请求获取所有表单配置项即field-list。
+	```html
+	<div id="box">
+		<x-form 
+			ref="form"
+			inline
+			:field-list="formList"
+			size="small"
+			:label-visible="labelVisible"
+			@submit="submit">
+			<x-button type="submit"></x-button>
+		</x-form>
+	</div>
+	```
   
-### 集成在Stable:
+  ```javascript
+	new Vue({
+		el: '#box',
+		data() {
+			return {
+				formList: [
+					{
+						label: '电影名',
+						name: 'movie_name',
+						type: 'input',
+					},
+					{
+						label: '电影类型',
+						type: 'multiple',
+						name: 'movie_type',
+						defaultValue: ['喜剧','亲情'],
+						options: [{
+							label: '动作',
+							value: 'type0',
+						},{
+							label: '喜剧',
+							value: 'type1',
+						},{
+							label: '记录片',
+							value: 'type2',
+						}]
+					},
+					{
+						label: '荣获奖项',
+						type: 'checkbox',
+						name: 'movie_award',
+						options: [
+							{
+								label: 'Oscar',
+								value: '0',
+							},
+							{
+								label: 'Cannes',
+								value: '1',
+							}]
+					},
+					{
+						label: '是否提名',
+						type: 'radio',
+						name: 'movie_nomination',
+						options: [{
+							label: 'yes',
+							value: true
+						},{
+							label: 'no',
+							value: false
+						}]
+					},
+					{
+						label: '上映年份',
+						name: 'year',
+						type: 'date',
+						format: 'YYYY'
+					}
+				],
+				labelVisible: true,
+			}
+		},
+		methods: {
+			submit(formdata) {
+				console.log(formdata);
+			},
+			reset() {
+				this.$refs.form.reset();
+			},
+		}
+	})
+	```
+* __参考__:
+	* <DemoViewer demo="form" />
+  
+### input
+* __介绍__:表单输入框 可选值：input/textarea，默认input。一般情况下，它的配置如下：
+  ```javascript
+	formConfig: [
+		{
+			label: '电影名',
+			name: 'movie_name',
+			type: 'input', //textarea
+		}
+	]
+	```
+* __参考__:
+	* <DemoViewer demo="form-input" />
 
-<p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="cocopang" data-slug-hash="vYBWGZY" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="vYBWGZY">
-  <span>See the Pen <a href="https://codepen.io/cocopang/pen/vYBWGZY/">
-  vYBWGZY</a> by ccpang (<a href="https://codepen.io/cocopang">@cocopang</a>)
-  on <a href="https://codepen.io">CodePen</a>.</span>
-</p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-
-### 单独使用form组件:
-
-* __inline__: 
-  * `Boolean` 默认false 纵向布局，当垂直方向空间受限且表单较简单时（比如搜索）可以设置为true，表示在一行内放置表单。
+### select
+* __介绍__:表单下拉选择框，配置选择项有：
+* __详细__: 
+  
+	* __type__：类型，可选值有：
+  	* `select`：单选，不可输入匹配。
+  	* `combobox`：单选，可输入匹配。
+  	* `multiple`：多选，可输入匹配。
+  
+	* __label__：标签显示名称，当表单的labelVisible设置为false时不可见。
+	* __name__：表单项name值，具有唯一性，提交表单时会作为表单项的key值。
+	* __defaultValue__: 默认值，在表单reset时会重置为此值。类型为`Array`。
+	* __options__: 选项，类型为`Array`。
 	
-* __size__: 
-	* `String` 默认值'small'，可选项'small'，'middle'，'large'。
+* 一般情况下，select选择框的配置如下：
+  ```javascript
+	formConfig: [
+		{
+			label: '电影类型',
+			type: 'multiple',
+			name: 'movie_type',
+			defalutValue: ['喜剧','成长'],
+			options: ['动作', '喜剧', '记录片', '环境', '科幻', '主旋律', '亲情', '成长', '青春']
+		},
+	]
+	```
+* __参考__:
+	* <DemoViewer demo="form-select" />
 
-* __labelVisible__: 
-	* `Boolean` 
-	* 默认值true，是否显示form表单的label。
+### checkbox
+* __介绍__:表单多项选择框，配置选择项有：
+* __详细__: 
+  
+	* __type__：类型，`checkbox`。
+	* __label__：标签显示名称，当表单的labelVisible设置为false时不可见。
+	* __name__：表单项name值，具有唯一性，提交表单时会作为表单项的key值。
+	* __options__: 选项，类型为`Array`。
+	
+* 一般情况下，checkbox多选框的配置如下：
+  ```javascript
+	formConfig: [
+		{
+			label: '荣获奖项',
+			type: 'checkbox',
+			name: 'movie_award',
+			options: [
+				{
+					label: 'Oscar',
+					value: '0',
+					checked: true //默认选中
+				},
+				{
+					label: 'Cannes',
+					value: '1',
+				}]
+		},
+	]
+	```
+* __参考__:
+	* <DemoViewer demo="form-checkbox" />
 
-* __fieldList__: 
-	* `Object` 表单配置项（json对象）。
+### radio
+* __介绍__:表单单项选择框，配置选择项有：
+* __详细__: 
+  
+	* __type__：类型，`radio`。
+	* __label__：标签显示名称，当表单的labelVisible设置为false时不可见。
+	* __name__：表单项name值，具有唯一性，提交表单时会作为表单项的key值。
+	* __options__: 选项，类型为`Array`。
+	
+* 一般情况下，radio多选框的配置如下：
+  ```javascript
+	formConfig: [
+		{
+			label: '是否提名',
+			type: 'radio',
+			name: 'movie_nomination',
+			options: [{
+				label: 'yes',
+				value: true
+			},{
+				label: 'no',
+				value: false
+			}]
+		},
+	]
+	```
+* __参考__:
+	* <DemoViewer demo="form-radio" />
 
-* __submit__: 
-	* 表单提交发起的请求。
-
-<p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="cocopang" data-slug-hash="NWKpLrv" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="NWKpLrv">
-  <span>See the Pen <a href="https://codepen.io/cocopang/pen/NWKpLrv/">
-  NWKpLrv</a> by ccpang (<a href="https://codepen.io/cocopang">@cocopang</a>)
-  on <a href="https://codepen.io">CodePen</a>.</span>
-</p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+### date
+* __介绍__:表单时间选择器，配置选择项有：
+* __详细__: 
+  
+	* __type__：类型，`date`。
+	* __label__：标签显示名称，当表单的labelVisible设置为false时不可见。
+	* __name__：表单项name值，具有唯一性，提交表单时会作为表单项的key值。
+	* __format__: `String`格式，默认为`YYYY-MM-DD`，如需精确到秒，可设置为`YYYY-MM-DD HH-mm-ss`。
+	
+* 一般情况下，date时间选择器的配置如下：
+  ```javascript
+	formConfig: [
+		{
+			label: '上映时间',
+			name: 'year',
+			type: 'date',
+			format: 'YYYY-MM-DD'
+		}
+	]
+	```
+* __参考__:
+	* <DemoViewer demo="form-date" />
+  
+### switch
+* __介绍__:开关选择器，配置选择项有：
+* __详细__: 
+  
+	* __type__：类型，`date`。
+	* __label__：标签显示名称，当表单的labelVisible设置为false时不可见。
+	* __name__：表单项name值，具有唯一性，提交表单时会作为表单项的key值。
+	
+* 一般情况下，switch开关选择器的配置如下：
+  ```javascript
+	formConfig: [
+		{
+			label: '是否免费',
+			name: 'free',
+			type: 'switch',
+		}
+	]
+	```
+* __参考__:
+	* <DemoViewer demo="form-switch"/>
+  
+### file
+* __介绍__:文件上传，配置选择项有：
+* __详细__: 
+  
+	* __type__：类型，`file`。
+	* __label__：标签显示名称，当表单的labelVisible设置为false时不可见。
+	* __name__：文件name，具有唯一性，提交表单时会作为表单项的key值。
+	
+* 一般情况下，switch开关选择器的配置如下：
+  ```javascript
+	formConfig: [
+		{
+			label: '文件上传',
+			name: 'file',
+			type: 'file',
+		}
+	]
+	```
+* __参考__:
+	* <DemoViewer demo="form-file"/>
 
 ## button
 
