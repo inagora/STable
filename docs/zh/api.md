@@ -1191,7 +1191,8 @@ columns: [
 	* <DemoViewer demo="column-flex" />
 
 ## form
-* __介绍__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件（无需注册）在vue中使用（x-form），也可集成在STable使用，一般情况下，它的配置如下：
+* __介绍__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件（无需注册）在vue中使用（x-form），也可集成在STable使用，一般情况下，它的配置如下：、
+  
   * inline：`Boolean`是否内联方式布局，默认false（无需配置），如需所有表单项展示在一行(如搜索)，请设置为`true`或配置此项。
   * field-list： `Array`表单项列表，是一个大数组详细配置见demo。
   * size：`String`表单尺寸 `small|medium|large`，默认small。
@@ -1199,6 +1200,7 @@ columns: [
   * submit：`Function`提交表单触发的方法，可在此方法内进行表单验证和发起请求。
   * reset：`Function`重置表单为初始值方法，若表单项有默认值则重置为默认值，若无默认值则重置为空。
   * action-methods：`Function`获取表单配置项方法，可发请求获取所有表单配置项即field-list。
+  
 	```html
 	<div id="box">
 		<x-form 
