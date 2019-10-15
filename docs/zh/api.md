@@ -1308,14 +1308,6 @@ columns: [
 * __参考__:
 	* <DemoViewer demo="form-label" />
 
-### action
-* __类型__:	`Function`
-* __详细__:
-
-	获取表单配置项方法，可发请求获取所有表单配置项即field-list。
-* __参考__:
-	* <DemoViewer demo="form-action" />
-
 ### submit
 * __类型__:	`Function`
 * __详细__:
@@ -1334,185 +1326,86 @@ columns: [
 
 ### field-list 
 * __类型__:	`Array`
-* __详细__:
+* __概览__:
 
 	表单项配置，每项配置都是`Object`类型。
-	配置项 | 是否必填 |  类型  
-	-|-|-
-	label | true | String |
-	name | true | String |
-	type | true | String |
-	defalutValue | false | String,Array |
-	options | 仅在type=select、type=multiple必填 | Array |
+	| 配置项 | 是否必填 |  类型  | 默认值 |
+	| :-: | :-: | :-: | :-: |
+	| label | true | String | - |
+	| name | true | String | - |
+	| type | true | String | input |
+	| defalutValue | false(仅在type=select、type=multiple选填) | String,Array | - |
+	| options | false(仅在type=select、type=multiple必填) | Array | [] |
+	| format | false(仅在type=date必填) | String | 'YYYY-MM-DD' |
 
-### input
-* __介绍__:表单输入框 可选值：input/textarea，默认input。一般情况下，它的配置如下：
-  ```javascript
-	formConfig: [
-		{
-			label: '电影名',
-			name: 'movie_name',
-			type: 'input', //textarea
-		}
-	]
-	```
-* __参考__:
-	* <DemoViewer demo="form-input" />
-
-### select
-* __介绍__:表单下拉选择框，配置选择项有：
-* __详细__: 
+* __type 的合法值:__
   
-	* __type__：类型，可选值有：
-  	* `select`：单选，不可输入匹配。
-  	* `combobox`：单选，可输入匹配。
-  	* `multiple`：多选，可输入匹配。
-  
-	* __label__：标签显示名称，当表单的labelVisible设置为false时不可见。
-	* __name__：表单项name值，具有唯一性，提交表单时会作为表单项的key值。
-	* __defaultValue__: 默认值，在表单reset时会重置为此值。类型为`Array`。
-	* __options__: 选项，类型为`Array`。
-	
-* 一般情况下，select选择框的配置如下：
-  ```javascript
-	formConfig: [
-		{
-			label: '电影类型',
-			type: 'multiple',
-			name: 'movie_type',
-			defalutValue: ['喜剧','成长'],
-			options: ['动作', '喜剧', '记录片', '环境', '科幻', '主旋律', '亲情', '成长', '青春']
-		},
-	]
-	```
-* __参考__:
-	* <DemoViewer demo="form-select" />
-
-### checkbox
-* __介绍__:表单多项选择框，配置选择项有：
-* __详细__: 
-  
-	* __type__：类型，`checkbox`。
-	* __label__：标签显示名称，当表单的labelVisible设置为false时不可见。
-	* __name__：表单项name值，具有唯一性，提交表单时会作为表单项的key值。
-	* __options__: 选项，类型为`Array`。
-	
-* 一般情况下，checkbox多选框的配置如下：
-  ```javascript
-	formConfig: [
-		{
-			label: '荣获奖项',
-			type: 'checkbox',
-			name: 'movie_award',
-			options: [
-				{
-					label: 'Oscar',
-					value: '0',
-					checked: true //默认选中
-				},
-				{
-					label: 'Cannes',
-					value: '1',
-				}]
-		},
-	]
-	```
-* __参考__:
-	* <DemoViewer demo="form-checkbox" />
-
-### radio
-* __介绍__:表单单项选择框，配置选择项有：
-* __详细__: 
-  
-	* __type__：类型，`radio`。
-	* __label__：标签显示名称，当表单的labelVisible设置为false时不可见。
-	* __name__：表单项name值，具有唯一性，提交表单时会作为表单项的key值。
-	* __options__: 选项，类型为`Array`。
-	
-* 一般情况下，radio多选框的配置如下：
-  ```javascript
-	formConfig: [
-		{
-			label: '是否提名',
-			type: 'radio',
-			name: 'movie_nomination',
-			options: [{
-				label: 'yes',
-				value: true
-			},{
-				label: 'no',
-				value: false
-			}]
-		},
-	]
-	```
-* __参考__:
-	* <DemoViewer demo="form-radio" />
-
-### date
-* __介绍__:表单时间选择器，配置选择项有：
-* __详细__: 
-  
-	* __type__：类型，`date`。
-	* __label__：标签显示名称，当表单的labelVisible设置为false时不可见。
-	* __name__：表单项name值，具有唯一性，提交表单时会作为表单项的key值。
-	* __format__: `String`格式，默认为`YYYY-MM-DD`，如需精确到秒，可设置为`YYYY-MM-DD HH-mm-ss`。
-	
-* 一般情况下，date时间选择器的配置如下：
-  ```javascript
-	formConfig: [
-		{
-			label: '上映时间',
-			name: 'year',
-			type: 'date',
-			format: 'YYYY-MM-DD'
-		}
-	]
-	```
-* __参考__:
-	* <DemoViewer demo="form-date" />
-  
-### switch
-* __介绍__:开关选择器，配置选择项有：
-* __详细__: 
-  
-	* __type__：类型，`date`。
-	* __label__：标签显示名称，当表单的labelVisible设置为false时不可见。
-	* __name__：表单项name值，具有唯一性，提交表单时会作为表单项的key值。
-	
-* 一般情况下，switch开关选择器的配置如下：
-  ```javascript
-	formConfig: [
-		{
-			label: '是否免费',
-			name: 'free',
-			type: 'switch',
-		}
-	]
-	```
-* __参考__:
-	* <DemoViewer demo="form-switch"/>
-  
-### file
-* __介绍__:文件上传，配置选择项有：
-* __详细__: 
-  
-	* __type__：类型，`file`。
-	* __label__：标签显示名称，当表单的labelVisible设置为false时不可见。
-	* __name__：文件name，具有唯一性，提交表单时会作为表单项的key值。
-	
-* 一般情况下，switch开关选择器的配置如下：
-  ```javascript
-	formConfig: [
-		{
-			label: '文件上传',
-			name: 'file',
-			type: 'file',
-		}
-	]
-	```
-* __参考__:
-	* <DemoViewer demo="form-file"/>
+<table>
+	<tr>
+		<th>表单项名称</th>
+		<th style="text-align:center">type值</th>
+		<th style="text-align:center">可选值</th>
+		<th>类型</th>
+		<th>默认值</th>
+		<th>说明</th>
+	</tr>
+	<tr>
+		<td >表单输入框 </td>
+		<td style="color:rgb(92, 184, 92)">input</td>
+		<td> input/textarea </td>
+		<td>`String`</td>
+		<td>input</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td >下拉选择框 </td>
+		<td style="color:rgb(92, 184, 92)">select</td>
+		<td> select/combobox/multiple </td>
+		<td>`String`</td>
+		<td>select</td>
+		<td>select单选不可输入匹配、combobox单选可输入匹配、multiple为多选可输入匹配</td>
+	</tr>
+	<tr>
+		<td >多项选择框 </td>
+		<td style="color:rgb(92, 184, 92)">checkbox</td>
+		<td> checkbox </td>
+		<td>`String`</td>
+		<td>checkbox</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td >单项选择框 </td>
+		<td style="color:rgb(92, 184, 92)">radio</td>
+		<td> radio </td>
+		<td>`String`</td>
+		<td>radio</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td >时间选择器 </td>
+		<td style="color:rgb(92, 184, 92)">date</td>
+		<td> date </td>
+		<td>`String`</td>
+		<td>date</td>
+		<td>format默认为`YYYY-MM-DD`，如需精确到秒，可设置为`YYYY-MM-DD HH-mm-ss`</td>
+	</tr>
+	<tr>
+		<td >开关选择器 </td>
+		<td style="color:rgb(92, 184, 92)">switch</td>
+		<td> switch </td>
+		<td>`String`</td>
+		<td>switch</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td >文件上传 </td>
+		<td style="color:rgb(92, 184, 92)">file</td>
+		<td> file </td>
+		<td>`String`</td>
+		<td>file</td>
+		<td>action配置上传url</td>
+	</tr>
+</table>
 
 ## button
 
