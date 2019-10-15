@@ -79,11 +79,11 @@
 		</div>
 		<div v-if="m==='H'" :class="`${pre}-foot`">
 			<div :class="`${pre}-hour`">
-				<a :title="local.hourTip" :class="{on:showHours}" @click="showHours=!showHours,showMinutes=showSeconds=false">{{ hour|dd }}</a>
+				<a :title="local.hourTip" :class="{'st-calendar-on':showHours}" @click="showHours=!showHours,showMinutes=showSeconds=false">{{ hour|dd }}</a>
 				<span>:</span>
-				<a :title="local.minuteTip" :class="{on:showMinutes}" @click="showMinutes=!showMinutes,showHours=showSeconds=false">{{ minute|dd }}</a>
+				<a :title="local.minuteTip" :class="{'st-calendar-on':showMinutes}" @click="showMinutes=!showMinutes,showHours=showSeconds=false">{{ minute|dd }}</a>
 				<span>:</span>
-				<a :title="local.secondTip" :class="{on:showSeconds}" @click="showSeconds=!showSeconds,showHours=showMinutes=false">{{ second|dd }}</a>
+				<a :title="local.secondTip" :class="{'st-calendar-on':showSeconds}" @click="showSeconds=!showSeconds,showHours=showMinutes=false">{{ second|dd }}</a>
 			</div>
 		</div>
 	</div>
@@ -418,7 +418,7 @@ export default {
   cursor: pointer;
 }
 .st-calendar-hour a:hover,
-.st-calendar-hour a.on {
+.st-calendar-hour a.st-calendar-on {
   color: #1284e7;
 }
 .st-calendar-years,

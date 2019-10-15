@@ -9,7 +9,7 @@
 			v-for="(item, index) in fields" 
 			:key="index"
 			class="st-form-item"
-			:class="size"
+			:class="`st-form-${size}`"
 		>
 			<div 
 				v-if="labelVisible" 
@@ -380,13 +380,13 @@ export default {
   .st-form {
     width: 100%;
 		position: relative;
-		.small {
+		&-small {
 			font-size: 8px;
 		}
-		.medium {
+		&-medium {
 			font-size: 9px;
 		}
-		.large {
+		&-large {
 			font-size: 10px;
 		}
 

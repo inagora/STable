@@ -1332,7 +1332,18 @@ columns: [
 * __参考__:
 	* <DemoViewer demo="form-reset" />
 
-## form表单项配置
+### field-list 
+* __类型__:	`Array`
+* __详细__:
+
+	表单项配置，每项配置都是`Object`类型。
+	配置项 | 是否必填 |  类型  
+	-|-|-
+	label | true | String |
+	name | true | String |
+	type | true | String |
+	defalutValue | false | String,Array |
+	options | 仅在type=select、type=multiple必填 | Array |
 
 ### input
 * __介绍__:表单输入框 可选值：input/textarea，默认input。一般情况下，它的配置如下：

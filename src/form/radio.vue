@@ -6,14 +6,14 @@
 			class="st-radio"
 			role="radio"
 			:class="{
-				'is-checked': index === checkIndex                        
+				'st-radio-ischecked': index === checkIndex                        
 			}"
 			:aria-checked="index === checkIndex"
 		>
 			<span
 				class="st-radio-input"
 				:class="{
-					'is-checked': index === checkIndex
+					'st-radio-ischecked': index === checkIndex
 				}"
 			>
 				<span class="st-radio-inner" />
@@ -143,14 +143,14 @@ export default {
       margin: 0;
     }
   }
-  .st-radio-input.is-checked .st-radio-inner {
+  .st-radio-input.st-radio-ischecked .st-radio-inner {
     border-color: #409eff;
     background: #409eff;
   }
-  .st-radio-input.is-checked .st-radio-inner:after {
+  .st-radio-input.st-radio-ischecked .st-radio-inner:after {
     transform: translate(-50%,-50%) scale(1);
   }
-  .st-radio-input.is-checked+.st-radio-label {
+  .st-radio-input.st-radio-ischecked+.st-radio-label {
     color: #409eff;
   }
 </style>
