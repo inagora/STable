@@ -4,13 +4,14 @@
 	}
 </style>
 <div id="box">
+	<!-- 去掉 inline 试试吧？ -->
 	<x-form 
 		ref="form"
+		inline 
 		:field-list="formList"
 		size="small"
 		:label-visible="labelVisible"
-		@submit="submit"
-		@reset="reset">
+		@submit="submit">
 		<x-button
 			:conf="{
 				nativeType: 'submit',

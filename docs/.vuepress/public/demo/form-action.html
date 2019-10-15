@@ -1,0 +1,57 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box">
+	<x-form 
+		ref="form"
+		:field-list="formList"
+		size="small"
+		:label-visible="labelVisible"
+		@action-methods="actionMethod"
+		@submit="submit"
+		@reset="reset">
+		<x-button
+			:conf="{
+				nativeType: 'submit',
+				type: 'primary',
+				icon: 'st-icon st-icon-search',
+				text: '提交'
+			}"
+		/>
+		<x-button
+			v-if="searchResetable"
+			:conf="{
+				cls: 'st-search-reset-btn',
+				text: '重置'
+			}"
+			@click.prevent="reset"
+		/>
+	</x-form>
+</div>
+
+<script>
+	//ajaxFormList
+	new Vue({
+		el: '#box',
+		data() {
+			return {
+				formList: [],
+				actionUrl: 'https://dc.wfxteam.com/ajaxFormList',
+				labelVisible: true,
+			}
+		},
+		methods: {
+			actionMethod() {
+				
+			},
+			submit(formdata) {
+				console.log(formdata);
+			},
+			reset() {
+				this.$refs.form.reset();
+			},
+		}
+	})
+</script>

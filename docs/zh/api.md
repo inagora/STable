@@ -1191,15 +1191,7 @@ columns: [
 	* <DemoViewer demo="column-flex" />
 
 ## form
-* __介绍__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件（无需注册）在vue中使用（x-form），也可集成在STable使用，一般情况下，它的配置如下：、
-  
-  * inline：`Boolean`是否内联方式布局，默认false（无需配置），如需所有表单项展示在一行(如搜索)，请设置为`true`或配置此项。
-  * field-list： `Array`表单项列表，是一个大数组详细配置见demo。
-  * size：`String`表单尺寸 `small|medium|large`，默认small。
-  * label-visible：`Boolean`是否展示label标签，默认`true`。
-  * submit：`Function`提交表单触发的方法，可在此方法内进行表单验证和发起请求。
-  * reset：`Function`重置表单为初始值方法，若表单项有默认值则重置为默认值，若无默认值则重置为空。
-  * action-methods：`Function`获取表单配置项方法，可发请求获取所有表单配置项即field-list。
+* __介绍__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件（无需注册）在vue中使用（x-form），也可集成在STable使用，一般情况下，它的配置如下：
   
 	```html
 	<div id="box">
@@ -1290,7 +1282,58 @@ columns: [
 	```
 * __参考__:
 	* <DemoViewer demo="form" />
+
+
+### inline
+* __类型__:	`Boolean`
+* __详细__:
+
+	是否内联方式布局，默认false（无需配置），如需所有表单项展示在一行(如搜索)，请设置为`true`或配置此项。
+* __参考__:
+	* <DemoViewer demo="form-inline" />
   
+### size
+* __类型__:	`String`
+* __详细__:
+
+	表单尺寸。可选值有 `small|medium|large`，默认small。
+* __参考__:
+	* <DemoViewer demo="form-size" />
+    
+### label-visible
+* __类型__:	`Boolean`
+* __详细__:
+
+	是否展示label标签。默认`true`。
+* __参考__:
+	* <DemoViewer demo="form-label" />
+
+### action
+* __类型__:	`Function`
+* __详细__:
+
+	获取表单配置项方法，可发请求获取所有表单配置项即field-list。
+* __参考__:
+	* <DemoViewer demo="form-action" />
+
+### submit
+* __类型__:	`Function`
+* __详细__:
+
+	表单提交触发方法，按钮需要单独引入，详见[buttons](#buttons)。可在此方法中验证表单数据和发起请求。
+* __参考__:
+	* <DemoViewer demo="form-submit" />
+
+### reset
+* __类型__:	`Function`
+* __详细__:
+
+	表单提交重置方法，若表单项有默认值则重置为默认值，若无默认值则重置为空。按钮需要单独引入，详见[buttons](#buttons)。
+* __参考__:
+	* <DemoViewer demo="form-reset" />
+
+## form表单项配置
+
 ### input
 * __介绍__:表单输入框 可选值：input/textarea，默认input。一般情况下，它的配置如下：
   ```javascript

@@ -4,13 +4,13 @@
 	}
 </style>
 <div id="box">
+	<!-- 修改 size 试试吧？ -->
 	<x-form 
 		ref="form"
 		:field-list="formList"
-		size="small"
+		size="medium"
 		:label-visible="labelVisible"
-		@submit="submit"
-		@reset="reset">
+		@submit="submit">
 		<x-button
 			:conf="{
 				nativeType: 'submit',
