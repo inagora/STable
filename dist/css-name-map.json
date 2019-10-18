@@ -225,15 +225,12 @@
 	"st-tag-normal": "st-57",
 	"st-datepicker-anim": "st-58",
 	"st-search-label-invisible": "st-59",
-	"st-table-resize-start": "st-5a",
-	"st-table-resize-end": "st-5b",
-	"st-table-head-box": "st-5c",
-	"st-table-head-tr": "st-5d",
-	"st-table-head-text": "st-5e",
-	"st-table-body-box": "st-5f",
-	"st-table-body-td": "st-5g",
-	"st-table-td-rownumber": "st-5h",
-	"st-pb-tip": "st-5i",
-	"st-table-head-indicator-top": "st-5j",
-	"st-pn-msg": "st-5k"
+	"st-table-head-box": "st-5a",
+	"st-table-head-tr": "st-5b",
+	"st-table-head-text": "st-5c",
+	"st-table-body-box": "st-5d",
+	"st-table-body-td": "st-5e",
+	"st-table-td-rownumber": "st-5f",
+	"st-pb-tip": "st-5g",
+	"st-pn-msg": "st-5h"
 }
