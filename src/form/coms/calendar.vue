@@ -1,33 +1,33 @@
 <template>
-	<div :class="`${pre}`">
-		<div :class="`${pre}-head`">
-			<a v-show="showYears" :class="`${pre}-prev-decade-btn`" @click="year-=10">«</a>
-			<a v-show="!showYears" :class="`${pre}-prev-year-btn`" @click="year--">«</a>
-			<a v-show="!showYears&&!showMonths" :class="`${pre}-prev-month-btn`" @click="pm">‹</a>
-			<a v-show="showYears" :class="`${pre}-year-select`">{{ ys+'-'+ye }}</a>
+	<div class="st-calendar">
+		<div class="st-calendar-head">
+			<a v-show="showYears" class="st-calendar-prev-decade-btn" @click="year-=10">«</a>
+			<a v-show="!showYears" class="st-calendar-prev-year-btn" @click="year--">«</a>
+			<a v-show="!showYears&&!showMonths" class="st-calendar-prev-month-btn" @click="pm">‹</a>
+			<a v-show="showYears" class="st-calendar-year-select">{{ ys+'-'+ye }}</a>
 			<template v-if="local.yearSuffix">
-				<a v-show="!showYears" :class="`${pre}-year-select`" @click="showYears=!showYears">{{ year }}{{ local.yearSuffix }}</a>
-				<a v-show="!showYears&&!showMonths" :class="`${pre}-month-select`" @click="showMonths=!showMonths">{{ local.monthsHead[month] }}</a>
+				<a v-show="!showYears" class="st-calendar-year-select" @click="showYears=!showYears">{{ year }}{{ local.yearSuffix }}</a>
+				<a v-show="!showYears&&!showMonths" class="st-calendar-month-select" @click="showMonths=!showMonths">{{ local.monthsHead[month] }}</a>
 			</template>
 			<template v-else>
-				<a v-show="!showYears&&!showMonths" :class="`${pre}-month-select`" @click="showMonths=!showMonths">{{ local.monthsHead[month] }}</a>
-				<a v-show="!showYears" :class="`${pre}-year-select`" @click="showYears=!showYears">{{ year }}</a>
+				<a v-show="!showYears&&!showMonths" class="st-calendar-month-select" @click="showMonths=!showMonths">{{ local.monthsHead[month] }}</a>
+				<a v-show="!showYears" class="st-calendar-year-select" @click="showYears=!showYears">{{ year }}</a>
 			</template>
-			<a v-show="!showYears&&!showMonths" :class="`${pre}-next-month-btn`" @click="nm">›</a>
-			<a v-show="!showYears" :class="`${pre}-next-year-btn`" @click="year++">»</a>
-			<a v-show="showYears" :class="`${pre}-next-decade-btn`" @click="year+=10">»</a>
+			<a v-show="!showYears&&!showMonths" class="st-calendar-next-month-btn" @click="nm">›</a>
+			<a v-show="!showYears" class="st-calendar-next-year-btn" @click="year++">»</a>
+			<a v-show="showYears" class="st-calendar-next-decade-btn" @click="year+=10">»</a>
 		</div>
-		<div :class="`${pre}-body`">
-			<div :class="`${pre}-days`">
-				<a v-for="i in local.weeks" :key="i" :class="`${pre}-week`">{{ i }}</a>
+		<div class="st-calendar-body">
+			<div class="st-calendar-days">
+				<a v-for="i in local.weeks" :key="i" class="st-calendar-week">{{ i }}</a>
 				<a
 					v-for="(j,i) in days"
 					:key="i"
-					:class="[(j.p||j.n)?`${pre}-date-out`:'',status(j.y,j.m,j.i,hour,minute,second,'YYYYMMDD')]"
+					:class="[(j.p||j.n)? 'st-calendar-date-out' :'',status(j.y,j.m,j.i,hour,minute,second,'YYYYMMDD')]"
 					@click="is($event)&&(day=j.i,ok(j))"
 				>{{ j.i }}</a>
 			</div>
-			<div v-show="showMonths" :class="`${pre}-months`">
+			<div v-show="showMonths" class="st-calendar-months">
 				<a
 					v-for="(i,j) in local.months"
 					:key="j"
@@ -35,16 +35,16 @@
 					@click="is($event)&&(showMonths=(m==='M'),month=j,(m==='M'&&ok('m')))"
 				>{{ i }}</a>
 			</div>
-			<div v-show="showYears" :class="`${pre}-years`">
+			<div v-show="showYears" class="st-calendar-years">
 				<a
 					v-for="(i,j) in years"
 					:key="j"
-					:class="[(j===0||j===11)?`${pre}-date-out`:'',status(i,month,day,hour,minute,second,'YYYY')]"
+					:class="[(j===0||j===11)? 'st-calendar-date-out':'',status(i,month,day,hour,minute,second,'YYYY')]"
 					@click="is($event)&&(showYears=(m==='Y'),year=i,(m==='Y'&&ok('y')))"
 				>{{ i }}</a>
 			</div>
-			<div v-show="showHours" :class="`${pre}-hours`">
-				<div :class="`${pre}-title`">
+			<div v-show="showHours" class="st-calendar-hours">
+				<div class="st-calendar-title">
 					{{ local.hourTip }}
 				</div>
 				<a
@@ -54,8 +54,8 @@
 					@click="is($event)&&(showHours=false,hour=i,ok('h'))"
 				>{{ i }}</a>
 			</div>
-			<div v-show="showMinutes" :class="`${pre}-minutes`">
-				<div :class="`${pre}-title`">
+			<div v-show="showMinutes" class="st-calendar-minutes">
+				<div class="st-calendar-title">
 					{{ local.minuteTip }}
 				</div>
 				<a
@@ -65,8 +65,8 @@
 					@click="is($event)&&(showMinutes=false,minute=i,ok('h'))"
 				>{{ i }}</a>
 			</div>
-			<div v-show="showSeconds" :class="`${pre}-seconds`">
-				<div :class="`${pre}-title`">
+			<div v-show="showSeconds" class="st-calendar-seconds">
+				<div class="st-calendar-title">
 					{{ local.secondTip }}
 				</div>
 				<a
@@ -77,8 +77,8 @@
 				>{{ i }}</a>
 			</div>
 		</div>
-		<div v-if="m==='H'" :class="`${pre}-foot`">
-			<div :class="`${pre}-hour`">
+		<div v-if="m==='H'" class="st-calendar-foot">
+			<div class="st-calendar-hour">
 				<a :title="local.hourTip" :class="{'st-calendar-on':showHours}" @click="showHours=!showHours,showMinutes=showSeconds=false">{{ hour|dd }}</a>
 				<span>:</span>
 				<a :title="local.minuteTip" :class="{'st-calendar-on':showMinutes}" @click="showMinutes=!showMinutes,showHours=showSeconds=false">{{ minute|dd }}</a>
@@ -114,7 +114,6 @@ export default {
 	data () {
 		const time = this.get(this.value);
 		return {
-			pre: 'st-calendar',
 			m: 'D',
 			showYears: false,
 			showMonths: false,
@@ -255,10 +254,10 @@ export default {
 			} else {
 				flag = f($this.value, format) === f(time, format);
 			}
-			classObj[`${$this.pre}-date`] = true;
-			classObj[`${$this.pre}-date-disabled`] = ($this.right && t < $this.start) || $this.$parent.disabledDate(time, format);
-			classObj[`${$this.pre}-date-on`] = ($this.left && t > $this.start) || ($this.right && t < $this.end);
-			classObj[`${$this.pre}-date-selected`] = flag;
+			classObj['st-calendar-date'] = true;
+			classObj['st-calendar-date-disabled'] = ($this.right && t < $this.start) || $this.$parent.disabledDate(time, format);
+			classObj['st-calendar-date-on'] = ($this.left && t > $this.start) || ($this.right && t < $this.end);
+			classObj['st-calendar-date-selected'] = flag;
 			return classObj;
 		},
 		nm () {
@@ -278,7 +277,7 @@ export default {
 			}
 		},
 		is (e) {
-			return e.target.className.indexOf(`${this.pre}-date-disabled`) === -1;
+			return e.target.className.indexOf('st-calendar-date-disabled') === -1;
 		},
 		ok (info) {
 			const $this = this;
