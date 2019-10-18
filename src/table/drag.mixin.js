@@ -37,7 +37,7 @@ export default {
 
 			let indicator = document.createElement('div');
 			this.dragger.indicator = indicator;
-			indicator.innerHTML = '<span class="st-table-head-indicator-top st-icon st-icon-arrowdown"></span><span class="st-table-head-indicator-bottom st-icon st-icon-arrowdown"></span>';
+			indicator.innerHTML = '<span class="st-icon st-icon-arrowdown"></span><span class="st-table-head-indicator-bottom st-icon st-icon-arrowdown"></span>';
 			indicator.className = 'st-table-head-indicator';
 			document.body.appendChild(indicator);
 

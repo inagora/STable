@@ -4,7 +4,8 @@ const cssFile = path.resolve(__dirname, '../dist/STable.min.css');
 const jsFile = path.resolve(__dirname, '../dist/STable.min.js');
 var whiteList = [
 	'st-icon',
-	'st-icon-'
+	'st-icon-',
+	'st-form-size-'
 ];
 var cssMap = {};
 const CHARS = '0123456789abcdefghijklmnopqrstuvwxyz'.split('');
@@ -53,7 +54,7 @@ function run(){
 	let jsStr = fs.readFileSync(jsFile, 'utf8');
 	jsStr = jsStr.replace(/st-.+?(?=['"\s:\{,>+\.\[])/gi, function( clsName){
 		if(!/[a-z0-9]$/i.test(clsName)){
-			console.error(`clas name error: ${clsName}`);
+			console.error(`class name error: ${clsName}`);
 			return clsName;
 		} else if(isInWhiteList(clsName)){
 			return clsName;
