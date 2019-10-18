@@ -19,7 +19,7 @@
 </template>
 
 <script>
-const STable_VERSION = 'v2.0.0-beta.25';
+const STable_VERSION = 'v2.0.0-beta.30';
 export default {
 	props: [ 'demo' ],
 	data(){
