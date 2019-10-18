@@ -9,7 +9,7 @@
 			v-for="(item, index) in fields" 
 			:key="index"
 			class="st-form-item"
-			:class="`st-form-${size}`"
+			:class="sizeCls"
 		>
 			<div 
 				v-if="labelVisible" 
@@ -184,12 +184,18 @@ export default {
 			});
 		}
 		this.ajax = new Ajax(Object.assign({}, (window.STable && window.STable.default||{}).ajaxSetting, this.ajaxSetting));
+		let formSizeCls = {
+			small: 'st-form-small',
+			medium: 'st-form-medium',
+			large: 'st-form-large'
+		};
 		return {
 			fields,
 			formValue: {},
 			checkedValue: [],
 			showErr: false,
-			errMsg: ''
+			errMsg: '',
+			sizeCls: formSizeCls[this.size]
 		};
 	},
 	watch: {

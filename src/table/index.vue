@@ -105,14 +105,14 @@
 
 		<div
 			v-if="resizing"
-			class="st-table-resize st-table-resize-start"
+			class="st-table-resize"
 			:style="{
 				left: startResizePos+'px'
 			}"
 		></div>
 		<div
 			v-if="resizing"
-			class="st-table-resize st-table-resize-end"
+			class="st-table-resize"
 			:style="{
 				left: endResizePos+'px'
 			}"

@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="st-switch"
-		:class="{'is-checked': checked }"
+		:class="{'st-is-checked': checked }"
 		role="switch"
 		:aria-checked="checked"
 		@click.prevent="handleChange"
@@ -92,11 +92,11 @@ export default {
 			background-color: #fff;
 		}
 	}
-	.st-switch.is-checked .st-switch-core {
+	.st-switch.st-is-checked .st-switch-core {
 		border-color: #409eff;
     background-color: #409eff;
 	}
-	.st-switch.is-checked .st-switch-core:after {
+	.st-switch.st-is-checked .st-switch-core:after {
     left: 100%;
     margin-left: -17px;
 	}
