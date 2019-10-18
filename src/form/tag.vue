@@ -1,3 +1,17 @@
+<template>
+	<span
+		:class="['st-tag',type ? typeCls[type] : '',tagSize ? sizeCls[tagSize] : '']"
+		:style="{backgroundColor:color}"
+	>
+		<slot></slot>
+		<i 
+			v-if="closable" 
+			class="st-icon st-icon-close st-tag-close" 
+			@click="handleClose"
+		>
+		</i>
+	</span>
+</template>
 <script>
 export default {
 	name: 'XTag',
@@ -23,6 +37,20 @@ export default {
 			default: 'small'
 		}
 	},
+	data() {
+		return {
+			typeCls: {
+				info: 'st-tag-info',
+				success: 'st-tag-success',
+				warning: 'st-tag-warning',
+				danger: 'st-tag-danger'
+			},
+			sizeCls: {
+				normal: 'st-tag-normal',
+				small: 'st-tag-small'
+			}
+		};
+	},
 	computed: {
 		tagSize() {
 			return this.size || 'normal';
@@ -33,34 +61,6 @@ export default {
 			event.stopPropagation();
 			this.$emit('close', event);
 		},
-	},
-	render() {
-		const { type, tagSize } = this;
-		let typeCls = {
-			info: 'st-tag-info',
-			success: 'st-tag-success',
-			warning: 'st-tag-warning',
-			danger: 'st-tag-danger'
-		};
-		let sizeCls = {
-			normal: 'st-tag-normal',
-			small: 'st-tag-small'
-		};
-		const classes = [
-			'st-tag',
-			type ? typeCls[type] : '',
-			tagSize ? sizeCls[tagSize] : '',
-		];
-		return (
-			<span
-				class={ classes }
-				style={{ backgroundColor: this.color }}>
-				{ this.$slots.default }
-				{
-					this.closable && <i class="st-icon st-icon-close st-tag-close" on-click={ this.handleClose }></i>
-				}
-			</span>
-		);
 	}
 };
 </script>

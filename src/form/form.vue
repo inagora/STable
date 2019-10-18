@@ -88,7 +88,6 @@
 
 <script>
 import Ajax from '../util/Ajax';
-import {Console} from '../util/util';
 import XInput from "./input.vue";
 import XSelect from "./select.vue";
 import XCheckbox from "./checkbox.vue";
@@ -296,7 +295,6 @@ export default {
 		},
 		submit() {
 			let data = this.formValue;
-			Console.log(data);
 			this.$emit('submit', data);
 		},
 		changeFn(val='',name) {

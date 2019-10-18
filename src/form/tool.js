@@ -1,13 +1,6 @@
-import Vue from 'vue';
-
-let class2type = {};
-"Boolean Number String Function Array Date RegExp Object Error".split(" ").forEach(name => {
-	class2type["[object " + name + "]"] = name.toLowerCase();
-});
-
 //自定义指令 clickoutside
 const on = (function () {
-	if (!Vue.prototype.$isServer && document.addEventListener) {
+	if (document.addEventListener) {
 		return function (element, event, handler) {
 			if (element && event && handler) {
 				element.addEventListener(event, handler, false);
@@ -28,9 +21,9 @@ const ctx = '@@clickoutsideContext';
 let startClick;
 let seed = 0;
 
-!Vue.prototype.$isServer && on(document, 'mousedown', e => (startClick = e));
+on(document, 'mousedown', e => (startClick = e));
 
-!Vue.prototype.$isServer && on(document, 'mouseup', e => {
+on(document, 'mouseup', e => {
 	nodeList.forEach(node => node[ctx].documentHandler(e, startClick));
 });
 
@@ -70,12 +63,6 @@ export const _clickOutside = {
 		};
 	},
 
-	update(el, binding, vnode) {
-		el[ctx].documentHandler = createDocumentHandler(el, binding, vnode);
-		el[ctx].methodName = binding.expression;
-		el[ctx].bindingFn = binding.value;
-	},
-
 	unbind(el) {
 		let len = nodeList.length;
 
@@ -87,11 +74,6 @@ export const _clickOutside = {
 		}
 		delete el[ctx];
 	}
-};
-
-export const _typeOf = function (obj) {
-	return obj == null ? String(obj) :
-		class2type[toString.call(obj)] || "object";
 };
 export const _getValueByPath = function (object, prop) {
 	prop = prop || '';
@@ -110,4 +92,4 @@ export const _getValueByPath = function (object, prop) {
 	}
 	return result;
 };
-export default {_clickOutside,_typeOf,_getValueByPath};
+export default {_clickOutside,_getValueByPath};

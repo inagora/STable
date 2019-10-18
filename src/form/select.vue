@@ -24,7 +24,7 @@
 					<span class="st-select-tags-text">{{ item }}</span>
 				</x-tag>
 			</span>
-			<span v-else>{{placeholder}}</span>
+			<span v-else>{{ placeholder }}</span>
 			<input
 				v-if="filterable"
 				type="text"
@@ -86,8 +86,7 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
-// import eventBus from './formEvtBus';
-import {loadJs} from '../util/util';
+import {loadJs,$type} from '../util/util';
 
 export default {
 	components:{XTag},
@@ -257,7 +256,7 @@ export default {
 			}
 		},
 		getValueIndex(arr = [], value) {
-			if (Tool._typeOf(value) != 'object') {
+			if ($type(value) != 'object') {
 				return arr.indexOf(value);
 			} else {
 				const valueKey = this.valueKey;
