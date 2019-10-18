@@ -88,6 +88,7 @@
 
 <script>
 import Ajax from '../util/Ajax';
+import {Console} from '../util/util';
 import XInput from "./input.vue";
 import XSelect from "./select.vue";
 import XCheckbox from "./checkbox.vue";
@@ -230,6 +231,7 @@ export default {
 								// childitem.text = childkey;
 								tmparr.push(childitem);
 							}
+							Console.log(tmparr);
 							item.list = tmparr;
 						}
 					}
@@ -241,6 +243,7 @@ export default {
 		},
 		//兼容老逻辑
 		getFormData(){
+			Console.log(this.formValue);
 			return this.formValue;
 		},
 		getFormList() {
@@ -267,8 +270,8 @@ export default {
 						}
 						
 						if (typeof tmp_default == 'string') {
-							tmp_arr.push(tmp_default);
-							item.defaultValue = tmp_arr;
+							// tmp_arr.push(tmp_default);
+							item.defaultValue = tmp_default;
 						} else {
 							for (let tmpkey in tmp_default) {
 								tmp_arr.push(tmp_default[tmpkey]);

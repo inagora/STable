@@ -36,7 +36,6 @@
 	<div class="body">
 		<div class="nav">nav</div>
 		<div id="box"></div>
-		<x-form :form-config="{name: '庞敬聪'}"></x-form>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
 	<script src="/STable.min.js"></script>
@@ -55,7 +54,7 @@
 				label: '类型',
 				name: 'type',
 				type: 'multiple',
-				// defaultValue: ['喜剧','爱情'],
+				default_value: ['喜剧','爱情'],
 				list: ['动作', '喜剧', '爱情', '记录片','环境','科幻','主旋律','亲情','成长','青春']
 			},
 			{
@@ -63,8 +62,14 @@
 				name: 'type2',
 				type: 'select',
 				placeholder: '请选择类型',
-				defaultValue: '喜剧',
-				list: ['动作', '喜剧', '爱情', '记录片','环境','科幻','主旋律','亲情','成长','青春']
+				default_value: 'xiju',
+				list: [{
+					label: '喜剧',
+					value: 'xiju'
+				},{
+					label: '爱情',
+					value: 'aiqing'
+				}]
 			},
 			{
 				label: '上映年份',
@@ -144,7 +149,9 @@
 				width: 100,
 				buttons: [{
 					text: 'fff',
-
+					click(){
+						this.$refs.form.getFormData();
+					},
 					icon: 'st-iconfont st-icon-eye',
 				}]
 			}

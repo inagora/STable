@@ -38,6 +38,7 @@
 <script>
 import XButton from './com/Button.vue';
 import XForm from './form/form.vue';
+// import {Console} from './util/util';
 
 export default {
 	components:{ XButton, XForm },
@@ -55,6 +56,7 @@ export default {
 	],
 	methods: {
 		search(evt) {
+			this.$refs.form.getFormData();
 			let searchParams = Object.assign({}, this.urlSearchParams, evt);
 			if(this.ignoreEmptySearchParam) {
 				searchParams = this.trimParam(searchParams);
