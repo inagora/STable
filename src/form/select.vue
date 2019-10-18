@@ -24,6 +24,7 @@
 					<span class="st-select-tags-text">{{ item }}</span>
 				</x-tag>
 			</span>
+			<span v-else>{{placeholder}}</span>
 			<input
 				v-if="filterable"
 				type="text"
@@ -39,6 +40,7 @@
 			<input 
 				:value="selected"
 				type="text"
+				:placeholder="placeholder"
 				class="st-select-input"
 			/>
 			<div class="st-icon st-icon-caret-down" :class="{'st-select-input-uparrow': visible}"></div>
@@ -119,6 +121,10 @@ export default {
 		valueKey: {
 			type: String,
 			default: 'value'
+		},
+		placeholder: {
+			type: String,
+			default: '请选择'
 		},
 		defaultValue: {
 			type: [Array,String],
