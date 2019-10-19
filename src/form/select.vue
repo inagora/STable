@@ -141,6 +141,7 @@ export default {
 			filterOptions: [],
 			inputW: 80,
 			realOptions: [],
+			i: 0,
 		};
 	},
 	watch: {
@@ -185,24 +186,51 @@ export default {
 		if (this.list.length > 0 && this.options.length == 0) {
 			this.realOptions = this.list;
 		}
-		if (!this.type && (this.list.length > 0 || this.options.length > 0) && !tmpList[0].label) {
-			let arr  = [];
-			tmpList.map(item=>{
-				if (typeof item != 'object') {
-					arr.push({
+		let def = this.defaultValue;
+		if (this.list.length > 0 || this.options.length > 0) {
+			let tmp_opt = [];
+			tmpList.forEach(item=>{
+				if ($type(item) != 'object') {
+					tmp_opt.push({
 						label: item,
 						value: item
 					});
+				} else {
+					tmp_opt.push(item);
 				}
 			});
-			tmpList = arr;
+			tmpList = tmp_opt;
+			this.$nextTick(()=>{ 
+				if (this.multiple && $type(def) == 'array'){
+					let tmp = [];
+					this.findVal(def,tmpList).map(a=>{
+						tmp.push(a.label);
+					});
+					def = tmp;
+				} else if ($type(def) == 'string') {
+					def = this.findVal(def,tmpList)[0].label;
+					this.selected = def;
+				} 
+			});
+
+			this.defaultValue = def;
+			this.selected = def;
 		}
 		this.realOptions = tmpList;
-		this.$nextTick(()=>{
-			this.selected = this.defaultValue;
-		});
+		
 	},
 	methods: {
+		findVal(target,arr) {
+			if (arr && arr.length) {
+				return arr.filter(x=>{
+					if ($type(target) === 'string') {
+						return x.value === target;
+					} else if(($type(target) === 'array')){
+						return target.includes(x.value);
+					}
+				});
+			}
+		},
 		handleOption() {
 			if (!this.visible) {
 				this.showMenu();
@@ -231,8 +259,6 @@ export default {
 		},
 		setSelected(index,option) {
 			if(!this.multiple) {
-				// let arr = [];
-				// arr.push(option.label);
 				this.selected = option.label;
 				this.visible = false;
 			} else {

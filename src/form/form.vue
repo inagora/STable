@@ -33,7 +33,7 @@
 					v-if="['select','combobox','multiple'].includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))" 
 					ref="select" 
 					v-model="item.value" 
-					:default-value="item.defaultValue"
+					:default-value="getDef(item)"
 					:options="item.options || item.list" 
 					:multiple="item.type == 'multiple'"
 					:filterable="item.type == 'multiple'"
@@ -88,7 +88,6 @@
 
 <script>
 import Ajax from '../util/Ajax';
-import {Console} from '../util/util';
 import XInput from "./input.vue";
 import XSelect from "./select.vue";
 import XCheckbox from "./checkbox.vue";
@@ -216,6 +215,9 @@ export default {
 		this.getFormList();
 	},
 	methods: {
+		getDef(item){
+			return item.defaultValue || item.default_value || item.default_val;
+		},
 		formatField(fieldArr) {
 			if (!Array.isArray(fieldArr)) {
 				let arr = [];
@@ -237,7 +239,6 @@ export default {
 								// childitem.text = childkey;
 								tmparr.push(childitem);
 							}
-							Console.log(tmparr);
 							item.list = tmparr;
 						}
 					}
@@ -249,7 +250,6 @@ export default {
 		},
 		//兼容老逻辑
 		getFormData(){
-			Console.log(this.formValue);
 			return this.formValue;
 		},
 		getFormList() {
@@ -265,27 +265,7 @@ export default {
 				if(!item.placeholder)
 					item.placeholder = item.label;
 				//select组件处理 default_val/default_value
-				if (['select','combobox','multiple'].includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))) {
-					if (typeof item.default_val != 'undefined' || typeof item.default_value != 'undefined') {
-						let tmp_default;
-						let tmp_arr = [];
-						if (typeof item.default_val != 'undefined') {
-							tmp_default = item.default_val;
-						} else {
-							tmp_default = item.default_value;
-						}
-						
-						if (typeof tmp_default == 'string') {
-							// tmp_arr.push(tmp_default);
-							item.defaultValue = tmp_default;
-						} else {
-							for (let tmpkey in tmp_default) {
-								tmp_arr.push(tmp_default[tmpkey]);
-							}
-							item.defaultValue = tmp_arr;
-						}
-					}
-				}
+				
 				
 				if(item.type != 'button')
 					tmpArr[item.name] = typeof this.defaultValue[item.name]=='undefined' ? item.value || '' : this.defaultValue[item.name];
@@ -323,11 +303,6 @@ export default {
 		dateChangeFn(val,name){
 			let realDate = this.timeFormat(val,'YYYY-MM-DD');
 			this.changeFn(realDate,name);
-		},
-		getType(target) {
-			if (this.formConfig[target] && this.formConfig[target].type) {
-				return this.formConfig[target].type;
-			}
 		},
 		fieldListFn(val,name) {
 			let fieldlist = this.rules;
