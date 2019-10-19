@@ -1222,7 +1222,7 @@ columns: [
 						label: '电影类型',
 						type: 'multiple',
 						name: 'movie_type',
-						defaultValue: ['喜剧','亲情'],
+						defaultValue: ['type0','type1'],
 						options: [{
 							label: '动作',
 							value: 'type0',
@@ -1328,15 +1328,15 @@ columns: [
 * __类型__:	`Array`
 * __概览__:
 
-	表单项配置，每项配置都是`Object`类型。
-	| 配置项 | 是否必填 |  类型  | 默认值 |
+	表单项配置，每个表单项配置都是`Object`类型。
+	| 配置项 | 说明 |  类型  | 默认值 |
 	| :-: | :-: | :-: | :-: |
-	| label | true | String | - |
-	| name | true | String | - |
-	| type | true | String | input |
-	| defalutValue | false(仅在type=select、type=multiple选填) | String,Array | - |
-	| options | false(仅在type=select、type=multiple必填) | Array | [] |
-	| format | false(仅在type=date必填) | String | 'YYYY-MM-DD' |
+	| label | 必填 | String | - |
+	| name | 必填 | String | - |
+	| type | 必填 | String | input |
+	| defalutValue | 仅在type=select、type=multiple选填 | select类型String,multiple类型Array | - |
+	| options | 仅在type=select、type=multiple必填 | Array | [] |
+	| format | 仅在type=date必填 | String | 'YYYY-MM-DD' |
 
 * __type 的合法值:__
   

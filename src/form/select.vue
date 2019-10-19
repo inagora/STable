@@ -86,7 +86,7 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
-import {loadJs,$type} from '../util/util';
+import {loadJs,$type,Console} from '../util/util';
 
 export default {
 	components:{XTag},
@@ -206,15 +206,15 @@ export default {
 					this.findVal(def,tmpList).map(a=>{
 						tmp.push(a.label);
 					});
-					def = tmp;
+					this.selected = tmp;
+					this.defaultValue = tmp;
+					Console.log(this.findVal(def,tmpList));
 				} else if ($type(def) == 'string') {
 					def = this.findVal(def,tmpList)[0].label;
 					this.selected = def;
+					this.defaultValue = def;
 				} 
 			});
-
-			this.defaultValue = def;
-			this.selected = def;
 		}
 		this.realOptions = tmpList;
 		
@@ -223,11 +223,11 @@ export default {
 		findVal(target,arr) {
 			if (arr && arr.length) {
 				return arr.filter(x=>{
-					if ($type(target) === 'string') {
-						return x.value === target;
-					} else if(($type(target) === 'array')){
+					if(this.multiple && ($type(target) == 'array')){
 						return target.includes(x.value);
-					}
+					} else if ($type(target) == 'string') {
+						return x.value === target;
+					} 
 				});
 			}
 		},
