@@ -218,7 +218,6 @@ export default {
 	},
 	methods: {
 		getDef(item){
-			// Console.log(item.defaultValue || item.default_value || item.default_val || item.value);
 			return item.defaultValue || item.default_value || item.default_val || item.value;
 		},
 		formatField(fieldArr) {
@@ -313,7 +312,6 @@ export default {
 		},
 		dateChangeFn(val,name){
 			let realDate = this.timeFormat(val,'YYYY-MM-DD');
-			Console.log(name);
 			this.changeFn(realDate,name);
 		},
 		fieldListFn(val,name) {

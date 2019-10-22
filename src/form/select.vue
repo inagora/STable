@@ -57,7 +57,7 @@
 						v-for="(item,index) in realOptions"
 						:key="getValueKey(item)"
 						class="st-select-menu-item"
-						:class="[{'st-select-menu-item-hover': index == hoverIndex}]"
+						:class="[{'st-select-menu-item-hover': index == hoverIndex},{'st-select-menu-item-select': selected.includes(item.label)}]"
 						@click.stop="setSelected(index,item)"
 						v-text="item.label"
 					></li>
@@ -86,7 +86,7 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
-import {loadJs,$type,Console} from '../util/util';
+import {loadJs,$type} from '../util/util';
 
 export default {
 	components:{XTag},
@@ -142,6 +142,7 @@ export default {
 			inputW: 80,
 			realOptions: [],
 			i: 0,
+			selectIndexArr: [],
 		};
 	},
 	watch: {
@@ -175,7 +176,6 @@ export default {
 		}
 	},
 	mounted() {
-		Console.log(this.defaultValue);
 		this.$nextTick(()=>{
 			this.inputW =  this.$refs.tags ? this.$refs.tags.clientWidth + 36 : 116;
 		});
@@ -202,7 +202,6 @@ export default {
 					this.selected = tmp;
 				}
 				this.defaultValue = tmp;
-				Console.log(def);
 			} else if ($type(def) == 'string') {
 				if (def_exist && def_exist.length>0) {
 					def = def_exist[0].label;
@@ -320,6 +319,7 @@ export default {
 			});
 		},
 		createOption(event) {
+			let tmpList = this.options ? this.options : this.list;
 			let query = event.target.value;
 			if(query && query!= '' && this.selected.indexOf(query) == '-1') {
 				if (this.multiple) {
@@ -330,14 +330,15 @@ export default {
 					this.query = '';
 				}
 			} else if(query == '') {
-				this.setSelected(this.hoverIndex,this.options[this.hoverIndex]);
+				this.setSelected(this.hoverIndex,tmpList[this.hoverIndex]);
 			}
 		},
 		navigateOptions(direction) {
-			if (this.options.length === 0) return;
+			let tmpList = this.options ? this.options : this.list;
+			if (tmpList.length === 0) return;
 			if (direction === 'next') {
 				this.hoverIndex++;
-				if (this.hoverIndex === this.options.length) {
+				if (this.hoverIndex === tmpList.length) {
 					this.hoverIndex = 0;
 				}
 			} else if (direction === 'prev') {
@@ -449,6 +450,9 @@ export default {
       &-hover {
         background: #f5f7fa;
       }
+			&-select {
+				color: #409eff;
+			}
     }
 		&-none {
 			height: 20px;
