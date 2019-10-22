@@ -97,7 +97,7 @@ import XUpload from "./upload.vue";
 import XDatetimePicker from "./datetimepicker.vue";
 var defaultLocale = require('../../src/lang/en.js');
 import qtip from '../com/qtip';
-import {Console,$type} from '../util/util';
+import {$type,Console} from '../util/util';
 
 export default {
 	name: 'XForm',
@@ -171,6 +171,7 @@ export default {
 	},
 	data() {
 		let fields = this.formatField(this.fieldList ? this.fieldList : this.formConfig.fieldList);
+		Console.log(fields);
 		if (fields && fields.length > 0) {
 			this.formConfig.fieldList = this.fields;
 		} else {
@@ -220,45 +221,44 @@ export default {
 			return item.defaultValue || item.default_value || item.default_val;
 		},
 		formatField(fieldArr) {
-			if ($type(fieldArr) != 'array') {
-				let arr = [];
-				for (let key in fieldArr) {
-					let item = fieldArr[key];
-					
-					if (!item.list && !item.options) {
-						arr.push(item);
-					} else {
-						let tmpList = item.options ? item.options : item.list;
-						if($type(tmpList) =='object'){
-							let tmp_opt = [];
-							for(let key in tmpList) {
-								tmp_opt.push({
-									label: tmpList[key],
-									value: key
-								});
-							}
-							tmpList = tmp_opt;
-						}
-						if ($type(tmpList) == 'array' || tmpList.length > 0) {
-							let tmp_opt = [];
-							tmpList.forEach(item=>{
-								if ($type(item) != 'object') {
-									tmp_opt.push({
-										label: item,
-										value: item
-									});
-								} else {
-									tmp_opt.push(item);
-								}
+			let arr = [];
+			for (let key in fieldArr) {
+				let item = fieldArr[key];
+				// ['select','combobox','multiple'].includes(item.type)
+				
+				if (!item.list && !item.options) {
+					arr.push(item);
+				} else {
+					let tmpList = item.options ? item.options : item.list;
+					if($type(tmpList) =='object'){
+						let tmp_opt = [];
+						for(let key in tmpList) {
+							tmp_opt.push({
+								label: tmpList[key],
+								value: key
 							});
-							tmpList = tmp_opt;
 						}
-						item.list = tmpList;
-						arr.push(item);
+						tmpList = tmp_opt;
 					}
+					if ($type(tmpList) == 'array' || tmpList.length > 0) {
+						let tmp_opt = [];
+						tmpList.map(item=>{
+							if ($type(item) != 'object') {
+								tmp_opt.push({
+									label: item,
+									value: item
+								});
+							} else if ($type(item) == 'object'){
+								tmp_opt.push(item);
+							}
+						});
+						tmpList = tmp_opt;
+					}
+					item.list = tmpList;
+					arr.push(item);
 				}
-				fieldArr = arr;
 			}
+			fieldArr = arr;
 			return fieldArr;
 		},
 		getFormData(){

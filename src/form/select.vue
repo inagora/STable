@@ -86,7 +86,7 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
-import {loadJs,$type,Console} from '../util/util';
+import {loadJs,$type} from '../util/util';
 
 export default {
 	components:{XTag},
@@ -182,7 +182,6 @@ export default {
 	created() {
 		let def = this.value;
 		let tmpList = this.options ? this.options : this.list;
-		Console.log(tmpList);
 		this.$nextTick(()=>{ 
 			if (this.multiple && $type(def) == 'array'){
 				let tmp = [];
@@ -193,10 +192,9 @@ export default {
 				this.value = tmp;
 			} else if ($type(def) == 'string') {
 				let def_exist = this.findVal(def,tmpList);
-				if (def_exist.length) {
+				if (def_exist && def_exist.length>0) {
 					def = def_exist[0].label;
 				}
-				Console.log(def,def_exist);
 				this.selected = [def];
 				this.value = def;
 			} 
