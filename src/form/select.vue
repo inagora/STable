@@ -12,7 +12,7 @@
 			@keydown.down.prevent="navigateOptions('next')"
 			@keydown.up.prevent="navigateOptions('prev')"
 		>
-			<span class="st-select-tags-box" v-if="selected.length">
+			<span v-if="selected.length" class="st-select-tags-box">
 				<x-tag
 					v-for="(item,index) in selected"
 					:key="index"
@@ -23,17 +23,17 @@
 				>
 					<span class="st-select-tags-text">{{ item }}</span>
 				</x-tag>
+				<input
+					v-if="filterable"
+					type="text"
+					class="st-select-input"
+					:value="query"
+					@input="handleQueryChange"
+					@keydown.delete="deletePrevTag"
+					@keydown.enter.prevent="handleOption"
+				/>
 			</span>
 			<span v-else>{{ placeholder }}</span>
-			<input
-				v-if="filterable"
-				type="text"
-				class="st-select-input"
-				:value="query"
-				@input="handleQueryChange"
-				@keydown.delete="deletePrevTag"
-				@keydown.enter.prevent="handleOption"
-			/>
 			<div class="st-icon st-icon-caret-down" :class="{'st-select-input-uparrow': visible}"></div>
 		</div>
 		<template v-else>
@@ -86,7 +86,7 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
-import {loadJs,$type,Console} from '../util/util';
+import {loadJs,$type} from '../util/util';
 
 export default {
 	components:{XTag},
@@ -196,7 +196,17 @@ export default {
 						value: item
 					});
 				} else {
-					tmp_opt.push(item);
+					let arr = Object.keys(item);
+					if (arr.includes('label') && arr.includes('value')) {
+						tmp_opt.push(item);
+					} else {
+						for(let key in item) {
+							tmp_opt.push({
+								label: item[key],
+								value: key
+							});
+						}
+					}
 				}
 			});
 			tmpList = tmp_opt;
@@ -208,7 +218,6 @@ export default {
 					});
 					this.selected = tmp;
 					this.defaultValue = tmp;
-					Console.log(this.findVal(def,tmpList));
 				} else if ($type(def) == 'string') {
 					def = this.findVal(def,tmpList)[0].label;
 					this.selected = def;
@@ -217,7 +226,6 @@ export default {
 			});
 		}
 		this.realOptions = tmpList;
-		
 	},
 	methods: {
 		findVal(target,arr) {
@@ -393,6 +401,7 @@ export default {
 	background: #fff;
 
   &-input {
+		width: 100px;
     border: none;
 		font-size: 1em;
 		color: #606266;
@@ -412,7 +421,7 @@ export default {
 		&-box {
 			display: flex;
 			flex-wrap: wrap;
-			width: 140px;
+			width: 240px;
 		}
     &-item {
       height: 2em;
@@ -465,6 +474,10 @@ export default {
 		border-color: #409eff;
 		-webkit-box-shadow: 0 0 5px rgba(59, 180, 242, .3);
 		box-shadow: 0 0 5px rgba(59, 180, 242, .3);
+	}
+	.st-icon-caret-down {
+		position: absolute;
+		right: 10px;
 	}
 }
 </style>
