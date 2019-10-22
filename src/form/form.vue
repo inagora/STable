@@ -171,8 +171,6 @@ export default {
 	},
 	data() {
 		let fields = this.formatField(this.fieldList ? this.fieldList : this.formConfig.fieldList);
-
-		Console.log('1');
 		if (fields && fields.length > 0) {
 			this.formConfig.fieldList = this.fields;
 		} else {
@@ -222,7 +220,7 @@ export default {
 			return item.defaultValue || item.default_value || item.default_val;
 		},
 		formatField(fieldArr) {
-			if ($type(fieldArr) == 'array') {
+			if ($type(fieldArr) != 'array') {
 				let arr = [];
 				for (let key in fieldArr) {
 					let item = fieldArr[key];
