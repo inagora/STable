@@ -22,7 +22,7 @@
 					:closable="true"
 					@close="deleteTag($event, item)"
 				>
-					<span class="st-select-tags-text">{{ item }}</span>
+					<span class="st-select-tags-text">{{ item.label }}</span>
 				</x-tag>
 				<input
 					v-if="filterable"
@@ -39,7 +39,7 @@
 		</div>
 		<template v-else>
 			<input 
-				:value="selected"
+				:value="selected && selected.length > 0 ? selected[0].label : selected"
 				type="text"
 				:placeholder="placeholder"
 				class="st-select-input"
@@ -58,7 +58,7 @@
 						v-for="(item,index) in realOptions"
 						:key="getValueKey(item)"
 						class="st-select-menu-item"
-						:class="[{'st-select-menu-item-hover': index == hoverIndex},{'st-select-menu-item-select': selected.includes(item.label)}]"
+						:class="[{'st-select-menu-item-hover': index == hoverIndex},{'st-select-menu-item-select': selected.includes(item)}]"
 						@click.stop="setSelected(index,item)"
 						v-text="item.label"
 					></li>
@@ -144,7 +144,6 @@ export default {
 			marginT: 50,
 			realOptions: [],
 			i: 0,
-			selectIndexArr: [],
 		};
 	},
 	// computed: {
@@ -186,40 +185,29 @@ export default {
 	},
 	mounted() {
 		this.$nextTick(()=>{
-			Console.log(this.$refs.selectbox.clientHeight);
 			this.inputW =  this.$refs.tags ? this.$refs.tags.clientWidth + 36 : 116;
 		});
 	},
 	created() {
 		let def = this.defaultValue;
 		let tmpList = this.options ? this.options : this.list;
-		this.$nextTick(()=>{ 
-			let def_exist = this.findVal(def,tmpList);
-			if (this.multiple && $type(def) == 'array'){
-				let tmp = [];
+		if (def && def!='') {
+			this.$nextTick(()=>{ 
+				let def_exist = this.findVal(def,tmpList);
 				if (def_exist && def_exist.length>0) {
-					def_exist.map(a=>{
-						tmp.push(a.label);
-					});
-					this.selected = tmp;
+					this.selected = def_exist;
 				} else {
-					def.forEach(item=>{
-						tmp.push({
-							label: item,
-							value: item
-						});
-					});
-					this.selected = tmp;
+					if ($type(def) == 'array'){
+						this.selected = def;
+					} else if ($type(def) == 'string') {
+						this.selected = [{
+							label: def,
+							value: def
+						}];
+					}
 				}
-				this.defaultValue = tmp;
-			} else if ($type(def) == 'string') {
-				if (def_exist && def_exist.length>0) {
-					def = def_exist[0].label;
-				}
-				this.selected = [def];
-				this.defaultValue = def;
-			} 
-		});
+			});
+		}
 		this.realOptions = tmpList;
 	},
 	methods: {
@@ -228,6 +216,8 @@ export default {
 				return arr.filter(x=>{
 					if(this.multiple && ($type(target) == 'array')){
 						return target.includes(x.value);
+					} else if(($type(target) == 'object')) {
+						return target[x.value];
 					} else if ($type(target) == 'string') {
 						return x.value === target;
 					} 
@@ -265,20 +255,21 @@ export default {
 		},
 		setSelected(index,option) {
 			if(!this.multiple) {
-				this.selected = option.label;
+				this.selected = [option];
 				this.visible = false;
 			} else {
-				const arr = (this.selected || []).slice();
-				const optionIndex = this.getValueIndex(arr, option.label);
+				let arr = this.selected;
+				let optionIndex = this.getValueIndex(arr, option);
 				if (optionIndex > -1) {
 					arr.splice(optionIndex, 1);
 				} else {
-					arr.push(option.label);
+					arr.push(option);
 				}
 				this.selected = arr;
 				this.visible = true;
 				this.query = '';
 			}
+			Console.log(this.selected);
 			this.$nextTick(()=>{
 				this.marginT = this.$refs.selectbox.clientHeight;
 			});

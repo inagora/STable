@@ -37,7 +37,7 @@
 					:options="item.options || item.list" 
 					:multiple="item.type == 'multiple'"
 					:filterable="item.type == 'multiple'"
-					@selectchange="changeFn($event,item.name)"
+					@selectchange="changeFn($event,item.name,'select')"
 					@validate="fieldListFn($event,item.name)"
 				/>
 				<template v-if="item.type == 'checkbox'">
@@ -171,7 +171,6 @@ export default {
 	},
 	data() {
 		let fields = this.formatField(this.fieldList ? this.fieldList : this.formConfig.fieldList);
-		Console.log(fields);
 		if (fields && fields.length > 0) {
 			this.formConfig.fieldList = this.fields;
 		} else {
@@ -294,10 +293,17 @@ export default {
 		},
 		submit() {
 			let data = this.formValue;
+			Console.log(data);
 			this.$emit('submit', data);
 		},
-		changeFn(val='',name) {
-			this.formValue = Object.assign(this.formValue,{[name]: val});
+		changeFn(val='',name, type) {
+			let new_val = [];
+			if ($type(val) == 'array' && type == 'select') {
+				val.forEach(item=>{
+					new_val.push(item.value);
+				});
+			}
+			this.formValue = Object.assign(this.formValue,{[name]: type != 'select' ? val : new_val});
 		},
 		checkboxFn(param,name) {
 			let val = param[0];
