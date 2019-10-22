@@ -1,5 +1,6 @@
 <template>
 	<div
+		ref="selectbox"
 		v-clickoutside="handleClose"
 		class="st-select"
 		:class="{'st-select-focus': visible}"
@@ -49,7 +50,7 @@
 		<div 
 			v-show="visible" 
 			class="st-select-menu" 
-			:style="{'min-width':inputW+'px'}"
+			:style="{'min-width':inputW+'px','margin-top': marginT + 'px'}"
 		>
 			<template v-if="filterOptions.length == 0">
 				<ul v-show="realOptions.length > 0 && visible">
@@ -86,7 +87,7 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
-import {loadJs,$type} from '../util/util';
+import {loadJs,$type, Console} from '../util/util';
 
 export default {
 	components:{XTag},
@@ -140,11 +141,19 @@ export default {
 			query: '',
 			filterOptions: [],
 			inputW: 80,
+			marginT: 50,
 			realOptions: [],
 			i: 0,
 			selectIndexArr: [],
 		};
 	},
+	// computed: {
+	// 	marginT: function() {
+	// 		this.$nextTick(()=>{
+	// 			return 100;
+	// 		})
+	// 	}
+	// },
 	watch: {
 		selected: {
 			handler(val) {
@@ -177,6 +186,7 @@ export default {
 	},
 	mounted() {
 		this.$nextTick(()=>{
+			Console.log(this.$refs.selectbox.clientHeight);
 			this.inputW =  this.$refs.tags ? this.$refs.tags.clientWidth + 36 : 116;
 		});
 	},
@@ -249,6 +259,9 @@ export default {
 				this.selected = value;
 			}
 			event.stopPropagation();
+			this.$nextTick(()=>{
+				this.marginT = this.$refs.selectbox.clientHeight;
+			});
 		},
 		setSelected(index,option) {
 			if(!this.multiple) {
@@ -266,6 +279,9 @@ export default {
 				this.visible = true;
 				this.query = '';
 			}
+			this.$nextTick(()=>{
+				this.marginT = this.$refs.selectbox.clientHeight;
+			});
 		},
 		getValueKey(item) {
 			if (Object.prototype.toString.call(item.label).toLowerCase() !== '[object object]') {
