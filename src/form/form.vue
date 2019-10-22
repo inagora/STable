@@ -225,6 +225,7 @@ export default {
 			let arr = [];
 			for (let key in fieldArr) {
 				let item = fieldArr[key];
+				item.name = key;
 				// ['select','combobox','multiple'].includes(item.type)
 				
 				if (!item.list && !item.options) {
