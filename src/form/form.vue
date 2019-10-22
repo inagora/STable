@@ -33,7 +33,7 @@
 					v-if="['select','combobox','multiple'].includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))" 
 					ref="select" 
 					v-model="item.value" 
-					:default-value="getDef(item)"
+					:value="getDef(item)"
 					:options="item.options || item.list" 
 					:multiple="item.type == 'multiple'"
 					:filterable="item.type == 'multiple'"
@@ -97,6 +97,7 @@ import XUpload from "./upload.vue";
 import XDatetimePicker from "./datetimepicker.vue";
 var defaultLocale = require('../../src/lang/en.js');
 import qtip from '../com/qtip';
+import {Console,$type} from '../util/util';
 
 export default {
 	name: 'XForm',
@@ -170,6 +171,8 @@ export default {
 	},
 	data() {
 		let fields = this.formatField(this.fieldList ? this.fieldList : this.formConfig.fieldList);
+
+		Console.log('1');
 		if (fields && fields.length > 0) {
 			this.formConfig.fieldList = this.fields;
 		} else {
@@ -219,36 +222,47 @@ export default {
 			return item.defaultValue || item.default_value || item.default_val;
 		},
 		formatField(fieldArr) {
-			if (!Array.isArray(fieldArr)) {
+			if ($type(fieldArr) == 'array') {
 				let arr = [];
 				for (let key in fieldArr) {
 					let item = fieldArr[key];
 					
-					if (key != 'list' && key != 'options') {
-						item.name = key;
+					if (!item.list && !item.options) {
 						arr.push(item);
-
-						let obj = item.options || item.list;
-						if (obj && typeof obj == 'object') {
-							if(!item.type)
-								item.type = 'select';
-							let tmparr = [];
-							for (let childkey in item.list) {
-								let childitem = item.list[childkey];
-								// childitem = {value: childitem};
-								// childitem.text = childkey;
-								tmparr.push(childitem);
+					} else {
+						let tmpList = item.options ? item.options : item.list;
+						if($type(tmpList) =='object'){
+							let tmp_opt = [];
+							for(let key in tmpList) {
+								tmp_opt.push({
+									label: tmpList[key],
+									value: key
+								});
 							}
-							item.list = tmparr;
+							tmpList = tmp_opt;
 						}
+						if ($type(tmpList) == 'array' || tmpList.length > 0) {
+							let tmp_opt = [];
+							tmpList.forEach(item=>{
+								if ($type(item) != 'object') {
+									tmp_opt.push({
+										label: item,
+										value: item
+									});
+								} else {
+									tmp_opt.push(item);
+								}
+							});
+							tmpList = tmp_opt;
+						}
+						item.list = tmpList;
+						arr.push(item);
 					}
-					
 				}
 				fieldArr = arr;
 			}
 			return fieldArr;
 		},
-		//兼容老逻辑
 		getFormData(){
 			return this.formValue;
 		},
@@ -264,9 +278,6 @@ export default {
 					item.label = item.name;
 				if(!item.placeholder)
 					item.placeholder = item.label;
-				//select组件处理 default_val/default_value
-				
-				
 				if(item.type != 'button')
 					tmpArr[item.name] = typeof this.defaultValue[item.name]=='undefined' ? item.value || '' : this.defaultValue[item.name];
 				if(item.type == 'date') {

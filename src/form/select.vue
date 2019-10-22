@@ -125,7 +125,7 @@ export default {
 			type: String,
 			default: '请选择'
 		},
-		defaultValue: {
+		value: {
 			type: [Array,String],
 			default() {
 				return [];
@@ -180,48 +180,28 @@ export default {
 		});
 	},
 	created() {
+		let def = this.value;
 		let tmpList = this.options ? this.options : this.list;
-		let def = this.defaultValue;
-		if($type(tmpList) =='object'){
-			let tmp_opt = [];
-			for(let key in tmpList) {
-				tmp_opt.push({
-					label: tmpList[key],
-					value: key
-				});
-			}
-			tmpList = tmp_opt;
-		}
-		if ($type(tmpList) == 'array' || tmpList.length > 0) {
-			let tmp_opt = [];
-			tmpList.forEach(item=>{
-				if ($type(item) != 'object') {
-					tmp_opt.push({
-						label: item,
-						value: item
-					});
-				} else {
-					tmp_opt.push(item);
-				}
-			});
-			tmpList = tmp_opt;
-			this.$nextTick(()=>{ 
-				if (this.multiple && $type(def) == 'array'){
-					let tmp = [];
-					this.findVal(def,tmpList).map(a=>{
-						tmp.push(a.label);
-					});
-					this.selected = tmp;
-					this.defaultValue = tmp;
-				} else if ($type(def) == 'string') {
-					def = this.findVal(def,tmpList)[0].label;
-					this.selected = def;
-					this.defaultValue = def;
-				} 
-			});
-		}
-		this.realOptions = tmpList;
 		Console.log(tmpList);
+		this.$nextTick(()=>{ 
+			if (this.multiple && $type(def) == 'array'){
+				let tmp = [];
+				this.findVal(def,tmpList).map(a=>{
+					tmp.push(a.label);
+				});
+				this.selected = tmp;
+				this.value = tmp;
+			} else if ($type(def) == 'string') {
+				let def_exist = this.findVal(def,tmpList);
+				if (def_exist.length) {
+					def = def_exist[0].label;
+				}
+				Console.log(def,def_exist);
+				this.selected = [def];
+				this.value = def;
+			} 
+		});
+		this.realOptions = tmpList;
 	},
 	methods: {
 		findVal(target,arr) {
@@ -369,7 +349,7 @@ export default {
 			this.visible = false;
 		},
 		reset() { 
-			this.selected = this.defaultValue || '';
+			this.selected = this.value || '';
 		}
 	}
 };

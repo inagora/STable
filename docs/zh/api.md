@@ -1222,7 +1222,7 @@ columns: [
 						label: '电影类型',
 						type: 'multiple',
 						name: 'movie_type',
-						defaultValue: ['type0','type1'],
+						value: ['type0','type1'],
 						options: [{
 							label: '动作',
 							value: 'type0',
