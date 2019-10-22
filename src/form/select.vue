@@ -12,7 +12,7 @@
 			@keydown.down.prevent="navigateOptions('next')"
 			@keydown.up.prevent="navigateOptions('prev')"
 		>
-			<span v-if="selected.length">
+			<span class="st-select-tags-box" v-if="selected.length">
 				<x-tag
 					v-for="(item,index) in selected"
 					:key="index"
@@ -409,6 +409,11 @@ export default {
     display: flex;
     align-items: center;
     min-height: 32px;
+		&-box {
+			display: flex;
+			flex-wrap: wrap;
+			width: 140px;
+		}
     &-item {
       height: 2em;
       padding: 0 8px;
