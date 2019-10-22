@@ -25,7 +25,7 @@
 					v-model="formValue[item.name]"
 					:type="item.type" 
 					:placeholder="item.placeholder || locale.inputMsg + item.label" 
-					:name="item.name"
+					:name="item.name || item.label"
 					@input="changeFn($event,item.name)"
 					@validate="fieldListFn($event,item.name)"
 				/>
@@ -33,7 +33,7 @@
 					v-if="['select','combobox','multiple'].includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))" 
 					ref="select" 
 					v-model="item.value" 
-					:value="getDef(item)"
+					:default-value="getDef(item)"
 					:options="item.options || item.list" 
 					:multiple="item.type == 'multiple'"
 					:filterable="item.type == 'multiple'"
@@ -218,7 +218,8 @@ export default {
 	},
 	methods: {
 		getDef(item){
-			return item.defaultValue || item.default_value || item.default_val;
+			// Console.log(item.defaultValue || item.default_value || item.default_val || item.value);
+			return item.defaultValue || item.default_value || item.default_val || item.value;
 		},
 		formatField(fieldArr) {
 			let arr = [];
@@ -311,6 +312,7 @@ export default {
 		},
 		dateChangeFn(val,name){
 			let realDate = this.timeFormat(val,'YYYY-MM-DD');
+			Console.log(name);
 			this.changeFn(realDate,name);
 		},
 		fieldListFn(val,name) {

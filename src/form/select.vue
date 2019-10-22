@@ -86,7 +86,7 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
-import {loadJs,$type} from '../util/util';
+import {loadJs,$type,Console} from '../util/util';
 
 export default {
 	components:{XTag},
@@ -125,7 +125,7 @@ export default {
 			type: String,
 			default: '请选择'
 		},
-		value: {
+		defaultValue: {
 			type: [Array,String],
 			default() {
 				return [];
@@ -175,28 +175,40 @@ export default {
 		}
 	},
 	mounted() {
+		Console.log(this.defaultValue);
 		this.$nextTick(()=>{
 			this.inputW =  this.$refs.tags ? this.$refs.tags.clientWidth + 36 : 116;
 		});
 	},
 	created() {
-		let def = this.value;
+		let def = this.defaultValue;
 		let tmpList = this.options ? this.options : this.list;
 		this.$nextTick(()=>{ 
+			let def_exist = this.findVal(def,tmpList);
 			if (this.multiple && $type(def) == 'array'){
 				let tmp = [];
-				this.findVal(def,tmpList).map(a=>{
-					tmp.push(a.label);
-				});
-				this.selected = tmp;
-				this.value = tmp;
+				if (def_exist && def_exist.length>0) {
+					def_exist.map(a=>{
+						tmp.push(a.label);
+					});
+					this.selected = tmp;
+				} else {
+					def.forEach(item=>{
+						tmp.push({
+							label: item,
+							value: item
+						});
+					});
+					this.selected = tmp;
+				}
+				this.defaultValue = tmp;
+				Console.log(def);
 			} else if ($type(def) == 'string') {
-				let def_exist = this.findVal(def,tmpList);
 				if (def_exist && def_exist.length>0) {
 					def = def_exist[0].label;
 				}
 				this.selected = [def];
-				this.value = def;
+				this.defaultValue = def;
 			} 
 		});
 		this.realOptions = tmpList;
@@ -347,7 +359,7 @@ export default {
 			this.visible = false;
 		},
 		reset() { 
-			this.selected = this.value || '';
+			this.selected = this.defaultValue || '';
 		}
 	}
 };
