@@ -86,7 +86,7 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
-import {loadJs,$type} from '../util/util';
+import {loadJs,$type,Console} from '../util/util';
 
 export default {
 	components:{XTag},
@@ -181,13 +181,18 @@ export default {
 	},
 	created() {
 		let tmpList = this.options ? this.options : this.list;
-		this.realOptions = this.options;
-		
-		if (this.list.length > 0 && this.options.length == 0) {
-			this.realOptions = this.list;
-		}
 		let def = this.defaultValue;
-		if (this.list.length > 0 || this.options.length > 0) {
+		if($type(tmpList) =='object'){
+			let tmp_opt = [];
+			for(let key in tmpList) {
+				tmp_opt.push({
+					label: tmpList[key],
+					value: key
+				});
+			}
+			tmpList = tmp_opt;
+		}
+		if ($type(tmpList) == 'array' || tmpList.length > 0) {
 			let tmp_opt = [];
 			tmpList.forEach(item=>{
 				if ($type(item) != 'object') {
@@ -196,17 +201,7 @@ export default {
 						value: item
 					});
 				} else {
-					let arr = Object.keys(item);
-					if (arr.includes('label') && arr.includes('value')) {
-						tmp_opt.push(item);
-					} else {
-						for(let key in item) {
-							tmp_opt.push({
-								label: item[key],
-								value: key
-							});
-						}
-					}
+					tmp_opt.push(item);
 				}
 			});
 			tmpList = tmp_opt;
@@ -226,6 +221,7 @@ export default {
 			});
 		}
 		this.realOptions = tmpList;
+		Console.log(tmpList);
 	},
 	methods: {
 		findVal(target,arr) {
