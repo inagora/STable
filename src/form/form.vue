@@ -299,8 +299,8 @@ export default {
 		},
 		changeFn(val='',name, type) {
 			Console.log(val,type);
-			var new_val;
 			if ($type(val) == 'array' && this.selectType.includes(type)) {
+				var new_val;
 				if (type && type == 'multiple') {
 					new_val=[];
 					val.forEach(item=>{
@@ -309,8 +309,10 @@ export default {
 				} else {
 					new_val = val[0].value;
 				}
+				this.formValue = Object.assign(this.formValue,{[name]: new_val });
+			} else {
+				this.formValue = Object.assign(this.formValue,{[name]: val });
 			}
-			this.formValue = Object.assign(this.formValue,{[name]: new_val });
 		},
 		checkboxFn(param,name) {
 			let val = param[0];
