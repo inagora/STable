@@ -30,14 +30,14 @@
 					@validate="fieldListFn($event,item.name)"
 				/>
 				<x-select
-					v-if="['select','combobox','multiple'].includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))" 
+					v-if="selectType.includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))" 
 					ref="select" 
 					v-model="item.value" 
 					:default-value="getDef(item)"
 					:options="item.options || item.list" 
 					:multiple="item.type == 'multiple'"
 					:filterable="item.type == 'multiple'"
-					@selectchange="changeFn($event,item.name,'select')"
+					@selectchange="changeFn($event,item.name,item.type || 'select')"
 					@validate="fieldListFn($event,item.name)"
 				/>
 				<template v-if="item.type == 'checkbox'">
@@ -196,7 +196,8 @@ export default {
 			checkedValue: [],
 			showErr: false,
 			errMsg: '',
-			sizeCls: formSizeCls[this.size]
+			sizeCls: formSizeCls[this.size],
+			selectType: ['select','combobox','multiple']
 		};
 	},
 	watch: {
@@ -297,13 +298,19 @@ export default {
 			this.$emit('submit', data);
 		},
 		changeFn(val='',name, type) {
-			let new_val = [];
-			if ($type(val) == 'array' && type == 'select') {
-				val.forEach(item=>{
-					new_val.push(item.value);
-				});
+			Console.log(val,type);
+			var new_val;
+			if ($type(val) == 'array' && this.selectType.includes(type)) {
+				if (type && type == 'multiple') {
+					new_val=[];
+					val.forEach(item=>{
+						new_val.push(item.value);
+					});
+				} else {
+					new_val = val[0].value;
+				}
 			}
-			this.formValue = Object.assign(this.formValue,{[name]: type != 'select' ? val : new_val});
+			this.formValue = Object.assign(this.formValue,{[name]: new_val });
 		},
 		checkboxFn(param,name) {
 			let val = param[0];
@@ -334,7 +341,7 @@ export default {
 			let tmpFields = this.fields;
 			if (this.fields && tmpFields.length > 0) {
 				for (const item of this.fields) {
-					if (['select','combobox','multiple'].includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))) {
+					if (this.selectType.includes(item.type) || (!item.type && ((item.list && item.list.length > 0) || (item.options && item.options.length > 0)))) {
 						item.value = item.defaultValue ? item.defaultValue : [];
 					}
 				}
