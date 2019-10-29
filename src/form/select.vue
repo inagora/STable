@@ -87,7 +87,7 @@
 <script>
 import XTag from './tag.vue';
 import Tool from './tool';
-import {loadJs,$type, Console} from '../util/util';
+import {loadJs,$type} from '../util/util';
 
 export default {
 	components:{XTag},
@@ -269,7 +269,6 @@ export default {
 				this.visible = true;
 				this.query = '';
 			}
-			Console.log(this.selected);
 			this.$nextTick(()=>{
 				this.marginT = this.$refs.selectbox.clientHeight;
 			});

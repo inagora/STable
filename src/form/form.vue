@@ -97,7 +97,7 @@ import XUpload from "./upload.vue";
 import XDatetimePicker from "./datetimepicker.vue";
 var defaultLocale = require('../../src/lang/en.js');
 import qtip from '../com/qtip';
-import {$type,Console} from '../util/util';
+import {$type} from '../util/util';
 
 export default {
 	name: 'XForm',
@@ -294,11 +294,9 @@ export default {
 		},
 		submit() {
 			let data = this.formValue;
-			Console.log(data);
 			this.$emit('submit', data);
 		},
 		changeFn(val='',name, type) {
-			Console.log(val,type);
 			if ($type(val) == 'array' && this.selectType.includes(type)) {
 				var new_val;
 				if (type && type == 'multiple') {

@@ -3,6 +3,7 @@ import {Console} from './util/util';
 import XForm from './form/form.vue';
 export {create as createDialog} from './com/Dialog.js';
 export {default as qtip} from './com/qtip.js';
+export {default as Progressbar} from './com/Progressbar.js';
 
 //注册全局组件
 Vue.component('x-stable', STable);
