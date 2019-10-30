@@ -75,6 +75,7 @@
 						<x-datetime-picker
 							:name="item.name"
 							:format="item.type == 'date' ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss'"
+							:value="getDef(item)"
 							@input="dateChangeFn($event, item.name)"
 						/>
 					</div>
@@ -280,7 +281,7 @@ export default {
 				if(item.type != 'button')
 					tmpArr[item.name] = typeof this.defaultValue[item.name]=='undefined' ? item.value || '' : this.defaultValue[item.name];
 				if(item.type == 'date') {
-					tmpArr[item.name] = this.timeFormat(new Date(),'YYYY-MM-DD');
+					tmpArr[item.name] = this.getDef(item) || this.timeFormat(new Date(),'YYYY-MM-DD');
 				}
 				if (item.type == 'checkbox') {
 					for (const cbx of item.options) {

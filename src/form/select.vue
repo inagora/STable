@@ -39,8 +39,11 @@
 		</div>
 		<template v-else>
 			<input 
-				:value="selected && selected.length > 0 ? selected[0].label : selected"
+				:value="inputFoucus ? query : selected && selected.length > 0 ? selected[0].label : selected"
 				type="text"
+				@focus="inputFoucus = true"
+				@blur="inputFoucus = false"
+				@input="handleQueryChange"
 				:placeholder="placeholder"
 				class="st-select-input"
 			/>
@@ -144,6 +147,7 @@ export default {
 			marginT: 50,
 			realOptions: [],
 			i: 0,
+			inputFoucus: false,
 		};
 	},
 	// computed: {
