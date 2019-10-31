@@ -37,7 +37,7 @@
 
 <script>
 import XButton from './com/Button.vue';
-import XForm from './form/form.vue';
+import XForm from './form/index.vue';
 // import {Console} from './util/util';
 
 export default {

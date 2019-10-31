@@ -21,7 +21,7 @@ import XButton from './com/Button.vue';
 import {loadJs} from './util/util.js';
 import {create} from './com/Dialog.js';
 import qtip from './com/qtip';
-import XForm from './form/form.vue';
+import XForm from './form/index.vue';
 
 export default {
 	components: {XButton},

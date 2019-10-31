@@ -1,6 +1,6 @@
 import STable from './STable.vue';
 import {Console} from './util/util';
-import XForm from './form/form.vue';
+import XForm from './form/index.vue';
 export {create as createDialog} from './com/Dialog.js';
 export {default as qtip} from './com/qtip.js';
 export {default as Progressbar} from './com/Progressbar.js';
