@@ -29,10 +29,28 @@
 		.text{
 			font-size: 12px;
 		}
+		#fontChange{
+			position: fixed;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background-color: #f0f0f0;
+			box-sizing: border-box;
+			padding: 10px;
+		}
+		label{
+			margin-right: 15px;
+		}
+		.font{
+			cursor: pointer;
+		}
 	</style>
 </head>
 <body>
 <div id="doc"></div>
+<div id="fontChange">
+	<form></form>
+</div>
 <script>
 let common = '&acute;&copy;&gt;&micro;&reg;&amp;&deg;&iexcl;&nbsp;&raquo;&brvbar;&divide;&iquest;&not;&sect;&bull;&frac12;&laquo;&para;&uml;&cedil;&frac14;&lt;&plusmn;&times;&cent;&frac34;&macr;&quot;&trade;&euro;&pound;&yen;&bdquo;&hellip;&middot;&rsaquo;&ordf;&circ;&ldquo;&mdash;&rsquo;&ordm;&dagger;&lsaquo;&ndash;&sbquo;&rdquo;&Dagger;&lsquo;&permil;&shy;&tilde;&asymp;&frasl;&larr;&part;&spades;&cap;&ge;&le;&Prime;&sum;&clubs;&harr;&loz;&prime;&uarr;&darr;&hearts;&minus;&prod;&zwj;&diams;&infin;&ne;&radic;&zwnj;&equiv;&int;&oline;&rarr;&alpha;&eta;&mu;&pi;&theta;&beta;&gamma;&nu;&psi;&upsilon;&chi;&iota;&omega;&rho;&xi;&delta;&kappa;&omicron;&sigma;&zeta;&epsilon;&lambda;&phi;&tau;&Alpha;&Eta;&Mu;&Pi;&Theta;&Beta;&Gamma;&Nu;&Psi;&Upsilon;&Chi;&Iota;&Omega;&Rho;&Xi;&Delta;&Kappa;&Omicron;&Sigma;&Zeta;&Epsilon;&Lambda;&Phi;&Tau;&sigmaf;';
 let types = [
@@ -96,7 +114,18 @@ for(let item of list) {
 	}
 	html.push('</div><hr>');
 }
-document.querySelector('#doc').innerHTML = html.join('');
+let doc = document.querySelector('#doc');
+doc.innerHTML = html.join('');
+
+let sel = document.querySelector('form');
+let fonts = ['Arial','sans-serif', 'Helvetica','Times New Roman','Times','Courier New','Courier'];
+let opStr = fonts.map(f=>`<label class="font"><input type="radio" name="font" value="${f}" onchange="changeFont(this)"> ${f}</label>`).join('');
+sel.innerHTML = '<label>更换字体：</label>'+opStr;
+
+function changeFont(sel){
+	doc.style.fontFamily = sel.value;
+}
+doc.style.fontFamily = fonts[0];
 </script>
 </body>
 </html>
