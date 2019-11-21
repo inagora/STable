@@ -266,6 +266,12 @@
 								}
 								ajax({url:this.deleteUrl, data, type: this.actionMethods.destroy}).then(res=>{
 									res = res[0];
+
+									if(this.listeners.delete){
+										let ret = this.listeners.delete.call(this.$parent,res, record);
+										if(ret===false)
+											return;
+									}
 									if(res.errno==0) {
 										this.$message({
 											message: this.locale.deleteMsg.success,
@@ -274,11 +280,6 @@
 										this.load('cur');
 									} else {
 										this.$message.error(this.locale.deleteMsg.fail);
-									}
-									if(this.listeners.delete){
-										let ret = this.listeners.delete.call(this.$parent,data, record);
-										if(ret===false)
-											return;
 									}
 								});
 							}).catch(()=>{});
