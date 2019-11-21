@@ -259,6 +259,11 @@
 								let data = {};
 								data[this.idIndex] = id;
 								Object.assign(data, this.params);
+								if(this.listeners.beforedelete){
+									let ret = this.listeners.beforedelete.call(this.$parent,data, record);
+									if(ret===false)
+										return;
+								}
 								ajax({url:this.deleteUrl, data, type: this.actionMethods.destroy}).then(res=>{
 									res = res[0];
 									if(res.errno==0) {
@@ -269,6 +274,11 @@
 										this.load('cur');
 									} else {
 										this.$message.error(this.locale.deleteMsg.fail);
+									}
+									if(this.listeners.delete){
+										let ret = this.listeners.delete.call(this.$parent,data, record);
+										if(ret===false)
+											return;
 									}
 								});
 							}).catch(()=>{});
