@@ -5,8 +5,10 @@
 			:type="field.nativeType||'text'"
 			:name="field.name"
 			class="st-form-input"
-			@focus="$emit('fieldfocus')"
+			@focus="initDropdown();$emit('fieldfocus')"
 			@blur="$emit('fieldblur')"
+			@keydown.down.prevent="hlNext"
+			@keydown.up.prevent="hlPre"
 		/>
 	</div>
 </template>
@@ -14,7 +16,7 @@
 <script>
 import XDropdown from './Dropdown.vue';
 import Ajax from '../util/Ajax.js';
-import {$type} from '../util/util';
+import {loadJs, $type} from '../util/util';
 import qtip from '../com/qtip.js';
 export default {
 	props: {
@@ -34,6 +36,8 @@ export default {
 	},
 	methods: {
 		initDropdown(){
+			if(this.dropdown)
+				return;
 			let el = document.createElement('div');
 			el.className = 'st-dropdown';
 			document.body.appendChild(el);
@@ -45,6 +49,9 @@ export default {
 				},
 				template: '<x-dropdown></x-dropdown>'
 			});
+			if(this.field.pinyin!==false){
+				this.pinyinP = loadJs('https://cdn.jsdelivr.net/gh/inagora/STable/dist/pinyin.min.js');
+			}
 			if(this.field.asyncList) {
 				if($type(this.field.asyncList)=='string')
 					Ajax.request({
@@ -85,6 +92,30 @@ export default {
 					return item;
 				});
 			}
+			if(field.pinyin){
+				this.pinyinP.then(()=>{
+					this.pinyinP = null;
+					let py = window.STable.Pinyin;
+					let joinText = function(arr){
+						return arr.map(item=>item[0]).join('');
+					};
+					field.list.forEach(item=>{
+						let text = item.text.toLocaleLowerCase();
+						item._s = [
+							text,
+							joinText(py(text, {style:py.STYLE_FIRST_LETTER})),
+							joinText(py(text, {style:py.STYLE_INITIALS})),
+							joinText(py(text, {style:py.STYLE_NORMAL}))
+						];
+					});
+				});
+			}
+		},
+		hlNext(evt){
+			this.dropdown&&this.dropdown.hlNext();
+		},
+		hlPre(){
+			this.dropdown&&this.dropdown.hlPre();
 		}
 	}
 };
