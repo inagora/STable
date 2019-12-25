@@ -1,15 +1,22 @@
 <template>
-	<div>
-		<input
-			v-model="text"
-			:type="field.nativeType||'text'"
-			:name="field.name"
-			class="st-form-input"
-			@focus="initDropdown();$emit('fieldfocus')"
-			@blur="$emit('fieldblur')"
-			@keydown.down.prevent="hlNext"
-			@keydown.up.prevent="hlPre"
-		/>
+	<div class="st-combobox" @click.stop>
+		<label class="st-combobox-input-box">
+			<input
+				v-model="text"
+				:type="field.nativeType||'text'"
+				:name="field.name"
+				class="st-form-input"
+				@focus="showDropdown();$emit('fieldfocus')"
+				@blur="$emit('fieldblur')"
+				@keydown.down.prevent="hlNext"
+				@keydown.up.prevent="hlPre"
+				@keydown.enter.prevent="select"
+			/>
+			<div class="st-combobox-trigger">
+				<span>&rsaquo;</span>
+			</div>
+		</label>
+		<x-dropdown ref="ddm" @select="changeVal" />
 	</div>
 </template>
 
@@ -19,6 +26,7 @@ import Ajax from '../util/Ajax.js';
 import {loadJs, $type} from '../util/util';
 import qtip from '../com/qtip.js';
 export default {
+	components: {XDropdown},
 	props: {
 		field: {
 			type: Object,
@@ -27,6 +35,11 @@ export default {
 			}
 		}
 	},
+	provide(){
+		return {
+			field: this.field
+		};
+	},
 	data(){
 		let val = this.field.value||'';
 		return {
@@ -34,21 +47,16 @@ export default {
 			text: this.field.list[val]||''
 		};
 	},
+	mounted(){
+		let self = this;
+		document.documentElement.addEventListener('click', function(){
+			self.$refs.ddm.hide();
+		}, false);
+	},
 	methods: {
-		initDropdown(){
-			if(this.dropdown)
-				return;
-			let el = document.createElement('div');
-			el.className = 'st-dropdown';
-			document.body.appendChild(el);
-			this.dropdown = new Vue({
-				el,
-				components: {XDropdown},
-				provide: {
-					field: this.field
-				},
-				template: '<x-dropdown></x-dropdown>'
-			});
+		showDropdown(){
+			this.$refs.ddm.show(this.$el);
+			if(this.inited) return;
 			if(this.field.pinyin!==false){
 				this.pinyinP = loadJs('https://cdn.jsdelivr.net/gh/inagora/STable/dist/pinyin.min.js');
 			}
@@ -92,6 +100,8 @@ export default {
 					return item;
 				});
 			}
+			this.$refs.ddm.show(this.$el);
+			this.inited = true;
 			if(field.pinyin){
 				this.pinyinP.then(()=>{
 					this.pinyinP = null;
@@ -111,16 +121,40 @@ export default {
 				});
 			}
 		},
-		hlNext(evt){
-			this.dropdown&&this.dropdown.hlNext();
+		hlNext(){
+			this.$refs.ddm&&this.$refs.ddm.hlNext();
 		},
 		hlPre(){
-			this.dropdown&&this.dropdown.hlPre();
+			this.$refs.ddm&&this.$refs.ddm.hlPre();
+		},
+		select(){
+			this.$refs.ddm.select();
+		},
+		changeVal(data){
+			this.value = data.value;
+			this.text = data.text;
 		}
 	}
 };
 </script>
 
-<style>
+<style lang="scss">
+.st-combobox{
+	position: relative;
 
+	&-input-box{
+		display: flex;
+		align-items: center;
+	}
+
+	&-trigger{
+		font-size: 20px;
+		padding: 0 5px;
+		transition: transform ease 0.2s;
+	}
+	&-trigger-down span{
+		display: block;
+		transform: rotate(90deg);
+	}
+}
 </style>
