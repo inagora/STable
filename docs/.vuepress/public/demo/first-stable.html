@@ -1,0 +1,48 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+STable.init({
+    el: '#box',
+    url: '/ajaxWaterfall',
+    columns: [
+        'name',
+        'movieType',
+        {
+            dataIndex: 'actors',
+            text: 'actors',
+            width: 200
+        },
+        {
+            dataIndex: 'url',
+            render(record){
+                return `<img class="avatar" src="${record.url}" />`;
+            }
+        },
+        {
+            buttons: [
+                {
+                    text: '删除',
+                    type: 'danger',
+                    visible(record){
+                        return parseInt(record.year||0)>2012;
+                    },
+                    click(records){
+                        //delete this record
+                    }
+                },
+                {
+                    text: '提交',
+                    type: 'primary',
+                    click(){
+                        //submit this record
+                    }
+                }
+            ]
+        }
+    ]
+});
+</script>

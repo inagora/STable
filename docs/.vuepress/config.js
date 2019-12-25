@@ -20,11 +20,15 @@ module.exports = {
 		locales: {
 			'/zh/': {
 				sidebar: [
+					'/zh/guide/install',
+					'/zh/guide/first_stable',
 					'/zh/api'
 				]
 			},
 			'/en/': {
 				sidebar: [
+					'/en/guide/install',
+					'/en/guide/first_stable',
 					'/en/api'
 				]
 			}
