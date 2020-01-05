@@ -90,6 +90,12 @@ export default {
 		},
 		'conf.visible'(val){
 			this.visible = val;
+		},
+		'conf.text'(val) {
+			this.text = val;
+		},
+		'conf.cls'(val) {
+			this.cls = val;
 		}
 	}
 };
