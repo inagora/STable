@@ -20,6 +20,25 @@ export function loadJs(url) {
 		return p;
 	}
 }
+let csses = {};
+export function loadCss(url){
+	if(csses[url])
+		return csses[url];
+	else {
+		let p = new Promise(resolve=>{
+			let css = document.createElement( "link" );
+			css.rel = "stylesheet";
+			css.href = url;
+			document.head.insertBefore(
+				css,
+				document.head.childNodes[ document.head.childNodes.length - 1 ].nextSibling
+			);
+			resolve();
+		});
+		csses[url] = p;
+		return p;
+	}
+}
 
 export function hashCode(str) {
 	let ret = str.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a;},0);

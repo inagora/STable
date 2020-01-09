@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { loadJs, loadCss } from '../util/util';
 export default {
 	props: {
 		field: {
@@ -23,6 +24,15 @@ export default {
 		return {
 			value: this.field.value||''
 		};
+	},
+	mounted(){
+		let type = this.field.type;
+		if(type=='datetime' || type=='date') {
+			Promise.all([
+				loadCss('https://cdn.jsdelivr.net/npm/flatpickr@4.6.3/dist/flatpickr.min.css'),
+				loadJs('https://cdn.jsdelivr.net/npm/flatpickr@4.6.3/dist/flatpickr.min.js')
+			]).then(()=>{});
+		}
 	}
 };
 </script>
