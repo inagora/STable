@@ -7,22 +7,42 @@
 			top: top+'px'
 		}"
 	>
-		<div
-			v-for="(item,idx) of field.list"
-			:key="idx"
-			tabindex="0"
-			class="st-ddm-item"
-			:class="{'st-ddm-item-hl': idx==hlIdx}"
-			@mouseenter="hlIdx=idx"
-		>
-			<span v-text="item.text"></span>
-		</div>
+		<template v-for="(item,idx) of options">
+			<div
+				v-if="item.visible"
+				:key="idx"
+				class="st-ddm-item"
+				:class="{
+					'st-ddm-item-hl': idx==hlIdx,
+					'st-ddm-item-sel': selected.includes(idx)
+				}"
+				@mouseenter="hlIdx=idx"
+				@click="select"
+			>
+				<span class="st-ddm-item-check">✓</span>
+				<span :title="item.text" v-text="item.text"></span>
+			</div>
+		</template>
 	</div>
 </template>
 
 <script>
+let allDdm = [];
 export default {
-	inject: ['field'],
+	props: {
+		options: {
+			type: Array,
+			default(){
+				return [];
+			}
+		},
+		selected: {
+			type: Array,
+			default(){
+				return [];
+			}
+		}
+	},
 	data(){
 		return {
 			visible: false,
@@ -32,13 +52,30 @@ export default {
 			top: 0
 		};
 	},
+	watch: {
+		visible(val){
+			this.$emit('update:visible', val);
+		}
+	},
+	mounted(){
+		allDdm.push(this);
+	},
+	beforeDestroy(){
+		allDdm = allDdm.filter(ddm=>ddm!=this);
+	},
 	methods: {
 		hide(){
 			this.visible = false;
 		},
-		show(alignTo){
+		show(){
+			console.log('show')
 			this.visible = true;
+			allDdm.forEach(ddm=>{
+				if(ddm!=this)
+					ddm.hide();
+			});
 			this.$nextTick(()=>{
+				let alignTo = this.$el.closest('.st-cbb');
 				let rect = this.$el.getBoundingClientRect();
 				let alignRect = alignTo.getBoundingClientRect();
 				let docEl = document.documentElement;
@@ -51,24 +88,49 @@ export default {
 			});
 		},
 		hlNext(){
-			this.hlIdx++;
-			if(this.hlIdx>=this.field.list.length)
-				this.hlIdx=0;
-			
-			this.$nextTick(()=>{
-				let item=this.$el.querySelector('.st-ddm-item-hl');
-				if(item){
-					if(item.scrollIntoViewIfNeeded)
-						item.scrollIntoViewIfNeeded();
-					else
-						item.scrollIntoView();
+			let done = false;
+			for(let i=this.hlIdx+1,len=this.options.length;i<len;i++){
+				if(this.options[i].visible){
+					this.hlIdx = i;
+					done = true;
+					break;
 				}
-			});
+			}
+			if(!done){
+				for(let i=0;i<this.hlIdx;i++) {
+					if(this.options[i].visible){
+						this.hlIdx = i;
+						done = true;
+						break;
+					}
+				}
+			}
+			
+			this.hl();
 		},
 		hlPre(){
-			this.hlIdx--;
-			if(this.hlIdx<0)
-				this.hlIdx = this.field.list.length-1;
+			let done = false;
+			for(let i=this.hlIdx-1;i>=0;i--){
+				if(this.options[i].visible){
+					this.hlIdx = i;
+					done = true;
+					break;
+				}
+			}
+			if(!done){
+				for(let i=this.options.length-1;i>this.hlIdx;i--) {
+					if(this.options[i].visible) {
+						this.hlIdx = i;
+						done = true;
+						break;
+					}
+				}
+			}
+			
+			this.hl();
+		},
+		hl(){
+			this.visible = true;
 			this.$nextTick(()=>{
 				let item=this.$el.querySelector('.st-ddm-item-hl');
 				if(item){
@@ -81,8 +143,32 @@ export default {
 		},
 		select(){
 			if(this.visible){
-				this.$emit('select',this.field.list[this.hlIdx]);
-				this.visible = false;
+				this.$emit('select', this.hlIdx);
+			}
+		},
+		filter(key){
+			key = key.trim().toLowerCase();
+			if(!key){
+				this.options.forEach(item=>{
+					item.visible = true;
+				});
+			} else {
+				this.options.forEach(item=>{
+					item.visible = item.text.includes(key);
+				});
+			}
+			if(this.visible){
+				let hlIdx = -1;
+				for(let i=0,len=this.options.length;i<len;i++) {
+					if(this.options[i].visible){
+						hlIdx = i;
+						break;
+					}
+				}
+				this.hlIdx = hlIdx;
+				console.log('filter')
+				this.hl();
+				this.show();
 			}
 		}
 	}
@@ -100,8 +186,9 @@ export default {
 	overflow-x: hidden;
 	overflow-y: auto;
 	left: 0;
-	box-shadow: 0 5px 17px -4px rgba(0,0,0,.6);
+	box-shadow: 0 2px 5px -2px rgba(0,0,0,.6);
 	padding: 5px 0;
+	z-index: 99;
 
 	&-item{
 		display: block;
@@ -112,9 +199,18 @@ export default {
 		text-overflow: ellipsis;
 		cursor: pointer;
 	}
-	&-item-hl{
+	& &-item-hl{
 		background-color: #4d91f7;
 		color: #fff;
+	}
+	&-item-sel{
+		background-color: rgba(77,145,247,0.2);
+	}
+	&-item-check{
+		visibility: hidden;
+	}
+	&-item-sel &-item-check{
+		visibility: visible;
 	}
 }
 </style>

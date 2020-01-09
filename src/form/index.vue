@@ -13,6 +13,7 @@
 			<div
 				class="st-form-input-box"
 				:class="{'st-form-input-box-focus': field._st_focus}"
+				:style="[field.style]"
 			>
 				<component
 					:is="coms[field.type]"
@@ -31,6 +32,7 @@
 import {$type} from '../util/util';
 import XInput from './Input.vue';
 import XCombobox from './Combobox.vue';
+import BCombobox from './BaseCombobox.vue';
 export default {
 	components: {XInput},
 	props: {
@@ -61,7 +63,8 @@ export default {
 			fields,
 			coms: {
 				text: XInput,
-				combobox: XCombobox
+				combobox: BCombobox,
+				multiple: XCombobox
 			}
 		};
 	},
@@ -147,8 +150,19 @@ export default {
 				});
 
 				field._st_focus = false;
-
-				return Object.assign({}, field);
+				if($type(field.width)=='number') {
+					field.width = field.width+'px';
+				} else if($type(field.width)=='string' && /^\d+$/.test(field.width.trim())){
+					field.width = field.width.trim()+'px';
+				}
+				if(field.width){
+					field.style = Object.assign({}, field.style, {width: field.width});
+				}
+				let ret = Object.assign({}, field);
+				if(!ret.placeholder){
+					ret.placeholder = ret.label;
+				}
+				return ret;
 			});
 		},
 		submit(){},
@@ -186,7 +200,6 @@ export default {
 		font-feature-settings: 'tnum';
 		position: relative;
 		display: inline-block;
-		height: 32px;
 		margin: 0 8px 8px 0;
 		color: rgba(0, 0, 0, 0.65);
 		font-size: 14px;
@@ -210,6 +223,10 @@ export default {
 	&-inline{
 		display: flex;
 		justify-content: flex-start;
+
+		& .st-form-input-box{
+			width: 200px;
+		}
 	}
 }
 </style>
