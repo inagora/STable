@@ -68,7 +68,6 @@ export default {
 			this.visible = false;
 		},
 		show(){
-			console.log('show')
 			this.visible = true;
 			allDdm.forEach(ddm=>{
 				if(ddm!=this)
@@ -166,7 +165,6 @@ export default {
 					}
 				}
 				this.hlIdx = hlIdx;
-				console.log('filter')
 				this.hl();
 				this.show();
 			}
