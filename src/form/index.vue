@@ -32,7 +32,7 @@
 import {$type} from '../util/util';
 import XInput from './Input.vue';
 import XCombobox from './Combobox.vue';
-import BCombobox from './BaseCombobox.vue';
+import XMultiple from './Multiple.vue';
 export default {
 	components: {XInput},
 	props: {
@@ -63,8 +63,8 @@ export default {
 			fields,
 			coms: {
 				text: XInput,
-				combobox: BCombobox,
-				multiple: XCombobox
+				combobox: XCombobox,
+				multiple: XMultiple
 			}
 		};
 	},
