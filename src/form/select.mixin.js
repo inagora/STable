@@ -11,7 +11,8 @@ export default {
 				options = Object.keys(list).map(key=>({
 					text: list[key],
 					value: key,
-					visible: true
+					visible: true,
+					lowerText: list[key].toLocaleLowerCase()
 				}));
 			} else {
 				options = list.map(item=>{
@@ -19,7 +20,8 @@ export default {
 						return {
 							text: item,
 							value: item,
-							visible: true
+							visible: true,
+							lowerText: item.toLocaleLowerCase()
 						};
 					}
 					return item;

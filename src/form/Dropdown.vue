@@ -1,11 +1,12 @@
 <template>
 	<div
-		v-show="visible"
+		v-show="visible && visibleCount>0"
 		class="st-ddm"
 		:style="{
 			width: width+'px',
 			top: top+'px'
 		}"
+		@mouseleave="hlIdx=-1"
 	>
 		<template v-for="(item,idx) of options">
 			<div
@@ -17,7 +18,7 @@
 					'st-ddm-item-sel': selected.includes(idx)
 				}"
 				@mouseenter="hlIdx=idx"
-				@click="select"
+				@mouseup="select"
 			>
 				<span class="st-ddm-item-check">✓</span>
 				<span :title="item.text" v-text="item.text"></span>
@@ -49,12 +50,24 @@ export default {
 			val: '',
 			hlIdx: -1,
 			width: 0,
-			top: 0
+			top: 0,
+			visibleCount: this.options.length
 		};
 	},
 	watch: {
 		visible(val){
 			this.$emit('update:visible', val);
+			if(val && this.selected.length>=0){
+				this.$nextTick(()=>{
+					let el = this.$el.querySelector('.st-ddm-item-sel');
+					if(!el) return;
+					if(el.scrollIntoViewIfNeeded){
+						el.scrollIntoViewIfNeeded();
+					} else {
+						el.scrollIntoView();
+					}
+				});
+			}
 		}
 	},
 	mounted(){
@@ -147,15 +160,20 @@ export default {
 		},
 		filter(key){
 			key = key.trim().toLowerCase();
+			let visibleCount = 0;
 			if(!key){
 				this.options.forEach(item=>{
 					item.visible = true;
 				});
+				visibleCount = this.options.length;
 			} else {
 				this.options.forEach(item=>{
-					item.visible = item.text.includes(key);
+					item.visible = item.lowerText.includes(key);
+					if(item.visible)
+						visibleCount++;
 				});
 			}
+			this.visibleCount = visibleCount;
 			if(this.visible){
 				let hlIdx = -1;
 				for(let i=0,len=this.options.length;i<len;i++) {

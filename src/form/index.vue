@@ -63,6 +63,8 @@ export default {
 			fields,
 			coms: {
 				text: XInput,
+				datetime: XInput,
+				date: XInput,
 				combobox: XCombobox,
 				multiple: XMultiple
 			}
@@ -183,9 +185,9 @@ export default {
 		color: rgba(0, 0, 0, 0.85);
 	}
 	&-input{
-		height: 100%;
+		height: 30px;
 		font-size: 100%;
-		line-height: 1;
+		line-height: 30px;
 		background: transparent;
 		border-width: 0;
 		border-radius: 4px;

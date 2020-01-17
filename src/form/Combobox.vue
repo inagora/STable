@@ -7,7 +7,8 @@
 			class="st-form-input"
 			:placeholder="placeholder"
 			@focus="focus();$emit('fieldfocus')"
-			@blur="blur();$emit('fieldblur')"
+			@blur="$emit('fieldblur')"
+			@input="doFilter"
 			@keydown.down.prevent="hlNext"
 			@keydown.up.prevent="hlPre"
 			@keydown.enter.prevent="$refs.ddm.select()"
@@ -62,22 +63,16 @@ export default {
 			placeholder: this.field.placeholder
 		};
 	},
-	watch: {
-		text(){
-			this.$refs.ddm.show();
-			this.filterTimer = setTimeout(()=>{
-				if(this.filterTimer){
-					clearTimeout(this.filterTimer);
-					this.filterTimer = null;
-				}
-				this.$refs.ddm.filter(this.text);
-			}, 100);
-		}
-	},
 	mounted(){
-		let self = this;
-		document.documentElement.addEventListener('click', function(){
-			self.$refs.ddm && self.$refs.ddm.hide();
+		document.documentElement.addEventListener('click', ()=>{
+			if(this.selIdx>=0) {
+				this.text = this.options[this.selIdx].text;
+			} else {
+				this.text = '';
+			}
+			this.$nextTick(()=>{
+				this.$refs.ddm && this.$refs.ddm.hide();
+			});
 		}, false);
 
 		if(this.field.asyncList) {
@@ -103,35 +98,37 @@ export default {
 		}
 	},
 	methods: {
+		doFilter(){
+			this.filterTimer = setTimeout(()=>{
+				if(this.filterTimer){
+					clearTimeout(this.filterTimer);
+					this.filterTimer = null;
+				}
+				this.$refs.ddm.show();
+				this.$refs.ddm.filter(this.text);
+			}, 100);
+		},
 		focus(){
-			this.$refs.ddm.show();
-
 			if(this.selIdx>=0) {
 				this.placeholder = this.options[this.selIdx].text;
 			} else {
 				this.placeholder = this.field.placeholder;
 			}
 			this.text = '';
-		},
-		blur(){
-			if(this.selIdx>=0) {
-				this.text = this.options[this.selIdx].text;
-			} else {
-				this.text = '';
-			}
+			this.$refs.ddm.filter(this.text);
+
+			this.$refs.ddm.show();
 		},
 		changeVal(idx){
 			this.selIdx = idx;
-			if(this.field.type!='multiple'){
-				this.text = this.options[idx].text;
-				this.$nextTick(()=>{
+			this.$refs.ddm.hide();
+			this.$nextTick(()=>{
+				this.$el.querySelector('input').focus();
+				setTimeout(()=>{
+					this.text = this.options[idx].text;
 					this.$refs.ddm.hide();
-					setTimeout(()=>{
-						this.$el.querySelector('input').blur();
-						this.$refs.ddm.hide();
-					}, 100);
-				});
-			}
+				}, 10);
+			});
 			
 		}
 	}
