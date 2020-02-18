@@ -66,6 +66,7 @@ export default {
 				datetime: XInput,
 				date: XInput,
 				combobox: XCombobox,
+				cascader: XCombobox,
 				multiple: XMultiple
 			}
 		};
@@ -103,15 +104,23 @@ export default {
 					field.label = field.name;
 				if(!field.placeholder)
 					field.placeholder = field.label;
-				if(field.list) {
+				if(field.list)
+					field.options = field.list;
+				if(field.asyncList)
+					field.options = field.asyncList;
+				if(field.options) {
 					if(!field.type)
 						field.type = 'combobox';
 				}
-
-				if(!field.type && field.asyncList){
+				if(field.type=='cascader') {
+					field.filterable = false;
+				}
+				if(field.type=='select')
 					field.type = 'combobox';
-					if(!field.list)
-						field.list = [];
+				if(field.type=='combobox'){
+					if(typeof field.filterable=='undefined'){
+						field.filterable = true;
+					}
 				}
 
 				if(!field.type){
@@ -130,8 +139,6 @@ export default {
 					}
 					field.type = 'text';
 				}
-				if(field.type=='select')
-					field.type = 'combobox';
 				
 				if(!field.rules)
 					field.rules = [];
@@ -225,10 +232,15 @@ export default {
 	&-inline{
 		display: flex;
 		justify-content: flex-start;
+		flex-wrap: wrap;
 
 		& .st-form-input-box{
 			width: 200px;
 		}
+	}
+
+	& .st-btn{
+		margin-bottom: 8px;
 	}
 }
 </style>

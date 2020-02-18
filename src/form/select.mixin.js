@@ -1,10 +1,48 @@
 import {loadJs, $type} from '../util/util';
+import Ajax from '../util/Ajax.js';
+import qtip from '../com/qtip.js';
 export default {
-	methods: {
+	mounted(){
+		document.documentElement.addEventListener('click', ()=>{
+			if(this.field.type=='combobox'){
+				if(this.selIdx>=0) {
+					this.text = this.options[this.selIdx].text;
+				} else {
+					this.text = '';
+				}
+			}
+			this.$nextTick(()=>{
+				this.$refs.ddm && this.$refs.ddm.hide();
+			});
+		}, false);
 
+		let dataType = $type(this.field.options);
+		if(dataType=='string'){
+			this.loading = true;
+			Ajax.request({
+				url: this.field.options
+			}).then(res=>{
+				this.loading = false;
+				if(res.errno==0 || res.code==0) {
+					this.formatList(res.data.options);
+				} else {
+					qtip.error(res.errmsg||res.msg);
+				}
+			});
+		} else if(dataType=='function') {
+			this.loading = true;
+			this.field.options(this.field).then(list=>{
+				this.loading = false;
+				this.formatList(list);
+			});
+		} else {
+			this.formatList();
+		}
+	},
+	methods: {
 		formatList(_list){
 			let field = this.field;
-			let list = _list || field.list;
+			let list = _list || field.options;
 			let options = [];
 
 			if(!Array.isArray(list)) {

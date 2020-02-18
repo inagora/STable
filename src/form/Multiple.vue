@@ -45,9 +45,6 @@
 
 <script>
 import XDropdown from './Dropdown.vue';
-import Ajax from '../util/Ajax.js';
-import {$type} from '../util/util';
-import qtip from '../com/qtip.js';
 import select from './select.mixin.js';
 export default {
 	components: {XDropdown},
@@ -97,11 +94,6 @@ export default {
 		}
 	},
 	mounted(){
-		let self = this;
-		document.documentElement.addEventListener('click', function(){
-			self.$refs.ddm && self.$refs.ddm.hide();
-		}, false);
-
 		let input = this.$el.querySelector('.st-form-input');
 		let style = window.getComputedStyle(input);
 		let mirror = this.$el.querySelector('.st-cbb-input-mirror');
@@ -109,27 +101,7 @@ export default {
 			mirror.style[key] = style[key];
 		});
 
-		if(this.field.asyncList) {
-			this.loading = true;
-			if($type(this.field.asyncList)=='string') {
-				Ajax.request({
-					url: this.field.asyncList
-				}).then(res=>{
-					this.loading = false;
-					if(res.errno==0 || res.code==0) {
-						this.formatList(res.data.list);
-					} else {
-						qtip.error(res.errmsg||res.msg);
-					}
-				});
-			} else
-				this.field.asyncList(this.field).then(list=>{
-					this.loading = false;
-					this.formatList(list);
-				});
-		} else {
-			this.formatList();
-		}
+		
 
 		let inputBox = this.$el.querySelector('.st-cbb-input-box');
 		let computedStyle = window.getComputedStyle(inputBox);

@@ -6,12 +6,14 @@
 			:name="field.name"
 			class="st-form-input"
 			:placeholder="placeholder"
+			:readonly="!field.filterable"
 			@focus="focus();$emit('fieldfocus')"
 			@blur="$emit('fieldblur')"
 			@input="doFilter"
 			@keydown.down.prevent="hlNext"
 			@keydown.up.prevent="hlPre"
 			@keydown.enter.prevent="$refs.ddm.select()"
+			@mousedown="showDdm"
 		/>
 		<div
 			class="st-cbb-trigger"
@@ -24,6 +26,7 @@
 			ref="ddm"
 			:options="options"
 			:selected="[selIdx]"
+			:type="field.type"
 			@update:visible="ddmVisible=$event"
 			@select="changeVal"
 		/>
@@ -33,9 +36,6 @@
 
 <script>
 import XDropdown from './Dropdown.vue';
-import Ajax from '../util/Ajax.js';
-import { $type} from '../util/util';
-import qtip from '../com/qtip.js';
 import select from './select.mixin.js';
 export default {
 	components: {XDropdown},
@@ -63,41 +63,11 @@ export default {
 			placeholder: this.field.placeholder
 		};
 	},
-	mounted(){
-		document.documentElement.addEventListener('click', ()=>{
-			if(this.selIdx>=0) {
-				this.text = this.options[this.selIdx].text;
-			} else {
-				this.text = '';
-			}
-			this.$nextTick(()=>{
-				this.$refs.ddm && this.$refs.ddm.hide();
-			});
-		}, false);
-
-		if(this.field.asyncList) {
-			this.loading = true;
-			if($type(this.field.asyncList)=='string') {
-				Ajax.request({
-					url: this.field.asyncList
-				}).then(res=>{
-					this.loading = false;
-					if(res.errno==0 || res.code==0) {
-						this.formatList(res.data.list);
-					} else {
-						qtip.error(res.errmsg||res.msg);
-					}
-				});
-			} else
-				this.field.asyncList(this.field).then(list=>{
-					this.loading = false;
-					this.formatList(list);
-				});
-		} else {
-			this.formatList();
-		}
-	},
 	methods: {
+		showDdm(){
+			if(!this.field.filterable)
+				this.focus();
+		},
 		doFilter(){
 			this.filterTimer = setTimeout(()=>{
 				if(this.filterTimer){
@@ -150,6 +120,7 @@ export default {
 		font-size: 20px;
 		width: 20px;
 		line-height: 20px;
+		cursor: pointer;
 	}
 	&-trigger span{
 		display: block;
