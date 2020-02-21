@@ -5,6 +5,7 @@
 			type="text"
 			:name="field.name"
 			class="st-form-input"
+			autocomplete="off"
 			:placeholder="placeholder"
 			:readonly="!field.filterable"
 			@focus="focus();$emit('fieldfocus')"
@@ -25,7 +26,7 @@
 		<x-dropdown
 			ref="ddm"
 			:options="options"
-			:selected="[selIdx]"
+			:selected="selIdxes"
 			:type="field.type"
 			@update:visible="ddmVisible=$event"
 			@select="changeVal"
@@ -35,35 +36,38 @@
 </template>
 
 <script>
-import XDropdown from './Dropdown.vue';
 import select from './select.mixin.js';
 export default {
-	components: {XDropdown},
 	mixins: [select],
-	props: {
-		field: {
-			type: Object,
-			default(){
-				return {};
-			}
-		}
-	},
-	provide(){
-		return {
-			field: this.field
-		};
-	},
-	data(){
-		return {
-			options: [],
-			text: '',
-			selIdx: -1,
-			loading: false,
-			ddmVisible: false,
-			placeholder: this.field.placeholder
-		};
-	},
 	methods: {
+		initSelect(){
+			let selIdxes = [];
+			if(this.field.type=='cascader') {
+				let p = this.options;
+				for(let v of this.value) {
+					let match = false;
+					for(let i=0,len=p.length;i<len;i++){
+						if(v == p[i].value){
+							match = true;
+							selIdxes.push(i);
+							p = p[i].options;
+							break;
+						}
+					}
+					if(!match){
+						break;
+					}
+				}
+			} else {
+				for(let i=0,len=this.options.length;i<len;i++){
+					if(this.value == this.options[i].value){
+						selIdxes = [i];
+						break;
+					}
+				}
+			}
+			this.selIdxes = selIdxes;
+		},
 		showDdm(){
 			if(!this.field.filterable)
 				this.focus();
@@ -79,23 +83,60 @@ export default {
 			}, 100);
 		},
 		focus(){
-			if(this.selIdx>=0) {
-				this.placeholder = this.options[this.selIdx].text;
-			} else {
-				this.placeholder = this.field.placeholder;
+			if(this.field.type=='combobox'){
+				let selIdxes = this.selIdxes;
+				if(selIdxes.length>0 && selIdxes[0]>=0) {
+					this.placeholder = this.options[selIdxes[0]].text;
+				} else {
+					this.placeholder = this.field.placeholder;
+				}
+				this.text = '';
+				this.$refs.ddm.filter(this.text);
 			}
-			this.text = '';
-			this.$refs.ddm.filter(this.text);
 
 			this.$refs.ddm.show();
 		},
 		changeVal(idx){
-			this.selIdx = idx;
+			let value;
+			if(this.field.type=='cascader'){
+				this.selIdxes = idx;
+				value = [];
+				let p = this.options;
+				for(let i of idx){
+					if(p[i]){
+						value.push(p[i].value);
+						p = p[i].options;
+					}
+				}
+				this.$emit('input', value);
+			}else {
+				this.selIdxes = [idx];
+				this.$emit('input', this.options[idx].value);
+			}
+
 			this.$refs.ddm.hide();
 			this.$nextTick(()=>{
-				this.$el.querySelector('input').focus();
+				if(this.field.type!='cascader')
+					this.$el.querySelector('input').focus();
 				setTimeout(()=>{
-					this.text = this.options[idx].text;
+					let text = '';
+					let value = [];
+					if(this.field.type=='cascader'){
+						text = [];
+						let p = this.options;
+						
+						for(let idx of this.selIdxes){
+							text.push(p[idx].text);
+							value.push(p[idx].value);
+							p = p[idx].options;
+						}
+						text = text.join(' / ');
+						this.$emit('input', value);
+					} else {
+						text = this.options[idx].text;
+						this.$emit('input', this.options[idx].value);
+					}
+					this.text = text;
 					this.$refs.ddm.hide();
 				}, 10);
 			});

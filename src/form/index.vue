@@ -1,12 +1,16 @@
 <template>
 	<form
 		class="st-form"
-		:class="{'st-form-inline': inline}"
+		:class="[inline?'st-form-inline':'st-form-v']"
 		@submit.prevent="submit"
 		@reset.prevent="reset"
 	>
 		<div v-for="(field, fidx) of fields" :key="fidx" class="st-form-field">
-			<label v-show="labelVisible" class="st-form-label">
+			<label
+				v-show="labelVisible"
+				class="st-form-label"
+				:style="labelStyle"
+			>
 				<span v-if="field.required" class="st-form-required">*</span>
 				<span v-text="field.label"></span>
 			</label>
@@ -18,6 +22,7 @@
 				<component
 					:is="coms[field.type]"
 					:key="fidx"
+					v-model="formData[field.name]"
 					:field="field"
 					@fieldfocus="field._st_focus=true"
 					@fieldblur="field._st_focus=false"
@@ -33,9 +38,14 @@ import {$type} from '../util/util';
 import XInput from './Input.vue';
 import XCombobox from './Combobox.vue';
 import XMultiple from './Multiple.vue';
+import XFile from './File.vue';
 export default {
 	components: {XInput},
 	props: {
+		labelWidth: {
+			type: Number,
+			default: 150
+		},
 		fieldList: {
 			type: [Array, Object],
 			required: true
@@ -59,15 +69,26 @@ export default {
 	},
 	data(){
 		let fields = this.format(this.fieldList);
+		let formData = {};
+		fields.forEach(f=>{
+			formData[f.name] = f.value;
+		});
+		let labelStyle = {};
+		if(!this.inline) {
+			labelStyle = {width:this.labelWidth+'px'};
+		}
 		return {
 			fields,
+			formData,
+			labelStyle,
 			coms: {
 				text: XInput,
 				datetime: XInput,
 				date: XInput,
 				combobox: XCombobox,
 				cascader: XCombobox,
-				multiple: XMultiple
+				multiple: XMultiple,
+				file: XFile
 			}
 		};
 	},
@@ -174,8 +195,19 @@ export default {
 				return ret;
 			});
 		},
-		submit(){},
-		reset(){}
+		submit(){
+			this.$emit('submit', this.formData);
+		},
+		reset(){
+			let formData = {};
+			this.fields.forEach(f=>{
+				formData[f.name] = f.value;
+			});
+			this.formData = formData;
+		},
+		getFormData(){
+			return this.formData;
+		}
 	}
 };
 </script>
@@ -239,8 +271,20 @@ export default {
 		}
 	}
 
+	&-v{
+		& .st-form-input-box{
+			width: 300px;
+		}
+	}
+
 	& .st-btn{
 		margin-bottom: 8px;
+	}
+
+	&-v &-label{
+		display: inline-block;
+		text-align: right;
+		margin-right: 5px;
 	}
 }
 </style>

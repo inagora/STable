@@ -1,7 +1,37 @@
 import {loadJs, $type} from '../util/util';
 import Ajax from '../util/Ajax.js';
 import qtip from '../com/qtip.js';
+
+import XDropdown from './Dropdown.vue';
 export default {
+	props: {
+		value: {
+			type: [String, Number, Array],
+			default: ''
+		},
+		field: {
+			type: Object,
+			default(){
+				return {};
+			}
+		}
+	},
+	components: {XDropdown},
+	provide(){
+		return {
+			field: this.field
+		};
+	},
+	data(){
+		return {
+			options: [],
+			text: '',
+			selIdxes: [],
+			loading: false,
+			ddmVisible: false,
+			placeholder: this.field.placeholder
+		};
+	},
 	mounted(){
 		document.documentElement.addEventListener('click', ()=>{
 			if(this.field.type=='combobox'){
@@ -85,7 +115,9 @@ export default {
 					}
 				}
 			}
+			
 			this.options = options;
+			this.initSelect();
 
 			if(this.field.supportPinyinSearch){
 				loadJs('https://cdn.jsdelivr.net/gh/inagora/STable/dist/pinyin.min.js').then(()=>{

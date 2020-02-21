@@ -23,7 +23,7 @@
 					class="st-ddm-item"
 					:class="{
 						'st-ddm-hl': idx==hlIdx && hlLevel==level,
-						'st-ddm-sel': type=='cascader'?selected[level]==idx :selected.includes(idx)
+						'st-ddm-sel': type=='cascader'?selIdxes[level]==idx : selIdxes.includes(idx)
 					}"
 					@mouseenter="hlItem(idx, level)"
 					@mouseup="select(item, level, idx)"
@@ -75,17 +75,18 @@ export default {
 			visible: false,
 			val: '',
 			hlIdx: -1,
-			hlLevel: -1,
+			hlLevel: 0,
 			width: 150,
 			top: 0,
 			visibleCount: 0,
+			selIdxes: this.selected.slice(0),
 			menuList: []
 		};
 	},
 	watch: {
 		visible(val){
 			this.$emit('update:visible', val);
-			if(val && this.selected.length>=0){
+			if(val && this.selIdxes.length>=0){
 				this.$nextTick(()=>{
 					let els = this.$el.querySelectorAll('.st-ddm-sel');
 					if(!els.length<=0) return;
@@ -102,6 +103,21 @@ export default {
 		options(){
 			this.filter(this.lastFilterKey||'');
 			this.menuList = [this.options];
+			let p  = this.options;
+			for(let idx of this.selIdxes) {
+				if(p[idx]){
+					p = p[idx].options;
+					if(p)
+						this.menuList.push(p);
+					else
+						break;
+				} else {
+					break;
+				}
+			}
+		},
+		selected(val){
+			this.selIdxes = val.slice(0);
 		}
 	},
 	mounted(){
@@ -126,8 +142,9 @@ export default {
 				let alignRect = alignTo.getBoundingClientRect();
 				let docEl = document.documentElement;
 				this.width = this.type=='cascader'?this.width:alignRect.width;
-				if(alignRect.bottom+rect.height < docEl.height) {
-					this.top = alignRect.bottom;
+
+				if(alignRect.bottom+rect.height < docEl.clientHeight) {
+					this.top = alignRect.height+5;
 				} else {
 					this.top = -rect.height-5;
 				}
@@ -138,6 +155,7 @@ export default {
 			if(this.type=='cascader')
 				return;
 			let done = false;
+
 			for(let i=this.hlIdx+1,len=this.options.length;i<len;i++){
 				if(this.options[i].visible){
 					this.hlIdx = i;
@@ -209,14 +227,14 @@ export default {
 			if(this.type!='cascader'){
 				this.$emit('select', this.hlIdx);
 			} else {
-				let selected = this.selected.slice(0, level+1);
+				let selected = this.selIdxes.slice(0, level+1);
 				selected[level] = idx;
-				this.selected = selected;
+				this.selIdxes = selected;
 				if(item.options) {
 					this.menuList.splice(level+1);
 					this.menuList.push(item.options);
 				} else {
-					this.$emit('select', this.hlIdx);
+					this.$emit('select', selected);
 				}
 			}
 		},
@@ -250,7 +268,7 @@ export default {
 						}
 					}
 				}
-				this.hlIdx = [hlIdx];
+				this.hlIdx = hlIdx;
 				this.hl();
 				this.show();
 			}
@@ -310,9 +328,13 @@ export default {
 	&-hl{
 		background-color: rgba(77,145,247,0.2);
 	}
-	& &-sel{
+	&-sel{
 		background-color: #4d91f7;
 		color: #fff;
+	}
+	&-hl.st-ddm-sel{
+		background-color: rgba(77,145,247,0.2);
+		color: inherit;
 	}
 	&-check{
 		visibility: hidden;

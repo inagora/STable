@@ -18,7 +18,6 @@ export default {
 	},
 	methods: {
 		f(){
-			console.log('f');
 		}
 	}
 };

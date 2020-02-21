@@ -2,21 +2,22 @@
 	<label class="st-cbb" @click.stop>
 		<div class="st-cbb-item-list">
 			<div
-				v-for="idx of selected"
+				v-for="idx of selIdxes"
 				:key="idx+'_'+options[idx].value"
 				class="st-cbb-item st-cbb-selected"
 				:style="{'max-width': maxSelLabelWidth+'px'}"
 			>
 				<span class="st-cbb-item-text" v-text="options[idx].text"></span>
-				<span class="st-cbb-item-del" @click="selected.splice(selected.indexOf(idx), 1)">&#10005;</span>
+				<span class="st-cbb-item-del" @click="del(idx)">&#10005;</span>
 			</div>
 			<div class="st-cbb-item st-cbb-input-box">
 				<input
 					v-model="text"
 					type="text"
 					:name="field.name"
+					autocomplete="off"
 					class="st-form-input"
-					:placeholder="selected.length==0 && placeholder"
+					:placeholder="selIdxes.length==0 && placeholder"
 					@focus="focus();$emit('fieldfocus')"
 					@blur="$emit('fieldblur')"
 					@keydown.down.prevent="hlNext"
@@ -35,7 +36,7 @@
 		<x-dropdown
 			ref="ddm"
 			:options="options"
-			:selected="selected"
+			:selected="selIdxes"
 			@update:visible="ddmVisible=$event"
 			@select="changeVal"
 		/>
@@ -44,33 +45,12 @@
 </template>
 
 <script>
-import XDropdown from './Dropdown.vue';
 import select from './select.mixin.js';
 export default {
-	components: {XDropdown},
 	mixins: [select],
-	props: {
-		field: {
-			type: Object,
-			default(){
-				return {};
-			}
-		}
-	},
-	provide(){
-		return {
-			field: this.field
-		};
-	},
 	data(){
 		return {
-			options: [],
-			text: '',
-			selected: [],
-			loading: false,
-			ddmVisible: false,
-			maxSelLabelWidth: 0,
-			placeholder: this.field.placeholder
+			maxSelLabelWidth: 0
 		};
 	},
 	watch: {
@@ -85,7 +65,7 @@ export default {
 				this.$refs.ddm.filter(this.text);
 			}, 100);
 		},
-		selected(val){
+		selIdxes(val){
 			if(val.length<=0) {
 				this.$el.querySelector('input').style.width = this.maxInputLength+'px';
 			} else {
@@ -106,12 +86,27 @@ export default {
 		let inputBox = this.$el.querySelector('.st-cbb-input-box');
 		let computedStyle = window.getComputedStyle(inputBox);
 		this.maxInputLength = this.$el.querySelector('.st-cbb-item-list').clientWidth - parseInt(computedStyle.paddingLeft) - parseInt(computedStyle.paddingRight);
+
 		this.maxSelLabelWidth = this.$el.querySelector('.st-cbb-item-list').clientWidth-4;
-		if(this.selected.length<=0){
-			this.$el.querySelector('input').style.width = this.maxInputLength+'px';
-		}
 	},
 	methods: {
+		initSelect(){
+			let selIdxes = [];
+			let value = this.value;
+			if(!Array.isArray(value)) {
+				value = [value];
+			}
+			for(let i=0,len=this.options.length;i<len;i++) {
+				if(value.includes(this.options[i].value)) {
+					selIdxes.push(i);
+				}
+			}
+			this.selIdxes = selIdxes;
+
+			if(this.selIdxes.length<=0){
+				this.$el.querySelector('input').style.width = this.maxInputLength+'px';
+			}
+		},
 		focus(){
 			this.$refs.ddm.show();
 		},
@@ -127,12 +122,17 @@ export default {
 				
 			});
 		},
+		del(idx){
+			this.changeVal(idx);
+		},
 		changeVal(idx){
-			if(this.selected.includes(idx)){
-				this.selected.splice(this.selected.indexOf(idx), 1);
+			if(this.selIdxes.includes(idx)){
+				this.selIdxes = this.selIdxes.filter(i=>i!=idx);
 			} else {
-				this.selected.push(idx);
+				this.selIdxes.push(idx);
 			}
+			let value = this.selIdxes.map(i=>this.options[i].value);
+			this.$emit('input', value);
 		}
 	}
 };
