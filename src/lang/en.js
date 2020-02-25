@@ -37,9 +37,9 @@ module.exports= {
 
 	//upload
 	upload: 'upload',
-	uploadProgress: 'upload progress',
-	uploadDone: 'upload finished',
-	uploadFail: 'upload failed',
+	uploadProgress: 'upload',
+	uploadDone: 'completed',
+	uploadFail: 'failed',
 	uploadingMsg: 'uploading, please wait a moment...',
 
 	//pagination

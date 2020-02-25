@@ -6,23 +6,23 @@
 			class="st-up-item"
 		>
 			<div class="st-up-item-img">
-				<img :src="isImage ? info.imgUrl : 'https://s.wandougongzhu.cn/s/a6/file_f79c4a.png'" />
+				<img :src="isImage ? info.imgUrl : imgPlaceholder" />
 			</div>
 			<div class="st-up-file-name" v-text="info.name"></div>
-			<span class="fa fa-remove st-up-del-btn" @click="remove(idx)"></span>
+			<span class="st-icon st-icon-close st-up-del-btn" @click="remove(idx)"></span>
 			<div v-if="info.status=='progress'" class="st-up-progress">
 				<div class="st-up-progress-bg" :style="{width:info.percent+'%'}"></div>
 				<div class="st-up-progress-txt" v-text="locale.uploadProgress+'：'+info.percent+'%'"></div>
 			</div>
 			<div v-else-if="info.status=='load'" class="st-up-progress st-up-progress-loaded">
-				<span class="fa fa-check"></span> {{ locale.uploadDone }}
+				<span class="st-icon st-icon-check"></span> {{ locale.uploadDone }}
 			</div>
 			<div v-else-if="info.status=='error'" class="st-up-progress st-up-progress-error">
-				<span class="fa fa-remove"></span> {{ locale.uploadFail }}
+				<span class="st-icon st-icon-close"></span> {{ locale.uploadFail }}
 			</div>
 		</div>
-		<label v-if="files.length<=0 || fieldConf.uploadConfig.multiple" class="st-up-item">
-			<span class="fa fa-upload st-up-icon"></span>
+		<label v-if="files.length<=0 || field.upload.multiple" class="st-up-item">
+			<span class="st-icon st-icon-cloud-upload st-up-icon"></span>
 			<input
 				class="st-up-input"
 				:accept="isImage?'image/*':'*/*'"
@@ -33,6 +33,7 @@
 	</div>
 </template>
 <script>
+import defaultLocale from '../lang/en.js';
 export default {
 	props: {
 		value: {
@@ -46,9 +47,14 @@ export default {
 			}
 		}
 	},
+	inject: {
+		locale: {
+			default: defaultLocale
+		}
+	},
 	data(){
-		let uploadConfig = this.field.uploadConfig||{};
-		let isImage = uploadConfig.isImage||false;
+		let upload = this.field.upload;
+		let isImage = upload.isImage||false;
 		let val = [];
 		if(!this.value)
 			val = [];
@@ -59,8 +65,8 @@ export default {
 		
 		let files = val.map(url=>{
 			let info;
-			if(uploadConfig.getFileInfo)
-				info = uploadConfig.getFileInfo(url);
+			if(upload.getFileInfo)
+				info = upload.getFileInfo(url);
 			else if (typeof url == 'string') {
 				if(/^inagora-public:(.+)/.test(url)) {
 					info = {
@@ -83,14 +89,15 @@ export default {
 		});
 		return {
 			files,
-			isImage
+			isImage,
+			imgPlaceholder: 'data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAehJREFUeNrs3D9PwkAcxvFrKXUhCAMEAhsbL8nJxElfgYPR+CZ0MnHyJbEwMkDoQGAG6h2CNlIo16t/cvd9kktL2g73ye9a7gj14jgWJH88AAH8v4CDwSCUm3vZLmXr2NLpTrf7LDc3p55/Xq0ePBZkXPtYq9Vu6/W6CILACrzhcCii6fS60WwKHcS8gFcKz/d9sV6vrRl2rXZbTMbjQhD9jOMNhWdbzsJwg6gqUX58+klAa1MUorOARSE6DVgEovOApogAGiICaIgIoCEigIaIWXPhuNfrWYUTRZFYLBZa1/T7fS/vVM66yLm9qFQqH9Xjfbkc2h+NRgzhZMrl8ufCSHL05V3Wc64Cd4gqq9Vqr+oOVSKAKYgKaLlcbra6cM4Dbjq/HcrJpTpdSOe/xijEUqm0N4y/VyUVeCQ7QFWJafdCAE9EVGjJpzFDWDNq9V23AgFMQdT5GQPAtPntiQ8Q7oEZiFTgLyACaHrPhABAAAEEkAAIIIAAEgABBBBAAiCAAAJIAAQQQAAJgAACCCABEEAAASQAAggggARAAAEEkAAIIIAAEgABBNBywCj5bhXXsu17ZAL4MpvNhIuIqs+q7zKvx87L+sP1w3w+D2W7kPstxwwnsr3JdnfsJF4FbxgAAfzbvAswAK/3kejP2oZLAAAAAElFTkSuQmCC'
 		};
 	},
 	methods: {
 		upload(evt){
 			if(!evt || !evt.target.files || evt.target.files.length<=0)
 				return;
-			let upConf = this.fieldConf.uploadConfig;
+			let upConf = this.field.upload;
 			let file = evt.target.files[0],
 				formData = new FormData();
 			formData.append('file', file);
@@ -114,9 +121,10 @@ export default {
 				try{
 					imgUrl = window.URL.createObjectURL(file);
 				}catch(e){
-					console.log(e);
+					//console.log(e);
 				}
 			}
+
 			var upInfo = {
 				status: 'progress',
 				percent: 0,
@@ -161,10 +169,6 @@ export default {
 			xhr.send(formData);
 			upInfo.xhr = xhr;
 			evt.target.value='';
-
-			setTimeout(()=>{
-				upInfo.xhr = xhr;
-			}, 0);
 		},
 		remove(idx){
 			if(this.files[idx]){
@@ -184,10 +188,10 @@ export default {
 				else
 					return '';
 			});
-			if(this.fieldConf.uploadConfig.multiple) {
-				this.$emit('update:val', vals)
+			if(this.field.upload.multiple) {
+				this.$emit('input', vals);
 			} else {
-				this.$emit('update:val', vals.length>0? vals[0] : '')
+				this.$emit('input', vals.length>0? vals[0] : '');
 			}
 			this.$emit('update:loading', isLoading);
 		}
@@ -203,13 +207,16 @@ export default {
 	&-item{
 		width: 100px;
 		height: 120px;
-		border: 1px solid #ccc;
 		position: relative;
 		margin-right: 10px;
 		overflow: hidden;
+
+		border: 1px solid #d9d9d9;
+		border-radius: 4px;
+		transition: all 0.3s;
 	}
 	&-item:hover{
-		border-color: #999;
+		border-color: #40a9ff;
 	}
 	&-item-img{
 		display: flex;
@@ -287,15 +294,15 @@ export default {
 	&-progress-error{
 		color: red;
 	}
-	&-icon{
+	&-box &-icon{
 		font-size: 60px;
 		color: #ccc;
 		line-height: 120px;
-		margin-left: 20px;
+		display: block;
+		text-align: center;
+		cursor: pointer;
 	}
-	&-icon:hover{
-		color: #666;
-	}
+
 	&-input{
 		position: absolute;
 		left: 0;

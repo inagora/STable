@@ -16,11 +16,18 @@
 			</label>
 			<div
 				class="st-form-input-box"
-				:class="{'st-form-input-box-focus': field._st_focus}"
+				:class="[{'st-form-input-box-focus': field._st_focus}, 'st-form-input-box-'+field.type]"
 				:style="[field.style]"
 			>
+				<x-file
+					v-if="field.type=='file'"
+					:key="fidx"
+					v-model="formData[field.name]"
+					:field="field"
+				/>
 				<component
 					:is="coms[field.type]"
+					v-else
 					:key="fidx"
 					v-model="formData[field.name]"
 					:field="field"
@@ -34,6 +41,13 @@
 </template>
 
 <script>
+/**
+ * 根据web标准，form的一些特性，这里需要实现
+ * 1、disabled的表单项，不能编辑，并且不会提交给服务端；readonly的不能编辑，却可以提交给服务端
+ * 2、hidden类型的不能显示
+ * 3、响应式，field的每个字段都应该做到响应式，比如 label\name\value\readonly\disabled\readonly\width\placeholder。当然这是form的模拟，做不到100%符合标准
+ * 4、接3，如果fieldList不是标准格式，因为会被格式化为标准格式，就无法做到响应式了
+ */
 import {$type} from '../util/util';
 import XInput from './Input.vue';
 import XCombobox from './Combobox.vue';
@@ -107,6 +121,7 @@ export default {
 				fieldList = arr;
 			}
 			return fieldList.map(field=>{
+				field = Object.assign({}, field);
 				if($type(field) == 'string')
 					field = {
 						label: field,
@@ -160,6 +175,10 @@ export default {
 					}
 					field.type = 'text';
 				}
+				if(field.type=='file'){
+					field.upload = field.upload || field.uploadConfig||{};
+					field.loading = false;
+				}
 				
 				if(!field.rules)
 					field.rules = [];
@@ -185,14 +204,22 @@ export default {
 				} else if($type(field.width)=='string' && /^\d+$/.test(field.width.trim())){
 					field.width = field.width.trim()+'px';
 				}
-				if(field.width){
-					field.style = Object.assign({}, field.style, {width: field.width});
+				
+				let ftype = $type(field.width);
+				if(ftype != 'undefined'){
+					let w = field.width;
+					if(ftype=='number')
+						w += 'px';
+					else if(ftype=='string' &&/^[\d.]+$/.test(w.trim())) {
+						w += 'px';
+					}
+					field.style = Object.assign({}, field.style, {width: w});
 				}
-				let ret = Object.assign({}, field);
-				if(!ret.placeholder){
-					ret.placeholder = ret.label;
+				
+				if(!field.placeholder){
+					field.placeholder = field.label;
 				}
-				return ret;
+				return field;
 			});
 		},
 		submit(){
@@ -259,6 +286,9 @@ export default {
 		border-right-width: 1px !important;
 		outline: 0;
 		box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+	}
+	&-input-box-file{
+		border: none;
 	}
 
 	&-inline{

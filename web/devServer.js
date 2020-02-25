@@ -1,5 +1,15 @@
 const fs = require('fs');
 const path = require('path');
+var multer  = require('multer');
+var upload = multer({ 
+	dest: path.resolve(__dirname,'upload/'),
+	limits: {
+		fieldSize: 30*1024,
+		fileSize: 30*1024,
+		headerPairs: 100
+	}
+});
+var up = upload.single('file');
 module.exports = function(app, server){
 	app.all('/ajaxList', (req, res)=>{
 		let params = req.query;
@@ -252,5 +262,30 @@ module.exports = function(app, server){
 		let html = fs.readFileSync(path.resolve(__dirname,`./demo-viewer.html`), 'utf8');
 		html = html.replace(/\{\{demo\}\}/, code);
 		res.send(html);
+	});
+	
+	app.post('/ajaxUpload', (req,res)=>{
+		
+		up(req, res, function(err){
+			if (err) {
+				res.json({
+					errno: 10010,
+					errmsg: err.message
+				});
+			}else{
+				let oriName = req.file.originalname;
+				let path = req.file.path;
+				let newPath = path.replace(/[^/]+?$/, oriName);
+				if(fs.existsSync(newPath))
+					fs.unlinkSync(newPath);
+				fs.renameSync(path, newPath);
+				res.json({
+					errno: 0,
+					data: {
+						src: '/upload/'+oriName
+					}
+				});
+			}
+		});
 	});
 };
