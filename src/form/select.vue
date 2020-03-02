@@ -387,6 +387,7 @@ export default {
 }
 .st-select {
   // width: 100%;
+  min-width: 120px;
   min-height: 32px;
   display: flex;
 	flex-wrap: nowrap;
@@ -394,7 +395,7 @@ export default {
   position: relative;
 	border: 1px solid #dcdfe6;
 	border-radius: 4px;
-	padding: 0 15px;
+	padding: 0 30px 0 15px;
 	background: #fff;
 
   &-input {
