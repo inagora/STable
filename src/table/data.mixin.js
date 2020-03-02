@@ -231,7 +231,7 @@ export default {
 		
 		getAllOnNormal() {
 			return new Promise((resolve)=>{
-				let pb = new Progressbar();
+				let pb = new Progressbar({});
 				pb.update(0, '开始下载数据');
 				let list = [];
 				let jobList = [];
@@ -338,7 +338,7 @@ export default {
 		//因为瀑布流模式下，每一页的id依赖上一个页面，所以没办法并行请求，也不知道总共有多少页
 		getAllOnWaterfall(){
 			return new Promise((resolve, reject)=>{
-				let pb = new Progressbar();
+				let pb = new Progressbar({});
 				pb.update(0, '数据下载中，请稍候...');
 				let list = [];
 				let loadedCount = 0;
