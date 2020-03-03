@@ -13,7 +13,7 @@
 			@input="doFilter"
 			@keydown.down.prevent="hlNext"
 			@keydown.up.prevent="hlPre"
-			@keydown.enter.prevent="$refs.ddm.select()"
+			@keydown.enter.prevent="enterSelect"
 			@mousedown="showDdm"
 		/>
 		<div
@@ -23,14 +23,6 @@
 		>
 			<span>&rsaquo;</span>
 		</div>
-		<x-dropdown
-			ref="ddm"
-			:options="options"
-			:selected="selIdxes"
-			:type="field.type"
-			@update:visible="ddmVisible=$event"
-			@select="changeVal"
-		/>
 		<span v-if="loading" class="st-icon st-icon-sync st-cbb-load"></span>
 	</div>
 </template>
@@ -39,8 +31,10 @@
 import select from './select.mixin.js';
 export default {
 	mixins: [select],
+
 	methods: {
 		initSelect(){
+			console.log('init select index')
 			let selIdxes = [];
 			if(this.field.type=='cascader') {
 				let p = this.options;
@@ -60,41 +54,41 @@ export default {
 				}
 			} else {
 				for(let i=0,len=this.options.length;i<len;i++){
+					console.log(this.value, this.options[i].value)
 					if(this.value == this.options[i].value){
 						selIdxes = [i];
 						break;
 					}
 				}
 			}
+			console.log('init', selIdxes);
 			this.selIdxes = selIdxes;
 		},
-		showDdm(){
-			if(!this.field.filterable)
-				this.focus();
+		enterSelect(){
+			this.ddm.select();
 		},
 		doFilter(){
+			if(this.filterTimer){
+				clearTimeout(this.filterTimer);
+				this.filterTimer = null;
+			}
 			this.filterTimer = setTimeout(()=>{
-				if(this.filterTimer){
-					clearTimeout(this.filterTimer);
-					this.filterTimer = null;
-				}
-				this.$refs.ddm.show();
-				this.$refs.ddm.filter(this.text);
+				this.showDdm();
+				this.ddm&&this.ddm.filter(this.text);
 			}, 100);
 		},
 		focus(){
-			if(this.field.type=='combobox'){
-				let selIdxes = this.selIdxes;
-				if(selIdxes.length>0 && selIdxes[0]>=0) {
-					this.placeholder = this.options[selIdxes[0]].text;
-				} else {
-					this.placeholder = this.field.placeholder;
-				}
-				this.text = '';
-				this.$refs.ddm.filter(this.text);
-			}
-
-			this.$refs.ddm.show();
+			// if(this.field.type=='combobox'){
+			// 	let selIdxes = this.selIdxes;
+			// 	if(selIdxes.length>0 && selIdxes[0]>=0) {
+			// 		this.placeholder = this.options[selIdxes[0]].text;
+			// 	} else {
+			// 		this.placeholder = this.field.placeholder;
+			// 	}
+			// 	this.text = '';
+			// 	this.$refs.ddm.filter(this.text);
+			// }
+			this.showDdm();
 		},
 		changeVal(idx){
 			let value;

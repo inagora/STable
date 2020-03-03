@@ -2,9 +2,10 @@
 	<label class="st-cbb" @click.stop>
 		<div class="st-cbb-item-list">
 			<div
-				v-for="idx of selIdxes"
+				v-for="(idx, idxIndex) of selIdxes"
 				:key="idx+'_'+options[idx].value"
 				class="st-cbb-item st-cbb-selected"
+				:class="{'st-cbb-item-hl': idxIndex==hlDelIndex}"
 				:style="{'max-width': maxSelLabelWidth+'px'}"
 			>
 				<span class="st-cbb-item-text" v-text="options[idx].text"></span>
@@ -19,10 +20,13 @@
 					class="st-form-input"
 					:placeholder="selIdxes.length==0 && placeholder"
 					@focus="focus();$emit('fieldfocus')"
-					@blur="$emit('fieldblur')"
+					@blur="$emit('fieldblur');hlDelIndex=-1;"
 					@keydown.down.prevent="hlNext"
 					@keydown.up.prevent="hlPre"
-					@keydown.enter.prevent="$refs.ddm.select()"
+					@keydown.left="hlDelPre"
+					@keydown.right="hlDelNext"
+					@keydown.enter.prevent="enterSelect"
+					@keydown.delete="deleteSelect"
 				/>
 				<span class="st-cbb-input-mirror" v-text="text+'A'"></span>
 			</div>
@@ -50,19 +54,20 @@ export default {
 	mixins: [select],
 	data(){
 		return {
-			maxSelLabelWidth: 0
+			maxSelLabelWidth: 0,
+			hlDelIndex: -1
 		};
 	},
 	watch: {
 		text(){
-			this.$refs.ddm.show();
+			this.showDdm();
 			this.upadteInputWidth();
+			if(this.filterTimer){
+				clearTimeout(this.filterTimer);
+				this.filterTimer = null;
+			}
 			this.filterTimer = setTimeout(()=>{
-				if(this.filterTimer){
-					clearTimeout(this.filterTimer);
-					this.filterTimer = null;
-				}
-				this.$refs.ddm.filter(this.text);
+				this.ddm && this.ddm.filter(this.text);
 			}, 100);
 		},
 		selIdxes(val){
@@ -70,6 +75,10 @@ export default {
 				this.$el.querySelector('input').style.width = this.maxInputLength+'px';
 			} else {
 				this.upadteInputWidth();
+			}
+
+			if(this.ddm){
+				this.ddm.$parent.selIdxes = val;
 			}
 		}
 	},
@@ -80,8 +89,6 @@ export default {
 		['fontFamily','fontSize','letterSpacing'].forEach(key=>{
 			mirror.style[key] = style[key];
 		});
-
-		
 
 		let inputBox = this.$el.querySelector('.st-cbb-input-box');
 		let computedStyle = window.getComputedStyle(inputBox);
@@ -108,7 +115,8 @@ export default {
 			}
 		},
 		focus(){
-			this.$refs.ddm.show();
+			this.showDdm();
+			this.hlDelIndex = -1;
 		},
 		upadteInputWidth(){
 
@@ -121,6 +129,55 @@ export default {
 
 				
 			});
+		},
+		enterSelect(){
+			this.ddm && this.ddm.select();
+		},
+		deleteSelect(){
+			if(this.text){
+				return;
+			}
+
+			if(this.hlDelIndex<0){
+				this.hlDelIndex = this.selIdxes.length-1;
+			} else {
+				this.selIdxes = this.selIdxes.filter((sel, idx)=>{
+					return idx != this.hlDelIndex;
+				});
+				if(this.selIdxes.length<0){
+					this.hlDelIndex = -1;
+				} else if(this.hlDelIndex>=this.selIdxes.length){
+					this.hlDelIndex = this.selIdxes.length-1;
+				}
+			}
+		},
+		hlDelPre(){
+			if(this.hlDelIndex<0){
+				if(this.text)
+					return;
+				else if(this.selIdxes.length>0){
+					this.hlDelIndex = this.selIdxes.length-1;
+					return;
+				}
+			}
+			let idx = this.hlDelIndex-1;
+			if(idx<0)
+				idx = this.selIdxes.length-1;
+			this.hlDelIndex = idx;
+		},
+		hlDelNext(){
+			if(this.hlDelIndex<0){
+				if(this.text)
+					return;
+				else if(this.selIdxes.length>0){
+					this.hlDelIndex = 0;
+					return;
+				}
+			}
+			let idx = this.hlDelIndex+1;
+			if(idx>=this.selIdxes.length)
+				idx = 0;
+			this.hlDelIndex = idx;
 		},
 		del(idx){
 			this.changeVal(idx);
@@ -164,6 +221,14 @@ export default {
 		border-radius: 2px;
 		font-size: 12px;
 		display: flex;
+	}
+	&-item-hl{
+		background-color: #dc3545;
+		border-color: #dc3545;
+		color: #fff;
+	}
+	&-item-hl &-item-del{
+		color: #fff;
 	}
 	&-item-text{
 		flex: 1;

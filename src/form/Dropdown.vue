@@ -4,8 +4,10 @@
 		class="st-ddm"
 		:class="{'st-ddm-cascader': type=='cascader'}"
 		:style="{
-			top: top+'px'
+			top: top+'px',
+			left: left+'px'
 		}"
+		@click.stop
 	>
 		<div
 			v-for="(menu, level) of menuList"
@@ -14,7 +16,7 @@
 			:style="{
 				width: width+'px'
 			}"
-			@mouseleave="hlIdx=-1;hlLevel=-1"
+			@mouseleave="hlIndex=-1;hlLevel=0"
 		>
 			<template v-for="(item,idx) of menu">
 				<div
@@ -22,8 +24,8 @@
 					:key="idx"
 					class="st-ddm-item"
 					:class="{
-						'st-ddm-hl': idx==hlIdx && hlLevel==level,
-						'st-ddm-sel': type=='cascader'?selIdxes[level]==idx : selIdxes.includes(idx)
+						'st-ddm-hl': idx==hlIndex && hlLevel==level,
+						'st-ddm-sel': type=='cascader'?selIndexes[level]==idx : selIndexes.includes(idx)
 					}"
 					@mouseenter="hlItem(idx, level)"
 					@mouseup="select(item, level, idx)"
@@ -41,7 +43,6 @@
 		</div>
 	</div>
 </template>
-
 <script>
 /**
  * 注意，因为menu同时为combobox，cascader和multiple服务，所以它的功能其实挺复杂的
@@ -71,22 +72,26 @@ export default {
 		}
 	},
 	data(){
+		console.log(JSON.stringify(this.selected,null,'  '));
 		return {
 			visible: false,
-			val: '',
-			hlIdx: -1,
+			hlIndex: -1,
 			hlLevel: 0,
-			width: 150,
-			top: 0,
 			visibleCount: 0,
-			selIdxes: this.selected.slice(0),
+			width: 150,
+			top: -10000,
+			left: 0,
+			selIndexes: this.selected.slice(0),
 			menuList: []
 		};
 	},
 	watch: {
+		options(){
+			this.rebuildMenu();
+		},
 		visible(val){
 			this.$emit('update:visible', val);
-			if(val && this.selIdxes.length>=0){
+			if(val && this.selIndexes.length>0){
 				this.$nextTick(()=>{
 					let els = this.$el.querySelectorAll('.st-ddm-sel');
 					if(!els.length<=0) return;
@@ -100,11 +105,26 @@ export default {
 				});
 			}
 		},
-		options(){
+		selected(val){
+			this.selIndexes = val.slice(0);
+			this.$nextTick(()=>{
+				this.adjustPos();
+			});
+		}
+	},
+	mounted(){
+		this.rebuildMenu();
+		allDdm.push(this);
+	},
+	beforeDestroy(){
+		allDdm = allDdm.filter(ddm=>ddm!=this);
+	},
+	methods: {
+		rebuildMenu(){
 			this.filter(this.lastFilterKey||'');
 			this.menuList = [this.options];
 			let p  = this.options;
-			for(let idx of this.selIdxes) {
+			for(let idx of this.selIndexes) {
 				if(p[idx]){
 					p = p[idx].options;
 					if(p)
@@ -116,19 +136,8 @@ export default {
 				}
 			}
 		},
-		selected(val){
-			this.selIdxes = val.slice(0);
-		}
-	},
-	mounted(){
-		allDdm.push(this);
-	},
-	beforeDestroy(){
-		allDdm = allDdm.filter(ddm=>ddm!=this);
-	},
-	methods: {
-		hide(){
-			this.visible = false;
+		bindAlign(alignEl){
+			this.alignEl = alignEl;
 		},
 		show(){
 			this.visible = true;
@@ -137,36 +146,58 @@ export default {
 					ddm.hide();
 			});
 			this.$nextTick(()=>{
-				let alignTo = this.$el.closest('.st-cbb');
-				let rect = this.$el.getBoundingClientRect();
-				let alignRect = alignTo.getBoundingClientRect();
-				let docEl = document.documentElement;
-				this.width = this.type=='cascader'?this.width:alignRect.width;
-
-				if(alignRect.bottom+rect.height < docEl.clientHeight) {
-					this.top = alignRect.height+5;
-				} else {
-					this.top = -rect.height-5;
-				}
+				this.adjustPos();
 			});
+		},
+		adjustPos(){
+			if(!this.alignEl) return;
+			let rect = this.$el.getBoundingClientRect();
+			let alignEl = this.alignEl;
+			let alignRect = alignEl.getBoundingClientRect();
+			let docEl = document.documentElement;
+			if(this.type != 'cascader') {
+				this.width = alignRect.width;
+			}
+
+			if(alignRect.bottom+rect.height-docEl.scrollTop < docEl.clientHeight) {
+				this.top = alignRect.bottom+5-docEl.scrollTop;
+			} else {
+				this.top = alignRect.top+docEl.scrollTop-rect.height-5;
+			}
+
+			if(alignRect.left+rect.width-docEl.scrollLeft < docEl.clientWidth) {
+				this.left = alignRect.left-docEl.scrollLeft;
+			} else {
+				this.left = docEl.clientWidth+docEl.scrollLeft-rect.width;
+			}
+		},
+		hide(){
+			this.visible = false;
+		},
+		hlItem(idx, level){
+			this.hlIndex = idx;
+			this.hlLevel = level;
 		},
 		//只对非cascader有效
 		hlNext(){
 			if(this.type=='cascader')
 				return;
 			let done = false;
-
-			for(let i=this.hlIdx+1,len=this.options.length;i<len;i++){
-				if(this.options[i].visible){
-					this.hlIdx = i;
-					done = true;
-					break;
+			if(this.type=='combobox' && this.hlIndex<0 && this.selected.length>0){
+				this.hlIndex = this.selected[0];
+			} else {
+				for(let i=this.hlIndex+1,len=this.options.length;i<len;i++){
+					if(this.options[i].visible){
+						this.hlIndex = i;
+						done = true;
+						break;
+					}
 				}
 			}
 			if(!done){
-				for(let i=0;i<this.hlIdx;i++) {
+				for(let i=0;i<this.hlIndex;i++) {
 					if(this.options[i].visible){
-						this.hlIdx = i;
+						this.hlIndex = i;
 						done = true;
 						break;
 					}
@@ -180,17 +211,17 @@ export default {
 			if(this.type=='cascader')
 				return;
 			let done = false;
-			for(let i=this.hlIdx-1;i>=0;i--){
+			for(let i=this.hlIndex-1;i>=0;i--){
 				if(this.options[i].visible){
-					this.hlIdx = i;
+					this.hlIndex = i;
 					done = true;
 					break;
 				}
 			}
 			if(!done){
-				for(let i=this.options.length-1;i>this.hlIdx;i--) {
+				for(let i=this.options.length-1;i>this.hlIndex;i--) {
 					if(this.options[i].visible) {
-						this.hlIdx = i;
+						this.hlIndex = i;
 						done = true;
 						break;
 					}
@@ -213,31 +244,6 @@ export default {
 				}
 			});
 		},
-		hlItem(idx, level){
-			this.hlIdx = idx;
-			this.hlLevel = level;
-		},
-		/**
-		 * 有两种操作，对combobox和multiple就是选中或取消，
-		 * 对cascader可能还有展开下一级菜单操作
-		 */
-		select(item, level, idx){
-			if(!this.visible)
-				return;
-			if(this.type!='cascader'){
-				this.$emit('select', this.hlIdx);
-			} else {
-				let selected = this.selIdxes.slice(0, level+1);
-				selected[level] = idx;
-				this.selIdxes = selected;
-				if(item.options) {
-					this.menuList.splice(level+1);
-					this.menuList.push(item.options);
-				} else {
-					this.$emit('select', selected);
-				}
-			}
-		},
 		filter(key){
 			if(this.type!='cascader'){
 				this.lastFilterKey = key;
@@ -259,32 +265,55 @@ export default {
 				this.visibleCount = visibleCount;
 			}
 			if(this.visible){
-				let hlIdx = -1;
+				let hlIndex = -1;
 				if(this.type!='cascader'){
 					for(let i=0,len=this.options.length;i<len;i++) {
 						if(this.options[i].visible){
-							hlIdx = i;
+							hlIndex = i;
 							break;
 						}
 					}
 				}
-				this.hlIdx = hlIdx;
+				this.hlIndex = hlIndex;
 				this.hl();
 				this.show();
+			}
+		},
+		/**
+		 * 有两种操作，对combobox和multiple就是选中或取消，
+		 * 对cascader可能还有展开下一级菜单操作
+		 */
+		select(item, level, idx){
+			if(!this.visible)
+				return;
+			if(this.type!='cascader'){
+				this.$emit('select', this.hlIndex);
+			} else {
+				let selected = this.selIndexes.slice(0, level+1);
+				selected[level] = idx;
+				this.selIndexes = selected;
+				if(item.options) {
+					this.menuList.splice(level+1);
+					this.menuList.push(item.options);
+					this.$nextTick(()=>{
+						this.adjustPos();
+					});
+				} else {
+					this.$emit('select', selected);
+				}
 			}
 		}
 	}
 };
 </script>
-
-<style lang="scss">
+<style lang="scss" scoped>
 .st-ddm{
 	position: absolute;
 	font-weight: 400;
 	// border-radius: 5px;
 	left: 0;
 	box-shadow: 0 2px 5px -2px rgba(0,0,0,.6);
-	z-index: 99;
+	z-index: 100;
 	display: flex;
 	justify-content: flex-start;
 	border-radius: 5px;
@@ -312,7 +341,8 @@ export default {
 
 	&-item{
 		display: flex;
-		line-height: 33px;
+		line-height: 32px;
+		font-size: 14px;
 		padding: 0 10px 0 5px;
 		white-space: nowrap;
 		overflow: hidden;

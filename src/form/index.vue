@@ -14,26 +14,38 @@
 				<span v-if="field.required" class="st-form-required">*</span>
 				<span v-text="field.label"></span>
 			</label>
-			<div
-				class="st-form-input-box"
-				:class="[{'st-form-input-box-focus': field._st_focus}, 'st-form-input-box-'+field.type]"
-				:style="[field.style]"
-			>
-				<x-file
-					v-if="field.type=='file'"
-					:key="fidx"
-					v-model="formData[field.name]"
-					:field="field"
-				/>
-				<component
-					:is="coms[field.type]"
-					v-else
-					:key="fidx"
-					v-model="formData[field.name]"
-					:field="field"
-					@fieldfocus="field._st_focus=true"
-					@fieldblur="field._st_focus=false"
-				/>
+			<div class="st-form-com">
+				<div
+					class="st-form-input-box"
+					:class="[
+						{
+							'st-form-input-box-focus': field._st_focus,
+							'st-form-input-box-error': field.errmsg
+						}, 'st-form-input-box-'+field.type]"
+					:style="[field.style]"
+					@mouseenter="showErrmsg(field.errmsg, $event)"
+					@mouseleave="hideErrmsg"
+				>
+					<x-file
+						v-if="field.type=='file'"
+						:key="fidx"
+						:ref="'field_'+fidx"
+						v-model="formData[field.name]"
+						:field="field"
+					/>
+					<component
+						:is="coms[field.type]"
+						v-else
+						:key="fidx"
+						:ref="'field_'+fidx"
+						v-model="formData[field.name]"
+						:field="field"
+						@update:errmsg="updateErrmsg(field, $event)"
+						@fieldfocus="field._st_focus=true"
+						@fieldblur="field._st_focus=false"
+					/>
+				</div>
+				<div v-if="!inline" class="st-form-msg" v-text="field.errmsg"></div>
 			</div>
 		</div>
 		<slot></slot>
@@ -82,11 +94,8 @@ export default {
 		}
 	},
 	data(){
-		let fields = this.format(this.fieldList);
-		let formData = {};
-		fields.forEach(f=>{
-			formData[f.name] = f.value;
-		});
+		let {fields, formData} = this.format(this.fieldList);
+		console.log(formData);
 		let labelStyle = {};
 		if(!this.inline) {
 			labelStyle = {width:this.labelWidth+'px'};
@@ -99,12 +108,22 @@ export default {
 				text: XInput,
 				datetime: XInput,
 				date: XInput,
+				number: XInput,
 				combobox: XCombobox,
 				cascader: XCombobox,
 				multiple: XMultiple,
 				file: XFile
 			}
 		};
+	},
+	watch: {
+		fieldList: {
+			deep: true,
+			handler(val){
+				let {fields} = this.format(val);
+				this.fields = fields;
+			}
+		}
 	},
 	methods: {
 		format(fieldList){
@@ -120,22 +139,30 @@ export default {
 				}
 				fieldList = arr;
 			}
-			return fieldList.map(field=>{
-				field = Object.assign({}, field);
+
+			let formData = {};
+			let fields = fieldList.map(field=>{
 				if($type(field) == 'string')
 					field = {
 						label: field,
 						name: field
 					};
+
+				field = Object.assign({
+					errmsg: ''
+				}, field);
 				//默认值，向后兼容
+				let value = '';
 				if (typeof field.default_val != 'undefined') {
-					field.value = field.default_val;
+					value = field.default_val;
 				}
 				if (typeof field.default_value != 'undefined') {
-					field.value = field.default_value;
+					value = field.default_value;
 				}
-				if(typeof field.value=='undefined')
-					field.value = '';
+				if(typeof field.value!='undefined')
+					value = field.value;
+				formData[field.name] = value;
+
 				if(!field.label)
 					field.label = field.name;
 				if(!field.placeholder)
@@ -167,36 +194,10 @@ export default {
 					}
 				}
 
-				if(field.type=='number') {
-					if(!field.pattern)
-						field.pattern = '-?[\\d\\.]+';
-					if(!field.title) {
-						field.title = this.locale.numberMsg;
-					}
-					field.type = 'text';
-				}
 				if(field.type=='file'){
 					field.upload = field.upload || field.uploadConfig||{};
 					field.loading = false;
 				}
-				
-				if(!field.rules)
-					field.rules = [];
-				if(field.required) {
-					field.rules.push({
-						required: true,
-						message: '请填写此字段'
-					});
-				}
-				field.rules.forEach(rule=>{
-					if(typeof rule.type=='undefined') {
-						rule.type='string';
-					}
-					if(!rule.trigger){
-						rule.trigger='blur';
-					}
-					
-				});
 
 				field._st_focus = false;
 				if($type(field.width)=='number') {
@@ -215,15 +216,48 @@ export default {
 					}
 					field.style = Object.assign({}, field.style, {width: w});
 				}
+
+				field.msg = '';
+				//设置检验条件rules
+				if(!field.rules)
+					field.rules = [];
+				field.rules.forEach(rule=>{
+					if(!rule.trigger){
+						rule.trigger='blur';
+					}
+				});
 				
-				if(!field.placeholder){
-					field.placeholder = field.label;
-				}
 				return field;
 			});
+
+			return {formData, fields};
 		},
 		submit(){
-			this.$emit('submit', this.formData);
+			if(this.validateAll())
+				this.$emit('submit', this.formData);
+		},
+
+		validateAll(){
+			/**
+			 * 主要用来验证rules下的检验条件是不是通过
+			 * 可支持的验证有：
+			 * - required，必须有值
+			 * - pattern，正则表达式，或者字符串
+			 * - number，必须是数字
+			 * - min/max，只对数字有效
+			 * - length，只对字符串和数组有效
+			 * - validator，自定义验证函数，如果返回true，验证通过，如果返回字符串，当做错误提示显示
+			 */
+			//它调用每个组件的validate函数，一旦有一个不通过，直接返回false
+			let ret = true;
+			for(let key in this.$refs){
+				for(let com of this.$refs[key]) {
+					if(!com.validate()){
+						ret = false;
+					}
+				}
+			}
+			return ret;
 		},
 		reset(){
 			let formData = {};
@@ -234,6 +268,63 @@ export default {
 		},
 		getFormData(){
 			return this.formData;
+		},
+		showErrmsg(msg, evt){
+			if(!this.inline)
+				return;
+			if(!this.errFly){
+				let el = document.createElement('div');
+				el.className = 'st-form-fly-errmsg';
+				document.body.appendChild(el);
+				this.errFly = el;
+			}
+			if(!msg){
+				this.hideErrmsg();
+				return;
+			}
+			this.errFly.innerHTML = msg;
+			this.errFly.style.display = 'block';
+			let targetRect = evt.target.getBoundingClientRect();
+			let flyRect = this.errFly.getBoundingClientRect();
+			let docEl = document.documentElement;
+			let left=0;
+			let top=0;
+			let v = 'b';
+			let h = 'l';
+			let cls = {
+				b: 'st-form-fly-b',
+				t: 'st-form-fly-t',
+				l: 'st-form-fly-l',
+				r: 'st-form-fly-r'
+			};
+			if(targetRect.bottom+flyRect.height < docEl.clientHeight) {
+				top = targetRect.bottom+7;
+			} else {
+				top = targetRect.top-flyRect.height-7;
+				v = 't';
+			}
+
+			if(targetRect.left+flyRect.width < docEl.clientWidth) {
+				left = targetRect.left;
+			} else {
+				left = targetRect.right-flyRect.width;
+				h = 'r';
+			}
+			
+			this.errFly.style.left = left+'px';
+			this.errFly.style.top = top+'px';
+			this.errFly.className = 'st-form-fly-errmsg '+cls[v]+' '+cls[h];
+		},
+		hideErrmsg(){
+			if(this.errFly)
+				this.errFly.style.display = 'none';
+		},
+		updateErrmsg(field, msg){
+			field.errmsg = msg;
+			if(!msg && this.errFly){
+				if(this.errFly.style.display=='block')
+					this.errFly.style.display = 'none';
+			}
 		}
 	}
 };
@@ -251,6 +342,7 @@ export default {
 		color: rgba(0, 0, 0, 0.85);
 	}
 	&-input{
+		box-sizing: border-box;
 		height: 30px;
 		font-size: 100%;
 		line-height: 30px;
@@ -287,6 +379,15 @@ export default {
 		outline: 0;
 		box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
 	}
+	&-input-box-error{
+		border-color: #ff4d4f;
+		border-right-width: 1px !important;
+		outline: 0;
+	}
+	&-input-box-error:hover{
+		border-color: #ff4d4f;
+		box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+	}
 	&-input-box-file{
 		border: none;
 	}
@@ -300,10 +401,24 @@ export default {
 			width: 200px;
 		}
 	}
+	&-inline &-com{
+		display: inline-block;
+	}
 
 	&-v{
-		& .st-form-input-box{
-			width: 300px;
+		.st-form-label{
+			padding-top: 5px;
+		}
+		.st-form-field{
+			display: flex;
+			align-items: flex-start;
+		}
+		.st-form-com{
+			flex: 1;
+		}
+		.st-form-input-box{
+			width: 100%;
+			margin: 0;
 		}
 	}
 
@@ -316,5 +431,62 @@ export default {
 		text-align: right;
 		margin-right: 5px;
 	}
+
+	&-msg{
+		min-height: 18px;
+		line-height: 18px;
+		font-size: 12px;
+		color: #f5222d;
+		padding-bottom: 3px;
+	}
+
+	&-fly-errmsg{
+		position: fixed;
+		display: none;
+		left: 0;
+		top: 0;
+		max-width: 61%;
+		line-height: 18px;
+		font-size: 12px;
+		padding: 5px 5px;
+		color: #f5222d;
+		border: 1px solid rgba(255, 77, 79, 0.8);
+		z-index: 100;
+		background: #fff7e6;
+		border-radius: 3px;
+	}
+	&-fly-errmsg:after{
+		content: '';
+		height: 6px;
+		width: 6px;
+		font-size: 0;
+		line-height: 0;
+		overflow: hidden;
+		border: solid 1px;
+		border-color: transparent rgba(255, 77, 79, 0.8) rgba(255, 77, 79, 0.8) transparent;
+		position: absolute;
+		background-color: #fff7e6;
+	}
+}
+
+.st-form-fly-l.st-form-fly-b:after{
+	transform: rotate(-135deg);
+	top: -4px;
+	left: 10px;
+}
+.st-form-fly-r.st-form-fly-b:after{
+	transform: rotate(-135deg);
+	top: -4px;
+	right: 10px;
+}
+.st-form-fly-l.st-form-fly-t:after{
+	transform: rotate(45deg);
+	bottom: -4px;
+	left: 10px;
+}
+.st-form-fly-r.st-form-fly-t:after{
+	transform: rotate(45deg);
+	bottom: -4px;
+	right: 10px;
 }
 </style>

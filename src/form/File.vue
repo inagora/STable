@@ -34,7 +34,9 @@
 </template>
 <script>
 import defaultLocale from '../lang/en.js';
+import validate from './validate.mixin.js';
 export default {
+	mixins: [validate],
 	props: {
 		value: {
 			type: String,

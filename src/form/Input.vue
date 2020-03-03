@@ -7,13 +7,16 @@
 		class="st-form-input"
 		data-input
 		@focus="$emit('fieldfocus')"
-		@blur="$emit('fieldblur')"
+		@blur="$emit('fieldblur');validate()"
+		@input="validate(true)"
 	/>
 </template>
 
 <script>
 import { loadJs, loadCss, $type } from '../util/util';
+import validate from './validate.mixin.js';
 export default {
+	mixins: [validate],
 	props: {
 		field: {
 			type: Object,
@@ -56,6 +59,7 @@ export default {
 				window.flatpickr(this.$el.closest('.st-form-input-box'), options);
 			});
 		}
+		this.formatRule();
 	}
 };
 </script>
