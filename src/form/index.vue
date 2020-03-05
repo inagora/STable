@@ -95,7 +95,7 @@ export default {
 	},
 	data(){
 		let {fields, formData} = this.format(this.fieldList);
-		console.log(formData);
+		
 		let labelStyle = {};
 		if(!this.inline) {
 			labelStyle = {width:this.labelWidth+'px'};
@@ -233,8 +233,9 @@ export default {
 			return {formData, fields};
 		},
 		submit(){
-			if(this.validateAll())
+			if(this.validateAll()){
 				this.$emit('submit', this.formData);
+			}
 		},
 
 		validateAll(){

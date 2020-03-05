@@ -37,13 +37,6 @@
 		>
 			<span>&rsaquo;</span>
 		</div>
-		<x-dropdown
-			ref="ddm"
-			:options="options"
-			:selected="selIdxes"
-			@update:visible="ddmVisible=$event"
-			@select="changeVal"
-		/>
 		<span v-if="loading" class="st-icon st-icon-sync st-cbb-load"></span>
 	</label>
 </template>
@@ -75,10 +68,6 @@ export default {
 				this.$el.querySelector('input').style.width = this.maxInputLength+'px';
 			} else {
 				this.upadteInputWidth();
-			}
-
-			if(this.ddm){
-				this.ddm.$parent.selIdxes = val;
 			}
 		}
 	},
@@ -181,15 +170,6 @@ export default {
 		},
 		del(idx){
 			this.changeVal(idx);
-		},
-		changeVal(idx){
-			if(this.selIdxes.includes(idx)){
-				this.selIdxes = this.selIdxes.filter(i=>i!=idx);
-			} else {
-				this.selIdxes.push(idx);
-			}
-			let value = this.selIdxes.map(i=>this.options[i].value);
-			this.$emit('input', value);
 		}
 	}
 };

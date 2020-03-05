@@ -1,11 +1,10 @@
 <template>
 	<input
-		v-model="value"
+		v-model="val"
 		:type="field.nativeType||'text'"
 		:name="field.name"
 		:placeholder="field.placeholder"
 		class="st-form-input"
-		data-input
 		@focus="$emit('fieldfocus')"
 		@blur="$emit('fieldblur');validate()"
 		@input="validate(true)"
@@ -23,12 +22,21 @@ export default {
 			default(){
 				return {};
 			}
+		},
+		value: {
+			type: [String, Number],
+			default: ''
 		}
 	},
 	data(){
 		return {
-			value: this.field.value||''
+			val: this.value
 		};
+	},
+	watch: {
+		val(v){
+			this.$emit('input', v);
+		}
 	},
 	mounted(){
 		let type = this.field.type;

@@ -10,7 +10,6 @@
 			ref="form"
 			inline
 			:field-list="searchFilter"
-			:default-values="urlSearchParams"
 			size="small"
 			:label-visible="labelVisible"
 			@submit="search"
@@ -55,7 +54,6 @@ export default {
 	],
 	methods: {
 		search(evt) {
-			this.$refs.form.getFormData();
 			let searchParams = Object.assign({}, this.urlSearchParams, evt);
 			if(this.ignoreEmptySearchParam) {
 				searchParams = this.trimParam(searchParams);

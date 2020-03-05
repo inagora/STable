@@ -95,6 +95,40 @@ export default {
 		}
 		this.formatRule();
 	},
+	watch: {
+		selIdxes(val){
+			let type = this.field.type;
+			let value=[];
+			let text = '';
+			if(type=='combobox'){
+				value = '';
+				if(this.options[val[0]]){
+					value = this.options[val[0]].value;
+					text = this.options[val[0]].text;
+				}
+			} else if(type=='multiple'){
+				value = val.map(i=>this.options[i].value);
+			} else if(type=='cascader'){
+				let p = this.options;
+				text = [];
+				for(let i of val){
+					if(p[i]){
+						text.push(p[i].text);
+						value.push(p[i].value);
+						p = p[i].options;
+					} else {
+						break;
+					}
+				}
+				text = text.join(' / ');
+			}
+			this.text = text;
+			this.$emit('input', value);
+			if(this.ddm){
+				this.ddm.$parent.selIdxes = val;
+			}
+		}
+	},
 	methods: {
 		formatList(_list){
 			let field = this.field;
@@ -162,9 +196,7 @@ export default {
 			this.ddm&&this.ddm.hlPre();
 		},
 		showDdm(){
-			// if(!this.field.filterable)
-			// 	this.focus();
-			let field = this;
+			let com = this;
 			if(!this.ddm){
 				let el = document.createElement('div');
 				document.body.appendChild(el);
@@ -183,63 +215,31 @@ export default {
 					methods: {
 						changeVal(idx){
 							if(this.field.type=='multiple'){
-								if(this.selIdxes.includes(idx)){
-									this.selIdxes = this.selIdxes.filter(i=>i!=idx);
+								let selIdxes = this.selIdxes.slice(0);
+								if(selIdxes.includes(idx)){
+									selIdxes = selIdxes.filter(i=>i!=idx);
 								} else {
-									this.selIdxes.push(idx);
+									selIdxes.push(idx);
 								}
-								let value = this.selIdxes.map(i=>this.options[i].value);
-								this.$emit('input', value);
+								com.selIdxes = selIdxes;
 							}else{
-								let value;
 								if(this.field.type=='cascader'){
-									this.selIdxes = idx;
-									value = [];
-									let p = this.options;
-									for(let i of idx){
-										if(p[i]){
-											value.push(p[i].value);
-											p = p[i].options;
-										}
-									}
-									field.$emit('input', value);
+									com.selIdxes = idx.slice(0);
 								}else {
-									this.selIdxes = [idx];
-									field.$emit('input', this.options[idx].value);
+									com.selIdxes = [idx];
 								}
-								field.selIdxes = this.selIdxes;
 
 								this.$refs.ddm.hide();
-								this.$nextTick(()=>{
-									if(this.field.type!='cascader')
-										field.$el.querySelector('input').focus();
-									setTimeout(()=>{
-										let text = '';
-										let value = [];
-										if(this.field.type=='cascader'){
-											text = [];
-											let p = this.options;
-											
-											for(let idx of this.selIdxes){
-												text.push(p[idx].text);
-												value.push(p[idx].value);
-												p = p[idx].options;
-											}
-											text = text.join(' / ');
-											field.$emit('input', value);
-										} else {
-											text = this.options[idx].text;
-											field.$emit('input', this.options[idx].value);
-										}
-										
-										field.text = text;
+								setTimeout(()=>{
+									if(this.field.type!='cascader'){
+										com.$el.querySelector('input').focus();
 										this.$refs.ddm.hide();
-									}, 10);
-								});
+									}
+								}, 10);
 							}
 						},
 						changeVisible(val){
-							field.ddmVisible = val;
+							com.ddmVisible = val;
 						}
 					},
 					template: '<x-dropdown ref="ddm" :options="options" :selected="selIdxes" :type="field.type" @update:visible="changeVisible" @select="changeVal"/>'

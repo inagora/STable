@@ -72,7 +72,6 @@ export default {
 		}
 	},
 	data(){
-		console.log(JSON.stringify(this.selected,null,'  '));
 		return {
 			visible: false,
 			hlIndex: -1,

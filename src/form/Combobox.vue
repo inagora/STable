@@ -28,13 +28,13 @@
 </template>
 
 <script>
+//todo dropdownmenu选择后不能反馈到input中
 import select from './select.mixin.js';
 export default {
 	mixins: [select],
 
 	methods: {
 		initSelect(){
-			console.log('init select index')
 			let selIdxes = [];
 			if(this.field.type=='cascader') {
 				let p = this.options;
@@ -54,14 +54,12 @@ export default {
 				}
 			} else {
 				for(let i=0,len=this.options.length;i<len;i++){
-					console.log(this.value, this.options[i].value)
 					if(this.value == this.options[i].value){
 						selIdxes = [i];
 						break;
 					}
 				}
 			}
-			console.log('init', selIdxes);
 			this.selIdxes = selIdxes;
 		},
 		enterSelect(){
@@ -89,52 +87,6 @@ export default {
 			// 	this.$refs.ddm.filter(this.text);
 			// }
 			this.showDdm();
-		},
-		changeVal(idx){
-			let value;
-			if(this.field.type=='cascader'){
-				this.selIdxes = idx;
-				value = [];
-				let p = this.options;
-				for(let i of idx){
-					if(p[i]){
-						value.push(p[i].value);
-						p = p[i].options;
-					}
-				}
-				this.$emit('input', value);
-			}else {
-				this.selIdxes = [idx];
-				this.$emit('input', this.options[idx].value);
-			}
-
-			this.$refs.ddm.hide();
-			this.$nextTick(()=>{
-				if(this.field.type!='cascader')
-					this.$el.querySelector('input').focus();
-				setTimeout(()=>{
-					let text = '';
-					let value = [];
-					if(this.field.type=='cascader'){
-						text = [];
-						let p = this.options;
-						
-						for(let idx of this.selIdxes){
-							text.push(p[idx].text);
-							value.push(p[idx].value);
-							p = p[idx].options;
-						}
-						text = text.join(' / ');
-						this.$emit('input', value);
-					} else {
-						text = this.options[idx].text;
-						this.$emit('input', this.options[idx].value);
-					}
-					this.text = text;
-					this.$refs.ddm.hide();
-				}, 10);
-			});
-			
 		}
 	}
 };
