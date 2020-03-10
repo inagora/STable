@@ -17,22 +17,23 @@
 			@mousedown="showDdm"
 		/>
 		<div
-			class="st-cbb-trigger"
+			class="st-cbb-trigger st-icon st-icon-left"
 			:class="{'st-cbb-trigger-down':ddmVisible}"
 			@click="$el.querySelector('input').focus();"
-		>
-			<span>&rsaquo;</span>
-		</div>
+		></div>
+		<div
+			v-if="field.clearable && ['combobox','cascader'].includes(field.type) && selIdxes.length>0"
+			class="st-cbb-clear st-icon st-icon-close"
+			@click="selIdxes=[];$el.querySelector('input').focus();"
+		></div>
 		<span v-if="loading" class="st-icon st-icon-sync st-cbb-load"></span>
 	</div>
 </template>
 
 <script>
-//todo dropdownmenu选择后不能反馈到input中
 import select from './select.mixin.js';
 export default {
 	mixins: [select],
-
 	methods: {
 		initSelect(){
 			let selIdxes = [];
@@ -108,14 +109,30 @@ export default {
 		width: 20px;
 		line-height: 20px;
 		cursor: pointer;
-	}
-	&-trigger span{
-		display: block;
-		text-align: center;
+		transform: rotate(180deg);
 		transition: transform ease 0.2s;
 	}
-	&-trigger-down span{
-		transform: rotate(90deg);
+	.st-cbb-trigger.st-cbb-trigger-down{
+		transform: rotate(270deg);
+	}
+	& &-clear{
+		position: absolute;
+		right: 3px;
+		line-height: 16px;
+		width: 16px;
+		text-align: center;
+		font-size: 12px;
+		cursor: pointer;
+		top: 50%;
+		transform: translate(0, -50%);
+		background: #8b8b8b;
+		opacity: 0;
+		transition: opacity 0.2s ease;
+		color: #fff;
+		border-radius: 50%;
+	}
+	&:hover &-clear{
+		opacity: 1;
 	}
 }
 </style>

@@ -410,8 +410,9 @@ export default {
 	}
 	&-close:hover{
 		opacity: 1;
-		background-color: red;
-		color: #fff;
+		// background-color: red;
+		color: red;
+		font-weight: bold;
 	}
 	&-body{
 		flex: 1;
