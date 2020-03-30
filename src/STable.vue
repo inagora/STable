@@ -458,8 +458,8 @@ export default {
 					}
 				},
 				emit(evtName, ...args){
-					if(self.config.listeners && self.config.listeners[evtName]) {
-						return self.config.listeners[evtName].apply(self, args);
+					if(conf.listeners && conf.listeners[evtName]) {
+						return conf.listeners[evtName].apply(self, args);
 					}
 				}
 			}
