@@ -97,11 +97,6 @@
 				></div>
 			</div>
 		</div>
-		<x-menu
-			ref="menu"
-			:columns="store.columns"
-			@updatecolumn="formatColumns"
-		/>
 
 		<div
 			v-if="resizing"
@@ -134,7 +129,7 @@ import resize from './resize.mixin.js';
 import {create as createDia} from '../com/Dialog';
 import qtip from '../com/qtip.js';
 export default {
-	components: {XHead, XBody, XMenu, XFlyman},
+	components: {XHead, XBody, XFlyman},
 	mixins: [data, drag, resize],
 	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax', 'deleteUrl', 'updateUrl','updateConfig', 'idIndex'],
 	data() {
@@ -161,6 +156,13 @@ export default {
 		recordList: function(){
 			this.syncHeight();
 		},
+	},
+	destroyed(){
+		if(this.menu){
+			this.menu.$destroy();
+			this.menu.$el.remove();
+			this.menu = null;
+		}
 	},
 	mounted(){
 		this.columns = [];
@@ -503,7 +505,26 @@ export default {
 			}, 0);
 		},
 		showMenu(data){
-			this.$refs.menu.show(data);
+			//this.$refs.menu.show(data);
+			if(!this.menu) {
+				let self = this;
+				this.menu = new Vue({
+					provide: {
+						store: this.store
+					},
+					components: {XMenu},
+					methods: {
+						formatColumns(){
+							self.formatColumns();
+						}
+					},
+					template: '<x-menu ref="menu" @updatecolumn="formatColumns" />',
+				});
+				let el = document.createElement('div');
+				document.body.appendChild(el);
+				this.menu.$mount(el);
+			}
+			this.menu.$refs.menu.show(data);
 		}
 	}
 };

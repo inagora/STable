@@ -1,5 +1,4 @@
 import {loadJs, $type} from '../util/util';
-import Ajax from '../util/Ajax.js';
 import qtip from '../com/qtip.js';
 
 import XDropdown from './Dropdown.vue';
@@ -8,25 +7,39 @@ import validate from './validate.mixin.js';
 function fObj(p,list){
 	Object.keys(list).map(key=>{
 		let item = {
-			value: key,
-			text: list[key].text
+			value: key
 		};
-		if(list[key].options||list[key].list){
-			item.options = [];
-			fObj(item.options, list[key].options||list[key].list);
+		if($type(list[key])=='object'){
+			item.text = list[key].text;
+			if(list[key].options||list[key].list){
+				item.options = [];
+				fObj(item.options, list[key].options||list[key].list);
+			}
+		} else {
+			item.text = list[key];
 		}
 		p.push(item);
 	});
 }
 function fArr(p,list){
 	list.forEach(o=>{
-		let item = {
-			value: o[0],
-			text: o[1]
-		};
-		if(o[2] && Array.isArray(o[2])){
-			item.options = [];
-			fArr(item.options, o[2]);
+		let item = {};
+		if(Array.isArray(o)){
+			item = {
+				value: o[0],
+				text: o[1]
+			};
+			if(o[2] && Array.isArray(o[2])){
+				item.options = [];
+				fArr(item.options, o[2]);
+			}
+		} else {
+			item = o;
+			if(item.options||item.list){
+				let options = [];
+				fArr(options, item.options||item.list);
+				item.options = options;
+			}
 		}
 		p.push(item);
 	});
@@ -46,6 +59,7 @@ export default {
 			}
 		}
 	},
+	inject: ['ajax'],
 	components: {XDropdown},
 	data(){
 		return {
@@ -74,7 +88,7 @@ export default {
 		let dataType = $type(this.field.options);
 		if(dataType=='string'){
 			this.loading = true;
-			Ajax.request({
+			this.ajax.request({
 				url: this.field.options
 			}).then(res=>{
 				this.loading = false;
@@ -137,12 +151,8 @@ export default {
 
 			if(field.type=='cascader'){
 				if(!Array.isArray(list)){
-					
 					fObj(options, list);
 				} else {
-					if(list.length<=0 || !Array.isArray(list[0])) {
-						return;
-					}
 					fArr(options, list);
 				}
 			} else {
@@ -171,16 +181,15 @@ export default {
 			this.options = options;
 			this.initSelect();
 
-			if(this.field.supportPinyinSearch){
-				loadJs('https://cdn.jsdelivr.net/gh/inagora/STable/dist/pinyin.min.js').then(()=>{
+			if(this.field.pinyinSearch){
+				loadJs('https://cdn.jsdelivr.net/gh/inagora/STable@v2.0.0-beta.46/dist/pinyin.min.js').then(()=>{
 					let py = window.STable.Pinyin;
 					let joinText = function(arr){
 						return arr.map(item=>item[0]).join('');
 					};
 					options.forEach(item=>{
-						let text = item.text.toLocaleLowerCase();
+						let text = item.lowerText;
 						item._s = [
-							text,
 							joinText(py(text, {style:py.STYLE_FIRST_LETTER})),
 							joinText(py(text, {style:py.STYLE_INITIALS})),
 							joinText(py(text, {style:py.STYLE_NORMAL}))
@@ -242,7 +251,7 @@ export default {
 							com.ddmVisible = val;
 						}
 					},
-					template: '<x-dropdown ref="ddm" :options="options" :selected="selIdxes" :type="field.type" @update:visible="changeVisible" @select="changeVal"/>'
+					template: '<x-dropdown ref="ddm" :options="options" :selected="selIdxes" :type="field.type" :pinyin-search="field.pinyinSearch" @update:visible="changeVisible" @select="changeVal"/>'
 				});
 				this.ddm = ddm.$refs.ddm;
 				this.ddm.bindAlign(this.$el);

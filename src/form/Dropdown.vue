@@ -69,6 +69,10 @@ export default {
 		type: {
 			type: String,
 			default: 'combobox'
+		},
+		pinyinSearch: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data(){
@@ -255,7 +259,11 @@ export default {
 					visibleCount = this.options.length;
 				} else {
 					this.options.forEach(item=>{
-						item.visible = item.lowerText.includes(key);
+						let visible = item.lowerText.includes(key);
+						if(!visible && this.pinyinSearch) {
+							visible = item._s[0].includes(key) || item._s[1].includes(key) || item._s[2].includes(key);
+						}
+						item.visible = visible;
 						if(item.visible)
 							visibleCount++;
 					});

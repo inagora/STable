@@ -29,7 +29,7 @@
 					@mouseenter="showSubmenu('lock', $event)"
 				>
 					<i class="st-icon st-icon-lock"></i>
-					<span>列锁定</span>
+					<span>冻结位置</span>
 					<i class="st-icon st-icon-caret-down st-table-menu-more"></i>
 				</div>
 			</template>
@@ -59,7 +59,7 @@
 						'st-icon-border': list[curIdx].locked!='left'
 					}"
 				></i>
-				<span>左锁定</span>
+				<span>左侧</span>
 			</div>
 			<div
 				class="st-table-menu-item"
@@ -72,7 +72,7 @@
 						'st-icon-border': list[curIdx].locked!='right'
 					}"
 				></i>
-				<span>右锁定</span>
+				<span>右侧</span>
 			</div>
 			<div
 				class="st-table-menu-item"
@@ -85,7 +85,7 @@
 						'st-icon-border': list[curIdx].locked
 					}"
 				></i>
-				<span>不锁定</span>
+				<span>不冻结</span>
 			</div>
 		</div>
 
@@ -109,12 +109,14 @@
 <script>
 let docEl = document.documentElement;
 export default {
-	props: {
-		columns: {
-			type: Array,
-			required: true
-		}
-	},
+	// props: {
+	// 	columns: {
+	// 		type: Array,
+	// 		required: true
+	// 	}
+	// },
+	inject: ['store'],
+	
 	data(){
 		return {
 			list: [],
@@ -129,7 +131,7 @@ export default {
 		let self = this;
 		this.hide = function(){
 			self.visible = false;
-			self.columns[self.curIdx]._hl = false;
+			self.store.columns[self.curIdx]._hl = false;
 			docEl.removeEventListener('click', self.hide, false);
 		};
 	},
@@ -139,7 +141,7 @@ export default {
 			docEl.removeEventListener('click', this.hide, false);
 			let idx = data.column._st_idx;
 			let curIdx = -1;
-			this.list = this.columns.map((item, itemIdx)=>{
+			this.list = this.store.columns.map((item, itemIdx)=>{
 				if(item._st_idx == idx){
 					curIdx = itemIdx;
 				}
@@ -153,7 +155,7 @@ export default {
 			this.visible = true;
 			this.submenu = '';
 
-			this.columns[this.curIdx]._hl = true;
+			this.store.columns[this.curIdx]._hl = true;
 			this.$nextTick(()=>{
 				this.adjust(data.evt);
 			});
@@ -165,14 +167,12 @@ export default {
 			let tri = evt.target.closest('.st-table-head-th').querySelector('.st-table-head-menu-btn');
 			let triRect = tri.getBoundingClientRect();
 			let menuRect = this.$el.getBoundingClientRect();
-			let tableBox = evt.target.closest('.st-table');
-			let tableRect = tableBox.getBoundingClientRect();
 			if(triRect.left + menuRect.width < docEl.clientWidth) {
-				this.left = triRect.left - tableRect.left + tableBox.scrollLeft;
+				this.left = triRect.left;
 			} else {
-				this.left = triRect.right - menuRect.width - tableRect.left + tableBox.scrollLeft;
+				this.left = triRect.right - menuRect.width;
 			}
-			this.top = triRect.bottom - tableRect.top;
+			this.top = triRect.bottom;
 		},
 		showSubmenu(type, evt){
 			this.submenu = type;
@@ -200,23 +200,23 @@ export default {
 		},
 		toggleVisible(idx){
 			//如果当前可见，并且是唯一可见的列，不能隐藏
-			if(this.columns[idx].visible) {
+			if(this.store.columns[idx].visible) {
 				let visibleCount = 0;
-				for(let c of this.columns){
+				for(let c of this.store.columns){
 					if(c.visible)
 						visibleCount++;
 				}
 				if(visibleCount<=1)
 					return;
 			}
-			this.columns[idx].visible = !this.columns[idx].visible;
-			this.list[idx].visible = this.columns[idx].visible;
+			this.store.columns[idx].visible = !this.store.columns[idx].visible;
+			this.list[idx].visible = this.store.columns[idx].visible;
 			this.$emit('updatecolumn');
 
 			//todo bug自由区没有列时，列头就不显示了，
 		},
 		lock(val){
-			this.columns[this.curIdx].locked = val;
+			this.store.columns[this.curIdx].locked = val;
 			this.list[this.curIdx] = val;
 			this.$emit('updatecolumn');
 			this.hide();

@@ -31,12 +31,17 @@
 				<span class="st-cbb-input-mirror" v-text="text+'A'"></span>
 			</div>
 		</div>
-		<div
+		<!-- <div
 			class="st-cbb-trigger"
 			:class="{'st-cbb-trigger-down':ddmVisible}"
 		>
 			<span>&rsaquo;</span>
-		</div>
+		</div> -->
+		<div
+			v-if="!loading"
+			class="st-cbb-trigger st-icon st-icon-left"
+			:class="{'st-cbb-trigger-down':ddmVisible}"
+		></div>
 		<span v-if="loading" class="st-icon st-icon-sync st-cbb-load"></span>
 	</label>
 </template>
@@ -84,6 +89,8 @@ export default {
 		this.maxInputLength = this.$el.querySelector('.st-cbb-item-list').clientWidth - parseInt(computedStyle.paddingLeft) - parseInt(computedStyle.paddingRight);
 
 		this.maxSelLabelWidth = this.$el.querySelector('.st-cbb-item-list').clientWidth-4;
+
+		this.upadteInputWidth();
 	},
 	methods: {
 		initSelect(){
@@ -98,8 +105,7 @@ export default {
 				}
 			}
 			this.selIdxes = selIdxes;
-
-			if(this.selIdxes.length<=0){
+			if(this.selIdxes.length<=0 || this.loading){
 				this.$el.querySelector('input').style.width = this.maxInputLength+'px';
 			}
 		},
@@ -112,7 +118,7 @@ export default {
 			this.$nextTick(()=>{
 				let mirror = this.$el.querySelector('.st-cbb-input-mirror');
 				let w = mirror.clientWidth;
-				if(w>this.maxInputLength)
+				if(w>this.maxInputLength || this.selIdxes.length<=0 || this.loading)
 					w = this.maxInputLength;
 				this.$el.querySelector('input').style.width = w+'px';
 

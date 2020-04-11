@@ -17,6 +17,7 @@
 			@mousedown="showDdm"
 		/>
 		<div
+			v-if="!loading"
 			class="st-cbb-trigger st-icon st-icon-left"
 			:class="{'st-cbb-trigger-down':ddmVisible}"
 			@click="$el.querySelector('input').focus();"
@@ -110,7 +111,8 @@ export default {
 		line-height: 20px;
 		cursor: pointer;
 		transform: rotate(180deg);
-		transition: transform ease 0.2s;
+		transition: transform ease 0.2s, opacity ease 0.2s;
+		opacity: 0.6;
 	}
 	.st-cbb-trigger.st-cbb-trigger-down{
 		transform: rotate(270deg);
@@ -134,5 +136,22 @@ export default {
 	&:hover &-clear{
 		opacity: 1;
 	}
+
+	@keyframes st_cbb_load {
+		from{
+			transform: rotate(0);
+		}
+		to{
+			transform: rotate(360deg);
+		}
+	}
+	&-load{
+		animation: st_cbb_load 1s linear infinite;
+	}
+}
+
+.st-form-input-box:hover .st-cbb-trigger,
+.st-form-input-box-focus .st-cbb-trigger{
+	opacity: 1;
 }
 </style>

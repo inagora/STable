@@ -431,10 +431,13 @@ export default {
 		margin-left: 10px;
 	}
 	&-proxy{
-		border: 1px dashed #666;
+		border: 1px solid #d0d0d0;
+		border-radius: 5px;
+		background-color: #5fa2dd;
 		position: fixed;
 		box-sizing: border-box;
 		z-index: 100;
+		opacity: 0.5;
 	}
 	$resize-width: 3px;
 	&-rz{

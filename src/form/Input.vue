@@ -47,7 +47,7 @@ export default {
 			]).then(()=>{
 				let options = {
 					dateFormat: type=='datetime'?'Y-m-d H:i:S':'Y-m-d',
-					wrap: true,
+					wrap: false,
 					defaultDate: new Date
 				};
 				if(type == 'datetime') {
@@ -64,14 +64,10 @@ export default {
 						options = Object.assign(options, this.field.dateConfig(this.field));
 					}
 				}
-				window.flatpickr(this.$el.closest('.st-form-input-box'), options);
+				window.flatpickr(this.$el, options);
 			});
 		}
 		this.formatRule();
 	}
 };
 </script>
-
-<style>
-
-</style>
