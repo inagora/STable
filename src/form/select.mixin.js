@@ -161,7 +161,7 @@ export default {
 						text: list[key],
 						value: key,
 						visible: true,
-						lowerText: list[key].toLocaleLowerCase()
+						lowerText: list[key].toLowerCase()
 					}));
 				} else {
 					options = list.map(item=>{
@@ -170,9 +170,11 @@ export default {
 								text: item,
 								value: item,
 								visible: true,
-								lowerText: item.toLocaleLowerCase()
+								lowerText: item.toLowerCase()
 							};
 						}
+						item.lowerText = item.text.toLowerCase();
+						item.visible = true;
 						return item;
 					});
 				}
@@ -181,7 +183,7 @@ export default {
 			this.options = options;
 			this.initSelect();
 
-			if(this.field.pinyinSearch){
+			if(this.field.pinyinSearchable){
 				loadJs('https://cdn.jsdelivr.net/gh/inagora/STable@v2.0.0-beta.46/dist/pinyin.min.js').then(()=>{
 					let py = window.STable.Pinyin;
 					let joinText = function(arr){
@@ -251,7 +253,7 @@ export default {
 							com.ddmVisible = val;
 						}
 					},
-					template: '<x-dropdown ref="ddm" :options="options" :selected="selIdxes" :type="field.type" :pinyin-search="field.pinyinSearch" @update:visible="changeVisible" @select="changeVal"/>'
+					template: '<x-dropdown ref="ddm" :options="options" :selected="selIdxes" :type="field.type" :pinyin-searchable="field.pinyinSearchable" @update:visible="changeVisible" @select="changeVal"/>'
 				});
 				this.ddm = ddm.$refs.ddm;
 				this.ddm.bindAlign(this.$el);

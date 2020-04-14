@@ -70,7 +70,7 @@ export default {
 			type: String,
 			default: 'combobox'
 		},
-		pinyinSearch: {
+		pinyinSearchable: {
 			type: Boolean,
 			default: false
 		}
@@ -260,7 +260,7 @@ export default {
 				} else {
 					this.options.forEach(item=>{
 						let visible = item.lowerText.includes(key);
-						if(!visible && this.pinyinSearch) {
+						if(!visible && this.pinyinSearchable) {
 							visible = item._s[0].includes(key) || item._s[1].includes(key) || item._s[2].includes(key);
 						}
 						item.visible = visible;
