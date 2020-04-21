@@ -131,7 +131,7 @@ import qtip from '../com/qtip.js';
 export default {
 	components: {XHead, XBody, XFlyman},
 	mixins: [data, drag, resize],
-	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax', 'deleteUrl', 'updateUrl','updateConfig', 'idIndex'],
+	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax', 'deleteUrl', 'updateUrl','updateConfig', 'idIndex', 'locale'],
 	data() {
 		return {
 			hlRowNum: -1,
@@ -286,15 +286,15 @@ export default {
 			let buttons = [];
 			if(this.deleteUrl) {
 				buttons.push({
-					text: '删除',
+					text: this.locale.delete,
 					icon: 'st-icon st-icon-close',
 					type: 'danger',
 					click: (record)=>{
-						let ret = confirm('您确定要删除此行数据？');
+						let ret = confirm(this.locale.deleteMsg.confirmTip);
 						if(ret!==true)
 							return;
 						if(!this.idIndex){
-							alert('请配置参数 idIndex');
+							alert(this.locale.noIdindex);
 							return;
 						}
 						let id = record[this.idIndex];
@@ -303,10 +303,10 @@ export default {
 						Object.assign(data, this.params);
 						this.ajax.request({url:this.deleteUrl, data, method: this.actionMethods.delete}).then(res=>{
 							if(res.errno==0) {
-								qtip.success('删除成功');
+								qtip.success(this.locale.deleteMsg.success);
 								this.load('cur');
 							} else {
-								qtip.error('删除失败');
+								qtip.error(this.locale.deleteMsg.fail);
 							}
 						});
 					}
@@ -314,24 +314,24 @@ export default {
 			}
 			if(this.updateUrl) {
 				buttons.push({
-					text: '编辑',
+					text: this.locale.edit,
 					icon: 'st-icon st-icon-edit-square',
 					click:(record)=> {
 						let self = this;
 						let html = '<x-form id="_st_update_form" size="medium" :field-list="fields" :default-values="params" label-width="100px" :label-width="100" :action-methods="actionMethods" @submit="edit"></x-form>';
 						createDia({
-							title: '编辑',
+							title: this.locale.edit,
 							width: 600,
 							height: '62%',
 							html, //html未定义
 							buttons: [
 								{
-									text: '确认修改',
+									text: this.locale.editMsg.confirmBtn,
 									nativeType: 'submit',
 									form: '_st_update_form',
 									type: 'success'
 								},{
-									text: '取消',
+									text: this.locale.cancel,
 									click(){
 										this.close();
 									}
@@ -356,14 +356,14 @@ export default {
 											data = ret.data;
 									}
 									if(!self.idIndex){
-										alert('请配置参数 idIndex');
+										alert(this.locale.noIdindex);
 										return;
 									}
 									data[self.idIndex] = record[self.idIndex];
 									
 									self.ajax.request({ url: updateUrl, data, method: self.actionMethods.update}).then(res=>{
 										if(res.errno==0){
-											qtip.success('修改成功');
+											qtip.success(this.locale.editMsg.success);
 											this.close();
 											self.load('cur');
 											self.store.emit('edit', res, data);
@@ -510,7 +510,8 @@ export default {
 				let self = this;
 				this.menu = new Vue({
 					provide: {
-						store: this.store
+						store: this.store,
+						locale: this.locale
 					},
 					components: {XMenu},
 					methods: {

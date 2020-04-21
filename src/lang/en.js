@@ -12,11 +12,15 @@ module.exports= {
 	compute: 'compute',
 	setting: 'setting',
 	operation: 'operation',
+	noIdindex: 'the parameter idIndex is not set',
 	toolbar: {
 		exportBtnText: 'export current page',
 		exportAllBtnText: 'export all pages',
 		confirmFileName: 'please confirm the file\'s name',
-		addSuccessMsg: 'Added successfully'
+		addSuccessMsg: 'Added successfully',
+		batDelete: 'batch delete',
+		deleteTips: 'please select the rows to delete',
+		deleteSuccessMsg: 'Deleted successfully'
 	},
 
 	deleteMsg: {
@@ -71,5 +75,12 @@ module.exports= {
 	columnStorageError: 'there is an error in storing column settings',
 
 	emptyMsg: 'the table is empty~~',
-	pageSizeUnit: 'rows/page'
+	pageSizeUnit: 'rows/page',
+
+	// columnMenu
+	left: 'left',
+	right: 'right',
+	lockPosition: 'lock position',
+	noLock: 'no lock',
+	filterColumns: 'filter columns'
 };

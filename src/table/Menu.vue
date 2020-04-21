@@ -29,7 +29,7 @@
 					@mouseenter="showSubmenu('lock', $event)"
 				>
 					<i class="st-icon st-icon-lock"></i>
-					<span>冻结位置</span>
+					<span>{{ locale.lockPosition }}</span>
 					<i class="st-icon st-icon-caret-down st-table-menu-more"></i>
 				</div>
 			</template>
@@ -42,7 +42,7 @@
 				@mouseenter="showSubmenu('column', $event)"
 			>
 				<i class="st-icon st-icon-filter"></i>
-				<span>列筛选</span>
+				<span>{{ locale.filterColumns }}</span>
 				<i class="st-icon st-icon-caret-down st-table-menu-more"></i>
 			</div>
 		</div>
@@ -59,7 +59,7 @@
 						'st-icon-border': list[curIdx].locked!='left'
 					}"
 				></i>
-				<span>左侧</span>
+				<span>{{ locale.left }}</span>
 			</div>
 			<div
 				class="st-table-menu-item"
@@ -72,7 +72,7 @@
 						'st-icon-border': list[curIdx].locked!='right'
 					}"
 				></i>
-				<span>右侧</span>
+				<span>{{ locale.right }}</span>
 			</div>
 			<div
 				class="st-table-menu-item"
@@ -85,7 +85,7 @@
 						'st-icon-border': list[curIdx].locked
 					}"
 				></i>
-				<span>不冻结</span>
+				<span>{{ locale.noLock }}</span>
 			</div>
 		</div>
 
@@ -115,7 +115,7 @@ export default {
 	// 		required: true
 	// 	}
 	// },
-	inject: ['store'],
+	inject: ['store', 'locale'],
 	
 	data(){
 		return {

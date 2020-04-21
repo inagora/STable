@@ -148,8 +148,10 @@ export default {
 			let field = this.field;
 			let list = _list || field.options;
 			list.forEach(item => {
-				if(!item.text)
-					item.text = item.label;
+				if(!($type(item) === 'string')) {
+					if(!item.text)
+						item.text = item.label;
+				}
 			});
 			let options = [];
 

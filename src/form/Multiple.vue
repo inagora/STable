@@ -175,7 +175,7 @@ export default {
 			this.hlDelIndex = idx;
 		},
 		del(idx){
-			this.changeVal(idx);
+			this.ddm && this.ddm.$parent.changeVal(idx);
 		}
 	}
 };

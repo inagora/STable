@@ -74,7 +74,7 @@ export default {
 			if(this.batDeleteUrl){
 				tb.unshift({
 					type: 'danger',
-					text: '批量删除',
+					text: this.locale.toolbar.batDelete,
 					icon: 'st-icon st-icon-delete',
 					click(){
 						self.batDelete();
@@ -84,7 +84,7 @@ export default {
 			if(this.addUrl) {
 				tb.unshift({
 					type: 'success',
-					text: '添加',
+					text: this.locale.add,
 					icon: 'st-icon st-icon-plus',
 					click(){
 						self.add();
@@ -164,10 +164,10 @@ export default {
 		batDelete(){
 			let records = this.$parent.getSelected();
 			if(!records || records.length<=0){
-				qtip.error('请选择要删除的行');
+				qtip.error(this.locale.toolbar.deleteTips);
 				return;
 			} else if(!this.idIndex){
-				qtip.error('没有设置参数idIndex');
+				qtip.error(this.locale.noIdindex);
 				return;
 			}
 			let ret = this.store.emit('beforebatdelete', records);
@@ -186,7 +186,7 @@ export default {
 				if(res.errno){
 					qtip.error(res.errmsg);
 				} else {
-					qtip.success('删除成功');
+					qtip.success(this.locale.toolbar.deleteSuccessMsg);
 					this.store.emit('batdelete', res, records);
 				}
 			});
