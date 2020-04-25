@@ -416,7 +416,7 @@
 * __默认值__: "none"
 * __详细__: 
 
-	行的选择模式。在单选框或复选框选择行之后，可以通过STable的getSelected接口获取所有选中的行。有以下三种模式：
+	行的选择模式。在单选框或复选框选择行之后，可以通过STable的getSelected(<span style="color: red;">注：v1.x版本请使用getSelectedRows</span>)接口获取所有选中的行。有以下三种模式：
 	* 'none'，在表格行前面不显示选择按钮
 	* 'single'，单选模式，在表格行前显示单选按钮
 	* 'multiple'，多选模式，在表格行前显示多选按钮
@@ -1338,6 +1338,35 @@ columns: [
 	| options | 仅在type=select、type=multiple必填 | Array | [] |
 	| format | 仅在type=date必填 | String | 'YYYY-MM-DD' |
 
+
+* __参考__:
+	* [field-list api](#field-list)
+	* <DemoViewer demo="api-fieldList" />
+
+## field-list
+### label
+* __类型__: String
+* __详细__:
+
+	表单前的提示文案
+
+* __参考__:
+	* <DemoViewer demo="api-fieldList" />
+
+###	name
+* __类型__: String
+* __详细__:
+
+	每个表单项对应的key，搜索的时候会拼接到URL上
+
+* __参考__:
+	* <DemoViewer demo="api-fieldList" />
+
+### type
+* __类型__: String
+* __详细__:
+
+	表单的类型，支持以下常用的几种：
 * __type 的合法值:__
   
 <table>
