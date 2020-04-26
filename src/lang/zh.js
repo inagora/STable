@@ -12,11 +12,15 @@ module.exports = {
 	compute: '计算',
 	setting: '设置',
 	operation: '操作',
+	noIdindex: '没有设置参数idIndex',
 	toolbar: {
 		exportBtnText: '导出当前页',
 		exportAllBtnText: '导出所有页',
 		confirmFileName: '请确认表格文件的名称',
-		addSuccessMsg: '添加成功'
+		addSuccessMsg: '添加成功',
+		batDelete: '批量删除',
+		deleteTips: '请选择要删除的行',
+		deleteSuccessMsg: '删除成功'
 	},
 
 	deleteMsg: {
@@ -71,5 +75,12 @@ module.exports = {
 	columnStorageError: '本地存储的列信息有问题',
 
 	emptyMsg: '表格是空的~~~',
-	pageSizeUnit: '行/页'
+	pageSizeUnit: '行/页',
+
+	// columnMenu
+	left: '左侧',
+	right: '右侧',
+	lockPosition: '冻结位置',
+	noLock: '不冻结',
+	filterColumns: '列筛选'
 };

@@ -147,6 +147,12 @@ export default {
 		formatList(_list){
 			let field = this.field;
 			let list = _list || field.options;
+			list.forEach(item => {
+				if(!($type(item) === 'string')) {
+					if(!item.text)
+						item.text = item.label;
+				}
+			});
 			let options = [];
 
 			if(field.type=='cascader'){
