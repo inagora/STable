@@ -1325,30 +1325,37 @@ columns: [
 	* <DemoViewer demo="form-reset" />
 
 ### field-list 
-* __类型__:	`Array`
+* __类型__:	`Array`或者`Object`
 * __概览__:
+
+	1. 配置为Array：
 
 	表单项配置，每个表单项配置都是`Object`类型。
 	| 配置项 | 说明 |  类型  | 默认值 |
 	| :-: | :-: | :-: | :-: |
-	| label | 必填 | String | - |
 	| name | 必填 | String | - |
-	| type | 必填 | String | input |
-	| defalutValue | 仅在type=select、type=multiple选填 | select类型String,multiple类型Array | - |
-	| options | 仅在type=select、type=multiple必填 | Array | [] |
-	| format | 仅在type=date必填 | String | 'YYYY-MM-DD' |
+	| label | 选填 | String | 值为name的值 |
+	| type | 选填 | String | input |
+	| value | 仅在type=input选填 | String | - |
+	| list | 仅在type=multiple，type=combobox，type=cascader必填 | Array | [] |
+	| width | 选填 | Number或String | - |
+	| rules | 选填 | Array | [] |
 
+	2. 配置为Object：
+
+	如果搜索区功能比较简单，比如所有的搜索选项都为手动输入，则可以配置field-list为Object，STable会自动格式化为标准的类型。
 
 * __参考__:
 	* [field-list api](#field-list)
-	* <DemoViewer demo="api-fieldList" />
+	* <DemoViewer demo="api-fieldList-array" />
+	* <DemoViewer demo="api-fieldList-object" />
 
 ## field-list
 ### label
 * __类型__: String
 * __详细__:
 
-	表单前的提示文案
+	表单前的提示文案，如果没有配置该项或者field-list类型为Object，则该值同[name](#name)的值。
 
 * __参考__:
 	* <DemoViewer demo="api-fieldList" />
@@ -1363,7 +1370,7 @@ columns: [
 	* <DemoViewer demo="api-fieldList" />
 
 ### type
-* __类型__: String
+* __类型__: `String`
 * __详细__:
 
 	表单的类型，支持以下常用的几种：
@@ -1381,50 +1388,26 @@ columns: [
 	<tr>
 		<td >表单输入框 </td>
 		<td style="color:rgb(92, 184, 92)">input</td>
-		<td> input/textarea </td>
+		<td> text/number </td>
 		<td>`String`</td>
-		<td>input</td>
-		<td></td>
+		<td>text</td>
+		<td>number类型必须输入数字</td>
 	</tr>
 	<tr>
 		<td >下拉选择框 </td>
 		<td style="color:rgb(92, 184, 92)">select</td>
-		<td> select/combobox/multiple </td>
+		<td> multiple/combobox/cascader </td>
 		<td>`String`</td>
 		<td>select</td>
-		<td>select单选不可输入匹配、combobox单选可输入匹配、multiple为多选可输入匹配</td>
-	</tr>
-	<tr>
-		<td >多项选择框 </td>
-		<td style="color:rgb(92, 184, 92)">checkbox</td>
-		<td> checkbox </td>
-		<td>`String`</td>
-		<td>checkbox</td>
-		<td></td>
-	</tr>
-	<tr>
-		<td >单项选择框 </td>
-		<td style="color:rgb(92, 184, 92)">radio</td>
-		<td> radio </td>
-		<td>`String`</td>
-		<td>radio</td>
-		<td></td>
+		<td>multiple为下拉多选并可搜索、combobox为下拉单选并可搜索、cascader为级联选择且不可搜索</td>
 	</tr>
 	<tr>
 		<td >时间选择器 </td>
 		<td style="color:rgb(92, 184, 92)">date</td>
-		<td> date </td>
+		<td> date/datetime </td>
 		<td>`String`</td>
 		<td>date</td>
-		<td>format默认为`YYYY-MM-DD`，如需精确到秒，可设置为`YYYY-MM-DD HH-mm-ss`</td>
-	</tr>
-	<tr>
-		<td >开关选择器 </td>
-		<td style="color:rgb(92, 184, 92)">switch</td>
-		<td> switch </td>
-		<td>`String`</td>
-		<td>switch</td>
-		<td></td>
+		<td>可通过dateConfig修改日期的默认参数(更多配置可参考[flatpickr](https://flatpickr.js.org))</td>
 	</tr>
 	<tr>
 		<td >文件上传 </td>
@@ -1432,9 +1415,61 @@ columns: [
 		<td> file </td>
 		<td>`String`</td>
 		<td>file</td>
-		<td>action配置上传url</td>
+		<td>通过upload配置上传参数</td>
 	</tr>
 </table>
+
+* __参考__:
+	* <DemoViewer demo="api-fieldList-type-input" />
+	* <DemoViewer demo="api-fieldList-type-select" />
+	* <DemoViewer demo="api-fieldList-type-date" />
+	* <DemoViewer demo="api-fieldList-type-file" />
+
+### value
+* __类型__: `String`
+* __详细__:
+
+	form表单的默认值
+
+* __参考__:
+	* <DemoViewer demo="api-fieldList-value" />
+
+### list
+* __类型__: `Array`
+* __详细__:
+
+	下拉框的选项，每一项为一个Object，可以设置显示的文案以及对应的值；如果其中的项为String类型，则会自动格式化为需要的Object格式。
+	
+	当type为multiple、combobox、cascader时需要传入该值；如果type为cascader时可嵌套设置list。
+
+* __参考__:
+	* <DemoViewer demo="api-fieldList-list" />
+
+### width
+* __类型__: `Number`/`String`
+* __详细__:
+
+	设置表单的宽度。
+
+* __参考__:
+	* <DemoViewer demo="api-fieldList-width" />
+
+### rules
+* __类型__: `Array`
+* __详细__:
+
+	该配置用于表单验证，如果某项表单的值不能通过设置的验证条件，则会给出相应的提示，并且阻止表单的提交。
+
+	可支持的验证有：
+	* required，必须有值
+	* pattern，正则表达式，或者字符串
+	* number，必须是数字
+	* min/max，只对数字有效
+	* length，只对字符串和数组有效
+	* validator，自定义验证函数，如果返回true，验证通过，如果返回字符串，当做错误提示显示
+
+* __参考__:
+	* <DemoViewer demo="api-fieldList-rules" />
 
 ## button
 

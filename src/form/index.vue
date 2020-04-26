@@ -66,7 +66,7 @@ import XCombobox from './Combobox.vue';
 import XMultiple from './Multiple.vue';
 import XFile from './File.vue';
 export default {
-	components: {XInput},
+	components: {XInput, XFile},
 	props: {
 		labelWidth: {
 			type: Number,

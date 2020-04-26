@@ -102,12 +102,14 @@
 		searchFilter: [
 			{
 				label: '名字',
-				name: 'name'
+				name: 'name',
+				type: 'text',
+				width: '300'
 			},
 			{
 				name: 'movieType',
 				label: '影片类型',
-				type: 'multiple',
+				type: 'cascader',
 				options: [
 					{
 						label: '爱情',
@@ -119,6 +121,65 @@
 					},
 					{
 						label: '恐怖',
+						value: 'type3'
+					}
+				]
+			},
+			{
+				name: 'movieType',
+				label: '影片类型',
+				type: 'multiple',
+				value: 'type1',
+				list: ['type1', 'type2']
+			},
+			{
+				name: 'movieType',
+				label: '影片类型',
+				type: 'combobox',
+				list: [
+					{
+						text: '爱情',
+						value: 'type1'
+					},
+					{
+						text: '悬疑',
+						value: 'type2'
+					},
+					{
+						text: '恐怖',
+						value: 'type3'
+					}
+				]
+			},
+			{
+				name: 'movieType',
+				label: '影片类型',
+				type: 'cascader',
+				list: [
+					{
+						text: '爱情',
+						value: 'type1',
+						list: [
+							{
+								text: '爱情',
+								value: 'type1',
+							},
+							{
+								text: '悬疑',
+								value: 'type2'
+							},
+							{
+								text: '恐怖',
+								value: 'type3'
+							}
+						]
+					},
+					{
+						text: '悬疑',
+						value: 'type2'
+					},
+					{
+						text: '恐怖',
 						value: 'type3'
 					}
 				]
@@ -146,7 +207,11 @@
 			{
 				label: '上映时间(起)',
 				name: 'stime',
-				type: 'date'
+				type: 'date',
+				dateConfig: {
+					dateFormat: 'Y/m/d H:i:S',
+					defaultDate: '2020-02-14 00:00:00'
+				}
 			},
 			{
 				label: '上映时间(终)',
@@ -154,6 +219,11 @@
 				type: 'date'
 			}
 		],
+		// searchFilter: {
+		// 	name: '名称',
+		// 	age: '年龄',
+		// 	sex: '性别'
+		// },
 		columns: [
 			{
 				header: 'id',
