@@ -76,6 +76,15 @@
 	* <DemoViewer demo="api-addConfig" />
 	* [addConfig](#addconfig)
 
+### ajaxSetting
+* __类型__: `Object`
+* __详细__:
+
+	如果在ajax请求的时候需要设置一些特定的配置，可以使用此属性。
+	配置与网络请求相关的属性，比如：Content-type
+
+* __参考__:
+	* <DemoViewer demo="api-ajaxSetting" />
 ### batDeleteUrl
 * __类型__: `String`
 * __详细__: 
