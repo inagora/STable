@@ -947,6 +947,14 @@ columns: [
 ]
 ```
 
+### actionUrl
+* __类型__: `String`
+* __详细__:
+
+	[label](#label)后配置的[icon](#icon)点击跳转的URL。
+* __参考__:
+	* <DemoViewer demo="column-icon" />
+
 ### buttons
 * __类型__: `Array`
 * __详细__:
@@ -1074,6 +1082,14 @@ columns: [
 * __参考__:
 	* [width](#width)
 	* <DemoViewer demo="column-flex" />
+
+### icon
+* __类型__: `String`
+* __详细__:
+
+	有时需要对这个搜索项做特殊说明，不能直接显示在搜索区域，可以配置一个图标，并设置[actionUrl](#actionUrl)，点击后跳转到自定义的帮助页面。
+* __参考__:
+	* <DemoViewer demo="column-icon" />
 
 ### locked
 * __类型__:	`Boolean|String`
