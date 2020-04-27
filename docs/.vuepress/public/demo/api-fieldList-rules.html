@@ -12,16 +12,35 @@
 		columns: ['name','movieType','year'],
 		searchFilter: [
 			{
-				name: 'movieType',
-				label: '影片类型',
-				width: 100,
-				value: '爱情'
+				label: '名字',
+				name: 'name',
+				type: 'text',
+				required: true
 			},
 			{
+				label: '名字',
 				name: 'name',
-				label: '名称',
-				width: '200',
-				value: '爱情'
+				type: 'number',
+				number: true,
+				max: 100,
+				min: 10
+			},
+			{
+				label: '名字',
+				name: 'name',
+				pattern: '\\d*'
+			},
+			{
+				label: '名字',
+				name: 'name',
+				length: 5
+			},
+			{
+				label: '名字',
+				name: 'name',
+				validator() {
+					return 'error';
+				}
 			}
 		]
 	});

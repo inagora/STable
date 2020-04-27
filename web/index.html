@@ -217,7 +217,38 @@
 				label: '上映时间(终)',
 				name: 'etime',
 				type: 'date'
-			}
+			},
+			{
+				label: '名字',
+				name: 'name',
+				type: 'text',
+				required: true
+			},
+			{
+				label: '名字',
+				name: 'name',
+				type: 'number',
+				number: true,
+				max: 100,
+				min: 10
+			},
+			{
+				label: '名字',
+				name: 'name',
+				pattern: '\\d*'
+			},
+			{
+				label: '名字',
+				name: 'name',
+				length: 5
+			},
+			{
+				label: '名字',
+				name: 'name',
+				validator() {
+					return 'error';
+				}
+			},
 		],
 		// searchFilter: {
 		// 	name: '名称',

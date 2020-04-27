@@ -54,6 +54,18 @@ export default {
 					rules.push(rule);
 				}
 			}
+			if(this.field.length) {
+				let rule = {
+					length: this.field.length,
+					trigger: 'blur'
+				};
+				if(type=='text'){
+					rule.message = '请输入符合要求长度的内容';
+				} else if(type=='multiple'){
+					rule.message = '请选择符合要求长度的选项个数';
+				}
+				rules.push(rule);
+			}
 			if(this.field.pattern) {
 				let pattern = this.field.pattern;
 				if($type(pattern)=='string'){
@@ -124,6 +136,12 @@ export default {
 							errmsg = rule.message;
 							break;
 						}
+					}
+				}
+				if($type(rule.length)!='undefined') {
+					if(this.value.length != rule.length) {
+						errmsg = rule.message;
+						break;
 					}
 				}
 				if(this.field.required) {
