@@ -1200,7 +1200,7 @@ columns: [
 	* <DemoViewer demo="column-flex" />
 
 ## form
-* __介绍__:由输入框（input/textarea）、选择器(select)、单选框(radio)、多选框(checkbox)、开关（switch）、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件（无需注册）在vue中使用（x-form），也可集成在STable使用，一般情况下，它的配置如下：
+* __介绍__:由输入框（input）、选择器(select)、日期(date)、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件（无需注册）在vue中使用（x-form），也可集成在STable使用，一般情况下，它的配置如下：
   
 	```html
 	<div id="box">

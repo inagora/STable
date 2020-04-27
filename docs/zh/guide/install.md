@@ -1,7 +1,9 @@
 # 安装
 
 ## 更新日志
-最新稳定版本：1.3.8  
+最新稳定版本：1.3.10 
+
+最新beta版本：2.0.0-beta.48
 版本更新日志见[GitHub](https://github.com/inagora/STable/releases)。
 ## 直接使用`<script>`引入
 * 下载js文件

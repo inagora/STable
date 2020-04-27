@@ -13,6 +13,10 @@
 			>
 				<span v-if="field.required" class="st-form-required">*</span>
 				<span v-text="field.label"></span>
+				<div v-if="field.icon" class="st-form-icon" @click="handleIconClick(field)">
+					<img v-if="field.icon.indexOf('http') === 0" :src="field.icon" alt="" />
+					<i v-else :class="['st-iconfont',field.icon]"></i>
+				</div>
 			</label>
 			<div class="st-form-com">
 				<div
@@ -326,6 +330,11 @@ export default {
 				if(this.errFly.style.display=='block')
 					this.errFly.style.display = 'none';
 			}
+		},
+		handleIconClick(field) {
+			if(field.actionUrl) {
+				window.open(field.actionUrl, '_blank');
+			}
 		}
 	}
 };
@@ -341,6 +350,17 @@ export default {
 	&-label{
 		font-size: 14px;
 		color: rgba(0, 0, 0, 0.85);
+	}
+	&-icon {
+		width: 20px;
+		height: 20px;
+		display: inline-block;
+		cursor: pointer;
+		& img {
+			width: 100%;
+			height: 100%;
+			vertical-align: middle;
+		}
 	}
 	&-input{
 		box-sizing: border-box;
