@@ -1,7 +1,7 @@
 # 安装
 
 ## 更新日志
-最新稳定版本：1.3.10 
+最新稳定版本：2.0.1
 
 最新beta版本：2.0.0-beta.48
 版本更新日志见[GitHub](https://github.com/inagora/STable/releases)。
