@@ -38,4 +38,17 @@ export function tmpl(str, data){
 		return data[_$1]||''
 	});
 }
+
+export function isPC() {
+	const ua = navigator.userAgent;
+	const agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod'];
+	let flag = true;
+	for(let i = 0; i < agents.length; i++) {
+		if(ua.indexOf(agents[i]) > 0) {
+			flag = false;
+			break;
+		}
+	}
+	return flag;
+}
 //export let isSafari = window.navigator.vendor.toLowerCase().includes('apple computer');

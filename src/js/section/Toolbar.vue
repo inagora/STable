@@ -1,8 +1,8 @@
 <template>
 	<div v-if="visible" class="st-toolbar">
 		<el-button v-if="addUrl" type="primary" size="small" icon="fa fa-plus" @click="add">{{locale.add}}</el-button>
-		<el-button v-if="downloadable===true||downloadable=='single'" type="primary" size="small" icon="fa fa-download" @click="download">{{locale.toolbar.exportBtnText}}</el-button>
-		<el-button v-if="downloadable===true||downloadable=='all'" type="primary" size="small" icon="fa fa-download" @click="downloadAll">{{locale.toolbar.exportAllBtnText}}</el-button>
+		<el-button v-if="(downloadable===true||downloadable=='single') && isPC" type="primary" size="small" icon="fa fa-download" @click="download">{{locale.toolbar.exportBtnText}}</el-button>
+		<el-button v-if="(downloadable===true||downloadable=='all') && isPC" type="primary" size="small" icon="fa fa-download" @click="downloadAll">{{locale.toolbar.exportAllBtnText}}</el-button>
 		<el-button
 			v-for="(btn,idx) in toolbar"
 			:key="idx"
@@ -16,7 +16,7 @@
 	import Dialog from '../com/Dialog.js';
 	import XForm from './Form.vue';
 	import {ajax} from '../ajax';
-	import {loadScript} from '../util';
+	import {loadScript, isPC} from '../util';
 
 	let html = `
 		<x-form id="st_add_form" size="medium" label-position="right" :field-list="fields" :default-values="params" label-width="100px" :action-methods="actionMethods" @submit="create">
@@ -64,7 +64,8 @@
 					if(!btn.type)
 						btn.type = 'default';
 					return btn;
-				})
+				}),
+				isPC: isPC()
 			}
 		},
 		mounted(){

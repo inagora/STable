@@ -24,6 +24,7 @@
 	</div>
 </template>
 <script>
+	import { isPC } from '../util.js';
 	export default {
 		inject: ['config'],
 		data() {
@@ -43,17 +44,34 @@
 				hType = typeof conf.height;
 			if(wType == 'string'){
 				if(!conf.width.endsWith('%')) {
-					conf.width = parseInt(conf.width, 10)+'px';
+					if(!isPC()) {
+						conf.width = '80%';
+					} else {
+						conf.width = parseInt(conf.width, 10)+'px';
+					}
 				}
-			} else if(typeof conf.width == 'number')
-				conf.width = conf.width+'px';
-
+			} else if(typeof conf.width == 'number') {
+				if(!isPC()) {
+					conf.width = '80%';
+				} else {
+					conf.width = conf.width+'px';
+				}
+			}
 			if(hType == 'string'){
 				if(!conf.height.endsWith('%')) {
-					conf.width = parseInt(conf.height, 10)+'px';
+					if(!isPC()) {
+						conf.height = '60%';
+					} else {
+						conf.height = parseInt(conf.height, 10)+'px';
+					}
 				}
-			} else if(typeof conf.height == 'number')
-				conf.height = conf.height+'px';
+			} else if(typeof conf.height == 'number') {
+				if(!isPC()) {
+					conf.height = '60%';
+				} else {
+					conf.height = conf.height+'px';
+				}
+			}
 			if(typeof conf.autoOpen != 'undefined')
 				conf.autoShow = conf.autoOpen;
 
