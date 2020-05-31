@@ -211,6 +211,7 @@ export default {
 			}
 			this.store.columns[idx].visible = !this.store.columns[idx].visible;
 			this.list[idx].visible = this.store.columns[idx].visible;
+			this.store.saveColumnsState();
 			this.$emit('updatecolumn');
 
 			//todo bug自由区没有列时，列头就不显示了，

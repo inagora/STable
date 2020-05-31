@@ -143,6 +143,7 @@ export default {
 					}
 				}
 				this.store.columns = cs;
+				this.store.saveColumnsState();
 			}
 		},
 		clearDrag(){
