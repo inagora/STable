@@ -24,7 +24,7 @@ import XPagination from './Pagination.vue';
 import {hashCode, Console, $type} from "./util/util.js";
 import Ajax from './util/Ajax.js';
 
-var defaultLang = require('./lang/en.js');
+var defaultLang = require('./lang/zh.js');
 let stableCount = 0;
 export default {
 	props: {
@@ -123,6 +123,10 @@ export default {
 			 * @param {Boolean} downloadable 显示下载按钮
 			 */
 			downloadable: false,
+			/**
+			 * @param {String} downloadurl 显示自定义链接的按钮
+			 */
+			downloadurl: '',
 			/**
 			 * @param {Array} searchFilter 搜索表单配置
 			 */

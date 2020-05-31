@@ -20,7 +20,8 @@ module.exports= {
 		addSuccessMsg: 'Added successfully',
 		batDelete: 'batch delete',
 		deleteTips: 'please select the rows to delete',
-		deleteSuccessMsg: 'Deleted successfully'
+		deleteSuccessMsg: 'Deleted successfully',
+		exprotDefaultText: 'export data',
 	},
 
 	deleteMsg: {

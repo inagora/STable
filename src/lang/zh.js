@@ -20,7 +20,8 @@ module.exports = {
 		addSuccessMsg: '添加成功',
 		batDelete: '批量删除',
 		deleteTips: '请选择要删除的行',
-		deleteSuccessMsg: '删除成功'
+		deleteSuccessMsg: '删除成功',
+		exprotDefaultText: '导出数据'
 	},
 
 	deleteMsg: {

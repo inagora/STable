@@ -169,6 +169,14 @@
 * __参考__:
 	* <DemoViewer demo="api-downloadable" />
 
+### downloadurl
+* __类型__: `String`
+* __详细__: 
+
+	有时需要自定义下载接口，更灵活的控制数据的下载，可以设置该参数为一个特定的接口地址。
+* __参考__:
+	* <DemoViewer demo="api-downloadurl" />
+
 ### downloadAllFromJustOnePage
 * __类型__: `Boolean`
 * __默认值__: false

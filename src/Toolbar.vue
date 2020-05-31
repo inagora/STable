@@ -36,6 +36,7 @@ export default {
 			default: ''
 		},
 		downloadable: 'downloadable',
+		downloadurl: 'downloadurl',
 		actionMethods: 'actionMethods',
 		store: 'store',
 		idIndex: 'idIndex',
@@ -52,14 +53,27 @@ export default {
 			if(tb.length>0)
 				tb.unshift('|');
 			if(this.downloadable=='all' || this.downloadable===true) {
-				tb.unshift({
-					type: 'primary',
-					text: this.locale.toolbar.exportAllBtnText,
-					icon: 'st-icon st-icon-download',
-					click(){
-						self.downloadAll();
-					}
-				});
+				// 如果设置了自定义的下载链接
+				if(this.downloadurl) {
+					const downloadurl = this.downloadurl;
+					tb.unshift({
+						type: 'primary',
+						text: this.locale.toolbar.exprotDefaultText,
+						icon: 'st-icon st-icon-download',
+						click(){
+							window.open(downloadurl, '_blank');
+						}
+					});
+				} else {
+					tb.unshift({
+						type: 'primary',
+						text: this.locale.toolbar.exportAllBtnText,
+						icon: 'st-icon st-icon-download',
+						click(){
+							self.downloadAll();
+						}
+					});
+				}
 			}
 			if(this.downloadable=='single' || this.downloadable===true) {
 				tb.unshift({
