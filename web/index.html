@@ -350,7 +350,34 @@
 			{
 				name: 'type',
 				label: '影片类型',
-				list: ['动作', '喜剧'],
+				list: [
+					{
+						text: '爱情',
+						value: 'type1',
+						list: [
+							{
+								text: '爱情',
+								value: 'type1',
+							},
+							{
+								text: '悬疑',
+								value: 'type2'
+							},
+							{
+								text: '恐怖',
+								value: 'type3'
+							}
+						]
+					},
+					{
+						text: '悬疑',
+						value: 'type2'
+					},
+					{
+						text: '恐怖',
+						value: 'type3'
+					}
+				],
 				type: 'multiple'
 			}
 		],

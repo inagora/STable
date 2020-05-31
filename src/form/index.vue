@@ -95,6 +95,9 @@ export default {
 		inline: {
 			type: [Boolean, String],
 			default: false
+		},
+		defaultValues: {
+			type: [Array, Object]
 		}
 	},
 	data(){
@@ -157,6 +160,9 @@ export default {
 				}, field);
 				//默认值，向后兼容
 				let value = '';
+				if(this.defaultValues != undefined && typeof this.defaultValues[field.name] != 'undefined') {
+					value = this.defaultValues[field.name];
+				}
 				if (typeof field.default_val != 'undefined') {
 					value = field.default_val;
 				}
