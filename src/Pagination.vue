@@ -207,4 +207,20 @@ export default {
 		transform: rotate(180deg);
 	}
 }
+@media screen and (min-width: 375px){
+	.st-pn{
+		justify-content: space-between;
+		.st-flex-padding {
+			display: none;
+		}
+		.st-pn-normal {
+			flex: 1;
+			display: flex;
+			justify-content: space-around;
+		}
+		.st-btn{
+			min-width: 0;
+		}
+	}
+}
 </style>

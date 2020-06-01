@@ -63,6 +63,7 @@
 
 <script>
 import XButton from './Button.vue';
+import {isPC} from '../util/util';
 
 let docEl = document.documentElement;
 export default {
@@ -93,12 +94,21 @@ export default {
 		if(wType == 'string' && conf.width.endsWith('%')) {
 			conf.width = Math.ceil(docEl.clientWidth*parseFloat(conf.width)/100)+'px';
 		} else {
-			conf.width += 'px';
+			// conf.width += 'px';
+			if(!isPC()) {
+				conf.width = '80%';
+			} else {
+				conf.width += 'px';
+			}
 		}
 		if(hType=='string' && conf.height.endsWith('%')) {
 			conf.height = Math.ceil(docEl.clientHeight*parseFloat(conf.height)/100)+'px';
 		} else {
-			conf.height += 'px';
+			if(!isPC()) {
+				conf.height = '60%';
+			} else {
+				conf.height += 'px';
+			}
 		}
 		if(typeof conf.autoOpen != 'undefined')
 			conf.autoShow = conf.autoOpen;

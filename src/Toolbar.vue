@@ -18,7 +18,7 @@
 
 <script>
 import XButton from './com/Button.vue';
-import {loadJs} from './util/util.js';
+import {loadJs, isPC} from './util/util.js';
 import {create} from './com/Dialog.js';
 import qtip from './com/qtip';
 import XForm from './form/index.vue';
@@ -49,7 +49,7 @@ export default {
 		if(this.toolbar && Array.isArray(this.toolbar)) {
 			tb = Array.from(this.toolbar);
 		}
-		if(this.addUrl || this.batDeleteUrl || this.downloadable) {
+		if((this.addUrl || this.batDeleteUrl || this.downloadable) && isPC()) {
 			if(tb.length>0)
 				tb.unshift('|');
 			if(this.downloadable=='all' || this.downloadable===true) {

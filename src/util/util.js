@@ -131,4 +131,17 @@ function mergeFormData(target, ...fdList) {
 }
 */
 
+export function isPC() {
+	const ua = navigator.userAgent;
+	const agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPod'];
+	let flag = true;
+	for(let i = 0; i < agents.length; i++) {
+		if(ua.indexOf(agents[i]) > 0) {
+			flag = false;
+			break;
+		}
+	}
+	return flag;
+}
+
 export {$type, isObject, isPlainObject};
