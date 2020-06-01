@@ -716,7 +716,7 @@ export default {
 .st-table-head-indicator-bottom{
 	transform: rotate(180deg);
 }
-@media screen and (min-width: 375px){
+@media screen and (max-width: 375px){
 	.st-fixed-stable{
 		.st-table{
 			overflow-y: unset;

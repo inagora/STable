@@ -207,7 +207,7 @@ export default {
 		transform: rotate(180deg);
 	}
 }
-@media screen and (min-width: 375px){
+@media screen and (max-width: 375px){
 	.st-pn{
 		justify-content: space-between;
 		.st-flex-padding {
