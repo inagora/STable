@@ -99,6 +99,7 @@
 					v-else-if="field.type=='cascade'"
 					v-model="formData[field.name]"
 					:options="field.options"
+					:props="field.props"
 					filterable
 					clearable
 					:style="{width:field.width+'px'}"
@@ -196,6 +197,7 @@
 						return options;
 					};
 					field.options = format(field.listData);
+					field.props = field.props;
 				}
 
 				if(field.required) {
@@ -383,6 +385,9 @@
 					}
 					if(field.type=='file')
 						field.loading = false;
+
+					if(field.type == 'cascade')
+						field.props = field.props;
 
 					return Object.assign({}, field);
 				});

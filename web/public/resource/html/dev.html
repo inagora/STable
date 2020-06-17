@@ -89,7 +89,19 @@ STable.init({
 		list: type,
 		autoSelect: true,
 		clearable: false
-	}],
+	},{
+		label: '',
+		name: 'is_consign',
+		type: 'cascade',
+		props: {
+			multiple: true
+		},
+		placeholder: '请选择',
+		listData:[
+			["0","生效",[['a', 'b']]],
+			["1","失效"],
+		]
+	},],
 	searchResetable: true,
 	updateUrl: '/',
 	addUrl: '/',
