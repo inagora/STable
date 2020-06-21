@@ -13,6 +13,11 @@ module.exports = {
 			lang: 'zh-CN',
 			title: 'STable - 专注于表格',
 			description: '一个专注于web表格展示的工具'
+		},
+		'/v1/': {
+			lang: 'zh-CN',
+			title: 'STable - 专注于表格',
+			description: '一个专注于web表格展示的工具'
 		}
 	},
 	themeConfig: {
@@ -31,7 +36,29 @@ module.exports = {
 					'/en/guide/first_stable',
 					'/en/api'
 				]
-			}
-		}
+			},
+			'/v1/': {
+				sidebar: [
+					'/v1/guide/install',
+					'/v1/guide/first_stable',
+					'/v1/api'
+				]
+			},
+		},
+		nav: [
+			{ 
+				text: '版本',
+				items: [
+					{
+						text: '2.0.3',
+						link: '/zh/guide/install.html'
+					},
+					{
+						text: '1.x',
+						link: '/v1/guide/install.html'
+					}
+				]
+			},
+		]
 	}
 };
