@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/inagora/STable@v1.3.5/dist/STable.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/inagora/STable@v1.4.2/dist/STable.min.css"/>
     <title>fixed</title>
 </head>
 <body>
@@ -19,7 +19,7 @@
         <div id="box"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/inagora/STable@v1.3.5/dist/STable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/inagora/STable@v1.4.2/dist/STable.min.js"></script>
 </body>
 </html>
 ```

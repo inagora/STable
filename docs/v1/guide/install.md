@@ -1,9 +1,8 @@
 # 安装
 
 ## 更新日志
-最新稳定版本：2.0.1
+最新稳定版本：2.0.3
 
-最新beta版本：2.0.0-beta.48
 版本更新日志见[GitHub](https://github.com/inagora/STable/releases)。
 ## 直接使用`<script>`引入
 * 下载js文件
@@ -35,7 +34,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/inagora/STable@v1.3.5/dist/STable.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/inagora/STable@v1.4.2/dist/STable.min.css"/>
     <title>fixed</title>
 </head>
 <body>
@@ -43,7 +42,7 @@
         <div id="box"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/inagora/STable@v1.3.5/dist/STable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/inagora/STable@v1.4.2/dist/STable.min.js"></script>
 </body>
 </html>
 ```

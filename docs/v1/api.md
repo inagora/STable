@@ -4,15 +4,15 @@
 ::: tip
 对于一些即将过时的参数，我们会打上<sup style="color:red">dep</sup>标识。尽量不要使用这些参数，请根据建议使用替代方案。
 :::
-### acc
+### additionalColumnConfig
 * __类型__: `Object`
 * __详细__:
 
-	是additionalColumnConfig的缩写。有时候列配置columns是从服务端下发的，但在页面里还需要用js做一些额外配置，就可以用这个参数配置。它是一个对象，每个key值对应一个列的dataIndex，value是对此列增加的配置。
+	有时候列配置columns是从服务端下发的，但在页面里还需要用js做一些额外配置，就可以用这个参数配置。它是一个对象，每个key值对应一个列的dataIndex，value是对此列增加的配置。
 * __用法__:
 	```js
 	//额外增加一些列设置
-	acc: {
+	additionalColumnConfig: {
 		actorName: {
 			width: 200	//设置列actorName的宽度为200
 		},
@@ -24,8 +24,6 @@
 		}
 	}
 	```
-* __参考__:
-	* <DemoViewer demo="api-acc" />
 
 ### actionMethods
 * __类型__: `Object`
@@ -76,15 +74,6 @@
 	* <DemoViewer demo="api-addConfig" />
 	* [addConfig](#addconfig)
 
-### ajaxSetting
-* __类型__: `Object`
-* __详细__:
-
-	如果在ajax请求的时候需要设置一些特定的配置，可以使用此属性。
-	配置与网络请求相关的属性，比如：Content-type
-
-* __参考__:
-	* <DemoViewer demo="api-ajaxSetting" />
 ### batDeleteUrl
 * __类型__: `String`
 * __详细__: 
@@ -135,18 +124,6 @@
 	* [column api](#column)
 	* <DemoViewer demo="api-columns" />
 
-### componentOrder
-* __类型__: `Array`
-* __默认值__: [ 'title', 'tip', 'toolbar', 'search', 'table', 'pagination' ]
-* __详细__: 
-
-	STable由几个“部件”构成，分别是：标题(title)、提示(tip)、工具栏(toolbar)、搜索区(search)、表格(table)、分页栏(pagination)。通过componentOrder，我们可以对部件的展示顺序自己调整，比如想把工具栏显示在表格下面，就可以这样设置
-	```js
-	componentOrder: ['search', 'table', 'toolbar', 'pagination']
-	```
-* __参考__:
-	* <DemoViewer demo="api-componentOrder" />
-
 ### deleteUrl
 * __类型__: `String`
 * __详细__:
@@ -169,14 +146,6 @@
 * __参考__:
 	* <DemoViewer demo="api-downloadable" />
 
-### downloadurl
-* __类型__: `String`
-* __详细__: 
-
-	有时需要自定义下载接口，更灵活的控制数据的下载，可以设置该参数为一个特定的接口地址。
-* __参考__:
-	* <DemoViewer demo="api-downloadurl" />
-
 ### downloadAllFromJustOnePage
 * __类型__: `Boolean`
 * __默认值__: false
@@ -186,7 +155,7 @@
 
 ### downloadTimeout
 * __类型__: `Number`
-* __默认值__: 30000
+* __默认值__: 10000
 * __详细__: 
 
 	超时时间(毫秒)。全量下载所有数据时，会分页面请求数据，可以用此参数指定每个页面请求的超时时间。如果超时，会中断请求，重新发起一个。
@@ -195,7 +164,7 @@
 
 ### el
 * __类型__: `String|HTMLElement`
-* __默认值__: "#stableContainer"
+* __默认值__: "#wdStableContainer"
 * __详细__: 
 
 	STable在页面中的容器，它可以是css选择器，也可是一个dom元素。
@@ -229,7 +198,7 @@
 * __参考__: 
 	* <DemoViewer demo="api-labelVisible" />
 
-### layoutMode
+### layout
 * __类型__: `String`
 * __默认值__: "fixed"
 * __详细__: 
@@ -433,7 +402,7 @@
 * __默认值__: "none"
 * __详细__: 
 
-	行的选择模式。在单选框或复选框选择行之后，可以通过STable的getSelected(<span style="color: red;">注：v1.x版本请使用getSelectedRows</span>)接口获取所有选中的行。有以下三种模式：
+	行的选择模式。在单选框或复选框选择行之后，可以通过STable的getSelectedRows接口获取所有选中的行。有以下三种模式：
 	* 'none'，在表格行前面不显示选择按钮
 	* 'single'，单选模式，在表格行前显示单选按钮
 	* 'multiple'，多选模式，在表格行前显示多选按钮
@@ -494,6 +463,12 @@
 * __参考__: 
 	* <DemoViewer demo="api-sublistAt" />
 
+### title
+* __类型__: `String`
+* __详细__: `String`
+
+	标题，显示在顶部。并且用做导出excel的默认文件名
+
 ### toolbar
 * __类型__: `Array`
 * __详细__: 
@@ -523,18 +498,18 @@
 	* [button api](#button)
 	* <DemoViewer demo="api-toolbar" />
 
-### updateConfig
+### editConf
 * __类型__: `Array`
 * __详细__: 
 
-	编辑一行数据时，弹窗中表单的详细设置。需要和参数`updateUrl`配合使用。
+	编辑一行数据时，弹窗中表单的详细设置。需要和参数`updateUrl`配合使用。同时兼容：editConfig/metaEditConf
 	:::tip
-	如果设置了addUrl参数，但未设置addConfig，会使用editConfig做为添加数据的表单
+	如果设置了addUrl参数，但未设置addConf，会使用editConf做为添加数据的表单
 	:::
 * __参考__:
 	* [form api](#form)
 	* [updateUrl](#updateurl)
-	* <DemoViewer demo="api-updateConfig" />
+	* <DemoViewer demo="api-editConf" />
 
 ### updateUrl
 * __类型__: `String`
@@ -547,7 +522,7 @@
 	```
 * __参考__:
 	* [updateConfig](#updateconfig)
-	* <DemoViewer demo="api-updateConfig" />
+	* <DemoViewer demo="api-editConf" />
 
 ### url
 * __类型__: `String`
@@ -682,60 +657,6 @@
 	* [updateUrl](#updateurl)
 	* [updateConfig](#updateconfig)
 	* <DemoViewer demo="listener-beforeedit" />
-
-
-
-### edit
-* __参数__:
-  * response，`Object`，本次请求的返回内容
-	* data，`Object`，编辑的数据
-* __详细__:
-
-	修改一行数据时触发。在此对要编辑的数据做处理和发送请求
-* __用法__: 
-	```JS
-	listeners: {
-		edit(res, data){
-			if(res.errno){
-				alert(res.errmsg);
-			} else {
-				alert(`the new name is ${data.name}`);
-			}
-		}
-	}
-	```
-* __参考__:
-	* [updateUrl](#updateurl)
-	* [updateConfig](#updateconfig)
-	* <DemoViewer demo="listener-beforeedit" />
-
-### beforebatdelete
-* __参数__:
-	* records, `Array`, 被选中的数据行
-* __详细__:
-	点击批量删除按钮时触发。如果返回`false`，会阻止删除动作。
-* __参考__:
-	* <DemoViewer demo="listener-batdelete" />
-
-### batdelete
-* __参数__:
-	* response, `Object`, 删除请求的返回内容
-	* records, `Array`, 被选中的数据行
-* __详细__:
-	批量删除后触发。
-* __参考__:
-	* <DemoViewer demo="listener-batdelete" />
-
-### beforedownload
-* __参数__:
-	* records, `Array`，要生成excel文件的数据
-* __详细__:
-	在导出数据时触发。注意，此时已经请服务端把所有数据都下载成功了，在beforeexport触发函数里，可以对数据进行预加工。
-	::: tip
-	如果触发函数返回false，就会阻止数据导出
-	:::
-* __参考__:
-	* <DemoViewer demo="listener-download" />
 
 ### search
 * __参数__:
@@ -878,7 +799,7 @@
 * __参考__: 
 	* <DemoViewer demo="method-layout" />
 
-### getSelected
+### getSelectedRows
 * __详细__:
 
 	获取table表格中选中的行，返回值为数组。
@@ -902,16 +823,6 @@
 	设置表格数据。一般情况下，我们的数据都是从服务端拉取的；但可以通过这个接口，用程序设置数据，让STable的更新更灵活。
 * __参考__: 
 	* <DemoViewer demo="method-setRecords" />
-
-
-### getToolbarBtn
-* __参数__:
-	* idx, `String|Number|null`，要获得的按钮id或者序号。如果没传此参数，返回所有按钮
-* __详细__:
-
-	获得当前工具栏的按钮。
-* __参考__: 
-	* <DemoViewer demo="btn-visible" />
 
 ## column
 表格的列配置。通过它配置此列的表头、表格内容以及展示样式。一般情况下，它的配置如下：
@@ -954,14 +865,6 @@ columns: [
 	}
 ]
 ```
-
-### actionUrl
-* __类型__: `String`
-* __详细__:
-
-	[label](#label)后配置的[icon](#icon)点击跳转的URL。
-* __参考__:
-	* <DemoViewer demo="column-icon" />
 
 ### buttons
 * __类型__: `Array`
@@ -1070,15 +973,6 @@ columns: [
 	有时候我们并不会指定列的dataIndex参数，比如设置了列的buttons或者render参数后，`dataIndex`就不是必须的了。这时候STable其实还是会自动生成一个dataIndex，供内容使用。
 	:::
 
-### defaultOption
-* __类型__: `String`
-* __详细__:
-
-	如果设置了options参数，当没有对应的可选项时，默认显示的内容。
-* __参考__:
-	* [options](#options)
-	* <DemoViewer demo="column-options" />
-
 ### flex
 * __类型__:	`Number`
 * __详细__:
@@ -1090,14 +984,6 @@ columns: [
 * __参考__:
 	* [width](#width)
 	* <DemoViewer demo="column-flex" />
-
-### icon
-* __类型__: `String`
-* __详细__:
-
-	有时需要对这个搜索项做特殊说明，不能直接显示在搜索区域，可以配置一个图标，并设置[actionUrl](#actionUrl)，点击后跳转到自定义的帮助页面。
-* __参考__:
-	* <DemoViewer demo="column-icon" />
 
 ### locked
 * __类型__:	`Boolean|String`
@@ -1155,15 +1041,6 @@ columns: [
 	```
 * __参考__:
 	* <DemoViewer demo="column-render" />
-
-### resizable
-* __类型__:	`Boolean`
-* __默认值__: true
-* __详细__:
-
-	设置此列在表头区域是否能拖动缩放。
-* __参考__:
-	* <DemoViewer demo="column-resizable" />
 
 ### sortable
 * __类型__: `Boolean`
