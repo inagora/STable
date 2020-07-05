@@ -27,7 +27,8 @@ module.exports = {
 				sidebar: [
 					'/zh/guide/install',
 					'/zh/guide/first_stable',
-					'/zh/api'
+					'/zh/api',
+					'/zh/guide/qa'
 				]
 			},
 			'/en/': {
@@ -41,7 +42,8 @@ module.exports = {
 				sidebar: [
 					'/v1/guide/install',
 					'/v1/guide/first_stable',
-					'/v1/api'
+					'/v1/api',
+					'/zh/guide/qa'
 				]
 			},
 		},
