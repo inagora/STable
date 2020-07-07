@@ -406,6 +406,7 @@ export default {
 						Object.assign(colConf, {
 							locked: col.locked,
 							visible: col.visible,
+							width: col.width,
 							_st_idx: col._st_idx
 						});
 						_columns.push(colConf);
@@ -442,6 +443,7 @@ export default {
 							text: col.text,
 							visible: col.visible,
 							locked: col.locked,
+							width: col.width,
 							_st_idx: col._st_idx,
 							_st_ori_idx: col._st_ori_idx
 						};

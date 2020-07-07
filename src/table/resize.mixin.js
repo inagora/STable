@@ -42,6 +42,7 @@ export default {
 				return col;
 			});
 			this.store.columns = cs;
+			this.store.saveColumnsState();
 			this._syncHeight();
 		},
 		clearResize(){
