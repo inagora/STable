@@ -89,9 +89,6 @@ export default {
 		};
 	},
 	watch: {
-		options(){
-			this.rebuildMenu();
-		},
 		visible(val){
 			this.$emit('update:visible', val);
 			if(val && this.selIndexes.length>0){
@@ -123,10 +120,12 @@ export default {
 		allDdm = allDdm.filter(ddm=>ddm!=this);
 	},
 	methods: {
-		rebuildMenu(){
+		rebuildMenu(val){
+			let options = this.options;
+			if(val) options = val;
 			this.filter(this.lastFilterKey||'');
-			this.menuList = [this.options];
-			let p  = this.options;
+			this.menuList = [options];
+			let p  = options;
 			for(let idx of this.selIndexes) {
 				if(p[idx]){
 					p = p[idx].options;

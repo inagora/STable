@@ -35,6 +35,18 @@
 import select from './select.mixin.js';
 export default {
 	mixins: [select],
+	watch: {
+		'field.options': {
+			deep: true,
+			handler(val) {
+				this.options = val;
+				if(this.ddm) {
+					this.ddm.rebuildMenu(val);
+				}
+				this.formatList();
+			}
+		}
+	},
 	methods: {
 		initSelect(){
 			let selIdxes = [];

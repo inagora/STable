@@ -583,6 +583,25 @@ export default {
 			} else {
 				return btns[idx];
 			}
+		},
+		/**
+		 * @member {Function} getForm
+		 * @param {Number|String} idx 要获取的form的序号，或者配置的id
+		 */
+		getSearchForm(idx) {
+			let sf = this.$refs.search;
+			if(!sf || !sf[0] || !sf[0].$refs || !sf[0].$refs.form){
+				return;
+			}
+			let forms = sf[0].$refs.form.fieldList;
+			if(typeof idx == 'undefined'){
+				return forms;
+			}else if($type(idx)=='string'){
+				forms = forms.filter(b=>b.conf.id==idx);
+				return forms[0];
+			} else {
+				return forms[idx];
+			}
 		}
 	}
 };

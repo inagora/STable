@@ -8,6 +8,7 @@
 		@focus="$emit('fieldfocus')"
 		@blur="$emit('fieldblur');validate()"
 		@input="validate(true)"
+		@change="handleChange(field, $event)"
 	/>
 </template>
 
@@ -36,6 +37,11 @@ export default {
 	watch: {
 		val(v){
 			this.$emit('input', v);
+		}
+	},
+	methods: {
+		handleChange(field, evt) {
+			field.change&&field.change(field, evt);
 		}
 	},
 	mounted(){

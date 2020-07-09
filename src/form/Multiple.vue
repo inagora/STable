@@ -74,6 +74,16 @@ export default {
 			} else {
 				this.upadteInputWidth();
 			}
+		},
+		field: {
+			deep: true,
+			handler(val) {
+				this.options = val.options;
+				this.formatList();
+				if(this.ddm) {
+					this.ddm.rebuildMenu(this.options);
+				}
+			}
 		}
 	},
 	mounted(){

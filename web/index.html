@@ -66,7 +66,7 @@
 	});
 	</script> -->
 	<script>
-	STable.init({
+	var table = STable.init({
 		el: '#box',
 		title: '测试用例',
 		titleVisible: true,
@@ -109,12 +109,29 @@
 				type: 'text',
 				width: '300',
 				icon: 'st-icon st-icon-plus',
-				actionUrl: 'http://backend.inagora.org/'
+				actionUrl: '/',
+				change(field, evt) {
+					let form = table.getSearchForm(1);
+					form.options = [
+						{
+							label: '爱情2',
+							value: 'type1'
+						},
+						{
+							label: '悬疑',
+							value: 'type2'
+						},
+						{
+							label: '恐怖',
+							value: 'type3'
+						}
+					];
+				}
 			},
 			{
 				name: 'movieType',
 				label: '影片类型',
-				type: 'cascader',
+				type: 'multiple',
 				options: [
 					{
 						label: '爱情',
@@ -128,10 +145,27 @@
 						label: '恐怖',
 						value: 'type3'
 					}
-				]
+				],
+				change(field, val) {
+					let form = table.getSearchForm(2);
+					form.list = [
+						{
+							label: '爱情2',
+							value: 'type1'
+						},
+						{
+							label: '悬疑',
+							value: 'type2'
+						},
+						{
+							label: '恐怖',
+							value: 'type3'
+						}
+					];
+				}
 			},
 			{
-				name: 'movieType',
+				name: 'movieType2',
 				label: '影片类型',
 				type: 'multiple',
 				value: 'type1',

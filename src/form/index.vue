@@ -44,6 +44,7 @@
 						:ref="'field_'+fidx"
 						v-model="formData[field.name]"
 						:field="field"
+						@change="handleChange"
 						@update:errmsg="updateErrmsg(field, $event)"
 						@fieldfocus="field._st_focus=true"
 						@fieldblur="field._st_focus=false"
@@ -341,6 +342,10 @@ export default {
 			if(field.actionUrl) {
 				window.open(field.actionUrl, '_blank');
 			}
+		},
+		handleChange(params) {
+			let {field, val} = params;
+			field.change&&field.change(field, val);
 		}
 	}
 };
