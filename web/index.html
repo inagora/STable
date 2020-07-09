@@ -224,6 +224,25 @@
 				type: 'date'
 			}
 		],
+		searchAreaBtns: [
+			{
+				text: '自定义',
+				type: 'primary',
+				click() {
+					console.log('自定义按钮');
+				}
+			},
+			{
+				text: '自定义下载',
+				type: 'primary',
+				downloadable: 'single'
+			},
+			{
+				text: '自定义下载所有页',
+				type: 'primary',
+				downloadable: 'all'
+			}
+		],
 		// searchFilter: {
 		// 	name: '名称',
 		// 	age: '年龄',

@@ -131,6 +131,10 @@ export default {
 			 * @param {Array} searchFilter 搜索表单配置
 			 */
 			searchFilter: false,
+			/**
+			 * @param {Array} searchAreaBtns 搜索区域自定义按钮
+			 */
+			searchAreaBtns: false,
 		}, window.STable && window.STable.default||{}, this.config);
 
 		//国际化

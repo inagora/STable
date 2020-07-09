@@ -30,6 +30,16 @@
 				}"
 				@click.prevent="reset"
 			/>
+			<template
+				v-if="searchAreaBtns && searchAreaBtns.length > 0">
+				<x-button 
+					class="st-search-customize-btn"
+					v-for="(btn, index) in searchAreaBtns"
+					:key="'btn_' + index"
+					:conf="btn"
+					@click="triggerClick(btn, $event)"
+				/>
+			</template>
 		</x-form>
 	</div>
 </template>
@@ -37,9 +47,12 @@
 <script>
 import XButton from './com/Button.vue';
 import XForm from './form/index.vue';
+import {loadJs} from './util/util.js';
+import downloadMixin from './mixins/download.mixin.js';
 
 export default {
 	components:{ XButton, XForm },
+	mixins: [downloadMixin],
 	inject: [
 		'searchFilter',
 		'searchResetable',
@@ -50,8 +63,23 @@ export default {
 		'params',
 		'store',
 		'ignoreEmptySearchParam',
-		'locale'
+		'locale',
+		'searchAreaBtns'
 	],
+	mounted() {
+		let downloadable = false;
+		if(this.searchAreaBtns && this.searchAreaBtns.length > 0) {
+			for (let i = 0; i < this.searchAreaBtns.length; i++) {
+				if(this.searchAreaBtns[i].downloadable) {
+					downloadable = true;
+					break;
+				}
+			}
+		}
+		if(downloadable) {
+			loadJs('https://cdn.jsdelivr.net/npm/xlsx@0.15.0/dist/xlsx.full.min.js');
+		}
+	},
 	methods: {
 		search(evt) {
 			let searchParams = Object.assign({}, this.urlSearchParams, evt);
@@ -80,6 +108,15 @@ export default {
 			}
 
 			return params;
+		},
+		triggerClick(btn, evt){
+			if(btn.downloadable === 'single') { // 下载
+				this.download();
+			} else if(btn.downloadable === 'all') {
+				this.downloadAll();
+			} else {
+				btn.click&&btn.click.call(this.$parent, btn, evt);
+			}
 		}
 	}
 };
@@ -91,6 +128,9 @@ export default {
 	padding: 10px 0 0 10px;
 
 	&-reset-btn{
+		margin-left: 10px;
+	}
+	&-customize-btn {
 		margin-left: 10px;
 	}
 }
