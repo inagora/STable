@@ -131,7 +131,7 @@ import qtip from '../com/qtip.js';
 export default {
 	components: {XHead, XBody, XFlyman},
 	mixins: [data, drag, resize],
-	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax', 'deleteUrl', 'updateUrl','updateConfig', 'idIndex', 'locale'],
+	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax', 'deleteUrl', 'updateUrl','updateConfig', 'idIndex', 'locale', 'groupBy'],
 	data() {
 		return {
 			hlRowNum: -1,

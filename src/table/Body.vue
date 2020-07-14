@@ -34,66 +34,71 @@
 					@mousedown="store.focusRowNum=idx"
 					@click="store.emit('rowclick', record, $event)"
 				>
-					<td
+					<template
 						v-for="(col, colIdx) of columns"
-						:key="colIdx"
-						class="st-table-body-td"
-						:class="[
-							col.cls,
-							{
-								'st-table-td-rownumber':col.type=='rownumber'
-							}
-						]"
-						:style="col.style"
-						@click="cellClick(record, col, $event);store.emit('cellclick', record, col, $event)"
 					>
-						<label v-if="col.type=='radio'" class="st-table-label-cell st-table-cell">
-							<input v-model="store.radioVal" :value="idx" type="radio" />
-						</label>
-						<label v-else-if="col.type=='checkbox'" class="st-table-label-cell st-table-cell">
-							<input v-model="store.checkboxVal" :value="idx" type="checkbox" />
-						</label>
-						<div v-else-if="col.type=='rownumber'" class="st-table-cell" v-text="record._st_aux.rownumber"></div>
-						<template v-else-if="col.type=='text'">
-							<template v-if="sublistAt.includes(col.dataIndex)">
+						<td
+							:key="colIdx"
+							v-if="!record._st_aux.ignoreRenders.includes(col.dataIndex)"
+							:rowspan="(record._st_aux.merges[col.dataIndex])||''"
+							class="st-table-body-td"
+							:class="[
+								col.cls,
+								{
+									'st-table-td-rownumber':col.type=='rownumber'
+								}
+							]"
+							:style="col.style"
+							@click="cellClick(record, col, $event);store.emit('cellclick', record, col, $event)"
+						>
+							<label v-if="col.type=='radio'" class="st-table-label-cell st-table-cell">
+								<input v-model="store.radioVal" :value="idx" type="radio" />
+							</label>
+							<label v-else-if="col.type=='checkbox'" class="st-table-label-cell st-table-cell">
+								<input v-model="store.checkboxVal" :value="idx" type="checkbox" />
+							</label>
+							<div v-else-if="col.type=='rownumber'" class="st-table-cell" v-text="record._st_aux.rownumber"></div>
+							<template v-else-if="col.type=='text'">
+								<template v-if="sublistAt.includes(col.dataIndex)">
+									<div
+										v-for="(_text,_textIdx) of record[col.dataIndex]"
+										:key="_textIdx"
+										class="st-table-cell"
+										:class="{'st-table-cell-nowrap':!col.cellWrap}"
+										v-text="_text"
+									></div>
+								</template>
 								<div
-									v-for="(_text,_textIdx) of record[col.dataIndex]"
-									:key="_textIdx"
+									v-else
 									class="st-table-cell"
 									:class="{'st-table-cell-nowrap':!col.cellWrap}"
-									v-text="_text"
+									v-text="record[col.dataIndex]"
 								></div>
 							</template>
 							<div
-								v-else
+								v-else-if="col.type=='render'"
 								class="st-table-cell"
 								:class="{'st-table-cell-nowrap':!col.cellWrap}"
-								v-text="record[col.dataIndex]"
+								v-html="record._st_aux.render[col.dataIndex]"
 							></div>
-						</template>
-						<div
-							v-else-if="col.type=='render'"
-							class="st-table-cell"
-							:class="{'st-table-cell-nowrap':!col.cellWrap}"
-							v-html="record._st_aux.render[col.dataIndex]"
-						></div>
-						<div v-else-if="col.type=='button'" class="st-table-btn-box st-table-cell">
-							<template v-for="(btn, btnIdx) of col.buttons">
-								<x-button
-									v-if="record._st_aux.btnsVisible[col.dataIndex][btnIdx]"
-									:key="btnIdx"
-									:conf="btn"
-									@click="btnClick(btn, record, $event)"
-								/>
-							</template>
-						</div>
-						<div
-							v-else-if="col.type=='option'"
-							class="st-table-cell"
-							:class="{'st-table-cell-nowrap':!col.cellWrap}"
-							v-text="record._st_aux.option[col.dataIndex]"
-						></div>
-					</td>
+							<div v-else-if="col.type=='button'" class="st-table-btn-box st-table-cell">
+								<template v-for="(btn, btnIdx) of col.buttons">
+									<x-button
+										v-if="record._st_aux.btnsVisible[col.dataIndex][btnIdx]"
+										:key="btnIdx"
+										:conf="btn"
+										@click="btnClick(btn, record, $event)"
+									/>
+								</template>
+							</div>
+							<div
+								v-else-if="col.type=='option'"
+								class="st-table-cell"
+								:class="{'st-table-cell-nowrap':!col.cellWrap}"
+								v-text="record._st_aux.option[col.dataIndex]"
+							></div>
+						</td>
+					</template>
 				</tr>
 			</tbody>
 		</table>

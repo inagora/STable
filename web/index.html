@@ -83,23 +83,24 @@
 		titleVisible: true,
 		tip: '此数据来自时光网',
 		url: '/ajaxList',
-		rowNumberVisible: true,
-		selectMode: 'single',
+		rowNumberVisible: false,
+		selectMode: 'none',
 		ajaxSetting: {
 			contentType: 'application/x-www-form-urlencoded'
 		},
-		// merges: [
-		// 	{
-		// 		s: {
-		// 			c: 1,
-		// 			r: 1
-		// 		},
-		// 		e: {
-		// 			c: 1,
-		// 			r: 3
-		// 		}
-		// 	}
-		// ],
+		groupBy: ['name'],
+		merges: [
+			{
+				s: {
+					c: 1,
+					r: 1
+				},
+				e: {
+					c: 1,
+					r: 3
+				}
+			}
+		],
 		// searchFilter: [
 		// {
 		// 	type: 'input',
@@ -310,7 +311,7 @@
 				header: 'id',
 				dataIndex:'id',
 				width: 100,
-				locked: true,
+				// locked: true,
 				sortable: true
 			},
 			// {
@@ -367,7 +368,7 @@
 				header: '上映时间',
 				dataIndex: 'year',
 				width: 280,
-				locked: 'right'
+				// locked: 'right'
 			},
 			{
 				header: 'btns',
