@@ -42,7 +42,9 @@ export default {
 		idIndex: 'idIndex',
 		ajax: 'ajax',
 		locale: 'locale',
-		merges: 'merges'
+		merges: {
+			default: []
+		}
 	},
 	data(){
 		let self = this;
@@ -276,6 +278,53 @@ export default {
 			if(this.merges && this.merges.length > 0) {
 				ws['!ref'] = `A1:ZZ${sheetData.length}`;
 				ws['!merges'] = this.merges;
+			} else {
+				let result = [];
+				let mergeIndex = columns.reduce((acc, curr, index) => {
+					if(curr.mergeable) {
+						return acc.concat(index);
+					} else {
+						return acc;
+					}
+				}, []);
+				for (let j = 0; j < mergeIndex.length; j++) {
+					let start = 0;
+					let end = 0;
+					let obj = {};
+					for (let i = 1; i < sheetData.length - 1; i++) {
+						let row = sheetData[i];
+						let nextRow = sheetData[i + 1];
+						
+						if(row[mergeIndex[j]] == nextRow[mergeIndex[j]]) {
+							end = i + 1;
+						} else {
+							start = i + 1;
+							end = i + 1;
+						}
+						if(end - start > 0) {
+							obj[start] = end;
+						}
+					}
+					result.push(obj);
+				}
+				let merges = [];
+				result.forEach((item, index) => {
+					Object.keys(item).forEach(key => {
+						let obj = {
+							s: {
+								r: parseInt(key),
+								c: mergeIndex[index]
+							},
+							e: {
+								r: parseInt(item[key]),
+								c: mergeIndex[index]
+							}
+						};
+						merges.push(obj);
+					});
+				});
+				ws['!ref'] = `A1:ZZ${sheetData.length}`;
+				ws['!merges'] = merges;
 			}
 			XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 			XLSX.writeFile(wb, name);
