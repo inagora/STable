@@ -41,7 +41,8 @@ export default {
 		store: 'store',
 		idIndex: 'idIndex',
 		ajax: 'ajax',
-		locale: 'locale'
+		locale: 'locale',
+		merges: 'merges'
 	},
 	data(){
 		let self = this;
@@ -272,6 +273,10 @@ export default {
 			}
 			let ws = XLSX.utils.aoa_to_sheet(sheetData);
 			ws['!cols'] = colsConf;
+			if(this.merges && this.merges.length > 0) {
+				ws['!ref'] = `A1:ZZ${sheetData.length}`;
+				ws['!merges'] = this.merges;
+			}
 			XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 			XLSX.writeFile(wb, name);
 		}
