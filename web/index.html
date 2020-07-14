@@ -66,6 +66,17 @@
 	});
 	</script> -->
 	<script>
+
+	STable.default = Object.assign({}, STable.default, {
+		listeners: {
+			beforedatarequest(options){
+				let _headers = {};
+				_headers['test123'] = 'test';
+				options.headers = Object.assign({}, options.headers, _headers);
+				return options;
+			}
+		}
+	});
 	var table = STable.init({
 		el: '#box',
 		title: '测试用例',
@@ -77,6 +88,18 @@
 		ajaxSetting: {
 			contentType: 'application/x-www-form-urlencoded'
 		},
+		// merges: [
+		// 	{
+		// 		s: {
+		// 			c: 1,
+		// 			r: 1
+		// 		},
+		// 		e: {
+		// 			c: 1,
+		// 			r: 3
+		// 		}
+		// 	}
+		// ],
 		// searchFilter: [
 		// {
 		// 	type: 'input',
@@ -440,7 +463,15 @@
 		
 		componentOrder: [
 			'title','tip','toolbar', 'search', 'table','pagination'
-		]
+		],
+		listeners: {
+			ready() {
+				console.log('ready...');
+			},
+			search(data) {
+				console.log('search_data', data);
+			}
+		}
 	});
 	</script>
 </body>
