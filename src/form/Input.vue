@@ -39,11 +39,6 @@ export default {
 			this.$emit('input', v);
 		}
 	},
-	methods: {
-		handleChange(field, evt) {
-			field.change&&field.change(field, evt);
-		}
-	},
 	mounted(){
 		let type = this.field.type;
 		if(type=='datetime' || type=='date') {
@@ -74,6 +69,11 @@ export default {
 			});
 		}
 		this.formatRule();
+	},
+	methods: {
+		handleChange(field, evt) {
+			field.change&&field.change(field, evt);
+		}
 	}
 };
 </script>

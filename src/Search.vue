@@ -31,11 +31,12 @@
 				@click.prevent="reset"
 			/>
 			<template
-				v-if="searchAreaBtns && searchAreaBtns.length > 0">
+				v-if="searchAreaBtns && searchAreaBtns.length > 0"
+			>
 				<x-button 
-					class="st-search-customize-btn"
 					v-for="(btn, index) in searchAreaBtns"
 					:key="'btn_' + index"
+					class="st-search-customize-btn"
 					:conf="btn"
 					@click="triggerClick(btn, $event)"
 				/>

@@ -98,7 +98,10 @@ export default {
 			default: false
 		},
 		defaultValues: {
-			type: [Array, Object]
+			type: [Array, Object],
+			default() {
+				
+			}
 		}
 	},
 	data(){

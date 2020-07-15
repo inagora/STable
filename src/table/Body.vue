@@ -38,8 +38,8 @@
 						v-for="(col, colIdx) of columns"
 					>
 						<td
-							:key="colIdx"
 							v-if="!record._st_aux.ignoreRenders.includes(col.dataIndex)"
+							:key="colIdx"
 							:rowspan="(record._st_aux.merges[col.dataIndex])||''"
 							class="st-table-body-td"
 							:class="[
