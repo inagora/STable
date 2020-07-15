@@ -135,6 +135,10 @@ export default {
 			 * @param {Array} searchAreaBtns 搜索区域自定义按钮
 			 */
 			searchAreaBtns: false,
+			/**
+			 * @param {Boolean} showBorder 单元格是否显示边框
+			 */
+			showBorder: false,
 		}, window.STable && window.STable.default||{}, this.config);
 
 		//国际化

@@ -46,6 +46,9 @@
 								col.cls,
 								{
 									'st-table-td-rownumber':col.type=='rownumber'
+								},
+								{
+									'st-table-body-td-border': showBorder
 								}
 							]"
 							:style="col.style"
@@ -111,7 +114,8 @@ export default {
 	inject: [
 		'store',
 		'sublistAt', 
-		'layoutMode'
+		'layoutMode',
+		'showBorder'
 	],
 	components: {XButton},
 	props: {
@@ -182,6 +186,10 @@ export default {
 	}
 	&-tr:nth-of-type(2n) {
 		background-color: #fafafa;
+	}
+	&-td-border {
+		border-right: 1px solid #d0d0d0;
+        border-bottom: 1px solid #d0d0d0;
 	}
 	& &-tr-hl{
 		background-color: #f5f5f5;

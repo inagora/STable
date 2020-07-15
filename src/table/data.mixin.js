@@ -206,27 +206,31 @@ export default {
 				for(let dataIndex of this.groupBy) {
 					for(let groupIdx=recordGroup.length-1;groupIdx>=0;groupIdx--){
 						let group = recordGroup[groupIdx],
-							sortRet = {},
-							valueList = [];
+							newList = [],
+							newResult = [];
 						
-						for(let rec of group) {
-							let v = rec[dataIndex];
-							if(typeof v == 'undefined')
-								v = '';
-							if(!sortRet[v]) {
-								valueList.push(v);
-								sortRet[v] = [rec];
+						for (let i = 0; i < group.length; i++) {
+							const rec = group[i];
+							const v = rec[dataIndex];
+							if(newList.length > 1 && newList[newList.length - 1] && newList[newList.length - 1] == v) {
+								newResult[newResult.length - 1][v].push(rec);
 							} else {
-								sortRet[v].push(rec);
+								newList.push(v);
+								let obj = {
+									[v]: [rec]
+								};
+								newResult.push(obj);
 							}
 						}
+
 						let ret = [];
-						for(let v of valueList) {
-							sortRet[v][0]._st_aux.merges[dataIndex] = sortRet[v].length;
-							for(let i=1,len=sortRet[v].length;i<len;i++){
-								sortRet[v][i]._st_aux.ignoreRenders.push(dataIndex);
+						for (let i = 0; i < newResult.length; i++) {
+							let v = newResult[i][newList[i]];
+							v[0]._st_aux.merges[dataIndex] = v.length;
+							for(let j=1,len=v.length;j<len;j++){
+								v[j]._st_aux.ignoreRenders.push(dataIndex);
 							}
-							ret.push(sortRet[v]);
+							ret.push(v);
 						}
 						
 						ret.unshift(1);
