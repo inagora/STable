@@ -202,6 +202,14 @@
 * __参考__:
 	* <DemoViewer demo="api-el" />
 
+### groupBy
+* __类型__: `Array`
+* __详细__: 
+
+	如果设置了该参数，设置中的列将进行单元格的合并，合并规则是同一列的相邻行数据相同。
+* __参考__:
+	* <DemoViewer demo="api-groupBy" />
+
 ### idIndex
 * __类型__: `String`
 * __详细__: 
@@ -273,6 +281,16 @@
 * __参考__: 
 	* <DemoViewer demo="api-locale" />
 	* [locale词典](https://github.com/inagora/STable/tree/master/src/lang)
+
+### merges
+* __类型__: `Array`
+* __详细__: 
+
+	如果需要将导出的excel进行单元格合并，可以使用该配置，并且需要设置要合并列的属性mergeable: true，如果未设置该属性，则该列不会进行合并；  
+	每一个配置项都会有两个属性：s（开始单元格）、e（结束单元格），s和e包含两个属性：c（列号）、r（行号）；  
+	如果没有设置merges，但是设置了列的属性mergeable为true，则会自动合并具有相同值的相邻行。
+* __参考__: 
+	* <DemoViewer demo="api-merges" />
 
 ### page
 * __类型__: `Number`
@@ -395,6 +413,36 @@
 	```
 * __参考__:
 	* <DemoViewer demo="api-rowNumberVisible" />
+
+### searchAreaBtns
+* __类型__: `array`
+* __详细__: 
+	有时toolbar里的按钮比较少，希望把按钮放到搜索区域，就可以直接配置searchAreaBtns，并且可以自定义按钮的事件。
+	如果自定义的按钮需要实现下载功能，需要指定downloadable属性：single(下载当前页)，all(下载所有页)。
+* __用法__:
+	```javascript
+	searchAreaBtns: [
+		{
+			text: '自定义',
+			type: 'primary',
+			click() {
+				console.log('自定义按钮');
+			}
+		},
+		{
+			text: '自定义下载',
+			type: 'primary',
+			downloadable: 'single'
+		},
+		{
+			text: '自定义下载所有页',
+			type: 'primary',
+			downloadable: 'all'
+		}
+	],
+	```
+* __参考__:
+	* <DemoViewer demo="api-searchAreaBtns" />
 
 ### searchFilter
 * __类型__: `array|Object`
@@ -1112,6 +1160,13 @@ columns: [
 * __参考__:
 	* <DemoViewer demo="column-locked" />
 
+### mergeable
+* __类型__:	`Boolean`
+* __默认值__:	false
+* __详细__:
+
+	导出excle时列是否需要进行单元格合并，具体的使用方法可以参考[merges](#merges).
+
 ### options
 * __类型__: `Object`
 * __详细__:
@@ -1224,7 +1279,7 @@ columns: [
 	* <DemoViewer demo="column-flex" />
 
 ## form
-* __介绍__:由输入框（input）、选择器(select)、日期(date)、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件（无需注册）在vue中使用（x-form），也可集成在STable使用，一般情况下，它的配置如下：
+* __介绍__:由输入框（input）、选择器(select)、日期(date)、文件上传（file）等控件组成，用以收集、校验、提交数据。可以单独作为组件（无需注册）在vue中使用（x-form），也可集成在STable使用；如果需要在操作完表单之后做一些自定义的操作，可以配置change事件；一般情况下，它的配置如下：
   
 	```html
 	<div id="box">
@@ -1250,6 +1305,23 @@ columns: [
 						label: '电影名',
 						name: 'movie_name',
 						type: 'input',
+						change(field, val) {
+							let form = table.getSearchForm(2);
+							form.list = [
+								{
+									label: '爱情2',
+									value: 'type1'
+								},
+								{
+									label: '悬疑',
+									value: 'type2'
+								},
+								{
+									label: '恐怖',
+									value: 'type3'
+								}
+							];
+						}
 					},
 					{
 						label: '电影类型',
