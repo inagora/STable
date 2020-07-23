@@ -100,7 +100,7 @@ export default {
 		defaultValues: {
 			type: [Array, Object],
 			default() {
-				
+				return {};
 			}
 		}
 	},
