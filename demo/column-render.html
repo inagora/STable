@@ -1,0 +1,24 @@
+<style>
+	#box{
+		height: 300px;
+	}
+	.poster{
+		max-width: 60px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: [
+			'name',
+			{
+				text: 'poster',
+				render(record){
+					return `<img class="poster" src="${record.img}">`
+				}
+			}
+		]
+	})
+</script>

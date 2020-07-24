@@ -1,0 +1,25 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: [
+			'name',
+			{
+				text: '此列单元格可点击',
+				dataIndex: 'year',
+				style: {
+					cursor: 'pointer'
+				},
+				click(record){
+					alert(`电影上映时间：${record.realTime}`);
+				}
+			}
+		]
+	})
+</script>

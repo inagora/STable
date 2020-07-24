@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
+	<title>html entities</title>
+	<style type="text/css">
+		#doc{
+			padding-top: 30px;
+		}
+		.box{
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.item{
+			width: 60px;
+			overflow: hidden;
+			border: 1px solid #f0f0f0;
+			margin: 5px;
+			padding: 5px 7px;
+			text-align: center;
+		}
+		.item:hover{
+			background-color: #f5f5f5;
+		}
+		.char{
+			font-size: 30px;
+			line-height: 50px;
+		}
+		.item:hover .char{
+			font-size: 40px;
+		}
+		.text{
+			font-size: 12px;
+		}
+		#fontChange{
+			position: fixed;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background-color: #f0f0f0;
+			box-sizing: border-box;
+			padding: 10px;
+		}
+		label{
+			margin-right: 15px;
+		}
+		.font{
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+<div id="doc"></div>
+<div id="fontChange">
+	<form></form>
+</div>
+<script>
+let common = '&acute;&copy;&gt;&micro;&reg;&amp;&deg;&iexcl;&nbsp;&raquo;&brvbar;&divide;&iquest;&not;&sect;&bull;&frac12;&laquo;&para;&uml;&cedil;&frac14;&lt;&plusmn;&times;&cent;&frac34;&macr;&quot;&trade;&euro;&pound;&yen;&bdquo;&hellip;&middot;&rsaquo;&ordf;&circ;&ldquo;&mdash;&rsquo;&ordm;&dagger;&lsaquo;&ndash;&sbquo;&rdquo;&Dagger;&lsquo;&permil;&shy;&tilde;&asymp;&frasl;&larr;&part;&spades;&cap;&ge;&le;&Prime;&sum;&clubs;&harr;&loz;&prime;&uarr;&darr;&hearts;&minus;&prod;&zwj;&diams;&infin;&ne;&radic;&zwnj;&equiv;&int;&oline;&rarr;&alpha;&eta;&mu;&pi;&theta;&beta;&gamma;&nu;&psi;&upsilon;&chi;&iota;&omega;&rho;&xi;&delta;&kappa;&omicron;&sigma;&zeta;&epsilon;&lambda;&phi;&tau;&Alpha;&Eta;&Mu;&Pi;&Theta;&Beta;&Gamma;&Nu;&Psi;&Upsilon;&Chi;&Iota;&Omega;&Rho;&Xi;&Delta;&Kappa;&Omicron;&Sigma;&Zeta;&Epsilon;&Lambda;&Phi;&Tau;&sigmaf;';
+let types = [
+	'⇠ 箭头类',
+	'⇠⇢⇡⇣↞↠↟↡←→↑↓↔↕⇄⇅↢↣⇞⇟↫↬⇜⇝↚↛↮↭⇦⇨⇧⇩▲►▼◄➔➙➨➲➜➞➟➠➤➥➦➧➵➸➼➽➺➳↷↶↻↺↵↯➾',
+	'❤ 基本形状类',
+	'❤✈★✦☀◆◈▣☻☺☹✉☎☏✆�☁☂❄☃❈✿❀❁☘❦☕❂☥☮☯☪☤✄✂☸⚓☣⚠⚡☢♻♿☠',
+	'¥ 货币类',
+	'$¢£¤€¥₱₹',
+	'½ 数学类',
+	'½¼¾⅓⅔⅛⅜⅝‰%<>',
+	'♫ 音乐符号类',
+	'♩♪♫♬♭♯',
+	'✖ 对错号',
+	'☐☑☒✓✔✕✖✗✘',
+	'★ 星星',
+	'★✭✮☆✪✡✯✵✶✸✹✺✱✲✴✳✻✽❋❆❄❅',
+	'♒ 星座类',
+	'♈♉♊♋♌♍♎♏♐♑♒♓',
+	'♚ 国际象棋',
+	'♚♛♜♝♞♟♔♕♖♗♘♙',
+	'♣ 扑克牌类',
+	'♠♣♥♦♤♧♡♢',
+	'Ω 希腊字母',
+	'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
+	'☩ 十字',
+	'☨☩✝✞✟✠✚†✢✤✣✥',
+	'© 法律符号',
+	'®©℗™℠',
+	'@ 标点和符号',
+	'«»‹›“”‘’•◦¡¿℅№&@℞℃℉°|¦–—…¶∼≠'
+];
+let list = [];
+list.push({
+	name: '常见类',
+	chars: common.split(';').filter(i=>!!i).map(i=>i+';')
+});
+for(let i=0,len=types.length;i<len;){
+	let name = types[i];
+	let chars = types[i+1].split('');
+	let data = {
+		name,
+		chars: chars.map(c=>'&#'+c.charCodeAt(0)+';')
+	};
+	list.push(data);
+	i+=2;
+}
+let html=[];
+for(let item of list) {
+	html.push(`
+		<h3>${item.name}</h3>
+		<div class="box">
+	`);
+	for(let c of item.chars) {
+		html.push(`
+			<div class="item">
+				<div class="char">${c}</div>
+				<div class="text">${c.replace('&', '&amp;')}</div>
+			</div>
+		`);
+	}
+	html.push('</div><hr>');
+}
+let doc = document.querySelector('#doc');
+doc.innerHTML = html.join('');
+
+let sel = document.querySelector('form');
+let fonts = ['Arial','sans-serif', 'Helvetica','Times New Roman','Times','Courier New','Courier'];
+let opStr = fonts.map(f=>`<label class="font"><input type="radio" name="font" value="${f}" onchange="changeFont(this)"> ${f}</label>`).join('');
+sel.innerHTML = '<label>更换字体：</label>'+opStr;
+
+function changeFont(sel){
+	doc.style.fontFamily = sel.value;
+}
+doc.style.fontFamily = fonts[0];
+</script>
+</body>
+</html>

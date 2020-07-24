@@ -1,0 +1,15 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+STable.init({
+	el: '#box',
+	url: 'https://dc.wfxteam.com/ajaxList',
+	columns: ['name','movieType','year'],
+	idIndex: 'id',
+	deleteUrl: 'https://dc.wfxteam.com/ajaxDel'
+});
+</script>

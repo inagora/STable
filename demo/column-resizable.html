@@ -1,0 +1,38 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: [
+			{
+				text: '电影名',
+				dataIndex: 'name',
+				flex: 1
+			},
+			{
+				text: '英文名',
+				dataIndex: 'nameEn',
+				flex: 3
+			},
+			{
+				text: '上映年份',
+				dataIndex: 'year',
+				width: 200,
+				//不准缩放
+				resizable: false
+			},
+			{
+				text: '地区',
+				dataIndex: 'locationName',
+				width: 100,
+				//不准缩放
+				resizable: false
+			}
+		]
+	})
+</script>

@@ -1,0 +1,36 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: [
+			{
+				text: '名字',
+				dataIndex: 'name'
+			},
+			{
+				buttons: [
+					{
+						text: '删除',
+						type: 'danger',
+						click(record, btn, evt){
+							alert(`delete this record\n the movie's name is ${record.name}\n the btn's name is ${btn.text}`);
+						}
+					},
+					{
+						text: '提交',
+						type: 'primary',
+						click(){
+							alert('submit this record');
+						}
+					}
+				]
+			}
+		]
+	})
+</script>

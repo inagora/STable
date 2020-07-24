@@ -1,0 +1,19 @@
+<button onclick="showDia1()">modal: true</button>
+<button onclick="showDia2()">modal: false</button>
+<script>
+	function showDia1(){
+		STable.createDialog({
+			title: 'modal: true',
+			modal: true,
+			html: 'content'
+		});
+	}
+
+	function showDia2(){
+		STable.createDialog({
+			title: 'modal: false',
+			modal: false,
+			html: 'content'
+		});
+	}
+</script>

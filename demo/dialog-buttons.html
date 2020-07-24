@@ -1,0 +1,22 @@
+<script>
+	STable.createDialog({
+		title: 'bodyStyle demo',
+		html: 'demo content',
+		buttons: [
+			{
+				text: 'close',
+				type: 'danger',
+				click(){
+					this.close();
+				}
+			},
+			{
+				text: '确定',
+				type: 'primary',
+				click(){
+					alert('do something')
+				}
+			}
+		]
+	});
+</script>

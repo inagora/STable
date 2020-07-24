@@ -1,0 +1,24 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+STable.init({
+	el: '#box',
+	title: '电影列表',
+	tip: '此列表来自时光网',
+	url: 'https://dc.wfxteam.com/ajaxList',
+	columns: ['name','movieType','year'],
+	toolbar: [
+		{
+			text: '按钮',
+			click(){
+				alert('clicked');
+			}
+		}
+	],
+	componentOrder: ['title','table','pagination','tip','toolbar']
+});
+</script>

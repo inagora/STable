@@ -1,0 +1,34 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name', 'year'],
+		addUrl: 'https://dc.wfxteam.com/ajaxAdd',
+		addConfig: [
+			{
+				name: 'movie_name',
+				label: 'movie name'
+			},
+			{
+				name: 'type',
+				label: 'movie type',
+				list: ['love', 'act']
+			}
+		],
+		listeners: {
+			beforeadd(data){
+				let name = data.movie_name;
+				if(!name || name.length<10){
+					alert('名字不能为空，且大于10个字符');
+					return false;
+				}
+			}
+		}
+	});
+</script>

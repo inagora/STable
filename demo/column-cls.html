@@ -1,0 +1,30 @@
+<style>
+	#box{
+		height: 300px;
+	}
+	.name{
+		color: red;
+	}
+	.st-table-body .year{
+		color: green;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: [
+			{
+				dataIndex: 'name',
+				text: '电影名',
+				cls: 'name'
+			},
+			{
+				dataIndex: 'year',
+				text: '上映年份',
+				cls: 'year'
+			}
+		]
+	})
+</script>

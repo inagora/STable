@@ -1,0 +1,29 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+STable.init({
+	el: '#box',
+	url: 'https://dc.wfxteam.com/ajaxList',
+	columns: ['name','movieType', 'year'],
+	selectMode: 'multiple',
+	idIndex: 'id',
+	batDeleteUrl: 'https://dc.wfxteam.com/ajaxBatDel',
+	listeners: {
+		beforebatdelete(records){
+			if(records.length>5){
+				alert("一次最多删除5条数据");
+				return false;
+			}
+		},
+		batdelete(res, records){
+			if(res.errno){
+				alert('删除失败：'+res.errmsg);
+			}
+		}
+	}
+});
+</script>

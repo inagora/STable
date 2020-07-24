@@ -1,0 +1,87 @@
+
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year'],
+		searchFilter: [
+		{
+				name: 'movieType',
+				label: '影片类型',
+				type: 'multiple',
+				list: [
+					{
+						text: '爱情',
+						value: 'type1'
+					},
+					{
+						text: '悬疑',
+						value: 'type2'
+					},
+					{
+						text: '恐怖',
+						value: 'type3'
+					}
+				]
+			},
+			{
+				name: 'movieType',
+				label: '影片类型',
+				type: 'combobox',
+				list: [
+					{
+						text: '爱情',
+						value: 'type1'
+					},
+					{
+						text: '悬疑',
+						value: 'type2'
+					},
+					{
+						text: '恐怖',
+						value: 'type3'
+					}
+				]
+			},
+			{
+				name: 'movieType',
+				label: '影片类型',
+				type: 'cascader',
+				list: [
+					{
+						text: '爱情',
+						value: 'type1',
+						list: [
+							{
+								text: '爱情',
+								value: 'type1',
+							},
+							{
+								text: '悬疑',
+								value: 'type2'
+							},
+							{
+								text: '恐怖',
+								value: 'type3'
+							}
+						]
+					},
+					{
+						text: '悬疑',
+						value: 'type2'
+					},
+					{
+						text: '恐怖',
+						value: 'type3'
+					}
+				]
+			}
+		]
+	});
+</script>

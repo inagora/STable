@@ -1,0 +1,44 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<button onclick="showSearch()" style="margin-top: 20px;font-size: 16px;"> click me </button>
+<script>
+	var app = STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year'],
+		toolbar: [
+			{
+				text: 'click me',
+				click(){
+					alert(JSON.stringify(this.getSearchParam(), null, '  '));
+				}
+			}
+		],
+		searchFilter: [
+			{
+				label: '电影名',
+				name: 'name'
+			},
+			{
+				label: '类型',
+				name: 'type',
+				list: ['动作', '喜剧', '爱情', '记录片']
+			},
+			{
+				label: '上映年份',
+				name: 'year',
+				type: 'date',
+				format: 'YYYY'
+			}
+		]
+	});
+
+	function showSearch(){
+		let params = app.getSearchParam();
+		alert(JSON.stringify(params, null, '  '));
+	}
+</script>

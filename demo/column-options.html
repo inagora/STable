@@ -1,0 +1,34 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: [
+			'name',
+			{
+				text: '上映月份',
+				dataIndex: 'rDay',
+				options: {
+					'1': 'January',
+					'2': 'February',
+					'3': 'March',
+					'4': 'April',
+					'5': 'May',
+					'6': 'June',
+					'7': 'July',
+					'8': 'August',
+					'9': 'September',
+					'10': 'October',
+					'11': 'November',
+					'12': 'December'
+				},
+				defaultOption: '未知'
+			}
+		]
+	})
+</script>

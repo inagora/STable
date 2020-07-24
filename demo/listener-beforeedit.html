@@ -1,0 +1,42 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name', 'year'],
+		updateUrl: 'https://dc.wfxteam.com/ajaxEdit',
+		updateConfig: [
+			{
+				name: 'name',
+				label: 'movie name'
+			},
+			{
+				name: 'rating',
+				label: '评分'
+			}
+		],
+		listeners: {
+			beforeedit(data){
+				let name = data.name;
+				if(!name || name.length<10){
+					alert('名字不能为空，且大于10个字符');
+					return false;
+				}
+				//名字中的空格换成下划线
+				data.name = data.name.replace(/\s/g,'_');
+			},
+			edit(res, data){
+				if(res.errno){
+					alert(res.errmsg);
+				} else {
+					alert(`the new name is ${data.name}`);
+				}
+			}
+		}
+	});
+</script>

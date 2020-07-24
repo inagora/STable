@@ -1,0 +1,23 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year'],
+		selectMode: 'single',
+		toolbar: [
+			{
+				text: 'click me',
+				click(){
+					let records = this.getSelected();
+					alert(`you select the movie: ${records[0].name}`);
+				}
+			}
+		]
+	});
+</script>

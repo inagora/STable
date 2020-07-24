@@ -1,0 +1,47 @@
+
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year'],
+		searchFilter: [
+			{
+				label: '名字',
+				name: 'name',
+				type: 'text',
+				required: true
+			},
+			{
+				label: '名字',
+				name: 'name',
+				type: 'number',
+				number: true,
+				max: 100,
+				min: 10
+			},
+			{
+				label: '名字',
+				name: 'name',
+				pattern: '\\d*'
+			},
+			{
+				label: '名字',
+				name: 'name',
+				length: 5
+			},
+			{
+				label: '名字',
+				name: 'name',
+				validator() {
+					return 'error';
+				}
+			}
+		]
+	});
+</script>

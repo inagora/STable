@@ -1,0 +1,59 @@
+<style>
+	#demo1, #demo2{
+		height: 300px;
+		margin-bottom: 50px;
+	}
+</style>
+<div id="demo1"></div>
+<div id="demo2"></div>
+<script>
+STable.init({
+	el: '#demo1',
+	tip: '此demo中为空的搜索值不传回服务器',
+	url: 'https://dc.wfxteam.com/ajaxList',
+	columns: ['name','movieType','year'],
+	ignoreEmptySearchParam: true,
+	searchFilter: [
+		{
+			label: '电影名',
+			name: 'name'
+		},
+		{
+			label: '类型',
+			name: 'type',
+			list: ['动作', '喜剧', '爱情', '记录片']
+		},
+		{
+			label: '上映年份',
+			name: 'year',
+			type: 'date',
+			format: 'YYYY'
+		}
+	]
+});
+
+STable.init({
+	el: '#demo2',
+	tip: '此demo中为空的搜索值也会传回服务器',
+	url: 'https://dc.wfxteam.com/ajaxList',
+	columns: ['name','movieType','year'],
+	ignoreEmptySearchParam: false,
+	searchFilter: [
+		{
+			label: '电影名',
+			name: 'name'
+		},
+		{
+			label: '类型',
+			name: 'type',
+			list: ['动作', '喜剧', '爱情', '记录片']
+		},
+		{
+			label: '上映年份',
+			name: 'year',
+			type: 'date',
+			format: 'YYYY'
+		}
+	]
+})
+	</script>

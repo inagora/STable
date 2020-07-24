@@ -1,0 +1,21 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year'],
+		listeners: {
+			rowclick(record, event){
+				alert(`the row clicked is ${record.name}`);
+				console.log(event);
+				if(!event.name)
+					event.stopPropagation();
+			}
+		}
+	});
+</script>

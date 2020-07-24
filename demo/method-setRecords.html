@@ -1,0 +1,32 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+
+<button onclick="changeData()" style="margin-top: 20px;font-size: 16px;"> click me </button>
+<script>
+	var app = STable.init({
+		el: '#box',
+		records: [],
+		columns: ['name','movieType','year']
+	});
+
+	function changeData(){
+		app.setRecords([
+			{
+				id: 1,
+				name: '鳄鱼',
+				movieType: '记录片',
+				year: '2010'
+			},
+			{
+				id: 2,
+				name: '终结者2018',
+				movieType: '科幻',
+				year: '2018'
+			}
+		]);
+	}
+</script>

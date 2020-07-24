@@ -1,0 +1,25 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: [
+			'name', //等价于 { text: 'name', dataIndex: 'name' }
+			{
+				//没有指定text，但指定了dataIndex，那text使
+				//用dataIndex的值，即'nameEn'
+				dataIndex: 'nameEn',
+				sortable: true
+			},
+			{
+				text: '上映年份',
+				dataIndex: 'year'
+			}
+		]
+	})
+</script>

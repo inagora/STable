@@ -1,0 +1,30 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year'],
+		searchFilter: [
+			{
+				label: '电影名',
+				name: 'name'
+			},
+			{
+				label: '类型',
+				name: 'type',
+				list: ['动作', '喜剧', '爱情', '记录片']
+			},
+			{
+				label: '上映年份',
+				name: 'year',
+				type: 'date',
+				format: 'YYYY'
+			}
+		]
+	});
+</script>

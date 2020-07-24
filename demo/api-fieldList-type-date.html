@@ -1,0 +1,30 @@
+
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year'],
+		searchFilter: [
+			{
+				label: '上映时间(起)',
+				name: 'stime',
+				type: 'date',
+				dateConfig: {
+					dateFormat: 'Y/m/d H:i:S',
+					defaultDate: '2020-02-14 00:00:00'
+				}
+			},
+			{
+				label: '上映时间(终)',
+				name: 'etime',
+				type: 'date'
+			}
+		]
+	});
+</script>

@@ -1,0 +1,21 @@
+<button onclick="dia1()">dialog size with absolute px</button>
+<button onclick="dia2()">dialog with percentage</button>
+<script>
+	function dia1(){
+		STable.createDialog({
+			title: 'dialog size with absolute px',
+			html: 'demo',
+			width: 800,
+			height: 600
+		});
+	}
+
+	function dia2(){
+		STable.createDialog({
+			title: 'dialog with percentage',
+			html: 'demo',
+			width: '60%',
+			height: '40%'
+		});
+	}
+</script>

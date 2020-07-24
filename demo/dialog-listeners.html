@@ -1,0 +1,92 @@
+<button onclick="showDia1()">listeners about closeAction:destroy</button>
+<button onclick="showDia2()">listeners about closeAction:hide</button>
+<script>
+	function showDia1(){
+		var dia1 = STable.createDialog({
+			title: 'destroy',
+			closeAction: 'destroy',
+			autoShow: false,
+			html: `
+				<div>
+					<h1>article title</h1>
+					<p>article content</p>
+				</div>
+			`,
+			listeners: {
+				ready(){
+					console.log('ready');
+				},
+				beforeshow(){
+					console.log('beforeshow');
+				},
+				show(){
+					console.log('show');
+				},
+				beforehide(){
+					console.log('beforehide');
+				},
+				hide(){
+					console.log('hide');
+				},
+				beforedestroy(){
+					console.log('beforedestroy');
+				},
+				destroy(){
+					console.log('destroy');
+				},
+				beforeclose(){
+					console.log('beforeclose');
+				},
+				close(){
+					console.log('close');
+				}
+			}
+		});
+		setTimeout(function(){
+			dia1.show();
+		}, 100);
+	}
+	var dia2 = STable.createDialog({
+		title: 'hide',
+		closeAction: 'hide',
+		autoShow: false,
+		html: `
+			<div>
+				<h1>article title</h1>
+				<p>article content</p>
+			</div>
+		`,
+		listeners: {
+			ready(){
+				console.log('ready');
+			},
+			beforeshow(){
+				console.log('beforeshow');
+			},
+			show(){
+				console.log('show');
+			},
+			beforehide(){
+				console.log('beforehide');
+			},
+			hide(){
+				console.log('hide');
+			},
+			beforedestroy(){
+				console.log('beforedestroy');
+			},
+			destroy(){
+				console.log('destroy');
+			},
+			beforeclose(){
+				console.log('beforeclose');
+			},
+			close(){
+				console.log('close');
+			}
+		}
+	});
+	function showDia2(){
+		dia2.show();
+	}
+</script>

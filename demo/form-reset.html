@@ -1,0 +1,130 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box">
+	<x-form 
+		ref="form"
+		:field-list="formList"
+		size="small"
+		:label-visible="labelVisible"
+		@submit="submit"
+		@reset="reset">
+		<x-button
+			:conf="{
+				nativeType: 'submit',
+				type: 'primary',
+				icon: 'st-icon st-icon-search',
+				text: '提交'
+			}"
+		/>
+		<x-button
+			:conf="{
+				cls: 'st-search-reset-btn',
+				text: '重置'
+			}"
+			@click.prevent="reset"
+		/>
+	</x-form>
+</div>
+
+<script>
+	//ajaxFormList
+	new Vue({
+		el: '#box',
+		data() {
+			return {
+				formList: [
+					{
+						label: '电影名',
+						name: 'movie_name',
+						type: 'input',
+					},
+					{
+						label: '电影类型',
+						type: 'multiple',
+						name: 'movie_type',
+						value: ['type0','type1'],
+						options: [{
+							label: '动作',
+							value: 'type0',
+						},{
+							label: '喜剧',
+							value: 'type1',
+						},{
+							label: '记录片',
+							value: 'type2',
+						},{
+							label: '环境',
+							value: 'type3',
+						},{
+							label: '科幻',
+							value: 'type4',
+						},{
+							label: '亲情',
+							value: 'type5',
+						},{
+							label: '成长',
+							value: 'type6',
+						}]
+					},
+					{
+						label: '荣获奖项',
+						type: 'checkbox',
+						name: 'movie_award',
+						options: [
+							{
+								label: 'Oscar',
+								value: '0',
+							},
+							{
+								label: 'Cannes',
+								value: '1',
+							},
+							{
+								label: 'Venice',
+								value: '2',
+							},
+							{
+								label: 'Berlin',
+								value: '3',
+							}]
+					},
+					{
+						label: '是否提名',
+						type: 'radio',
+						name: 'movie_nomination',
+						options: [{
+							label: 'yes',
+							value: true
+						},{
+							label: 'no',
+							value: false
+						}]
+					},
+					{
+						label: '上映年份',
+						name: 'year',
+						type: 'date',
+						format: 'YYYY-MM-DD'
+					},
+					{
+						label: '是否免费',
+						name: 'free',
+						type: 'switch',
+					}
+				],
+				labelVisible: true,
+			}
+		},
+		methods: {
+			submit(formdata) {
+				console.log(formdata);
+			},
+			reset() {
+				this.$refs.form.reset();
+			}
+		}
+	})
+</script>
