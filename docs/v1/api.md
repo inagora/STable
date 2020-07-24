@@ -412,8 +412,8 @@
 	selectMode: 'single'
 	```
 * __参考__:
-	* <DemoViewer demo="api-selectMode-single" />
-	* <DemoViewer demo="api-selectMode-multiple" />
+	* <DemoViewer demo="api-selectMode-single-v1" />
+	* <DemoViewer demo="api-selectMode-multiple-v1" />
 
 ### sortKey
 * __类型__: `String`
