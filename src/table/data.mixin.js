@@ -212,7 +212,7 @@ export default {
 						for (let i = 0; i < group.length; i++) {
 							const rec = group[i];
 							const v = rec[dataIndex];
-							if(newList.length > 1 && newList[newList.length - 1] && newList[newList.length - 1] == v) {
+							if(newList.length > 0 && newList[newList.length - 1] && newList[newList.length - 1] == v) {
 								newResult[newResult.length - 1][v].push(rec);
 							} else {
 								newList.push(v);
