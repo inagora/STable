@@ -408,6 +408,7 @@ export default {
 		}
 		if(localColumnSet) {
 			let _columns = [];
+			
 			for(let col of localColumnSet) {
 				for(let colConf of columns){
 					if(colConf._st_ori_idx == col._st_ori_idx){
@@ -422,6 +423,14 @@ export default {
 					}
 				}
 			}
+			// 修复拖拽列名导致列重复的问题
+			let columnObj = {};
+			_columns.forEach(item => {
+				columnObj[item.text] = item;
+			});
+			_columns = Object.keys(columnObj).map(item => {
+				return columnObj[item];
+			});
 			columns = _columns;
 		}
 
