@@ -290,6 +290,7 @@ export default {
 					icon: 'st-icon st-icon-close',
 					type: 'danger',
 					click: (record)=>{
+						let self = this;
 						let ret = confirm(this.locale.deleteMsg.confirmTip);
 						if(ret!==true)
 							return;
@@ -303,10 +304,10 @@ export default {
 						Object.assign(data, this.params);
 						this.ajax.request({url:this.deleteUrl, data, method: this.actionMethods.delete}).then(res=>{
 							if(res.errno==0) {
-								qtip.success(this.locale.deleteMsg.success);
+								qtip.success(self.locale.deleteMsg.success);
 								this.load('cur');
 							} else {
-								qtip.error(this.locale.deleteMsg.fail);
+								qtip.error(self.locale.deleteMsg.fail);
 							}
 						});
 					}
@@ -360,10 +361,10 @@ export default {
 										return;
 									}
 									data[self.idIndex] = record[self.idIndex];
-									
+
 									self.ajax.request({ url: updateUrl, data, method: self.actionMethods.update}).then(res=>{
 										if(res.errno==0){
-											qtip.success(this.locale.editMsg.success);
+											qtip.success(self.locale.editMsg.success);
 											this.close();
 											self.load('cur');
 											self.store.emit('edit', res, data);
