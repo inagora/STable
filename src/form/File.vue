@@ -60,10 +60,10 @@ export default {
 		let val = [];
 		if(!this.value)
 			val = [];
-		else if(Array.isArray(this.val))
-			val = this.val.slice(0);
+		else if(Array.isArray(this.value))
+			val = this.value.slice(0);
 		else
-			val = [this.val];
+			val = [this.value];
 		
 		let files = val.map(url=>{
 			let info;
