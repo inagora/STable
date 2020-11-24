@@ -90,18 +90,28 @@
 		},
 		showBorder: true,
 		groupBy: ['name'],
-		merges: [
-			{
-				s: {
-					c: 1,
-					r: 1
-				},
-				e: {
-					c: 1,
-					r: 3
-				}
-			}
-		],
+		// merges: [
+		// 	{
+		// 		s: {
+		// 			c: 3,
+		// 			r: 0
+		// 		},
+		// 		e: {
+		// 			c: 0,
+		// 			r: 0
+		// 		}
+		// 	},
+		// 	{
+		// 		s: {
+		// 			c: 1,
+		// 			r: 1
+		// 		},
+		// 		e: {
+		// 			c: 2,
+		// 			r: 1
+		// 		}
+		// 	}
+		// ],
 		// searchFilter: [
 		// {
 		// 	type: 'input',
@@ -306,6 +316,56 @@
 		// 	age: '年龄',
 		// 	sex: '性别'
 		// },
+		mergeHeaders: [
+			[
+				{
+					text: 'id+评分',
+					colspan: 2
+				},
+				{
+					text: '上映时间+主演+导演+名字',
+					colspan: 4
+				},
+				{
+					text: '影片类型+国家',
+					colspan: 2
+				}
+			],
+			[
+				{
+					text: 'id',
+					colspan: 1
+				},
+				{
+					text: '名字',
+					colspan: 1
+				},
+				{
+					text: '评分',
+					colspan: 1
+				},
+				{
+					text: '影片类型',
+					colspan: 1
+				},
+				{
+					text: '导演',
+					colspan: 1
+				},
+				{
+					text: '主演',
+					colspan: 1
+				},
+				{
+					text: '国家',
+					colspan: 1
+				},
+				{
+					text: '上映时间',
+					colspan: 1
+				}	
+			]
+		],
 		columns: [
 			{
 				header: 'id',
@@ -332,7 +392,6 @@
 					color: 'green'
 				},
 				cls: 'lalala',
-				mergeable: true
 			},{
 				header: '评分',
 				dataIndex: 'rating',
@@ -340,7 +399,7 @@
 				fx: 'average',
 				sortable: true
 			},{
-				header: '影片类型影片类型',
+				header: '影片类型',
 				dataIndex: 'movieType',
 			},
 			{
@@ -415,11 +474,11 @@
 			{text:'测试', type: 'warning', icon:'st-iconfont st-icon-lock'},
 			{text:'测试', type: 'link'}
 		],
-		updateUrl: '/',
+		// updateUrl: '/',
 		addUrl: '/',
-		batDeleteUrl: '/',
+		// batDeleteUrl: '/',
 		idIndex: 'id',
-		deleteUrl: '/ajaxDel',
+		// deleteUrl: '/ajaxDel',
 		downloadable: true,
 		editConfig: [
 			{

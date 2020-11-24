@@ -13,6 +13,30 @@
 			:style="{width: tableWidth+'px'}"
 		>
 			<thead>
+				<template>
+					<tr 
+						v-for="(header, headIndex) in mergeHeaders" 
+						:key="headIndex"
+						class="st-table-head-tr"
+					>
+						<th 
+							v-for="(col, colIndex) in header"
+							:key="colIndex"
+							:colspan="col.colspan"
+							:rowspan="col.rowspan"
+							:class="['st-table-head-th', 'st-table-head-th-merge', headIndex === 0 ? '' : 'st-table-head-th-merge-border']"
+						>
+							<div
+								class="st-table-cell"
+							>
+								<div 
+									class="st-table-head-text st-table-cell-wrap" 
+									v-text="col.text"
+								></div>
+							</div>
+						</th>
+					</tr>
+				</template>
 				<tr class="st-table-head-tr">
 					<th
 						v-for="(col, colIdx) of columns"
@@ -91,6 +115,19 @@
 					</th>
 				</tr>
 			</thead>
+			<colgroup>
+				<col 
+					v-for="(col, colIdx) of columns"
+					:key="colIdx"
+					class="st-table-head-th"
+					:class="[col.cls, {
+						'st-table-head-th-hover':col._hl
+					}]"
+					:style="[col.style, {
+						width: col._st_width+'px'
+					}]" 
+				/>
+			</colgroup>
 		</table>
 	</div>
 </template>
@@ -116,6 +153,12 @@ export default {
 		recordsHeight:{
 			type: Array,
 			default(){
+				return [];
+			}
+		},
+		mergeHeaders: {
+			type: Array,
+			default() {
 				return [];
 			}
 		}
@@ -164,6 +207,14 @@ export default {
 		-webkit-user-select: none;
 		user-select: none;
 		position: relative;
+		&-merge {
+			border-bottom: 1px solid #d0d0d0;
+			background-image: linear-gradient(180deg, #fdfdfd, #f8f8f8);
+
+			&-merge-border {
+				border-top: 1px solid #d0d0d0;
+			}
+		}
 	}
 	&-right{
 		border-left: 1px solid #d0d0d0;

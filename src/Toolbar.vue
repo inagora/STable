@@ -44,6 +44,9 @@ export default {
 		locale: 'locale',
 		merges: {
 			default: []
+		},
+		mergeHeaders: {
+			default: []
 		}
 	},
 	data(){
@@ -237,11 +240,37 @@ export default {
 			let headers = [];
 			let colsConf = [];
 			let sheetData = [];
+			
 			columns.forEach(col=>{
 				headers.push(col.text);
 				colsConf.push({
 					wpx: col._st_width
 				});
+			});
+			// 处理多表头
+			let _merge = [];
+			this.mergeHeaders.forEach((header, headerIndex) => {
+				let _header = [];
+				let endIndex = 0;
+				header.forEach(item => {
+					for(let i = 0; i < item.colspan; i++) {
+						_header.push(item.text);
+					}
+					// 自动算出header的merge
+					let _mergeObj = {
+						s: {
+							c: endIndex,
+							r: headerIndex
+						},
+						e: {
+							c: endIndex + item.colspan - 1,
+							r: headerIndex
+						}
+					};
+					endIndex = endIndex + item.colspan;
+					_merge.push(_mergeObj);
+				});
+				sheetData.push(_header);
 			});
 			sheetData.push(headers);
 
@@ -323,6 +352,9 @@ export default {
 						merges.push(obj);
 					});
 				});
+				if(_merge.length > 0) {
+					merges = merges.concat(_merge);
+				}
 				ws['!ref'] = `A1:ZZ${sheetData.length}`;
 				ws['!merges'] = merges;
 			}

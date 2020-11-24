@@ -22,6 +22,7 @@
 				:locked="false"
 				:columns="freeColumns"
 				:table-width="totalFreeWidth"
+				:merge-headers="mergeHeaders"
 				@dragprepare="prepareDrag"
 				@drag="drag"
 				@drop="drop"
@@ -131,7 +132,7 @@ import qtip from '../com/qtip.js';
 export default {
 	components: {XHead, XBody, XFlyman},
 	mixins: [data, drag, resize],
-	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax', 'deleteUrl', 'updateUrl','updateConfig', 'idIndex', 'locale', 'groupBy'],
+	inject: ['store', 'rowNumberVisible', 'selectMode', 'layoutMode', 'ajax', 'deleteUrl', 'updateUrl','updateConfig', 'idIndex', 'locale', 'groupBy', 'mergeHeaders'],
 	data() {
 		return {
 			hlRowNum: -1,

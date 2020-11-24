@@ -139,6 +139,10 @@ export default {
 			 * @param {Boolean} showBorder 单元格是否显示边框
 			 */
 			showBorder: false,
+			/**
+			 * @param {Array} mergeHeaders 多表头
+			 */
+			mergeHeaders: [],
 		}, window.STable && window.STable.default||{}, this.config);
 
 		//国际化
