@@ -532,9 +532,15 @@
 			},
 			search(data) {
 				console.log('search_data', data);
+			},
+			refresh() {
+				console.log(111);
 			}
 		}
 	});
+	setTimeout(() => {
+		table.refresh();
+	}, 2000);
 	</script>
 </body>
 </html>

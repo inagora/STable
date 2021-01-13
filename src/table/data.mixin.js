@@ -244,9 +244,9 @@ export default {
 					records = records.concat(group);
 				});
 
-				this.store.$emit('refresh', records);
+				this.store.emit('refresh', records);
 			} else {
-				this.store.$emit('refresh', records);
+				this.store.emit('refresh', records);
 			}
 
 			records.forEach((record, idx)=>{
