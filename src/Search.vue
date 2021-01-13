@@ -33,6 +33,9 @@
 			<template
 				v-if="searchAreaBtns && searchAreaBtns.length > 0"
 			>
+				<div class="st-search-separator">
+					&nbsp;
+				</div>
 				<x-button 
 					v-for="(btn, index) in searchAreaBtns"
 					:key="'btn_' + index"
@@ -128,6 +131,14 @@ export default {
 	border-bottom: 1px solid #d0d0d0;
 	padding: 10px 0 0 10px;
 
+	&-separator{
+		display: inline-block;
+		width: 1px;
+		overflow: hidden;
+		margin-left: 8px;
+		margin-bottom: 10px;
+		background-color: #d0d0d0;
+	}
 	&-reset-btn{
 		margin-left: 10px;
 	}
