@@ -116,7 +116,15 @@ export default {
 			if(ret && ret.url)
 				ajaxOptions = ret;
 			
-			this.ajax.request(ajaxOptions).then(res=>{
+			// 特殊处理静态数据，比如records分页
+			let _promise = null;
+			if(ret && ret instanceof Promise) {
+				_promise = ret;
+			} else {
+				_promise = this.ajax.request(ajaxOptions);
+			}
+			
+			_promise.then(res=>{
 				this.isPageLoading = false;
 				if(this.timer){
 					clearTimeout(this.timer);
