@@ -12,6 +12,19 @@
 			class="st-table-head"
 			:style="{width: tableWidth+'px'}"
 		>
+			<colgroup>
+				<col 
+					v-for="(col, colIdx) of columns"
+					:key="colIdx"
+					class="st-table-head-th"
+					:class="[col.cls, {
+						'st-table-head-th-hover':col._hl
+					}]"
+					:style="[col.style, {
+						width: col._st_width+'px'
+					}]" 
+				/>
+			</colgroup>
 			<thead>
 				<template>
 					<tr 
@@ -95,7 +108,7 @@
 								<div
 									v-if="col.sortable"
 									class="st-table-head-sort-icon st-icon"
-									:class="[store.sortKey==col.dataIndex?(store.sortDirection=='asc'?'st-icon-arrowdown st-table-head-sorting':'st-icon-arrowdown st-table-head-sorting-desc'):'st-icon-swap']"
+									:class="[store.sortKey==col.dataIndex?(store.sortDirection=='asc'?'st-icon-arrowdown st-table-head-sorting-desc':'st-icon-arrowdown st-table-head-sorting'):'st-icon-swap']"
 								></div>
 							</div>
 							<div
@@ -115,19 +128,6 @@
 					</th>
 				</tr>
 			</thead>
-			<colgroup>
-				<col 
-					v-for="(col, colIdx) of columns"
-					:key="colIdx"
-					class="st-table-head-th"
-					:class="[col.cls, {
-						'st-table-head-th-hover':col._hl
-					}]"
-					:style="[col.style, {
-						width: col._st_width+'px'
-					}]" 
-				/>
-			</colgroup>
 		</table>
 	</div>
 </template>
