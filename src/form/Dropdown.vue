@@ -293,7 +293,7 @@ export default {
 			if(!this.visible)
 				return;
 			if(this.type!='cascader'){
-				this.$emit('select', this.hlIndex);
+				this.$emit('select', idx);
 			} else {
 				let selected = this.selIndexes.slice(0, level+1);
 				selected[level] = idx;
