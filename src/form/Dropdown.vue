@@ -271,16 +271,16 @@ export default {
 				this.visibleCount = visibleCount;
 			}
 			if(this.visible){
-				let hlIndex = -1;
-				if(this.type!='cascader'){
-					for(let i=0,len=this.options.length;i<len;i++) {
-						if(this.options[i].visible){
-							hlIndex = i;
-							break;
-						}
-					}
-				}
-				this.hlIndex = hlIndex;
+				// let hlIndex = -1;
+				// if(this.type!='cascader'){
+				// 	for(let i=0,len=this.options.length;i<len;i++) {
+				// 		if(this.options[i].visible){
+				// 			hlIndex = i;
+				// 			break;
+				// 		}
+				// 	}
+				// }
+				// this.hlIndex = hlIndex;
 				this.hl();
 				this.show();
 			}
@@ -293,7 +293,7 @@ export default {
 			if(!this.visible)
 				return;
 			if(this.type!='cascader'){
-				this.$emit('select', idx);
+				this.$emit('select', this.hlIndex);
 			} else {
 				let selected = this.selIndexes.slice(0, level+1);
 				selected[level] = idx;

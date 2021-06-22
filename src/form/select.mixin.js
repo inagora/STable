@@ -247,7 +247,11 @@ export default {
 								if(this.field.type=='cascader'){
 									com.selIdxes = idx.slice(0);
 								}else {
-									com.selIdxes = [idx];
+									if(com.selIdxes.length === 1 && com.selIdxes[0] === idx) {
+										com.selIdxes = [];
+									} else {
+										com.selIdxes = [idx];
+									}
 								}
 
 								this.$refs.ddm.hide();
