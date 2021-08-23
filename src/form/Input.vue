@@ -48,8 +48,7 @@ export default {
 			]).then(()=>{
 				let options = {
 					dateFormat: type=='datetime'?'Y-m-d H:i:S':'Y-m-d',
-					wrap: false,
-					defaultDate: new Date
+					wrap: false
 				};
 				if(type == 'datetime') {
 					options = Object.assign(options,{
