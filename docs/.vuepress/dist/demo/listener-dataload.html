@@ -1,0 +1,21 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['id', 'name', 'year'],
+		listeners: {
+			dataload(res) {
+				console.log(res.errno);
+				res.data.list.forEach(record=>{
+					record.name = '中文名：'+record.name.replace(/ /g,'-');
+				});
+			}
+		}
+	});
+</script>

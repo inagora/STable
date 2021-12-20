@@ -1,0 +1,69 @@
+<button onclick="showDia()">显示窗口</button>
+<script>
+	var dia = STable.createDialog({
+		title: 'listener stop',
+		autoShow: false,
+		html: `
+			<div>
+				<h1>article title</h1>
+				<p>article content</p>
+			</div>
+		`,
+		buttons: [
+			{
+				text: 'close',
+				click(){
+					this.close();
+				}
+			}
+		],
+		listeners: {
+			ready(){
+				console.log('ready');
+			},
+			beforeshow(){
+				console.log('beforeshow');
+				if(Math.random()>0.5){
+					alert('不准显示');
+					return false;
+				}
+			},
+			show(){
+				console.log('show');
+			},
+			beforehide(){
+				console.log('beforehide');
+				if(Math.random()>0.5){
+					alert('不准隐藏');
+					return false;
+				}
+			},
+			hide(){
+				console.log('hide');
+			},
+			beforedestroy(){
+				console.log('beforedestroy');
+				if(Math.random()>0.5){
+					alert('不准销毁');
+					return false;
+				}
+			},
+			destroy(){
+				console.log('destroy');
+			},
+			beforeclose(){
+				console.log('beforeclose');
+				if(Math.random()>0.5){
+					alert('不准关闭');
+					return false;
+				}
+			},
+			close(){
+				console.log('close');
+			}
+		}
+	});
+	function showDia(){
+		dia.show();
+	}
+</script>

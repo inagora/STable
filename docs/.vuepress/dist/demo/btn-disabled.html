@@ -1,0 +1,30 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		toolbar: [
+			{
+				text: 'btn 1',
+				type: 'primary',
+				click(){
+					alert('click valid');
+				}
+			},
+			{
+				text: 'btn 1',
+				type: 'primary',
+				disabled: true,
+				click(){
+					alert('can\'t trigger click');
+				}
+			}
+		],
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year']
+	})
+</script>

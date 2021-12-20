@@ -1,0 +1,37 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+var app = STable.init({
+	el: '#box',
+	url: 'https://dc.wfxteam.com/ajaxList',
+	columns: [
+		{
+			dataIndex: 'name',
+			width: 400
+		},
+		{
+			dataIndex: 'nameEn',
+			width: 400
+		},
+		{
+			dataIndex: 'movieType',
+			width: 300
+		},
+		'year'
+	]
+});
+var timerId;
+window.addEventListener('resize', function(){
+	if(timerId){
+		clearTimeout(timerId);
+	}
+	timerId = setTimeout(function(){
+		app.layout();
+		timerId = null;
+	}, 100);
+});
+</script>

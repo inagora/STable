@@ -1,0 +1,27 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: [
+			{
+				dataIndex: 'name',
+				text: 'name',
+				sortable: true
+			},
+			'movieType',
+			{
+				dataIndex: 'year',
+				text: 'year',
+				sortable: true
+			}
+		],
+		sortKey: 'year',
+		sortDirection: 'desc'
+	});
+</script>

@@ -240,7 +240,7 @@
 				function joinText(arr){
 					return arr.map(item=>item[0]).join('');
 				}
-				loadJs('https://cdn.jsdelivr.net/gh/inagora/STable@v1.3.7/dist/pinyin.min.js').then(()=>{
+				loadJs('https://s.wandougongzhu.cn/s/74/pinyin.min_c2ed69.js').then(()=>{
 					let py = window.pinyin;
 					field.list.forEach(item=>{
 						let text = item.text.toLocaleLowerCase();

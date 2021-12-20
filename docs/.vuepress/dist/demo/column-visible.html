@@ -1,0 +1,37 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		title: '可以通过列头的菜单“列筛选”调整哪些列可见',
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: [
+			{
+				text: '电影名',
+				dataIndex: 'name',
+				visible: false
+			},
+			{
+				text: '英文名',
+				dataIndex: 'nameEn',
+				flex: 3,
+				visible: true
+			},
+			{
+				text: '上映年份',
+				dataIndex: 'year',
+				width: 200,
+				visible: false
+			},
+			{
+				text: '地区',
+				dataIndex: 'locationName',
+				width: 100
+			}
+		]
+	})
+</script>
