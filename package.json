@@ -1,7 +1,7 @@
 {
-  "name": "STable",
+  "name": "@inagora/stable",
   "version": "2.0.10",
-  "description": "",
+  "description": "STable是一个以表格展示和操作为核心功能的工具。",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode=development --usehmr --config=./build/webpack.config.js",
@@ -12,8 +12,8 @@
     "docs:build": "vuepress build docs",
     "docs:dev": "vuepress dev docs"
   },
-  "author": "poker, ccpang",
-  "license": "ISC",
+  "author": "lijieniu, poker",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/parser": "^7.9.4",
@@ -38,5 +38,21 @@
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
-  }
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inagora/STable.git"
+  },
+  "keywords": [
+    "table",
+    "vue",
+    "javascript"
+  ],
+  "bugs": {
+    "url": "https://github.com/inagora/STable/issues"
+  },
+  "homepage": "https://github.com/inagora/STable#readme"
 }
