@@ -1,15 +1,23 @@
 <template>
-	<input
-		v-model="val"
-		:type="field.nativeType||'text'"
-		:name="field.name"
-		:placeholder="field.placeholder"
-		class="st-form-input"
-		@focus="$emit('fieldfocus')"
-		@blur="$emit('fieldblur');validate()"
-		@input="validate(true)"
-		@change="handleChange(field, $event)"
-	/>
+	<div :class="{'st-cbb':field.clearable && clearable}">
+		<input
+			ref="formInput"
+			v-model="val"
+			:type="field.nativeType||'text'"
+			:name="field.name"
+			:placeholder="field.placeholder"
+			class="st-form-input"
+			@focus="$emit('fieldfocus')"
+			@blur="$emit('fieldblur');validate()"
+			@input="validate(true)"
+			@change="handleChange(field, $event)"
+		/>
+		<div
+			v-if="field.clearable && clearable"
+			class="st-cbb-clear st-icon st-icon-close"
+			@click="cls"
+		></div>
+	</div>
 </template>
 
 <script>
@@ -31,12 +39,17 @@ export default {
 	},
 	data(){
 		return {
-			val: this.value
+			val: this.value,
+			clearable: false,
 		};
 	},
 	watch: {
 		val(v){
 			this.$emit('input', v);
+			let type = this.field.type;
+			if(type=='datetime' || type=='date') {
+				this.clearable = v;
+			}
 		}
 	},
 	mounted(){
@@ -64,7 +77,7 @@ export default {
 						options = Object.assign(options, this.field.dateConfig(this.field));
 					}
 				}
-				window.flatpickr(this.$el, options);
+				window.flatpickr(this.$refs.formInput, options);
 			});
 		}
 		this.formatRule();
@@ -72,7 +85,10 @@ export default {
 	methods: {
 		handleChange(field, evt) {
 			field.change&&field.change(field, evt);
-		}
+		},
+		cls () {
+			this.val = '';
+		},
 	}
 };
 </script>

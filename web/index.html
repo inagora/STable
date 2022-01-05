@@ -102,6 +102,7 @@
 		ajaxSetting: {
 			contentType: 'application/x-www-form-urlencoded'
 		},
+    clearable: true,
 		showBorder: true,
 		groupBy: ['name'],
 		// records: [
@@ -161,6 +162,7 @@
 				type: 'text',
 				width: '300',
 				icon: 'st-icon st-icon-plus',
+        clearable: true,
 				actionUrl: '/',
 				change(field, evt) {
 					let form = table.getSearchForm(1);
@@ -250,6 +252,7 @@
 			{
 				name: 'movieType4',
 				label: '影片类型',
+        clearable: true,
 				type: 'combobox',
 				list: [
 					{
@@ -331,6 +334,7 @@
 				label: '上映时间(终)',
 				name: 'etime',
 				type: 'date',
+        clearable: false
 			}
 		],
 		searchAreaBtns: [

@@ -143,6 +143,10 @@ export default {
 			 * @param {Array} mergeHeaders 多表头
 			 */
 			mergeHeaders: [],
+			/**
+			 * @param {Boolean} clearable 全局设置form是否可清空
+			 */
+			clearable: false,
 		}, window.STable && window.STable.default||{}, this.config);
 
 		//国际化
@@ -537,6 +541,14 @@ export default {
 				this.$refs.table[0].load();
 			}
 		}, 0);
+		// 如果设置了全局clearable，则分别设置组件的clearable属性
+		if(this.config.clearable && this.config.searchFilter){
+			this.config.searchFilter.forEach(field => {
+				if(field.clearable == undefined) {
+					this.$set(field, 'clearable', this.config.clearable);
+				}
+			});
+		}
 	},
 	methods: {
 		/**
