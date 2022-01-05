@@ -94,6 +94,11 @@
 	* <DemoViewer demo="api-batDeleteUrl" />
 	* [idIndex](#idindex)
 	* [selectMode](#selectmode)
+### clearable
+* __类型__: `Boolean`
+* __详细__: 
+
+	表单项是否可清空，如果设置为true，则支持下拉选择组件和日期组件可清空；每个组件也可以单独设置clearable属性，并且以组件中的值为主。
 
 ### columns
 * __类型__: `Array`
@@ -1473,6 +1478,12 @@ columns: [
 
 * __参考__:
 	* <DemoViewer demo="api-fieldList" />
+
+###	clearable
+* __类型__: Boolean
+* __详细__:
+
+  表单项是否可清空，也可全局设置该属性，但最终以这里设置的值为主。
 
 ### type
 * __类型__: `String`
