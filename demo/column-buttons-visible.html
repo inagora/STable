@@ -1,0 +1,33 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: [
+			'name',
+			'realTime',
+			{
+				buttons: [
+					{
+						text: '删除',
+						type: 'danger',
+						//'2011'年上映的电影，'删除'按钮才显示
+						visible: ['year', '2011']
+					},
+					{
+						text: '提交',
+						//'2000'年后的电影，'提交'按钮才显示
+						visible(record){
+							return parseInt(record.year||0)>2000;
+						}
+					}
+				]
+			}
+		]
+	})
+</script>

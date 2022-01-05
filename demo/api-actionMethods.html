@@ -1,0 +1,18 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+STable.init({
+	el: '#box',
+	url: 'https://dc.wfxteam.com/ajaxList',
+	columns: ['name', 'year'],
+	actionMethods: {
+		read: 'POST',
+		delete: 'GET'
+	},
+	deleteUrl: 'https://dc.wfxteam.com/ajaxDel'
+});
+</script>

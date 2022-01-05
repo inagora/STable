@@ -1,0 +1,22 @@
+<style>
+	#box, #stableContainer{
+		height: 300px;
+		margin-bottom: 30px;
+	}
+</style>
+<div id="box"></div>
+<div id="stableContainer"></div>
+<script>
+STable.init({
+	title: '指定了容器，渲染到指定位置',
+	el: '#box',
+	url: 'https://dc.wfxteam.com/ajaxList',
+	columns: ['name','movieType','year']
+});
+
+STable.init({
+	title: '未指定容器，使用dom元素 #stableContainer',
+	url: 'https://dc.wfxteam.com/ajaxList',
+	columns: ['name','movieType','year']
+});
+</script>

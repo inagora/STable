@@ -1,0 +1,91 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	function tbClickHandle(btnConfig, evt){
+		//使用this引用stable实例，获得已选择的record列表
+		let records = this.getSelected();
+		//使用第一个参数btnConfig，获得被点击按钮的配置
+		let btnName = btnConfig.text;
+		//使用第二个参数evt，阻止点击事件的冒泡。（为啥要阻止冒泡？不为啥，就是想演示一下evt参数是有效的）
+		evt.stopPropagation();
+
+		alert(`you cick btn '${btnName}', and select ${records.length} records`);
+	}
+	function recordBtnHandle(record, btnConfig, evt){
+		//使用第一个参数record，得到电影名
+		let movieName = record.name;
+		//使用第二个参数btnConfig，获得被点击按钮的配置
+		let btnName = btnConfig.text;
+		//使用第三个参数evt，阻止点击事件的冒泡
+		evt.stopPropagation();
+
+		alert(`the movie's name is ${movieName}, you cick btn '${btnName}'`);
+	}
+	function dialogHandle(btnConfig, evt){
+		//使用第一个参数btnConfig，获得被点击按钮的配置
+		let btnName = btnConfig.text;
+		//使用第二个参数evt，阻止点击事件的冒泡
+		evt.stopPropagation();
+
+		alert(`this btn's name is ${btnName}`);
+		if(btnName=='关闭窗口') {
+			//this指向dialog实例，使用它关闭窗口
+			this.close();
+		}
+	}
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: [
+			'name',
+			'movieType',
+			'year',
+			{
+				buttons: [
+					{
+						text: 'record btn - 1',
+						click: recordBtnHandle
+					},
+					{
+						text: 'record btn - 2',
+						click: recordBtnHandle
+					}
+				]
+			}
+		],
+		selectMode: 'multiple',
+		toolbar: [
+			{
+				text: 'toolbar btn - 1',
+				click: tbClickHandle
+			},
+			{
+				text: 'toolbar btn - 2',
+				click: tbClickHandle
+			},
+			{
+				text: 'open dialog',
+				click(){
+					STable.createDialog({
+						title: 'dialog buttons',
+						html: 'demo content',
+						buttons: [
+							{
+								text: '关闭窗口',
+								click: dialogHandle
+							},
+							{
+								text: '其它动作',
+								click: dialogHandle
+							}
+						]
+					});
+				}
+			}
+		]
+	})
+</script>

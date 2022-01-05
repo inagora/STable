@@ -1,0 +1,21 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+STable.init({
+	el: '#box',
+	toolbar: [{
+		text: 'refresh',
+		click(){
+			let pno = prompt('请输入要刷新到的页号');
+			pno = parseInt(pno.trim()||1);
+			this.refresh(pno);
+		}
+	}],
+	url: 'https://dc.wfxteam.com/ajaxList',
+	columns: ['name','movieType','year']
+});
+</script>

@@ -1,0 +1,37 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		toolbar: [
+			{
+				text: 'click me',
+				click(){
+					let btn = this.getToolbarBtn(1);
+					btn.visible = !btn.visible;
+				}
+			},
+			{
+				text: 'btn 2, click me',
+				type: 'primary',
+				visible: false,
+				click(){
+					let btn = this.getToolbarBtn('btn3');
+					btn.visible = !btn.visible;
+				}
+			},
+			{
+				text: 'btn 3',
+				type: 'info',
+				id: 'btn3',
+				visible: false
+			}
+		],
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year']
+	});
+</script>

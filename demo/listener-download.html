@@ -1,0 +1,28 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+STable.init({
+	el: '#box',
+	url: 'https://dc.wfxteam.com/ajaxList',
+	columns: ['name','movieType','year'],
+	downloadable: true,
+	listeners: {
+		beforedownload(records){
+			if(records.length<=0){
+				alert('数据为空，就不要下载excel了');
+				return false;
+			}
+			//对数据预加工。如果名字为空，给个默认名字
+			records.forEach(r=>{
+				if(!r.name.trim()){
+					r.name = '-';
+				}
+			});
+		}
+	}
+});
+</script>

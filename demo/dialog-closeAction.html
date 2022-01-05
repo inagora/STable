@@ -1,0 +1,42 @@
+<button onclick="showDia1()">closeAction - destroy</button>
+<button onclick="showDia2()">closeAction - hide</button>
+<script>
+	var dia1 = STable.createDialog({
+		title: 'destroy',
+		closeAction: 'destroy',
+		autoShow: false,
+		html: `
+			<div>
+				<h1>article title</h1>
+				<p>article content</p>
+			</div>
+		`
+	});
+
+	var dia2 = STable.createDialog({
+		title: 'hide',
+		closeAction: 'hide',
+		autoShow: false,
+		html: `
+			<div>
+				<h1>article title</h1>
+				<p>article content</p>
+			</div>
+		`
+	});
+
+	var count = 0;
+	function showDia1(){
+		if(count<1){
+			dia1.show();
+		} else {
+			alert('dialog have been destroyed, the showing action will cause an error');
+			dia1.show();
+		}
+		count++;
+	}
+
+	function showDia2(){
+		dia2.show();
+	}
+</script>

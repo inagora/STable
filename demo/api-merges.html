@@ -1,0 +1,63 @@
+<style>
+	#demo1{
+		height: 300px;
+	}
+	.split{
+		height: 60px;
+	}
+	#demo2{
+		height: 300px;
+	}
+	.hl-year{
+		font-weight:bold;
+		color:red;
+	}
+</style>
+<div id="demo1"></div>
+<div class="split"></div>
+<div id="demo2"></div>
+<script>
+STable.init({
+	el: '#demo1',
+	url: 'https://dc.wfxteam.com/ajaxList',
+	columns: ['name','movieType','year']
+});
+
+STable.init({
+	el: '#demo2',
+	url: 'https://dc.wfxteam.com/ajaxList',
+	merges: [
+		{
+			s: {
+				c: 1,
+				r: 1
+			},
+			e: {
+				c: 1,
+				r: 3
+			}
+		}
+	],
+	columns: [
+		{
+			dataIndex: 'name',
+			text: '电影名',
+			locked: true,
+			width: 200,
+			mergeable: true
+		},
+		{
+			dataIndex: 'movieType',
+			text: '类型',
+			render(record){
+				return record.movieType.split('|').join('、');
+			}
+		},
+		{
+			dataIndex: 'year',
+			text: '上影时间',
+			cls: 'hl-year'
+		}
+	]
+});
+</script>

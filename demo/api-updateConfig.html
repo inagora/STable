@@ -1,0 +1,25 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name', 'year'],
+		updateUrl: 'https://dc.wfxteam.com/ajaxUpdate',
+		updateConfig: [
+			{
+				name: 'movie_name',
+				label: 'movie name'
+			},
+			{
+				name: 'type',
+				label: 'movie type',
+				list: ['love', 'act']
+			}
+		]
+	});
+</script>

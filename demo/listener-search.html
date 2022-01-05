@@ -1,0 +1,40 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['id', 'name', 'year'],
+		searchFilter: [
+			{
+				name: 'ids',
+				label: '电影id',
+				placeholder: '多个id以逗号(,)或竖线(|)分割'
+			},
+			{
+				name: 'name',
+				label: '电影名'
+			}
+		],
+		listeners: {
+			search(data){
+				if(data.ids) {
+					data.ids = data.ids
+						.split(/[ ,|]/)
+						.map(item=>item.trim())
+						.filter(item=>/^\d+$/.test(item));
+					if(data.ids.length<=0) {
+						alert('请填写正确的id');
+						return false;
+					} else {
+						data.ids = data.ids.join('|');
+					}
+				}
+			}
+		}
+	});
+</script>

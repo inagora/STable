@@ -1,0 +1,43 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		toolbar: [
+			{
+				text: '买票',
+				click(){
+					alert('to pay');
+				}
+			},
+			{
+				text: '下架电影',
+				icon: 'st-icon st-icon-close',
+				type: 'danger',
+				click(){
+					alert('dow you want to unnshelve '+this.getSelected().length+' movies?');
+				}
+			},
+			//增加一个分割线
+			'|',
+			{
+				text: 'the third btn'
+			},
+			{
+				text: 'the forth btn'
+			},
+			//增加一个空白
+			' ',
+			{
+				text: 'the fifth btn'
+			}
+		],
+		selectMode: 'multiple',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['name','movieType','year']
+	})
+</script>

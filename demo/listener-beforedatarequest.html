@@ -1,0 +1,37 @@
+<style>
+	#box{
+		height: 300px;
+	}
+</style>
+<div id="box"></div>
+<script>
+	STable.init({
+		el: '#box',
+		url: 'https://dc.wfxteam.com/ajaxList',
+		columns: ['id', 'name', 'year'],
+		searchFilter: [
+			{
+				name: 'ids',
+				label: '电影id',
+				placeholder: '多个id以逗号(,)或竖线(|)分割'
+			},
+			{
+				name: 'name',
+				label: '电影名'
+			}
+		],
+		listeners: {
+			beforedatarequest(req) {
+				let {url, data, method} = req;
+				//处理url
+				req.url = url+'?type=1';
+				console.log(url);
+				//如果请求的count大于100，阻止本次请求
+				if(data.count>100)
+					return false;
+				data.name = "天空";
+				req.data = data;
+			}
+		}
+	});
+</script>
