@@ -1,12 +1,13 @@
 <template>
-	<div class="st-stable" :class="[config.layoutMode=='expand'?'st-expand-stable':'st-fixed-stable']">
+	<div
+		class="st-stable"
+		:class="[
+			config.layoutMode == 'expand' ? 'st-expand-stable' : 'st-fixed-stable'
+		]"
+	>
 		<div class="st-stable-doc">
 			<template v-for="com of comOrder">
-				<component
-					:is="com.com"
-					:key="com.name"
-					:ref="com.name"
-				/>
+				<component :is="com.com" :key="com.name" :ref="com.name" />
 			</template>
 		</div>
 	</div>
@@ -21,7 +22,7 @@ import XToolbar from './Toolbar.vue';
 import XSearch from './Search.vue';
 import XTable from './table/index.vue';
 import XPagination from './Pagination.vue';
-import {hashCode, Console, $type} from "./util/util.js";
+import { hashCode, Console, $type } from './util/util.js';
 import Ajax from './util/Ajax.js';
 
 var defaultLang = require('./lang/zh.js');
@@ -34,141 +35,148 @@ export default {
 		}
 	},
 	provide() {
-		let conf = Object.assign({
-			/**
-			 * @param {String} title 标题，显示在顶部。并且用做导出excel的默认文件名
-			 */
-			title: '',
-			/**
-			 * @param {String} url 
-			 */
-			url: '',
-			/**
-			 * @param {Boolean} rowNumberVisible 是否显示行号
-			 */
-			rowNumberVisible: false,
-			/**
-			 * @param {String} selectMode 选择模式，单选(none)/多选(multiple)/不显示(none)
-			 */
-			selectMode: 'none',
-			/**
-			 * @param {String} pageMode 分页模式。普通模式(normal)把所有数据分成等分的多少页，按页号取每页数据；瀑布流模式(waterfall)，根据当前页的第一项，向前取一页；或最后一项，向后取一页
-			 */
-			pageMode: 'normal', //normal、waterfall
-			/**
-			 * @param {String} pageIndex 如果分页模式是瀑布模式(waterfall)，需要指定由哪个数据字段决定分页，默认是id
-			 */
-			pageIndex: 'id',
-			/**
-			 * @param {Object} listeners STable组件支持的事件
-			 */
-			listeners: {},
-			/**
-			 * @param {Boolean} ignoreEmptySearchParam 忽略搜索条件中的空字符串
-			 */
-			ignoreEmptySearchParam: true,
-			/**
-			 * @param {Number} parallelCount 全量下载表格时，并行请求数
-			 */
-			parallelCount: 6,
-			/**
-			 * 全量下载表格时，根据下载速度，动态调整最大并行数
-			 */
-			dynamicParallelCount: false,
-			/**
-			 * @param {Number} downloadTimeout 全量下载表格时，每页的下载时间
-			 */
-			downloadTimeout: 30000,
-			/**
-			 * @param {Boolean} downloadAllFromJustOnePage 全量下载表格时，所有数据从一页一次性下载
-			 */
-			downloadAllFromJustOnePage: false,
-			/**
-			 * @param {Boolean} labelVisible 搜索区每个输入框是不是要显示名字
-			 */
-			labelVisible: true,
-			/**
-			 * @param {String} layoutMode 布局模式，固定高度(fixed)/高度自动伸缩(expand)
-			 */
-			layoutMode: 'fixed',
-			/**
-			 * @param {Boolean} searchResetable 搜索区是否显示“重置”按钮
-			 */
-			searchResetable: false,
-			/**
-			 * @param {Object[]} records 静态化数据，设置了它后，就不会动态加载数据了
-			 */
-			records: false,
-			/**
-			 * @param {String} idIndex 删除、批量删除、修改数据时，用来标识记录的数据
-			 */
-			idIndex: '',
-			/**
-			 * @param {String} addUrl 添加时的提交地址
-			 */
-			addUrl: '',
-			/**
-			 * @param {String} deleteUrl 删除时的提交地址
-			 */
-			deleteUrl: '',
-			/**
-			 * @param {String} updateUrl 更新时的提交地址
-			 */
-			updateUrl: '',
-			/**
-			 * @param {String} tip 顶部显示的提示
-			 */
-			tip: '',
-			/**
-			 * @param {Boolean} downloadable 显示下载按钮
-			 */
-			downloadable: false,
-			/**
-			 * @param {String} downloadurl 显示自定义链接的按钮
-			 */
-			downloadurl: '',
-			/**
-			 * @param {Array} searchFilter 搜索表单配置
-			 */
-			searchFilter: false,
-			/**
-			 * @param {Array} searchAreaBtns 搜索区域自定义按钮
-			 */
-			searchAreaBtns: false,
-			/**
-			 * @param {Boolean} showBorder 单元格是否显示边框
-			 */
-			showBorder: false,
-			/**
-			 * @param {Array} mergeHeaders 多表头
-			 */
-			mergeHeaders: [],
-			/**
-			 * @param {Boolean} clearable 全局设置form是否可清空
-			 */
-			clearable: false,
-		}, window.STable && window.STable.default||{}, this.config);
+		let conf = Object.assign(
+			{
+				/**
+				 * @param {String} title 标题，显示在顶部。并且用做导出excel的默认文件名
+				 */
+				title: '',
+				/**
+				 * @param {String} url
+				 */
+				url: '',
+				/**
+				 * @param {Boolean} rowNumberVisible 是否显示行号
+				 */
+				rowNumberVisible: false,
+				/**
+				 * @param {String} selectMode 选择模式，单选(none)/多选(multiple)/不显示(none)
+				 */
+				selectMode: 'none',
+				/**
+				 * @param {String} pageMode 分页模式。普通模式(normal)把所有数据分成等分的多少页，按页号取每页数据；瀑布流模式(waterfall)，根据当前页的第一项，向前取一页；或最后一项，向后取一页
+				 */
+				pageMode: 'normal', //normal、waterfall
+				/**
+				 * @param {String} pageIndex 如果分页模式是瀑布模式(waterfall)，需要指定由哪个数据字段决定分页，默认是id
+				 */
+				pageIndex: 'id',
+				/**
+				 * @param {Object} listeners STable组件支持的事件
+				 */
+				listeners: {},
+				/**
+				 * @param {Boolean} ignoreEmptySearchParam 忽略搜索条件中的空字符串
+				 */
+				ignoreEmptySearchParam: true,
+				/**
+				 * @param {Number} parallelCount 全量下载表格时，并行请求数
+				 */
+				parallelCount: 6,
+				/**
+				 * 全量下载表格时，根据下载速度，动态调整最大并行数
+				 */
+				dynamicParallelCount: false,
+				/**
+				 * @param {Number} downloadTimeout 全量下载表格时，每页的下载时间
+				 */
+				downloadTimeout: 30000,
+				/**
+				 * @param {Boolean} downloadAllFromJustOnePage 全量下载表格时，所有数据从一页一次性下载
+				 */
+				downloadAllFromJustOnePage: false,
+				/**
+				 * @param {Boolean} labelVisible 搜索区每个输入框是不是要显示名字
+				 */
+				labelVisible: true,
+				/**
+				 * @param {String} layoutMode 布局模式，固定高度(fixed)/高度自动伸缩(expand)
+				 */
+				layoutMode: 'fixed',
+				/**
+				 * @param {Boolean} searchResetable 搜索区是否显示“重置”按钮
+				 */
+				searchResetable: false,
+				/**
+				 * @param {Object[]} records 静态化数据，设置了它后，就不会动态加载数据了
+				 */
+				records: false,
+				/**
+				 * @param {String} idIndex 删除、批量删除、修改数据时，用来标识记录的数据
+				 */
+				idIndex: '',
+				/**
+				 * @param {String} addUrl 添加时的提交地址
+				 */
+				addUrl: '',
+				/**
+				 * @param {String} deleteUrl 删除时的提交地址
+				 */
+				deleteUrl: '',
+				/**
+				 * @param {String} updateUrl 更新时的提交地址
+				 */
+				updateUrl: '',
+				/**
+				 * @param {String} tip 顶部显示的提示
+				 */
+				tip: '',
+				/**
+				 * @param {Boolean} downloadable 显示下载按钮
+				 */
+				downloadable: false,
+				/**
+				 * @param {String} downloadurl 显示自定义链接的按钮
+				 */
+				downloadurl: '',
+				/**
+				 * @param {Array} searchFilter 搜索表单配置
+				 */
+				searchFilter: false,
+				/**
+				 * @param {Array} searchAreaBtns 搜索区域自定义按钮
+				 */
+				searchAreaBtns: false,
+				/**
+				 * @param {Boolean} showBorder 单元格是否显示边框
+				 */
+				showBorder: false,
+				/**
+				 * @param {Array} mergeHeaders 多表头
+				 */
+				mergeHeaders: [],
+				/**
+				 * @param {Boolean} clearable 全局设置form是否可清空
+				 */
+				clearable: false,
+				/**
+				 * @param {Boolean} autoRequest 首次进入页面是否需要加载数据
+				 */
+				autoRequest: true
+			},
+			(window.STable && window.STable.default) || {},
+			this.config
+		);
 
 		//国际化
-		if(!conf.locale) {
+		if (!conf.locale) {
 			conf.locale = defaultLang;
-		}else if(typeof conf.locale == 'string') {
-			if(window.STable && Window.STable.lang[conf.locale]) {
+		} else if (typeof conf.locale == 'string') {
+			if (window.STable && Window.STable.lang[conf.locale]) {
 				conf.locale = Window.STable.lang[conf.locale];
-				conf.locale = conf.locale.default||conf.locale;
+				conf.locale = conf.locale.default || conf.locale;
 			} else {
 				conf.locale = defaultLang;
 			}
 		}
 
-		if(conf.layoutMode != 'expand')
-			conf.layoutMode == 'fixed';
+		if (conf.layoutMode != 'expand') conf.layoutMode == 'fixed';
 		/**
 		 * @param {Object} actionMethods STable在不同时机发请求时所用的方法
 		 */
-		let methods = conf.actionMethods||conf.requestMethod||'GET';
-		if(typeof methods=='string'){
-			methods = {read: methods};
+		let methods = conf.actionMethods || conf.requestMethod || 'GET';
+		if (typeof methods == 'string') {
+			methods = { read: methods };
 		}
 		let actionMethods = {
 			create: 'POST',
@@ -181,9 +189,8 @@ export default {
 		/**
 		 * @param {String|String[]} sublistAt 行内容分多子表
 		 */
-		if(conf.sublistAt){
-			if(!Array.isArray(conf.sublistAt))
-				conf.sublistAt = [conf.sublistAt];
+		if (conf.sublistAt) {
+			if (!Array.isArray(conf.sublistAt)) conf.sublistAt = [conf.sublistAt];
 		} else {
 			conf.sublistAt = [];
 		}
@@ -194,28 +201,29 @@ export default {
 		/**
 		 * @param {Object} acc additionalColumnConfig的别名
 		 */
-		let additionalColumnConfig = conf.additionalColumnConfig||conf.acc||false;
+		let additionalColumnConfig =
+			conf.additionalColumnConfig || conf.acc || false;
 
 		/**
 		 * @param {Object} columns 列配置
 		 */
-		let columns = conf.columns.map((item,idx)=>{
+		let columns = conf.columns.map((item, idx) => {
 			/**
 			 * @param {String} column.text 列头文本
 			 */
 			/**
 			 * @param {String} column.dataIndex 列的数据id
 			 */
-			if(typeof item == 'string') {
+			if (typeof item == 'string') {
 				item = {
 					text: item,
 					dataIndex: item
 				};
 			}
-			if(additionalColumnConfig) {
-				if(Array.isArray(additionalColumnConfig)) {
+			if (additionalColumnConfig) {
+				if (Array.isArray(additionalColumnConfig)) {
 					Object.assign(item, additionalColumnConfig[idx]);
-				} else if(item.dataIndex && additionalColumnConfig[item.dataIndex]) {
+				} else if (item.dataIndex && additionalColumnConfig[item.dataIndex]) {
 					Object.assign(item, additionalColumnConfig[item.dataIndex]);
 				}
 			}
@@ -223,33 +231,31 @@ export default {
 				item.text = item.header;
 			}
 
-			if(!item.text)
-				item.text = item.dataIndex||'-';
+			if (!item.text) item.text = item.dataIndex || '-';
 
 			/**
 			 * @param {String[]|Object} column.options 此列显示的时候，不显示行数据dataIndex指定的值，也是从options找到对应的映射显示
 			 */
 			//防止有options字段，又没有配置可选值
-			if (item.options && Object.keys(item.options).length<=0){
+			if (item.options && Object.keys(item.options).length <= 0) {
 				item.options = false;
 			}
-			
+
 			/**
 			 * @param {Button[]} column.buttons 每一行显示的按钮
 			 */
 			/**
-			 * @param {Number|String} column.width 列宽 
+			 * @param {Number|String} column.width 列宽
 			 */
 
 			/**
 			 * @param {String} button.iconCls 按钮上显示的icon
 			 */
 			if (item.buttons) {
-				if(!item.type)
-					item.type = 'button';
+				if (!item.type) item.type = 'button';
 			}
 			if (!item.dataIndex) {
-				item.dataIndex = "_st_column_"+idx;
+				item.dataIndex = '_st_column_' + idx;
 			}
 
 			/**
@@ -276,19 +282,19 @@ export default {
 			/**
 			 * @param {Number} column.flex 使用权重而不是绝对值决定列宽
 			 */
-			if(typeof item.width=='undefined' && typeof item.flex=='undefined') {
+			if (typeof item.width == 'undefined' && typeof item.flex == 'undefined') {
 				item.flex = 1;
 			}
 
 			let _type = typeof item.width;
-			if(_type != 'undefined') {
-				if(_type=='string') {
+			if (_type != 'undefined') {
+				if (_type == 'string') {
 					//可能是百分比，否则全转化为整数
-					if(!/^[\d.]+%$/.test(item.width)) {
+					if (!/^[\d.]+%$/.test(item.width)) {
 						item.width = parseInt(item.width, 10);
 					}
 				}
-			} else if(typeof item.flex != 'undefined') {
+			} else if (typeof item.flex != 'undefined') {
 				item.flex = parseFloat(item.flex);
 			} else {
 				item.flex = 1;
@@ -300,21 +306,23 @@ export default {
 			 * @param {Boolean} column.cellWrap 此列是否自动换行
 			 * @param {Boolean} column.resizable 此列是不是可以缩放大小
 			 */
-			item = Object.assign({
-				visible: true,
-				locked: false,
-				cellWrap: true,
-				resizable: true,
-				_st_ori_idx: idx,
-				_hl: false
-			},item);
-			if(item.locked){
-				if(item.locked != 'right')
-					item.locked = 'left';
+			item = Object.assign(
+				{
+					visible: true,
+					locked: false,
+					cellWrap: true,
+					resizable: true,
+					_st_ori_idx: idx,
+					_hl: false
+				},
+				item
+			);
+			if (item.locked) {
+				if (item.locked != 'right') item.locked = 'left';
 			} else {
 				item.locked = false;
 			}
-			
+
 			return item;
 		});
 
@@ -324,22 +332,22 @@ export default {
 		conf.params = Object.assign(
 			{
 				count: 20
-			}, 
+			},
 			conf.params,
 			//向前兼容，postParam、postData是之前版本使用过的名称
 			conf.postParam,
 			conf.postData
 		);
 		conf.urlSearchParams = {};
-		if(stableCount==0 && window.location.search.includes('stable=on')) {
+		if (stableCount == 0 && window.location.search.includes('stable=on')) {
 			let searchParams = new window.URLSearchParams(window.location.search);
-			if(searchParams.get('stable')=='on'){
+			if (searchParams.get('stable') == 'on') {
 				searchParams.delete('stable');
 				let sp = {};
-				for(let p of searchParams){
-					if(/(.+)\[\]$/.test(p[0])){
+				for (let p of searchParams) {
+					if (/(.+)\[\]$/.test(p[0])) {
 						let key = RegExp.$1;
-						if(!sp[key]) {
+						if (!sp[key]) {
 							sp[key] = [p[1]];
 						} else {
 							sp[key].push(p[1]);
@@ -355,14 +363,18 @@ export default {
 		/**
 		 * @param {String} updateUrl 更新时的地址
 		 */
-		if(conf.editUrl) {
+		if (conf.editUrl) {
 			conf.updateUrl = conf.editUrl;
 		}
 		/**
 		 * @param {Object[]} updateConfig 更新时的表单配置
 		 */
-		if(conf.updateUrl) {
-			conf.updateConfig = conf.updateConfig||conf.editConfig||conf.editConf||conf.metaEditConf;
+		if (conf.updateUrl) {
+			conf.updateConfig =
+				conf.updateConfig ||
+				conf.editConfig ||
+				conf.editConf ||
+				conf.metaEditConf;
 		} else {
 			conf.updateConfig = {};
 		}
@@ -370,56 +382,54 @@ export default {
 		 * @param {String} addUrl 添加行时的提交的url
 		 * @param {Object[]} addConfig 添加行的表单配置
 		 */
-		if(conf.addUrl) {
-			conf.addConfig = conf.addConfig|| conf.addConf || conf.updateConfig;
+		if (conf.addUrl) {
+			conf.addConfig = conf.addConfig || conf.addConf || conf.updateConfig;
 		} else {
 			conf.addConfig = {};
 		}
 
 		let selectMode = conf.selectMode.trim().toLowerCase();
-		if(['radio', 'single'].includes(selectMode)){
+		if (['radio', 'single'].includes(selectMode)) {
 			conf.selectMode = 'single';
-		} else if(['checkbox', 'mul', 'multi', 'multiple'].includes(selectMode)){
+		} else if (['checkbox', 'mul', 'multi', 'multiple'].includes(selectMode)) {
 			conf.selectMode = 'multiple';
 		} else {
 			conf.selectMode = 'none';
 		}
 
-		if(conf.batDeleteUrl){
+		if (conf.batDeleteUrl) {
 			conf.selectMode = 'multiple';
 		}
 
-		if(typeof conf.page != 'undefined') {
+		if (typeof conf.page != 'undefined') {
 			conf.params.page = conf.page;
 		}
 
-		if(conf.sort_key)
-			conf.sortKey = conf.sort_key;
-		if(conf.sort_direction)
-			conf.sortDirection = conf.sort_direction;
-		if(!conf.sortDirection)
-			conf.sortDirection = 'asc';
+		if (conf.sort_key) conf.sortKey = conf.sort_key;
+		if (conf.sort_direction) conf.sortDirection = conf.sort_direction;
+		if (!conf.sortDirection) conf.sortDirection = 'asc';
 
 		//一些默认的请求参数，通过ajaxSetting传递
 		conf.ajax = new Ajax(conf.ajaxSetting);
 
 		let loc = window.location;
-		conf._storage_key = hashCode(loc.host+loc.pathname+JSON.stringify(columns));
+		conf._storage_key = hashCode(
+			loc.host + loc.pathname + JSON.stringify(columns)
+		);
 		let localColumnSet;
-		try{
+		try {
 			localColumnSet = window.localStorage.getItem(conf._storage_key);
-			if(localColumnSet)
-				localColumnSet = JSON.parse(localColumnSet);
-		}catch(e){
+			if (localColumnSet) localColumnSet = JSON.parse(localColumnSet);
+		} catch (e) {
 			localColumnSet = '';
 			alert('本地存储的列信息有问题');
 		}
-		if(localColumnSet) {
+		if (localColumnSet) {
 			let _columns = [];
-			
-			for(let col of localColumnSet) {
-				for(let colConf of columns){
-					if(colConf._st_ori_idx == col._st_ori_idx){
+
+			for (let col of localColumnSet) {
+				for (let colConf of columns) {
+					if (colConf._st_ori_idx == col._st_ori_idx) {
 						Object.assign(colConf, {
 							locked: col.locked,
 							visible: col.visible,
@@ -455,15 +465,15 @@ export default {
 				radioVal: '',
 				checkboxVal: [],
 				chkAll: false,
-				sortKey: conf.sortKey||'',
+				sortKey: conf.sortKey || '',
 				sortDirection: conf.sortDirection,
 
 				hlRowNum: -1,
 				focusRowNum: -1
 			},
 			methods: {
-				saveColumnsState(){
-					let colState = this.columns.map(col=>{
+				saveColumnsState() {
+					let colState = this.columns.map(col => {
 						return {
 							text: col.text,
 							visible: col.visible,
@@ -474,22 +484,25 @@ export default {
 						};
 					});
 
-					try{
-						window.localStorage.setItem(this.storageKey, JSON.stringify(colState));
-					}catch(e){
+					try {
+						window.localStorage.setItem(
+							this.storageKey,
+							JSON.stringify(colState)
+						);
+					} catch (e) {
 						Console.error(e);
 					}
 				},
-				resetColumnsState(){
-					try{
+				resetColumnsState() {
+					try {
 						window.localStorage.removeItem(this.storageKey);
 						location.reload();
-					}catch(e){
+					} catch (e) {
 						Console.error(e);
 					}
 				},
-				emit(evtName, ...args){
-					if(conf.listeners && conf.listeners[evtName]) {
+				emit(evtName, ...args) {
+					if (conf.listeners && conf.listeners[evtName]) {
 						return conf.listeners[evtName].apply(self, args);
 					}
 				}
@@ -501,7 +514,7 @@ export default {
 
 		return conf;
 	},
-	data(){
+	data() {
 		/**
 		 * @param {String[]} componentOrder 组件的展示顺序
 		 */
@@ -513,38 +526,36 @@ export default {
 			table: XTable,
 			pagination: XPagination
 		};
-		let order = [
-			'title', 
-			'tip', 
-			'toolbar', 
-			'search', 
-			'table',
-			'pagination'
-		];
-		if(this.config.componentOrder) {
+		let order = ['title', 'tip', 'toolbar', 'search', 'table', 'pagination'];
+		if (this.config.componentOrder) {
 			order = this.config.componentOrder;
 		}
 		return {
-			comOrder: order.map(name=>({name, com:coms[name]}))
+			comOrder: order.map(name => ({ name, com: coms[name] }))
 		};
 	},
-	mounted(){
-		if(this.config.listeners && this.config.listeners.ready){
+	mounted() {
+		if (this.config.listeners && this.config.listeners.ready) {
 			this.config.listeners.ready.call(this);
 		}
 		stableCount++;
 
-		setTimeout(()=>{
-			if(this.config.searchFilter){
-				this.$refs.search[0].$el.querySelector('[type=submit]').click();
-			} else {
-				this.$refs.table[0].load();
+		setTimeout(() => {
+			if (
+				this.config.autoRequest ||
+				typeof this.config.autoRequest === 'undefined'
+			) {
+				if (this.config.searchFilter) {
+					this.$refs.search[0].$el.querySelector('[type=submit]').click();
+				} else {
+					this.$refs.table[0].load();
+				}
 			}
 		}, 0);
 		// 如果设置了全局clearable，则分别设置组件的clearable属性
-		if(this.config.clearable && this.config.searchFilter){
+		if (this.config.clearable && this.config.searchFilter) {
 			this.config.searchFilter.forEach(field => {
-				if(field.clearable == undefined) {
+				if (field.clearable == undefined) {
 					this.$set(field, 'clearable', this.config.clearable);
 				}
 			});
@@ -560,54 +571,51 @@ export default {
 		/**
 		 * @member {Function} getSearchParam 获得当前搜索表单项内容
 		 */
-		getSearchParam(){
-			return Object.assign(
-				{},
-				this.$refs.search[0].$refs.form.getFormData()
-			);
+		getSearchParam() {
+			return Object.assign({}, this.$refs.search[0].$refs.form.getFormData());
 		},
-		getSelectRows(){
+		getSelectRows() {
 			return this.getSelected();
 		},
 		/**
 		 * @member {Function} getSelectedRows 获得当前所有选中行的数据
 		 */
-		getSelectedRows(){
+		getSelectedRows() {
 			return this.getSelected();
 		},
 		/**
 		 * @member {Function} getSelected 获得当前所有选中行的数据
 		 */
-		getSelected(){
+		getSelected() {
 			return this.$refs.table[0].getSelectRows();
 		},
 		/**
 		 * @member {Function} layout 重新布局表格
 		 */
-		layout(){
+		layout() {
 			this.$refs.table[0].layout();
 			this.$refs.table[0].syncHeight();
 		},
 		/**
 		 * @member {Function} setRecords 设置表格数据
 		 */
-		setRecords(list){
+		setRecords(list) {
 			this.$refs.table[0].setRecords(list);
 		},
 		/**
 		 * @member {Function} getToolbarBtn
 		 * @param {Number|String} idx 要获取的按钮的序号，或者配置的id
 		 */
-		getToolbarBtn(idx){
+		getToolbarBtn(idx) {
 			let tb = this.$refs.toolbar;
-			if(!tb || !tb[0] || !tb[0].$refs || !tb[0].$refs.btn){
+			if (!tb || !tb[0] || !tb[0].$refs || !tb[0].$refs.btn) {
 				return;
 			}
 			let btns = tb[0].$refs.btn;
-			if(typeof idx == 'undefined'){
+			if (typeof idx == 'undefined') {
 				return btns;
-			}else if($type(idx)=='string'){
-				btns = btns.filter(b=>b.conf.id==idx);
+			} else if ($type(idx) == 'string') {
+				btns = btns.filter(b => b.conf.id == idx);
 				return btns[0];
 			} else {
 				return btns[idx];
@@ -619,14 +627,14 @@ export default {
 		 */
 		getSearchForm(idx) {
 			let sf = this.$refs.search;
-			if(!sf || !sf[0] || !sf[0].$refs || !sf[0].$refs.form){
+			if (!sf || !sf[0] || !sf[0].$refs || !sf[0].$refs.form) {
 				return;
 			}
 			let forms = sf[0].$refs.form.fieldList;
-			if(typeof idx == 'undefined'){
+			if (typeof idx == 'undefined') {
 				return forms;
-			}else if($type(idx)=='string'){
-				forms = forms.filter(b=>b.conf.id==idx);
+			} else if ($type(idx) == 'string') {
+				forms = forms.filter(b => b.conf.id == idx);
 				return forms[0];
 			} else {
 				return forms[idx];
@@ -637,20 +645,20 @@ export default {
 </script>
 <style lang="scss">
 @import url(./iconfont/iconfont.css);
-.st-stable{
+.st-stable {
 	&,
 	*,
 	::before,
-	::after{
+	::after {
 		box-sizing: border-box;
 	}
 	border-top: 1px solid #d0d0d0;
 }
-.st-fixed-stable{
+.st-fixed-stable {
 	position: relative;
 	height: 100%;
 }
-.st-fixed-stable .st-stable-doc{
+.st-fixed-stable .st-stable-doc {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -662,7 +670,7 @@ export default {
 }
 
 /*一些公用样式*/
-.st-flex-padding{
+.st-flex-padding {
 	flex: 1;
 }
 </style>

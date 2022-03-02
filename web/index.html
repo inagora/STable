@@ -1,45 +1,46 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>fixed</title>
-	<style>
-	html,body{
-		height: 100%;
-		margin: 0;
-	}
-	body{
-		display: flex;
-		flex-direction: column;
-	}
-	.header{
-		height: 64px;
-		border-bottom: 1px solid #eee;
-	}
-	.body{
-		flex: 1;
-		display: flex;
-	}
-	.nav{
-		width: 200px;
-		border-right: 1px solid #eee;
-	}
-	#box{
-		flex: 1;
-	}
-	</style>
-</head>
-<body>
-	<div class="header">header</div>
-	<div class="body">
-		<div class="nav">nav</div>
-		<div id="box"></div>
-	</div>
-	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
-	<script src="/STable.min.js"></script>
-	<!-- <script>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>fixed</title>
+		<style>
+			html,
+			body {
+				height: 100%;
+				margin: 0;
+			}
+			body {
+				display: flex;
+				flex-direction: column;
+			}
+			.header {
+				height: 64px;
+				border-bottom: 1px solid #eee;
+			}
+			.body {
+				flex: 1;
+				display: flex;
+			}
+			.nav {
+				width: 200px;
+				border-right: 1px solid #eee;
+			}
+			#box {
+				flex: 1;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">header</div>
+		<div class="body">
+			<div class="nav">nav</div>
+			<div id="box"></div>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+		<script src="/STable.min.js"></script>
+		<!-- <script>
 	STable.init({
 		el: '#box',
 		url: '/ajaxWaterfall',
@@ -65,547 +66,620 @@
 		]
 	});
 	</script> -->
-	<script>
-
-	STable.default = Object.assign({}, STable.default, {
-		listeners: {
-			beforedatarequest(options){
-				// let _headers = {};
-				// _headers['test123'] = 'test';
-				// options.headers = Object.assign({}, options.headers, _headers);
-				// return options;
-				console.log(22);
-				return new Promise((resolve, reject) => {
-					resolve({
-						errno: 0,
-						data: {
-							list: [
-							{"id":157392,"name":"土耳其语入门","nameEn":"Türkisch für Anfänger - Der Film","movieType":"动作 | 喜剧","img":"https://img21.mtime.cn/mt/2012/03/19/115502.60763149_1280X720X2.jpg","titleOthersCn":["Türkisch für Anfänger"],"realTime":"2012年3月15日","rYear":2012,"rMonth":3,"rDay":15,"year":"2012","rLocation":"美国","locationName":"美国","rating":"7.1","releaseStatus":0,"isTicket":false,"isFilter":false,"directors":["宝拉·达格特金"],"actors":["约瑟芬·普罗伊斯","埃利亚斯·穆巴里克"]},{"id":157623,"name":"土耳其浴","nameEn":"Hot Hot Hot","movieType":"剧情 | 喜剧","img":"https://img21.mtime.cn/mt/2012/02/23/111335.49624000_1280X720X2.jpg","titleOthersCn":[],"realTime":"2011年10月9日","rYear":2011,"rMonth":10,"rDay":9,"year":"2011","rLocation":"卢森堡","locationName":"卢森堡","rating":"","releaseStatus":0,"isTicket":false,"isFilter":false,"directors":["Beryl Koltz"],"actors":["罗伯·斯坦利","Joanna Scanlan"]}
-							],
-							page: 1,
-							page_count: 1
-						}
-					});
-
-				});
-			}
-		}
-	});
-	var table = STable.init({
-		el: '#box',
-		title: '测试用例',
-		titleVisible: true,
-		tip: '此数据来自时光网',
-		url: '/ajaxList',
-		rowNumberVisible: false,
-		selectMode: 'none',
-		ajaxSetting: {
-			contentType: 'application/x-www-form-urlencoded'
-		},
-    clearable: true,
-		showBorder: true,
-		groupBy: ['name'],
-		// records: [
-		// {"id":157392,"name":"土耳其语入门","nameEn":"Türkisch für Anfänger - Der Film","movieType":"动作 | 喜剧","img":"https://img21.mtime.cn/mt/2012/03/19/115502.60763149_1280X720X2.jpg","titleOthersCn":["Türkisch für Anfänger"],"realTime":"2012年3月15日","rYear":2012,"rMonth":3,"rDay":15,"year":"2012","rLocation":"美国","locationName":"美国","rating":"7.1","releaseStatus":0,"isTicket":false,"isFilter":false,"directors":["宝拉·达格特金"],"actors":["约瑟芬·普罗伊斯","埃利亚斯·穆巴里克"]},{"id":157623,"name":"土耳其浴","nameEn":"Hot Hot Hot","movieType":"剧情 | 喜剧","img":"https://img21.mtime.cn/mt/2012/02/23/111335.49624000_1280X720X2.jpg","titleOthersCn":[],"realTime":"2011年10月9日","rYear":2011,"rMonth":10,"rDay":9,"year":"2011","rLocation":"卢森堡","locationName":"卢森堡","rating":"","releaseStatus":0,"isTicket":false,"isFilter":false,"directors":["Beryl Koltz"],"actors":["罗伯·斯坦利","Joanna Scanlan"]}
-		// ],
-		// merges: [
-		// 	{
-		// 		s: {
-		// 			c: 3,
-		// 			r: 0
-		// 		},
-		// 		e: {
-		// 			c: 0,
-		// 			r: 0
-		// 		}
-		// 	},
-		// 	{
-		// 		s: {
-		// 			c: 1,
-		// 			r: 1
-		// 		},
-		// 		e: {
-		// 			c: 2,
-		// 			r: 1
-		// 		}
-		// 	}
-		// ],
-		// searchFilter: [
-		// {
-		// 	type: 'input',
-		// 	label: '姓名',
-		// 	name: 'uname',
-		// 	value: 'pjc',
-		// 	required: true
-		// },
-		// {
-		// 	type: 'input',
-		// 	label: '年龄',
-		// 	name: 'age',
-		// 	value: '25',
-		// 	required: true
-		// },
-		// {
-		// 	type: 'combobox',
-		// 	label: '影片类型',
-		// 	name: 'selectname',
-		// 	options: [
-		// 		{value: 'xiju',label: '喜剧'},
-		// 		{value: 'xuanyi',label: '悬疑'}
-		// 	],
-		// }
-		// ],
-		searchFilter: [
-			{
-				label: '名字',
-				name: 'name',
-				type: 'text',
-				width: '300',
-				icon: 'st-icon st-icon-plus',
-        clearable: true,
-				actionUrl: '/',
-				change(field, evt) {
-					let form = table.getSearchForm(1);
-					form.options = [
-						{
-							label: '爱情2',
-							value: 'type1'
-						},
-						{
-							label: '悬疑',
-							value: 'type2'
-						},
-						{
-							label: '恐怖',
-							value: 'type3'
-						}
-					];
-				}
-			},
-			{
-				name: 'movieType2',
-				label: '影片类型2',
-				type: 'multiple',
-				options: [
-					{
-						label: '爱情',
-						value: 'type1'
-					},
-					{
-						label: '悬疑',
-						value: 'type2'
-					},
-					{
-						label: '恐怖',
-						value: 'type3'
-					},
-					{
-						label: '武打',
-						value: 'type4'
-					},
-					{
-						label: '科幻',
-						value: 'type5'
-					},
-					{
-						label: '惊悚',
-						value: 'type6'
-					},
-					{
-						label: '家庭',
-						value: 'type7'
-					},
-					{
-						label: '都市',
-						value: 'type8'
-					},
-					{
-						label: '儿童',
-						value: 'type9'
+		<script>
+			STable.default = Object.assign({}, STable.default, {
+				listeners: {
+					beforedatarequest(options) {
+						// let _headers = {};
+						// _headers['test123'] = 'test';
+						// options.headers = Object.assign({}, options.headers, _headers);
+						// return options;
+						console.log(22);
+						return new Promise((resolve, reject) => {
+							resolve({
+								errno: 0,
+								data: {
+									list: [
+										{
+											id: 157392,
+											name: '土耳其语入门',
+											nameEn: 'Türkisch für Anfänger - Der Film',
+											movieType: '动作 | 喜剧',
+											img:
+												'https://img21.mtime.cn/mt/2012/03/19/115502.60763149_1280X720X2.jpg',
+											titleOthersCn: ['Türkisch für Anfänger'],
+											realTime: '2012年3月15日',
+											rYear: 2012,
+											rMonth: 3,
+											rDay: 15,
+											year: '2012',
+											rLocation: '美国',
+											locationName: '美国',
+											rating: '7.1',
+											releaseStatus: 0,
+											isTicket: false,
+											isFilter: false,
+											directors: ['宝拉·达格特金'],
+											actors: ['约瑟芬·普罗伊斯', '埃利亚斯·穆巴里克']
+										},
+										{
+											id: 157623,
+											name: '土耳其浴',
+											nameEn: 'Hot Hot Hot',
+											movieType: '剧情 | 喜剧',
+											img:
+												'https://img21.mtime.cn/mt/2012/02/23/111335.49624000_1280X720X2.jpg',
+											titleOthersCn: [],
+											realTime: '2011年10月9日',
+											rYear: 2011,
+											rMonth: 10,
+											rDay: 9,
+											year: '2011',
+											rLocation: '卢森堡',
+											locationName: '卢森堡',
+											rating: '',
+											releaseStatus: 0,
+											isTicket: false,
+											isFilter: false,
+											directors: ['Beryl Koltz'],
+											actors: ['罗伯·斯坦利', 'Joanna Scanlan']
+										}
+									],
+									page: 1,
+									page_count: 1
+								}
+							});
+						});
 					}
-				],
-				change(field, val) {
-					let form = table.getSearchForm(2);
-					form.list = [
-						{
-							label: '爱情2',
-							value: 'type1'
-						},
-						{
-							label: '悬疑',
-							value: 'type2'
-						},
-						{
-							label: '恐怖',
-							value: 'type3'
-						}
-					];
 				}
-			},
-			{
-				name: 'movieType3',
-				label: '影片类型3',
-				type: 'multiple',
-				value: 'type1',
-				list: ['type1', 'type2']
-			},
-			{
-				name: 'movieType4',
-				label: '影片类型',
-        clearable: true,
-				type: 'combobox',
-				list: [
-					{
-						text: '爱情',
-						value: 'type1'
-					},
-					{
-						text: '悬疑',
-						value: 'type2'
-					},
-					{
-						text: '恐怖',
-						value: 'type3'
-					}
-				]
-			},
-			{
-				name: 'movieType5',
-				label: '影片类型5',
-				type: 'cascader',
-				list: [
-					{
-						text: '爱情',
-						value: 'type1',
-						list: [
-							{
-								text: '爱情',
-								value: 'type1',
-							},
-							{
-								text: '悬疑',
-								value: 'type2'
-							},
-							{
-								text: '恐怖',
-								value: 'type3'
-							}
-						]
-					},
-					{
-						text: '悬疑',
-						value: 'type2'
-					},
-					{
-						text: '恐怖',
-						value: 'type3'
-					}
-				]
-			},
-			{
-				name: 'movieAward',
-				label: '奖项',
-				type: 'checkbox', 
-				options: [
-					{
-						label: '奥斯卡',
-						value: 'Oscar',
-						ischecked: true
-					},
-					{
-						label: '戛纳',
-						value: 'Cannes'
-					},
-					{
-						label: '柏林',
-						value: 'Berlin'
-					}
-				]
-			},
-			{
-				label: '上映时间(起)',
-				name: 'stime',
-				type: 'date',
-				dateConfig: {
-					dateFormat: 'Y/m/d H:i:S',
-				}
-			},
-			{
-				label: '上映时间(终)',
-				name: 'etime',
-				type: 'date',
-        clearable: false
-			}
-		],
-		searchAreaBtns: [
-			{
-				text: '自定义',
-				type: 'primary',
-				click() {
-					console.log('自定义按钮');
-				}
-			},
-			{
-				text: '自定义下载',
-				type: 'primary',
-				downloadable: 'single'
-			},
-			{
-				text: '自定义下载所有页',
-				type: 'primary',
-				downloadable: 'all'
-			}
-		],
-		// searchFilter: {
-		// 	name: '名称',
-		// 	age: '年龄',
-		// 	sex: '性别'
-		// },
-		mergeHeaders: [
-			[
-				{
-					text: 'id+评分',
-					colspan: 2
+			});
+			var table = STable.init({
+				el: '#box',
+				title: '测试用例',
+				titleVisible: true,
+				tip: '此数据来自时光网',
+				url: '/ajaxList',
+				rowNumberVisible: false,
+				selectMode: 'none',
+				ajaxSetting: {
+					contentType: 'application/x-www-form-urlencoded'
 				},
-				{
-					text: '上映时间+主演+导演+名字',
-					colspan: 4
-				},
-				{
-					text: '影片类型+国家',
-					colspan: 2
-				}
-			],
-			[
-				{
-					text: 'id',
-					colspan: 1
-				},
-				{
-					text: '名字',
-					colspan: 1
-				},
-				{
-					text: '评分',
-					colspan: 1
-				},
-				{
-					text: '影片类型',
-					colspan: 1
-				},
-				{
-					text: '导演',
-					colspan: 1
-				},
-				{
-					text: '主演',
-					colspan: 1
-				},
-				{
-					text: '国家',
-					colspan: 1
-				},
-				{
-					text: '上映时间',
-					colspan: 1
-				}	
-			]
-		],
-		columns: [
-			{
-				header: 'id',
-				dataIndex:'id',
-				width: 100,
-				// locked: true,
-				sortable: true
-			},
-			// {
-			// 	header: '海报',
-			// 	dataIndex: 'img',
-			// 	width: 120,
-			// 	render(record){
-			// 		let img = record.img;
-			// 		return `<div class="poster" style="background-image:url(${img.replace(/_\d+X\d+(X2)?\.jpg/,'_640X360X2.jpg')})"></div>`;
-			// 	}
-			// },
-			{
-				header: '名字',
-				dataIndex: 'name',
-				width: 200,
-				cellWrap: true,
-				style: {
-					color: 'green'
-				},
-				cls: 'lalala',
-			},{
-				header: '评分',
-				dataIndex: 'rating',
-				width: 100,
-				fx: 'average',
-				sortable: true
-			},{
-				header: '影片类型',
-				dataIndex: 'movieType',
-			},
-			{
-				header: '导演',
-				dataIndex: 'directors',
-				width: 250,
-				render(record){
-					return record.directors.join(' | ');
-				}
-			},{
-				header: '主演',
-				dataIndex: 'actors',
-				cellWrap: true,
-				width: 250,
-				render(record){
-					return record.actors.join(' | ');
-				}
-			},
-			{
-				header: '国家',
-				dataIndex: 'locationName',
-				width: 280,
-				mergeable: true
-			},{
-				header: '上映时间',
-				dataIndex: 'year',
-				width: 280,
-				sortable: true
-				// locked: 'right'
-			},
-			{
-				header: 'btns',
-				width: 100,
-				buttons: [{
-					text: 'fff',
-					click(r,b,e){
-						console.log(this);
-						console.log(r);
-						console.log(b);
-						console.log(e);
-					},
-					icon: 'st-iconfont st-icon-eye',
-				}]
-			}
-			// ,{
-			// 	header: '其它名字',
-			// 	width: 500,
-			// 	cellWrap: true,
-			// 	dataIndex: 'titleOthersCn'
-			// }
-		],
-		toolbar: [
-			{text:'abc'},
-			{text:'测试', size:'large'},
-			{text:'测试', size:'large', icon:'st-iconfont st-icon-lock'},
-			{text:'测试', type: 'primary', size:'large'},
-			{text:'测试', type: 'primary', size:'large', icon:'st-iconfont st-icon-lock'},
-			{text:'测试', type: 'primary',},
-			{text:'测试', type: 'primary', icon:'st-iconfont st-icon-lock'},
-			{text:'测试', type: 'success', size:'small'},
-			{text:'测试', type: 'success', size:'small', icon:'st-iconfont st-icon-lock'},
-			{text:'测试', type: 'primary', size:'large'},
-			{text:'测试', type: 'primary', size:'large', icon:'st-iconfont st-icon-eye'},
-			{text:'测试', type: 'primary',},
-			{text:'测试', type: 'primary', icon:'st-iconfont st-icon-eye'},
-			{text:'测试', type: 'success', size:'small'},
-			{text:'测试', type: 'success', size:'small', icon:'st-iconfont st-icon-eye'},
-			{text:'测试', type: 'danger'},
-			{text:'测试', type: 'danger', icon:'st-iconfont st-icon-lock'},
-			{text:'测试', type: 'info'},
-			{text:'测试', type: 'info', icon:'st-iconfont st-icon-lock'},
-			{text:'测试', type: 'warning'},
-			{text:'测试', type: 'warning', icon:'st-iconfont st-icon-lock'},
-			{text:'测试', type: 'link'}
-		],
-		// updateUrl: '/',
-		addUrl: '/',
-		// batDeleteUrl: '/',
-		idIndex: 'id',
-		// deleteUrl: '/ajaxDel',
-		downloadable: true,
-		editConfig: [
-			{
-				name: 'name',
-				label: 'name'
-			},
-			{
-				name: 'type',
-				label: '影片类型',
-				list: [
-					{
-						text: '爱情',
-						value: 'type1',
-						list: [
-							{
-								text: '爱情',
-								value: 'type1',
-							},
-							{
-								text: '悬疑',
-								value: 'type2'
-							},
-							{
-								text: '恐怖',
-								value: 'type3'
-							}
-						]
-					},
-					{
-						text: '悬疑',
-						value: 'type2'
-					},
-					{
-						text: '恐怖',
-						value: 'type3'
-					}
-				],
-				type: 'multiple'
-			}
-		],
-		params: {
-			count: 50
-		},
-		
-		componentOrder: [
-			'title','tip','toolbar', 'search', 'table','pagination'
-		],
-		listeners: {
-			ready() {
-				console.log('ready...');
-			},
-			search(data) {
-				console.log('search_data', data);
-			},
-			refresh() {
-				console.log(111);
-			},
-			beforedatarequest(options){
-				// let _headers = {};
-				// _headers['test123'] = 'test';
-				// options.headers = Object.assign({}, options.headers, _headers);
-				// return options;
-				// console.log(22);
-				// return new Promise((resolve, reject) => {
-				// 	resolve({
-				// 		errno: 0,
-				// 		data: {
-				// 			list: [
-				// 			{"id":157392,"name":"土耳其语入门","nameEn":"Türkisch für Anfänger - Der Film","movieType":"动作 | 喜剧","img":"https://img21.mtime.cn/mt/2012/03/19/115502.60763149_1280X720X2.jpg","titleOthersCn":["Türkisch für Anfänger"],"realTime":"2012年3月15日","rYear":2012,"rMonth":3,"rDay":15,"year":"2012","rLocation":"美国","locationName":"美国","rating":"7.1","releaseStatus":0,"isTicket":false,"isFilter":false,"directors":["宝拉·达格特金"],"actors":["约瑟芬·普罗伊斯","埃利亚斯·穆巴里克"]},{"id":157623,"name":"土耳其浴","nameEn":"Hot Hot Hot","movieType":"剧情 | 喜剧","img":"https://img21.mtime.cn/mt/2012/02/23/111335.49624000_1280X720X2.jpg","titleOthersCn":[],"realTime":"2011年10月9日","rYear":2011,"rMonth":10,"rDay":9,"year":"2011","rLocation":"卢森堡","locationName":"卢森堡","rating":"","releaseStatus":0,"isTicket":false,"isFilter":false,"directors":["Beryl Koltz"],"actors":["罗伯·斯坦利","Joanna Scanlan"]}
-				// 			],
-				// 			page: 1,
-				// 			page_count: 2
+				clearable: true,
+				showBorder: true,
+				groupBy: ['name'],
+				autoRequest: false,
+				// records: [
+				// {"id":157392,"name":"土耳其语入门","nameEn":"Türkisch für Anfänger - Der Film","movieType":"动作 | 喜剧","img":"https://img21.mtime.cn/mt/2012/03/19/115502.60763149_1280X720X2.jpg","titleOthersCn":["Türkisch für Anfänger"],"realTime":"2012年3月15日","rYear":2012,"rMonth":3,"rDay":15,"year":"2012","rLocation":"美国","locationName":"美国","rating":"7.1","releaseStatus":0,"isTicket":false,"isFilter":false,"directors":["宝拉·达格特金"],"actors":["约瑟芬·普罗伊斯","埃利亚斯·穆巴里克"]},{"id":157623,"name":"土耳其浴","nameEn":"Hot Hot Hot","movieType":"剧情 | 喜剧","img":"https://img21.mtime.cn/mt/2012/02/23/111335.49624000_1280X720X2.jpg","titleOthersCn":[],"realTime":"2011年10月9日","rYear":2011,"rMonth":10,"rDay":9,"year":"2011","rLocation":"卢森堡","locationName":"卢森堡","rating":"","releaseStatus":0,"isTicket":false,"isFilter":false,"directors":["Beryl Koltz"],"actors":["罗伯·斯坦利","Joanna Scanlan"]}
+				// ],
+				// merges: [
+				// 	{
+				// 		s: {
+				// 			c: 3,
+				// 			r: 0
+				// 		},
+				// 		e: {
+				// 			c: 0,
+				// 			r: 0
 				// 		}
-				// 	});
-				// });
-			}
-		}
-	});
-	setTimeout(() => {
-		table.refresh();
-	}, 2000);
-	</script>
-</body>
+				// 	},
+				// 	{
+				// 		s: {
+				// 			c: 1,
+				// 			r: 1
+				// 		},
+				// 		e: {
+				// 			c: 2,
+				// 			r: 1
+				// 		}
+				// 	}
+				// ],
+				// searchFilter: [
+				// {
+				// 	type: 'input',
+				// 	label: '姓名',
+				// 	name: 'uname',
+				// 	value: 'pjc',
+				// 	required: true
+				// },
+				// {
+				// 	type: 'input',
+				// 	label: '年龄',
+				// 	name: 'age',
+				// 	value: '25',
+				// 	required: true
+				// },
+				// {
+				// 	type: 'combobox',
+				// 	label: '影片类型',
+				// 	name: 'selectname',
+				// 	options: [
+				// 		{value: 'xiju',label: '喜剧'},
+				// 		{value: 'xuanyi',label: '悬疑'}
+				// 	],
+				// }
+				// ],
+				searchFilter: [
+					{
+						label: '名字',
+						name: 'name',
+						type: 'text',
+						width: '300',
+						icon: 'st-icon st-icon-plus',
+						clearable: true,
+						actionUrl: '/',
+						change(field, evt) {
+							let form = table.getSearchForm(1);
+							form.options = [
+								{
+									label: '爱情2',
+									value: 'type1'
+								},
+								{
+									label: '悬疑',
+									value: 'type2'
+								},
+								{
+									label: '恐怖',
+									value: 'type3'
+								}
+							];
+						}
+					},
+					{
+						name: 'movieType2',
+						label: '影片类型2',
+						type: 'multiple',
+						options: [
+							{
+								label: '爱情',
+								value: 'type1'
+							},
+							{
+								label: '悬疑',
+								value: 'type2'
+							},
+							{
+								label: '恐怖',
+								value: 'type3'
+							},
+							{
+								label: '武打',
+								value: 'type4'
+							},
+							{
+								label: '科幻',
+								value: 'type5'
+							},
+							{
+								label: '惊悚',
+								value: 'type6'
+							},
+							{
+								label: '家庭',
+								value: 'type7'
+							},
+							{
+								label: '都市',
+								value: 'type8'
+							},
+							{
+								label: '儿童',
+								value: 'type9'
+							}
+						],
+						change(field, val) {
+							let form = table.getSearchForm(2);
+							form.list = [
+								{
+									label: '爱情2',
+									value: 'type1'
+								},
+								{
+									label: '悬疑',
+									value: 'type2'
+								},
+								{
+									label: '恐怖',
+									value: 'type3'
+								}
+							];
+						}
+					},
+					{
+						name: 'movieType3',
+						label: '影片类型3',
+						type: 'multiple',
+						value: 'type1',
+						list: ['type1', 'type2']
+					},
+					{
+						name: 'movieType4',
+						label: '影片类型',
+						clearable: true,
+						type: 'combobox',
+						list: [
+							{
+								text: '爱情',
+								value: 'type1'
+							},
+							{
+								text: '悬疑',
+								value: 'type2'
+							},
+							{
+								text: '恐怖',
+								value: 'type3'
+							}
+						]
+					},
+					{
+						name: 'movieType5',
+						label: '影片类型5',
+						type: 'cascader',
+						list: [
+							{
+								text: '爱情',
+								value: 'type1',
+								list: [
+									{
+										text: '爱情',
+										value: 'type1'
+									},
+									{
+										text: '悬疑',
+										value: 'type2'
+									},
+									{
+										text: '恐怖',
+										value: 'type3'
+									}
+								]
+							},
+							{
+								text: '悬疑',
+								value: 'type2'
+							},
+							{
+								text: '恐怖',
+								value: 'type3'
+							}
+						]
+					},
+					{
+						name: 'movieAward',
+						label: '奖项',
+						type: 'checkbox',
+						options: [
+							{
+								label: '奥斯卡',
+								value: 'Oscar',
+								ischecked: true
+							},
+							{
+								label: '戛纳',
+								value: 'Cannes'
+							},
+							{
+								label: '柏林',
+								value: 'Berlin'
+							}
+						]
+					},
+					{
+						label: '上映时间(起)',
+						name: 'stime',
+						type: 'date',
+						dateConfig: {
+							dateFormat: 'Y/m/d H:i:S'
+						}
+					},
+					{
+						label: '上映时间(终)',
+						name: 'etime',
+						type: 'date',
+						clearable: false
+					}
+				],
+				searchAreaBtns: [
+					{
+						text: '自定义',
+						type: 'primary',
+						click() {
+							console.log('自定义按钮');
+						}
+					},
+					{
+						text: '自定义下载',
+						type: 'primary',
+						downloadable: 'single'
+					},
+					{
+						text: '自定义下载所有页',
+						type: 'primary',
+						downloadable: 'all'
+					}
+				],
+				// searchFilter: {
+				// 	name: '名称',
+				// 	age: '年龄',
+				// 	sex: '性别'
+				// },
+				mergeHeaders: [
+					[
+						{
+							text: 'id+评分',
+							colspan: 2
+						},
+						{
+							text: '上映时间+主演+导演+名字',
+							colspan: 4
+						},
+						{
+							text: '影片类型+国家',
+							colspan: 2
+						}
+					],
+					[
+						{
+							text: 'id',
+							colspan: 1
+						},
+						{
+							text: '名字',
+							colspan: 1
+						},
+						{
+							text: '评分',
+							colspan: 1
+						},
+						{
+							text: '影片类型',
+							colspan: 1
+						},
+						{
+							text: '导演',
+							colspan: 1
+						},
+						{
+							text: '主演',
+							colspan: 1
+						},
+						{
+							text: '国家',
+							colspan: 1
+						},
+						{
+							text: '上映时间',
+							colspan: 1
+						}
+					]
+				],
+				columns: [
+					{
+						header: 'id',
+						dataIndex: 'id',
+						width: 100,
+						// locked: true,
+						sortable: true
+					},
+					// {
+					// 	header: '海报',
+					// 	dataIndex: 'img',
+					// 	width: 120,
+					// 	render(record){
+					// 		let img = record.img;
+					// 		return `<div class="poster" style="background-image:url(${img.replace(/_\d+X\d+(X2)?\.jpg/,'_640X360X2.jpg')})"></div>`;
+					// 	}
+					// },
+					{
+						header: '名字',
+						dataIndex: 'name',
+						width: 200,
+						cellWrap: true,
+						style: {
+							color: 'green'
+						},
+						cls: 'lalala'
+					},
+					{
+						header: '评分',
+						dataIndex: 'rating',
+						width: 100,
+						fx: 'average',
+						sortable: true
+					},
+					{
+						header: '影片类型',
+						dataIndex: 'movieType'
+					},
+					{
+						header: '导演',
+						dataIndex: 'directors',
+						width: 250,
+						render(record) {
+							return record.directors.join(' | ');
+						}
+					},
+					{
+						header: '主演',
+						dataIndex: 'actors',
+						cellWrap: true,
+						width: 250,
+						render(record) {
+							return record.actors.join(' | ');
+						}
+					},
+					{
+						header: '国家',
+						dataIndex: 'locationName',
+						width: 280,
+						mergeable: true
+					},
+					{
+						header: '上映时间',
+						dataIndex: 'year',
+						width: 280,
+						sortable: true
+						// locked: 'right'
+					},
+					{
+						header: 'btns',
+						width: 100,
+						buttons: [
+							{
+								text: 'fff',
+								click(r, b, e) {
+									console.log(this);
+									console.log(r);
+									console.log(b);
+									console.log(e);
+								},
+								icon: 'st-iconfont st-icon-eye'
+							}
+						]
+					}
+					// ,{
+					// 	header: '其它名字',
+					// 	width: 500,
+					// 	cellWrap: true,
+					// 	dataIndex: 'titleOthersCn'
+					// }
+				],
+				toolbar: [
+					{ text: 'abc' },
+					{ text: '测试', size: 'large' },
+					{ text: '测试', size: 'large', icon: 'st-iconfont st-icon-lock' },
+					{ text: '测试', type: 'primary', size: 'large' },
+					{
+						text: '测试',
+						type: 'primary',
+						size: 'large',
+						icon: 'st-iconfont st-icon-lock'
+					},
+					{ text: '测试', type: 'primary' },
+					{ text: '测试', type: 'primary', icon: 'st-iconfont st-icon-lock' },
+					{ text: '测试', type: 'success', size: 'small' },
+					{
+						text: '测试',
+						type: 'success',
+						size: 'small',
+						icon: 'st-iconfont st-icon-lock'
+					},
+					{ text: '测试', type: 'primary', size: 'large' },
+					{
+						text: '测试',
+						type: 'primary',
+						size: 'large',
+						icon: 'st-iconfont st-icon-eye'
+					},
+					{ text: '测试', type: 'primary' },
+					{ text: '测试', type: 'primary', icon: 'st-iconfont st-icon-eye' },
+					{ text: '测试', type: 'success', size: 'small' },
+					{
+						text: '测试',
+						type: 'success',
+						size: 'small',
+						icon: 'st-iconfont st-icon-eye'
+					},
+					{ text: '测试', type: 'danger' },
+					{ text: '测试', type: 'danger', icon: 'st-iconfont st-icon-lock' },
+					{ text: '测试', type: 'info' },
+					{ text: '测试', type: 'info', icon: 'st-iconfont st-icon-lock' },
+					{ text: '测试', type: 'warning' },
+					{ text: '测试', type: 'warning', icon: 'st-iconfont st-icon-lock' },
+					{ text: '测试', type: 'link' }
+				],
+				// updateUrl: '/',
+				addUrl: '/',
+				// batDeleteUrl: '/',
+				idIndex: 'id',
+				// deleteUrl: '/ajaxDel',
+				downloadable: true,
+				editConfig: [
+					{
+						name: 'name',
+						label: 'name'
+					},
+					{
+						name: 'type',
+						label: '影片类型',
+						list: [
+							{
+								text: '爱情',
+								value: 'type1',
+								list: [
+									{
+										text: '爱情',
+										value: 'type1'
+									},
+									{
+										text: '悬疑',
+										value: 'type2'
+									},
+									{
+										text: '恐怖',
+										value: 'type3'
+									}
+								]
+							},
+							{
+								text: '悬疑',
+								value: 'type2'
+							},
+							{
+								text: '恐怖',
+								value: 'type3'
+							}
+						],
+						type: 'multiple'
+					}
+				],
+				params: {
+					count: 50
+				},
+
+				componentOrder: [
+					'title',
+					'tip',
+					'toolbar',
+					'search',
+					'table',
+					'pagination'
+				],
+				listeners: {
+					ready() {
+						console.log('ready...');
+					},
+					search(data) {
+						console.log('search_data', data);
+					},
+					// refresh() {
+					// 	console.log(111);
+					// },
+					beforedatarequest(options) {
+						// let _headers = {};
+						// _headers['test123'] = 'test';
+						// options.headers = Object.assign({}, options.headers, _headers);
+						// return options;
+						// console.log(22);
+						// return new Promise((resolve, reject) => {
+						// 	resolve({
+						// 		errno: 0,
+						// 		data: {
+						// 			list: [
+						// 			{"id":157392,"name":"土耳其语入门","nameEn":"Türkisch für Anfänger - Der Film","movieType":"动作 | 喜剧","img":"https://img21.mtime.cn/mt/2012/03/19/115502.60763149_1280X720X2.jpg","titleOthersCn":["Türkisch für Anfänger"],"realTime":"2012年3月15日","rYear":2012,"rMonth":3,"rDay":15,"year":"2012","rLocation":"美国","locationName":"美国","rating":"7.1","releaseStatus":0,"isTicket":false,"isFilter":false,"directors":["宝拉·达格特金"],"actors":["约瑟芬·普罗伊斯","埃利亚斯·穆巴里克"]},{"id":157623,"name":"土耳其浴","nameEn":"Hot Hot Hot","movieType":"剧情 | 喜剧","img":"https://img21.mtime.cn/mt/2012/02/23/111335.49624000_1280X720X2.jpg","titleOthersCn":[],"realTime":"2011年10月9日","rYear":2011,"rMonth":10,"rDay":9,"year":"2011","rLocation":"卢森堡","locationName":"卢森堡","rating":"","releaseStatus":0,"isTicket":false,"isFilter":false,"directors":["Beryl Koltz"],"actors":["罗伯·斯坦利","Joanna Scanlan"]}
+						// 			],
+						// 			page: 1,
+						// 			page_count: 2
+						// 		}
+						// 	});
+						// });
+					}
+				}
+			});
+			// setTimeout(() => {
+			// 	table.refresh();
+			// }, 2000);
+		</script>
+	</body>
 </html>
