@@ -1,190 +1,215 @@
 import Progressbar from '../com/Progressbar';
 export default {
-	inject: ['store', 'records', 'params', 'url', 'actionMethods',  'pageMode','pageIndex', 'parallelCount', 'dynamicParallelCount', 'downloadTimeout', 'downloadAllFromJustOnePage','sublistAt', 'ajax'],
+	inject: [
+		'store',
+		'records',
+		'params',
+		'url',
+		'actionMethods',
+		'pageMode',
+		'pageIndex',
+		'parallelCount',
+		'dynamicParallelCount',
+		'downloadTimeout',
+		'downloadAllFromJustOnePage',
+		'sublistAt',
+		'ajax'
+	],
 	data() {
 		return {
 			flymanVisible: false,
 			recordList: [],
-			clean: true	//"干净"状态下的表格，不会提示下一页没有数据之类的提示
+			clean: true //"干净"状态下的表格，不会提示下一页没有数据之类的提示
 		};
 	},
 	watch: {
-		'store.page': function(){
+		'store.page': function() {
 			this.load();
 		},
-		'store.sortKey': function(){
+		'store.sortKey': function() {
 			this.throttleLoad();
 		},
-		'store.sortDirection': function(){
+		'store.sortDirection': function() {
 			this.throttleLoad();
 		},
-		'store.loadAction': function(val, oldVal){
-			if(val != oldVal){
-				if(val == 'loadPrePage')
+		'store.loadAction': function(val, oldVal) {
+			if (val != oldVal) {
+				if (val == 'loadPrePage') {
+					if (this.pageMode == 'waterfall-v2') {
+						this.store.pageCount--;
+					}
 					this.load('pre');
-				else if(val == 'loadNextPage')
+				} else if (val == 'loadNextPage') {
+					if (this.pageMode == 'waterfall-v2') {
+						this.store.pageCount++;
+					}
 					this.load('next');
+				}
 			}
 		},
-		'store.checkboxVal'(){
-			let checkedAll = this.recordList.every((item, idx)=>this.store.checkboxVal.includes(idx));
+		'store.checkboxVal'() {
+			let checkedAll = this.recordList.every((item, idx) =>
+				this.store.checkboxVal.includes(idx)
+			);
 			this.store.chkAll = checkedAll;
 		}
 	},
-	mounted(){
-		this.store.$on('load', (options)=>{
-
-			if(options && options.reset)
-				this.reset();
-			else
-				this.load();
+	mounted() {
+		this.store.$on('load', options => {
+			if (options && options.reset) this.reset();
+			else this.load();
 		});
-		this.store.$on('selectall', val=>{
-			if(val) {
-				this.store.checkboxVal = this.recordList.map((item,idx)=>idx);
+		this.store.$on('selectall', val => {
+			if (val) {
+				this.store.checkboxVal = this.recordList.map((item, idx) => idx);
 			} else {
 				this.store.checkboxVal = [];
 			}
 		});
-		this.store.getCurrentPage = ()=>{
+		this.store.getCurrentPage = () => {
 			return this.recordList;
 		};
-		this.store.getAllPages = ()=>{
-			if(this.pageMode=='waterfall')
-				return this.getAllOnWaterfall();
-			else
-				return this.getAllOnNormal();
+		this.store.getAllPages = () => {
+			if (this.pageMode == 'waterfall') return this.getAllOnWaterfall();
+			else return this.getAllOnNormal();
 		};
 		// setTimeout(()=>{
 		// 	this.load();
 		// }, 0);
 	},
 	methods: {
-		reset(){
+		reset() {
 			this.store.hasNextPage = true;
 			this.store.hasPrePage = false;
 			this.clean = true;
-			if(this.store.page == 1){
-				this.load();	//页号等于1时，强制刷新一次
-			} else
-				this.store.page = 1;
+			if (this.store.page == 1) {
+				this.load(); //页号等于1时，强制刷新一次
+			} else this.store.page = 1;
 		},
-		load(actionType){
-			if(this.records){
+		load(actionType) {
+			if (this.records) {
 				this.setRecords(this.records);
 				return;
 			}
-			if(this.isPageLoading) return;
+			if (this.isPageLoading) return;
 			this.isPageLoading = true;
-			this.timer = setTimeout(()=>{
+			this.timer = setTimeout(() => {
 				this.flymanVisible = true;
 			}, 500);
 			let params = Object.assign({}, this.params, this.store.searchParams);
-			if(this.store.sortKey) {
+			if (this.store.sortKey) {
 				params.sort_key = this.store.sortKey;
 				params.sort_direction = this.store.sortDirection;
 			}
-			if(this.pageMode=='waterfall'){
+			if (this.pageMode == 'waterfall' || this.pageMode == 'waterfall-v2') {
 				let id = '';
 				let count = params.count;
-				if(actionType=='cur'){
-					if(this.lastRequestParams) {
+				if (actionType == 'cur') {
+					if (this.lastRequestParams) {
 						id = this.lastRequestParams[this.pageIndex];
 						count = this.lastRequestParams.count;
 					}
-				} else if(actionType=='pre'){
-					if(this.recordList && this.recordList.length>0) {
-						id = this.recordList[0][this.pageIndex];
+				} else if (actionType == 'pre') {
+					if (this.pageMode == 'waterfall') {
+						if (this.recordList && this.recordList.length > 0) {
+							id = this.recordList[0][this.pageIndex];
+						}
+						count = -count;
 					}
-					count = -count;
 				} else {
-					if(!this.clean && this.recordList && this.recordList.length>0) {
-						id = this.recordList[this.recordList.length-1][this.pageIndex];
+					if (!this.clean && this.recordList && this.recordList.length > 0) {
+						id = this.recordList[this.recordList.length - 1][this.pageIndex];
 					}
 				}
 				params.count = count;
 				params[this.pageIndex] = id;
-			} else
-				params.page = this.store.page;
+				if (this.pageMode == 'waterfall-v2') {
+					params.page = this.store.pageCount;
+				}
+			} else params.page = this.store.page;
 
 			this.lastRequestParams = params;
-			let ajaxOptions = {url:this.url, data: params, method:this.actionMethods.read};
-			
+			let ajaxOptions = {
+				url: this.url,
+				data: params,
+				method: this.actionMethods.read
+			};
+
 			let ret = this.store.emit('beforedatarequest', ajaxOptions);
-			if(ret===false)
-				return false;
-			if(ret && ret.url)
-				ajaxOptions = ret;
-			
+			if (ret === false) return false;
+			if (ret && ret.url) ajaxOptions = ret;
+
 			// 特殊处理静态数据，比如records分页
 			let _promise = null;
-			if(ret && ret instanceof Promise) {
+			if (ret && ret instanceof Promise) {
 				_promise = ret;
 			} else {
 				_promise = this.ajax.request(ajaxOptions);
 			}
-			
-			_promise.then(res=>{
+
+			_promise.then(res => {
 				this.isPageLoading = false;
-				if(this.timer){
+				if (this.timer) {
 					clearTimeout(this.timer);
 					this.timer = null;
 				}
 				this.flymanVisible = false;
-				
+
 				let ret = this.store.emit('dataload', res);
-				if(ret)
-					res = ret;
-				
-				if(res.errno){
-					alert(res.errmsg||res.msg);
+				if (ret) res = ret;
+
+				if (res.errno) {
+					alert(res.errmsg || res.msg);
 				} else {
-					if(this.pageMode=='waterfall'){
+					if (this.pageMode == 'waterfall' || this.pageMode == 'waterfall-v2') {
 						let count = params.count;
-						if(!this.clean && (!res.data.list || res.data.list.length<=0)) {
-							alert((count>0?'后面':'前面')+'已没有更多数据了');
-							if(count>0)
-								this.store.hasNextPage = false;
-							else
-								this.store.hasPrePage = false;
+						if (!this.clean && (!res.data.list || res.data.list.length <= 0)) {
+							alert((count > 0 ? '后面' : '前面') + '已没有更多数据了');
+							if (count > 0) this.store.hasNextPage = false;
+							else this.store.hasPrePage = false;
 						} else {
 							this.clean = false;
 							this.setRecords(res.data.list);
-							if(res.data.list.length < Math.abs(count)) {
-								if(count > 0)
-									this.store.hasNextPage = false;
-								else
-									this.store.hasPrePage = false;
+							if (res.data.list.length < Math.abs(count)) {
+								if (count > 0) this.store.hasNextPage = false;
+								else this.store.hasPrePage = false;
 							}
 
-							if(count<0)	//向上翻页的时候
+							if (count < 0)
+								//向上翻页的时候
 								this.store.hasNextPage = true;
-							else if(params[this.pageIndex])	//向下翻页，并且当前不是第一页
+							else if (params[this.pageIndex])
+								//向下翻页，并且当前不是第一页
 								this.store.hasPrePage = true;
+							if (this.pageMode === 'waterfall-v2') {
+								if (this.store.pageCount <= 1) {
+									this.store.hasPrePage = false;
+								}
+							}
 						}
-					}else{
+					} else {
 						this.setRecords(res.data.list);
-						this.store.pageCount = res.data.page_count||this.store.page;
+						this.store.pageCount = res.data.page_count || this.store.page;
 					}
 				}
 
-				if(this.pageMode == 'waterfall')
+				if (this.pageMode == 'waterfall' || this.pageMode === 'waterfall-v2')
 					this.store.loadAction = '';
 			});
 		},
-		throttleLoad(){
-			if(this.throttleTimer) {
+		throttleLoad() {
+			if (this.throttleTimer) {
 				clearTimeout(this.throttleTimer);
 				this.throttleTimer = null;
 			}
-			this.throttleTimer = setTimeout(()=>{
-				this.store.$emit('load', {reset: true});
+			this.throttleTimer = setTimeout(() => {
+				this.store.$emit('load', { reset: true });
 			}, 50);
 		},
-		refresh(pno){
-			if(typeof pno != 'undefined'){
+		refresh(pno) {
+			if (typeof pno != 'undefined') {
 				pno = parseInt(pno, 10);
-				if(pno != this.store.page){
+				if (pno != this.store.page) {
 					this.store.page = pno;
 				} else {
 					this.load('cur');
@@ -194,33 +219,41 @@ export default {
 			}
 		},
 		setRecords(records) {
-			records.forEach((r,idx)=>{
+			records.forEach((r, idx) => {
 				//每一行的辅助数据
 				r._st_aux = {
 					//这一行的行号是多少
-					rownumber: idx+1,
+					rownumber: idx + 1,
 					render: {},
 					btnsVisible: {},
 					option: {},
 					//这一行有哪些列会开起跨行，跨多少行
 					merges: {},
 					//哪些列需要渲染dom。有跨行时，可能不需要渲染td
-					ignoreRenders: [],
+					ignoreRenders: []
 				};
 			});
 			// this.store.emit('refresh', records);
-			if(this.groupBy && this.groupBy.length>0) {
+			if (this.groupBy && this.groupBy.length > 0) {
 				let recordGroup = [records];
-				for(let dataIndex of this.groupBy) {
-					for(let groupIdx=recordGroup.length-1;groupIdx>=0;groupIdx--){
+				for (let dataIndex of this.groupBy) {
+					for (
+						let groupIdx = recordGroup.length - 1;
+						groupIdx >= 0;
+						groupIdx--
+					) {
 						let group = recordGroup[groupIdx],
 							newList = [],
 							newResult = [];
-						
+
 						for (let i = 0; i < group.length; i++) {
 							const rec = group[i];
 							const v = rec[dataIndex];
-							if(newList.length > 0 && newList[newList.length - 1] && newList[newList.length - 1] == v) {
+							if (
+								newList.length > 0 &&
+								newList[newList.length - 1] &&
+								newList[newList.length - 1] == v
+							) {
 								newResult[newResult.length - 1][v].push(rec);
 							} else {
 								newList.push(v);
@@ -235,12 +268,12 @@ export default {
 						for (let i = 0; i < newResult.length; i++) {
 							let v = newResult[i][newList[i]];
 							v[0]._st_aux.merges[dataIndex] = v.length;
-							for(let j=1,len=v.length;j<len;j++){
+							for (let j = 1, len = v.length; j < len; j++) {
 								v[j]._st_aux.ignoreRenders.push(dataIndex);
 							}
 							ret.push(v);
 						}
-						
+
 						ret.unshift(1);
 						ret.unshift(groupIdx);
 						Array.prototype.splice.apply(recordGroup, ret);
@@ -248,7 +281,7 @@ export default {
 				}
 
 				records = [];
-				recordGroup.forEach(group=>{
+				recordGroup.forEach(group => {
 					records = records.concat(group);
 				});
 
@@ -257,46 +290,49 @@ export default {
 				this.store.emit('refresh', records);
 			}
 
-			records.forEach((record, idx)=>{
-				this.columns.forEach(col=>{
-					if(col.type=='render' && col.render) {
+			records.forEach((record, idx) => {
+				this.columns.forEach(col => {
+					if (col.type == 'render' && col.render) {
 						record._st_aux.render[col.dataIndex] = col.render(record, col, idx);
-					} else if (col.type=='button') {
-						let visibleList = record._st_aux.btnsVisible[col.dataIndex] = [];
-						(col.buttons||[]).forEach(btn=>{
+					} else if (col.type == 'button') {
+						let visibleList = (record._st_aux.btnsVisible[col.dataIndex] = []);
+						(col.buttons || []).forEach(btn => {
 							let visible = true;
-							if(btn.visible) {
-								if(Array.isArray(btn.visible)) {
-									visible = record[btn.visible[0]]==btn.visible[1];
-								} else if(typeof btn.visible=='function') {
+							if (btn.visible) {
+								if (Array.isArray(btn.visible)) {
+									visible = record[btn.visible[0]] == btn.visible[1];
+								} else if (typeof btn.visible == 'function') {
 									visible = btn.visible(record);
 								}
 							}
 							visibleList.push(visible);
-						}); 
-					} else if (col.type=='option') {
-						let val = col.options[record[col.dataIndex]+''];
-						if(typeof val=='undefined') {
-							val = (typeof col.defaultOption=='undefined')?'':col.defaultOption;
+						});
+					} else if (col.type == 'option') {
+						let val = col.options[record[col.dataIndex] + ''];
+						if (typeof val == 'undefined') {
+							val =
+								typeof col.defaultOption == 'undefined'
+									? ''
+									: col.defaultOption;
 						}
 						record._st_aux.option[col.dataIndex] = val;
 					}
 				});
 			});
-			
+
 			this.recordList = records;
 			this.store.$emit('selectall', false);
 		},
-		
+
 		getAllOnNormal() {
-			return new Promise((resolve)=>{
+			return new Promise(resolve => {
 				let pb = new Progressbar({});
 				pb.update(0, '开始下载数据');
 				let list = [];
 				let jobList = [];
 				let retryList = [];
-				let pageCount = this.store.pageCount||1;
-				if(this.downloadAllFromJustOnePage) {
+				let pageCount = this.store.pageCount || 1;
+				if (this.downloadAllFromJustOnePage) {
 					pageCount = 1;
 				}
 				let pnoIdx = 0;
@@ -310,176 +346,197 @@ export default {
 				 */
 				let parallelCount = this.parallelCount;
 				let loadedCount = 0;
-				let createJob = (pno)=>{
+				let createJob = pno => {
 					let params = Object.assign({}, this.params, this.store.searchParams);
-					if(this.store.sortKey) {
+					if (this.store.sortKey) {
 						params.sort_key = this.store.sortKey;
 						params.sort_direction = this.store.sortDirection;
 					}
 					params.page = pno;
-					if(this.downloadAllFromJustOnePage) {
+					if (this.downloadAllFromJustOnePage) {
 						params.count = 'max';
 					}
-					let ajaxOptions = {url:this.url, data: params, method:this.actionMethods.read, timeout: this.downloadTimeout};
-					
+					let ajaxOptions = {
+						url: this.url,
+						data: params,
+						method: this.actionMethods.read,
+						timeout: this.downloadTimeout
+					};
+
 					let ret = this.store.emit('beforedatarequest', ajaxOptions);
-					if(ret===false)
-						return false;
-					if(ret && ret.url)
-						ajaxOptions = ret;
-				
+					if (ret === false) return false;
+					if (ret && ret.url) ajaxOptions = ret;
+
 					let job = this.ajax.request(ajaxOptions);
-					job.then(res=>{
-						let ret = this.store.emit('dataload', res);
-						if(ret)
-							res = ret;
+					job.then(
+						res => {
+							let ret = this.store.emit('dataload', res);
+							if (ret) res = ret;
 
-						list[params.page] = res.data&&res.data.list||[];
-						if(res.data && res.data.page_count)
-							pageCount = res.data.page_count;
-						let jobIndex = jobList.indexOf(job);
-						jobList.splice(jobIndex, 1);
-						startJob();
+							list[params.page] = (res.data && res.data.list) || [];
+							if (res.data && res.data.page_count)
+								pageCount = res.data.page_count;
+							let jobIndex = jobList.indexOf(job);
+							jobList.splice(jobIndex, 1);
+							startJob();
 
-						loadedCount++;
-						let per = loadedCount*100/pageCount;
-						if(per>0 && per<1)
-							per = 1;
-						else if(per>99 && per<100)
-							per = 99;
-						else
-							per = Math.floor(per);
-						pb.update(per/100, `已下载${loadedCount}页，共${pageCount}页`);
-					}, function(){
-						jobList.splice(jobList.indexOf(job), 1);
-						//jobList.push(createJob(pno));
-						retryList.push(pno);
-						startJob();
-					});
+							loadedCount++;
+							let per = (loadedCount * 100) / pageCount;
+							if (per > 0 && per < 1) per = 1;
+							else if (per > 99 && per < 100) per = 99;
+							else per = Math.floor(per);
+							pb.update(per / 100, `已下载${loadedCount}页，共${pageCount}页`);
+						},
+						function() {
+							jobList.splice(jobList.indexOf(job), 1);
+							//jobList.push(createJob(pno));
+							retryList.push(pno);
+							startJob();
+						}
+					);
 					return job;
 				};
-				let startJob = ()=>{
-					if(jobList.length>=parallelCount)
-						return;
-					if(retryList.length>0) {
+				let startJob = () => {
+					if (jobList.length >= parallelCount) return;
+					if (retryList.length > 0) {
 						let pno = retryList.shift();
 						jobList.push(createJob(pno));
 						startJob();
-					}else if(pnoIdx < pageCount) {
+					} else if (pnoIdx < pageCount) {
 						pnoIdx++;
 						jobList.push(createJob(pnoIdx));
 						startJob();
 					}
-					
-					if(retryList.length<=0 && jobList.length<=0 && pnoIdx>=pageCount) {
+
+					if (
+						retryList.length <= 0 &&
+						jobList.length <= 0 &&
+						pnoIdx >= pageCount
+					) {
 						pb.destroy();
 						let ret = [];
-						for(let i=1;i<=pageCount;i++){
-							if(!list[i])
-								alert('页面 '+i+' 数据有问题');
+						for (let i = 1; i <= pageCount; i++) {
+							if (!list[i]) alert('页面 ' + i + ' 数据有问题');
 							ret = ret.concat(list[i]);
 						}
-						ret.forEach((record, idx)=>{
-							record._st_aux = {render:{}};
-							this.columns.forEach(col=>{
-								if(col.type=='render' && col.render) {
-									record._st_aux.render[col.dataIndex] = col.render(record, col, idx);
+						ret.forEach((record, idx) => {
+							record._st_aux = { render: {} };
+							this.columns.forEach(col => {
+								if (col.type == 'render' && col.render) {
+									record._st_aux.render[col.dataIndex] = col.render(
+										record,
+										col,
+										idx
+									);
 								}
 							});
 						});
 						resolve(ret);
 					}
-					
 				};
 				startJob();
 			});
 		},
 		//因为瀑布流模式下，每一页的id依赖上一个页面，所以没办法并行请求，也不知道总共有多少页
-		getAllOnWaterfall(){
-			return new Promise((resolve, reject)=>{
+		getAllOnWaterfall() {
+			return new Promise((resolve, reject) => {
 				let pb = new Progressbar({});
 				pb.update(0, '数据下载中，请稍候...');
 				let list = [];
 				let loadedCount = 0;
 				let pageIndex = this.pageIndex;
-				let startJob = (id)=>{
+				let startJob = id => {
 					let params = Object.assign({}, this.params, this.store.searchParams);
-					if(this.store.sortKey) {
+					if (this.store.sortKey) {
 						params.sort_key = this.store.sortKey;
 						params.sort_direction = this.store.sortDirection;
 					}
 					params[pageIndex] = id;
-					if(this.downloadAllFromJustOnePage) {
+					if (this.downloadAllFromJustOnePage) {
 						params.count = 'max';
 					}
-					let ajaxOptions = {url:this.url, data: params, method:this.actionMethods.read, timeout: this.downloadTimeout};
-					
+					let ajaxOptions = {
+						url: this.url,
+						data: params,
+						method: this.actionMethods.read,
+						timeout: this.downloadTimeout
+					};
+
 					let ret = this.store.emit('beforedatarequest', ajaxOptions);
-					if(ret===false)
-						return false;
-					if(ret && ret.url)
-						ajaxOptions = ret;
-					
-					this.ajax.request(ajaxOptions).then(res=>{
-						let ret = this.store.emit('dataload', res);
-						if(ret)
-							res = ret;
-							
-						if(res.errno){
-							alert(res.errmsg);
-							reject(res);
-						} else {
-							if(!res.data.list || res.data.list.length<=0) {
-								list.forEach((record, idx)=>{
-									record._st_aux = {render:{}};
-									this.columns.forEach(col=>{
-										if(col.type=='render' && col.render) {
-											record._st_aux.render[col.dataIndex] = col.render(record, col, idx);
-										}
-									});
-								});
-								resolve(list);
-								pb.destroy();
+					if (ret === false) return false;
+					if (ret && ret.url) ajaxOptions = ret;
+
+					this.ajax.request(ajaxOptions).then(
+						res => {
+							let ret = this.store.emit('dataload', res);
+							if (ret) res = ret;
+
+							if (res.errno) {
+								alert(res.errmsg);
+								reject(res);
 							} else {
-								list = list.concat(res.data.list);
-								if(res.data.list.length < params.count || this.downloadAllFromJustOnePage) {
-									list.forEach((record, idx)=>{
-										record._st_aux = {render:{}};
-										this.columns.forEach(col=>{
-											if(col.type=='render' && col.render) {
-												record._st_aux[col.dataIndex] = col.render(record, col, idx);
+								if (!res.data.list || res.data.list.length <= 0) {
+									list.forEach((record, idx) => {
+										record._st_aux = { render: {} };
+										this.columns.forEach(col => {
+											if (col.type == 'render' && col.render) {
+												record._st_aux.render[col.dataIndex] = col.render(
+													record,
+													col,
+													idx
+												);
 											}
 										});
 									});
 									resolve(list);
 									pb.destroy();
 								} else {
-									id = list[list.length-1][pageIndex];
-									startJob(id);
-									loadedCount++;
-									pb.update(0, `已下载 ${loadedCount} 页数据，请继续等待...`);
+									list = list.concat(res.data.list);
+									if (
+										res.data.list.length < params.count ||
+										this.downloadAllFromJustOnePage
+									) {
+										list.forEach((record, idx) => {
+											record._st_aux = { render: {} };
+											this.columns.forEach(col => {
+												if (col.type == 'render' && col.render) {
+													record._st_aux[col.dataIndex] = col.render(
+														record,
+														col,
+														idx
+													);
+												}
+											});
+										});
+										resolve(list);
+										pb.destroy();
+									} else {
+										id = list[list.length - 1][pageIndex];
+										startJob(id);
+										loadedCount++;
+										pb.update(0, `已下载 ${loadedCount} 页数据，请继续等待...`);
+									}
 								}
 							}
+						},
+						() => {
+							setTimeout(() => {
+								startJob(id);
+							}, 500);
 						}
-					}, ()=>{
-						
-						setTimeout(()=>{
-							startJob(id);
-						}, 500);
-					});
+					);
 				};
 				startJob('');
 			});
 		},
-		getSelectRows(){
-			if(this.selectMode=='single') {
-				if(typeof this.store.radioVal=='number') {
+		getSelectRows() {
+			if (this.selectMode == 'single') {
+				if (typeof this.store.radioVal == 'number') {
 					let record = this.recordList[this.store.radioVal];
-					if(record)
-						return [record];
+					if (record) return [record];
 				}
 			} else {
-				return this.store.checkboxVal.map(idx=>this.recordList[idx]);
+				return this.store.checkboxVal.map(idx => this.recordList[idx]);
 			}
 			return [];
 		}

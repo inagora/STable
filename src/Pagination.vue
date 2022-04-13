@@ -1,6 +1,9 @@
 <template>
 	<div class="st-toolbar st-pn">
-		<div v-if="pageMode=='waterfall'" class="st-pn-waterfall">
+		<div
+			v-if="pageMode == 'waterfall' || pageMode == 'waterfall-v2'"
+			class="st-pn-waterfall"
+		>
 			<x-button
 				:conf="{
 					icon: 'st-icon st-icon-left',
@@ -8,7 +11,7 @@
 					disabled: !store.hasPrePage,
 					title: locale.previousPage
 				}"
-				@click="store.loadAction='loadPrePage'"
+				@click="store.loadAction = 'loadPrePage'"
 			/>
 			<x-button
 				:conf="{
@@ -17,7 +20,7 @@
 					disabled: !store.hasNextPage,
 					title: locale.nextPage
 				}"
-				@click="store.loadAction='loadNextPage'"
+				@click="store.loadAction = 'loadNextPage'"
 			/>
 		</div>
 		<div v-else class="st-pn-normal">
@@ -25,19 +28,19 @@
 				:conf="{
 					icon: 'st-icon st-icon-left',
 					size: 'small',
-					disabled: store.page<=1,
+					disabled: store.page <= 1,
 					title: locale.previousPage
 				}"
-				@click="jumpTo(store.page-1)"
+				@click="jumpTo(store.page - 1)"
 			/>
 			<x-button
-				v-for="(item,idx) of pnoList"
+				v-for="(item, idx) of pnoList"
 				:key="idx"
 				:pno="store.page"
 				:conf="{
-					cls: store.page==item.pno?'st-pn-active':'',
+					cls: store.page == item.pno ? 'st-pn-active' : '',
 					size: 'small',
-					text: item.text||item.pno
+					text: item.text || item.pno
 				}"
 				@click="jumpTo(item.pno)"
 			/>
@@ -45,10 +48,9 @@
 				:conf="{
 					icon: 'st-icon st-icon-left st-pn-right',
 					size: 'small',
-					disabled: store.page>=store.pageCount,
-					title:locale.nextPage
+					title: locale.nextPage
 				}"
-				@click="jumpTo(store.page+1)"
+				@click="jumpTo(store.page + 1)"
 			/>
 		</div>
 		<select
@@ -60,7 +62,7 @@
 				v-for="(size, idx) of pagination.pageSizeOptions"
 				:key="idx"
 				:value="size"
-				v-text="size+' '+locale.pageSizeUnit"
+				v-text="size + ' ' + locale.pageSizeUnit"
 			/>
 		</select>
 		<div class="st-toolbar-separator">
@@ -91,77 +93,75 @@ export default {
 		params: 'params',
 		locale: 'locale'
 	},
-	components: {XButton},
-	data(){
+	components: { XButton },
+	data() {
 		return {
 			msg: '',
 			pageSize: this.params.count,
-			pnoList: [{pno:1}]
+			pnoList: [{ pno: 1 }]
 		};
 	},
 	watch: {
-		'store.pageCount'(){
+		'store.pageCount'() {
 			this.buildPno();
 		},
-		'store.page'(){
+		'store.page'() {
 			this.buildPno();
 		}
 	},
 	methods: {
-		jumpTo(pno){
-			if(pno>0 && pno<=this.store.pageCount)
-				this.store.page = pno;
+		jumpTo(pno) {
+			if (pno > 0 && pno <= this.store.pageCount) this.store.page = pno;
 		},
-		buildPno(){
+		buildPno() {
 			let pageCount = this.store.pageCount;
 			let list = [];
 			let page = this.store.page;
-			if(pageCount<=9) {
-				for(let i=1;i<=pageCount;i++)
-					list.push({pno: i});
+			if (pageCount <= 9) {
+				for (let i = 1; i <= pageCount; i++) list.push({ pno: i });
 			} else {
 				//页码总共显示9个(包括...符号)，让切换时页码总长度不会变化，这样点下一页快速切换时，按钮位置不会跳跃
-				if(page<=5){
-					for(let i=1;i<=7;i++){
-						list.push({pno:i});
+				if (page <= 5) {
+					for (let i = 1; i <= 7; i++) {
+						list.push({ pno: i });
 					}
 					list.push({
-						pno: Math.floor((7+pageCount)/2),
+						pno: Math.floor((7 + pageCount) / 2),
 						text: '...'
 					});
-					list.push({pno: pageCount});
-				} else if(pageCount-page<=4) {
-					let start = pageCount-6;
-					list.push({pno:1});
+					list.push({ pno: pageCount });
+				} else if (pageCount - page <= 4) {
+					let start = pageCount - 6;
+					list.push({ pno: 1 });
 					list.push({
-						pno: Math.floor((1+start)/2),
+						pno: Math.floor((1 + start) / 2),
 						text: '...'
 					});
-					for(let i=start;i<=pageCount;i++){
-						list.push({pno:i});
+					for (let i = start; i <= pageCount; i++) {
+						list.push({ pno: i });
 					}
 				} else {
-					let start = page-2,
-						end = page+2;
-					list.push({pno:1});
+					let start = page - 2,
+						end = page + 2;
+					list.push({ pno: 1 });
 					list.push({
-						pno: Math.floor((1+start)/2),
+						pno: Math.floor((1 + start) / 2),
 						text: '...'
 					});
-					for(let i=start;i<=end;i++){
-						list.push({pno:i});
+					for (let i = start; i <= end; i++) {
+						list.push({ pno: i });
 					}
 					list.push({
-						pno: Math.floor((end+pageCount)/2),
+						pno: Math.floor((end + pageCount) / 2),
 						text: '...'
 					});
-					list.push({pno: pageCount});
+					list.push({ pno: pageCount });
 				}
 			}
 
 			this.pnoList = list;
 		},
-		refresh(){
+		refresh() {
 			this.$parent.$refs.table[0].refresh();
 		}
 	}
@@ -169,46 +169,46 @@ export default {
 </script>
 
 <style lang="scss">
-.st-pn{
+.st-pn {
 	padding-right: 10px;
 	padding-bottom: 10px;
 	align-items: center;
 
 	&-waterfall,
-	&-normal{
+	&-normal {
 		display: flex;
 	}
-	.st-btn{
+	.st-btn {
 		border-color: transparent;
 		margin-bottom: 0;
 		min-width: 30px;
 		padding: 0 3px;
 	}
-	.st-btn-default:hover:disabled{
+	.st-btn-default:hover:disabled {
 		background-color: #fff;
 		border-color: transparent;
 		color: #212529;
 	}
-	& &-active{
+	& &-active {
 		color: #1890ff;
 		// border-color: #1890ff;
 		font-weight: 500;
 	}
-	.st-toolbar-separator{
+	.st-toolbar-separator {
 		margin-bottom: 0;
 	}
 
-	&-size{
+	&-size {
 		font-size: 12px;
 		margin-right: 14px;
 	}
 
-	&-right{
+	&-right {
 		transform: rotate(180deg);
 	}
 }
-@media screen and (max-width: 375px){
-	.st-pn{
+@media screen and (max-width: 375px) {
+	.st-pn {
 		justify-content: space-between;
 		.st-flex-padding {
 			display: none;
@@ -218,7 +218,7 @@ export default {
 			display: flex;
 			justify-content: space-around;
 		}
-		.st-btn{
+		.st-btn {
 			min-width: 0;
 		}
 	}
