@@ -230,7 +230,7 @@
 						name: 'movieType2',
 						label: '影片类型2',
 						type: 'multiple',
-						options: [
+						list: [
 							{
 								label: '爱情',
 								value: 'type1'
@@ -298,20 +298,10 @@
 						label: '影片类型',
 						clearable: true,
 						type: 'combobox',
-						list: [
-							{
-								text: '爱情',
-								value: 'type1'
-							},
-							{
-								text: '悬疑',
-								value: 'type2'
-							},
-							{
-								text: '恐怖',
-								value: 'type3'
-							}
-						]
+						list: {
+							type1: '爱情222',
+							type2: '悬疑'
+						}
 					},
 					{
 						name: 'movieType5',

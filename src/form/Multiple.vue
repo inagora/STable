@@ -83,7 +83,7 @@ export default {
 				this.upadteInputWidth();
 			}
 		},
-		field: {
+		'field.option': {
 			deep: true,
 			handler(val) {
 				this.options = val.options;
@@ -198,7 +198,6 @@ export default {
 			this.ddm && this.ddm.$parent.changeVal(idx);
 		},
 		doFilter() {
-			console.log(111);
 			if (this.filterTimer) {
 				clearTimeout(this.filterTimer);
 				this.filterTimer = null;
