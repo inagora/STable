@@ -3,7 +3,7 @@
 		v-if="searchFilter"
 		class="st-search"
 		:class="{
-			'st-search-label-invisible':!labelVisible
+			'st-search-label-invisible': !labelVisible
 		}"
 	>
 		<x-form
@@ -30,13 +30,11 @@
 				}"
 				@click.prevent="reset"
 			/>
-			<template
-				v-if="searchAreaBtns && searchAreaBtns.length > 0"
-			>
+			<template v-if="searchAreaBtns && searchAreaBtns.length > 0">
 				<div class="st-search-separator">
 					&nbsp;
 				</div>
-				<x-button 
+				<x-button
 					v-for="(btn, index) in searchAreaBtns"
 					:key="'btn_' + index"
 					class="st-search-customize-btn"
@@ -51,11 +49,11 @@
 <script>
 import XButton from './com/Button.vue';
 import XForm from './form/index.vue';
-import {loadJs} from './util/util.js';
+import { loadJs } from './util/util.js';
 import downloadMixin from './mixins/download.mixin.js';
 
 export default {
-	components:{ XButton, XForm },
+	components: { XButton, XForm },
 	mixins: [downloadMixin],
 	inject: [
 		'searchFilter',
@@ -72,54 +70,54 @@ export default {
 	],
 	mounted() {
 		let downloadable = false;
-		if(this.searchAreaBtns && this.searchAreaBtns.length > 0) {
+		if (this.searchAreaBtns && this.searchAreaBtns.length > 0) {
 			for (let i = 0; i < this.searchAreaBtns.length; i++) {
-				if(this.searchAreaBtns[i].downloadable) {
+				if (this.searchAreaBtns[i].downloadable) {
 					downloadable = true;
 					break;
 				}
 			}
 		}
-		if(downloadable) {
-			loadJs('https://cdn.jsdelivr.net/npm/xlsx@0.15.0/dist/xlsx.full.min.js');
+		if (downloadable) {
+			loadJs(
+				'https://oss.wandougongzhu.cn/lib/xlsx/0.15.0/dist/xlsx.full.min.js'
+			);
 		}
 	},
 	methods: {
 		search(evt) {
 			let searchParams = Object.assign({}, this.urlSearchParams, evt);
-			if(this.ignoreEmptySearchParam) {
+			if (this.ignoreEmptySearchParam) {
 				searchParams = this.trimParam(searchParams);
-				
 			}
 			let ret = this.store.emit('search', searchParams);
-			if(ret===false)
-				return;
+			if (ret === false) return;
 			this.store.searchParams = searchParams;
-			this.store.$emit('load', {reset: true});
+			this.store.$emit('load', { reset: true });
 		},
 		reset() {
 			this.$refs.form.reset();
 		},
-		trimParam(data){
+		trimParam(data) {
 			let params = {};
-			for(let key in data) {
-				if(typeof data[key]=='string') {
-					if(data[key])
-						params[key] = data[key];
-				} else if(typeof data[key] != 'undefined') {
+			for (let key in data) {
+				if (typeof data[key] == 'string') {
+					if (data[key]) params[key] = data[key];
+				} else if (typeof data[key] != 'undefined') {
 					params[key] = data[key];
 				}
 			}
 
 			return params;
 		},
-		triggerClick(btn, evt){
-			if(btn.downloadable === 'single') { // 下载
+		triggerClick(btn, evt) {
+			if (btn.downloadable === 'single') {
+				// 下载
 				this.download();
-			} else if(btn.downloadable === 'all') {
+			} else if (btn.downloadable === 'all') {
 				this.downloadAll();
 			} else {
-				btn.click&&btn.click.call(this.$parent, btn, evt);
+				btn.click && btn.click.call(this.$parent, btn, evt);
 			}
 		}
 	}
@@ -127,11 +125,11 @@ export default {
 </script>
 
 <style lang="scss">
-.st-search{
+.st-search {
 	border-bottom: 1px solid #d0d0d0;
 	padding: 10px 0 0 10px;
 
-	&-separator{
+	&-separator {
 		display: inline-block;
 		width: 1px;
 		overflow: hidden;
@@ -139,7 +137,7 @@ export default {
 		margin-bottom: 10px;
 		background-color: #d0d0d0;
 	}
-	&-reset-btn{
+	&-reset-btn {
 		margin-left: 10px;
 	}
 	&-customize-btn {
