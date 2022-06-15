@@ -1,6 +1,6 @@
 {
 	"name": "@inagora/stable",
-	"version": "2.0.22",
+	"version": "2.0.23",
 	"description": "STable是一个以表格展示和操作为核心功能的工具。",
 	"main": "index.js",
 	"scripts": {

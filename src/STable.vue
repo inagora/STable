@@ -152,7 +152,11 @@ export default {
 				/**
 				 * @param {Boolean} autoRequest 首次进入页面是否需要加载数据
 				 */
-				autoRequest: true
+				autoRequest: true,
+				/**
+				 * @param {Boolean} autoWidth table的列宽根据header自动适应宽度
+				 */
+				autoWidth: false
 			},
 			(window.STable && window.STable.default) || {},
 			this.config

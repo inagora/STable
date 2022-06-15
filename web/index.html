@@ -147,6 +147,7 @@
 				},
 				clearable: true,
 				showBorder: true,
+				autoWidth: true, // 列宽根据内容自适应
 				groupBy: ['name'],
 				// autoRequest: false,
 				// records: [
@@ -395,56 +396,56 @@
 				// 	age: '年龄',
 				// 	sex: '性别'
 				// },
-				mergeHeaders: [
-					[
-						{
-							text: 'id+评分',
-							colspan: 2
-						},
-						{
-							text: '上映时间+主演+导演+名字',
-							colspan: 4
-						},
-						{
-							text: '影片类型+国家',
-							colspan: 2
-						}
-					],
-					[
-						{
-							text: 'id',
-							colspan: 1
-						},
-						{
-							text: '名字',
-							colspan: 1
-						},
-						{
-							text: '评分',
-							colspan: 1
-						},
-						{
-							text: '影片类型',
-							colspan: 1
-						},
-						{
-							text: '导演',
-							colspan: 1
-						},
-						{
-							text: '主演',
-							colspan: 1
-						},
-						{
-							text: '国家',
-							colspan: 1
-						},
-						{
-							text: '上映时间',
-							colspan: 1
-						}
-					]
-				],
+				// mergeHeaders: [
+				// 	[
+				// 		{
+				// 			text: 'id+评分',
+				// 			colspan: 2
+				// 		},
+				// 		{
+				// 			text: '上映时间+主演+导演+名字',
+				// 			colspan: 4
+				// 		},
+				// 		{
+				// 			text: '影片类型+国家',
+				// 			colspan: 2
+				// 		}
+				// 	],
+				// 	[
+				// 		{
+				// 			text: 'id',
+				// 			colspan: 1
+				// 		},
+				// 		{
+				// 			text: '名字',
+				// 			colspan: 1
+				// 		},
+				// 		{
+				// 			text: '评分',
+				// 			colspan: 1
+				// 		},
+				// 		{
+				// 			text: '影片类型',
+				// 			colspan: 1
+				// 		},
+				// 		{
+				// 			text: '导演',
+				// 			colspan: 1
+				// 		},
+				// 		{
+				// 			text: '主演',
+				// 			colspan: 1
+				// 		},
+				// 		{
+				// 			text: '国家',
+				// 			colspan: 1
+				// 		},
+				// 		{
+				// 			text: '上映时间',
+				// 			colspan: 1
+				// 		}
+				// 	]
+				// ],
 				columns: [
 					{
 						header: 'id',
@@ -480,7 +481,7 @@
 						sortable: true
 					},
 					{
-						header: '影片类型',
+						header: '影片类型影片类型影片类型影片类型影片类型影片类型2',
 						dataIndex: 'movieType'
 					},
 					{
