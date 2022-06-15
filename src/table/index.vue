@@ -499,8 +499,8 @@ export default {
 					// 如果是英文字符，为字符分配8个单位宽度
 					flexWidth += 8;
 				} else if (char >= '\u4e00' && char <= '\u9fa5') {
-					// 如果是中文字符，为字符分配15个单位宽度
-					flexWidth += 15;
+					// 如果是中文字符，为字符分配18个单位宽度
+					flexWidth += 18;
 				} else {
 					// 其他种类字符，为字符分配8个单位宽度
 					flexWidth += 8;
@@ -510,7 +510,6 @@ export default {
 				// 设置最小宽度
 				flexWidth = 100;
 			}
-			console.log(flexWidth);
 			return flexWidth;
 		},
 		syncHeight() {
