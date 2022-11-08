@@ -8,7 +8,10 @@
 			autocomplete="off"
 			:placeholder="placeholder"
 			:readonly="!field.filterable"
-			@focus="focus();$emit('fieldfocus')"
+			@focus="
+				focus();
+				$emit('fieldfocus');
+			"
 			@blur="$emit('fieldblur')"
 			@input="doFilter"
 			@keydown.down.prevent="hlNext"
@@ -19,13 +22,21 @@
 		<div
 			v-if="!loading"
 			class="st-cbb-trigger st-icon st-icon-left"
-			:class="{'st-cbb-trigger-down':ddmVisible}"
-			@click="$el.querySelector('input').focus();"
+			:class="{ 'st-cbb-trigger-down': ddmVisible }"
+			@click="$el.querySelector('input').focus()"
 		></div>
 		<div
-			v-if="field.clearable && ['combobox','cascader'].includes(field.type) && selIdxes.length>0"
+			v-if="
+				field.clearable &&
+					['combobox', 'cascader'].includes(field.type) &&
+					selIdxes.length > 0
+			"
 			class="st-cbb-clear st-icon st-icon-close"
-			@click="selIdxes=[];$el.querySelector('input').focus();"
+			@click="
+				selIdxes = [];
+				ddm = null;
+				$el.querySelector('input').focus();
+			"
 		></div>
 		<span v-if="loading" class="st-icon st-icon-sync st-cbb-load"></span>
 	</div>
@@ -40,7 +51,7 @@ export default {
 			deep: true,
 			handler(val) {
 				this.options = val;
-				if(this.ddm) {
+				if (this.ddm) {
 					this.ddm.rebuildMenu(val);
 				}
 				this.formatList();
@@ -48,27 +59,27 @@ export default {
 		}
 	},
 	methods: {
-		initSelect(){
+		initSelect() {
 			let selIdxes = [];
-			if(this.field.type=='cascader') {
+			if (this.field.type == 'cascader') {
 				let p = this.options;
-				for(let v of this.value) {
+				for (let v of this.value) {
 					let match = false;
-					for(let i=0,len=p.length;i<len;i++){
-						if(v == p[i].value){
+					for (let i = 0, len = p.length; i < len; i++) {
+						if (v == p[i].value) {
 							match = true;
 							selIdxes.push(i);
 							p = p[i].options;
 							break;
 						}
 					}
-					if(!match){
+					if (!match) {
 						break;
 					}
 				}
 			} else {
-				for(let i=0,len=this.options.length;i<len;i++){
-					if(this.value == this.options[i].value){
+				for (let i = 0, len = this.options.length; i < len; i++) {
+					if (this.value == this.options[i].value) {
 						selIdxes = [i];
 						break;
 					}
@@ -76,20 +87,20 @@ export default {
 			}
 			this.selIdxes = selIdxes;
 		},
-		enterSelect(){
+		enterSelect() {
 			this.ddm.select();
 		},
-		doFilter(){
-			if(this.filterTimer){
+		doFilter() {
+			if (this.filterTimer) {
 				clearTimeout(this.filterTimer);
 				this.filterTimer = null;
 			}
-			this.filterTimer = setTimeout(()=>{
+			this.filterTimer = setTimeout(() => {
 				this.showDdm();
-				this.ddm&&this.ddm.filter(this.text);
+				this.ddm && this.ddm.filter(this.text);
 			}, 100);
 		},
-		focus(){
+		focus() {
 			// if(this.field.type=='combobox'){
 			// 	let selIdxes = this.selIdxes;
 			// 	if(selIdxes.length>0 && selIdxes[0]>=0) {
@@ -107,17 +118,17 @@ export default {
 </script>
 
 <style lang="scss">
-.st-cbb{
+.st-cbb {
 	position: relative;
 	display: flex;
 	align-items: center;
 
-	& .st-form-input{
+	& .st-form-input {
 		height: 30px;
 		padding: 4px 5px 4px 11px;
 		line-height: 30px;
 	}
-	&-trigger{
+	&-trigger {
 		font-size: 20px;
 		width: 20px;
 		line-height: 20px;
@@ -126,10 +137,10 @@ export default {
 		transition: transform ease 0.2s, opacity ease 0.2s;
 		opacity: 0.6;
 	}
-	.st-cbb-trigger.st-cbb-trigger-down{
+	.st-cbb-trigger.st-cbb-trigger-down {
 		transform: rotate(270deg);
 	}
-	& &-clear{
+	& &-clear {
 		position: absolute;
 		right: 3px;
 		line-height: 16px;
@@ -145,25 +156,25 @@ export default {
 		color: #fff;
 		border-radius: 50%;
 	}
-	&:hover &-clear{
+	&:hover &-clear {
 		opacity: 1;
 	}
 
 	@keyframes st_cbb_load {
-		from{
+		from {
 			transform: rotate(0);
 		}
-		to{
+		to {
 			transform: rotate(360deg);
 		}
 	}
-	&-load{
+	&-load {
 		animation: st_cbb_load 1s linear infinite;
 	}
 }
 
 .st-form-input-box:hover .st-cbb-trigger,
-.st-form-input-box-focus .st-cbb-trigger{
+.st-form-input-box-focus .st-cbb-trigger {
 	opacity: 1;
 }
 </style>
