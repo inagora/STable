@@ -2,7 +2,7 @@
 	<div
 		class="st-stable"
 		:class="[
-			config.layoutMode == 'expand' ? 'st-expand-stable' : 'st-fixed-stable'
+			config.layoutMode == 'expand' ? 'st-expand-stable' : 'st-fixed-stable',
 		]"
 	>
 		<div class="st-stable-doc">
@@ -31,8 +31,8 @@ export default {
 	props: {
 		config: {
 			type: Object,
-			required: true
-		}
+			required: true,
+		},
 	},
 	provide() {
 		let conf = Object.assign(
@@ -156,7 +156,7 @@ export default {
 				/**
 				 * @param {Boolean} autoWidth table的列宽根据header自动适应宽度
 				 */
-				autoWidth: false
+				autoWidth: false,
 			},
 			(window.STable && window.STable.default) || {},
 			this.config
@@ -186,7 +186,7 @@ export default {
 			create: 'POST',
 			read: 'GET',
 			update: 'POST',
-			delete: 'POST'
+			delete: 'POST',
 		};
 		conf.actionMethods = Object.assign(actionMethods, methods);
 
@@ -221,7 +221,7 @@ export default {
 			if (typeof item == 'string') {
 				item = {
 					text: item,
-					dataIndex: item
+					dataIndex: item,
 				};
 			}
 			if (additionalColumnConfig) {
@@ -317,7 +317,7 @@ export default {
 					cellWrap: true,
 					resizable: true,
 					_st_ori_idx: idx,
-					_hl: false
+					_hl: false,
 				},
 				item
 			);
@@ -335,7 +335,7 @@ export default {
 		 */
 		conf.params = Object.assign(
 			{
-				count: 20
+				count: 20,
 			},
 			conf.params,
 			//向前兼容，postParam、postData是之前版本使用过的名称
@@ -438,7 +438,7 @@ export default {
 							locked: col.locked,
 							visible: col.visible,
 							width: col.width,
-							_st_idx: col._st_idx
+							_st_idx: col._st_idx,
 						});
 						_columns.push(colConf);
 						break;
@@ -447,10 +447,10 @@ export default {
 			}
 			// 修复拖拽列名导致列重复的问题
 			let columnObj = {};
-			_columns.forEach(item => {
+			_columns.forEach((item) => {
 				columnObj[item.text] = item;
 			});
-			_columns = Object.keys(columnObj).map(item => {
+			_columns = Object.keys(columnObj).map((item) => {
 				return columnObj[item];
 			});
 			columns = _columns;
@@ -473,18 +473,18 @@ export default {
 				sortDirection: conf.sortDirection,
 
 				hlRowNum: -1,
-				focusRowNum: -1
+				focusRowNum: -1,
 			},
 			methods: {
 				saveColumnsState() {
-					let colState = this.columns.map(col => {
+					let colState = this.columns.map((col) => {
 						return {
 							text: col.text,
 							visible: col.visible,
 							locked: col.locked,
 							width: col.width,
 							_st_idx: col._st_idx,
-							_st_ori_idx: col._st_ori_idx
+							_st_ori_idx: col._st_ori_idx,
 						};
 					});
 
@@ -493,6 +493,7 @@ export default {
 							this.storageKey,
 							JSON.stringify(colState)
 						);
+						this.emit('columnsStateChanged', colState);
 					} catch (e) {
 						Console.error(e);
 					}
@@ -509,8 +510,8 @@ export default {
 					if (conf.listeners && conf.listeners[evtName]) {
 						return conf.listeners[evtName].apply(self, args);
 					}
-				}
-			}
+				},
+			},
 		});
 		conf.store.searchParams = {};
 		delete conf.columns;
@@ -528,14 +529,14 @@ export default {
 			toolbar: XToolbar,
 			search: XSearch,
 			table: XTable,
-			pagination: XPagination
+			pagination: XPagination,
 		};
 		let order = ['title', 'tip', 'toolbar', 'search', 'table', 'pagination'];
 		if (this.config.componentOrder) {
 			order = this.config.componentOrder;
 		}
 		return {
-			comOrder: order.map(name => ({ name, com: coms[name] }))
+			comOrder: order.map((name) => ({ name, com: coms[name] })),
 		};
 	},
 	mounted() {
@@ -558,7 +559,7 @@ export default {
 		}, 0);
 		// 如果设置了全局clearable，则分别设置组件的clearable属性
 		if (this.config.clearable && this.config.searchFilter) {
-			this.config.searchFilter.forEach(field => {
+			this.config.searchFilter.forEach((field) => {
 				if (field.clearable == undefined) {
 					this.$set(field, 'clearable', this.config.clearable);
 				}
@@ -619,7 +620,7 @@ export default {
 			if (typeof idx == 'undefined') {
 				return btns;
 			} else if ($type(idx) == 'string') {
-				btns = btns.filter(b => b.conf.id == idx);
+				btns = btns.filter((b) => b.conf.id == idx);
 				return btns[0];
 			} else {
 				return btns[idx];
@@ -638,13 +639,13 @@ export default {
 			if (typeof idx == 'undefined') {
 				return forms;
 			} else if ($type(idx) == 'string') {
-				forms = forms.filter(b => b.conf.id == idx);
+				forms = forms.filter((b) => b.conf.id == idx);
 				return forms[0];
 			} else {
 				return forms[idx];
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 <style lang="scss">
